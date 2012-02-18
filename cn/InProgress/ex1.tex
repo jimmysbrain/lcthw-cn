@@ -1,0 +1,73 @@
+\chapter{习题 1: 重拾编译器}
+
+这是你用C语言写的第一个简单程序：
+
+\begin{code}{ex1.c}
+<< d['code/ex1.c|pyg|l'] >>
+\end{code}
+
+把它保存为 \file{ex1.c} 然后输入：
+
+\begin{Terminal}{Building ex1}
+\begin{lstlisting}
+$ make ex1
+cc     ex1.c   -o ex1
+\end{lstlisting}
+\end{Terminal}
+
+你的系统使用的命令可能不大一样，但最终应该编译出一个可运行文件叫 \file{ex1}
+
+\section{你应该看到的内容}
+
+你现在可以运行这个程序并看到以下输出。
+
+\begin{Terminal}{Running ex1}
+\begin{lstlisting}
+$ ./ex1
+Hello world.
+\end{lstlisting}
+\end{Terminal}
+
+如果输出不同，你需要回到前一步，找到问题所在并修正它。
+
+\section{How To Break It}
+
+在本书中，每段程序，我都会写一段如何中断它的小节。我将让你对程序做一些非常规的事，
+用一些怪异的方法运行他们或者改变代码以让你能看到程序崩溃和编译器错误。
+
+对于这个程序，打开编译器的所有警告选项重新编译它：
+
+\begin{Terminal}{Building ex1 with -Wall}
+\begin{lstlisting}
+$ rm ex1
+$ CFLAGS="-Wall" make ex1
+cc -Wall    ex1.c   -o ex1
+ex1.c: In function 'main':
+ex1.c:3: warning: implicit declaration of function 'puts'
+$ ./ex1
+Hello world.
+$ 
+\end{lstlisting}
+\end{Terminal}
+
+
+现在你得到了一个警告说函数“puts”是“implictly declared”（隐式申明）。
+C编译器很智能能够猜出你想要什么，但是你应该尽力消除所有的编译警告。对于这个警告，
+你可以把以下这行加入到 \file{ex1.c} 的顶部并重新编译：
+
+\begin{lstlisting}
+#include <stdio.h>
+\end{lstlisting}
+
+Now do the make again like you just did and you'll see the warning go away.
+现在，按前面的步骤再做一次，你将发现警告没了。
+
+\section{加分习题}
+
+\begin{enumerate}
+\item 用你的文本编辑器打开 \file{ex1} 改变或者删除任意部分。试试运行它看会发生什么。
+\item 打印出超过5行的文字或者比"hello world"复杂一些的句子。
+\item 运行 \verb|man 3 puts| 了解这个函数和更多其它的函数。
+\end{enumerate}
+
+
