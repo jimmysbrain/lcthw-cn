@@ -9,30 +9,24 @@
 \end{code}
 
 完成之后运行\shell{make ex3}去生成并运行它. 
-保证你\emph{解决了多有警告信息}(warnings).
+确保你\emph{解决了所有警告信息}(warnings).
 
-This exercise has a whole lot going on in a small amount of code so 
-let's break it down:
+这些练习只需要很少的代码， 下面就来解决它们吧:
 
 \begin{enumerate}
-\item First you're including another "header file" called \file{stdio.h}. This tells the compiler that you're going to use the "standard Input/Output functions".  One of those is \ident{printf}.
-\item Then you're using a variable named \ident{age} and setting it to 10.
-\item Next you're using a variable \ident{height} and setting it to 72.
-\item Then you use the \ident{printf} function to print the age and height
-     of the tallest 10 year old on the planet.
-\item In the \ident{printf} you'll notice you're passing in a string, and
-    it's a format string like in many other languages.
-\item After this format string, you put the variables that should be 
-    "replaced" into the format string by \ident{printf}.
+\item 首先包含另一个叫做\file{stdio.h}的头文件. 这样做就是告诉编译器你要使用"标准输入输出函数"。 其中一个就是\ident{printf}.
+\item 接着你将用到一个叫做\ident{age}的变量并且给它赋值为10.
+\item 下一步你要把变量\ident{height}赋值为72.
+\item 然后你用\ident{printf}函数将打印出这个星球上最高的10孩子的年龄和身高.
+\item 在\ident{printf}函数中你会注意到你传进了一个字符串，这个字符串和别的语言中的格式化字符串很像.
+\item 在这个格式化字符串之后, 你放置了“代替”\ident{printf}中格式化字符串的变量.
 \end{enumerate}
 
-The result of doing this is you are handing \ident{printf} some variables
-and it is constructing a new string then printing that new string to the
-terminal.
+这么做的结果就是你把几个变量交给\ident{printf}，然后它构造出一个新的字符串并且在终端中打印这个新的字符串.
 
-\section{What You Should See}
+\section{你会看到什么}
 
-When you do the whole build you should see something like this:
+当你构建代码时，你会看到这些:
 
 \begin{Terminal}{Building and running ex3.c}
 \begin{lstlisting}
@@ -40,11 +34,9 @@ When you do the whole build you should see something like this:
 \end{lstlisting}
 \end{Terminal}
 
-Pretty soon I'm going to stop telling you to run \file{make} and what
-the build looks like, so please make sure you're getting this right
-and that it's working.
+很快我就不会再告诉你运行\file{make}查看build生成的信息,所以请确保你现在能正常工作.
 
-\section{External Research}
+\section{外部调查}
 
 In the \emph{Extra Credit} section of each exercise I may have you go
 find information on your own and figure things out.  This is an important
