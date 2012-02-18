@@ -1,0 +1,128 @@
+\chapter{习题2: "Make"是你的Python了}
+
+在 \href{http://learnpythonthehardway.org}{Python} 中你只用键入\verb|python|和你希望运行的代码就能城启动脚本。Python编译器(interpreter)会直接运行他们，并载入任何其他你可能需要的库(libraries)。 C相对来说是完全不同的，在C中你需要编译(\emph{compile})你的源文件并手动将它们拼凑起来变成他们可以自己运行的二进制。而这个过程就是个悲剧，在上一个练习中你可以直接运行\file{make}来实现他。
+
+在这个习题中，你将迅速学习GUN make,并且你也会在往后的学习C语言的过程中继续学习如何使用它。 Make将在这本书中成为你的"Python编译器"。它将帮助你编写代码，测试代码，准备其他，做所有Python一般会做的事。而区别是在使用我即将向你展现的这个聪明的makefile的过程中你将不需要总是说明每一件比较白痴的细节来使程序运行。在习题2以及最开始的一段时间里我们将先使用婴儿级别的make("baby make"),之后大师级别的make("master make")才会闪亮登场。
+
+
+\section{使用Make}
+
+使用make的第一阶段就是直接写程序，它已经知道怎样去构建程序了。Make对在许多文件中构建差异有着丰富的知识（Make对于从一些文件来构建各种各样的其他文件有N多知识）。在上一个练习里你已经使用了像这样的命令：
+
+\begin{Terminal}{Building ex1 with -Wall}
+\begin{lstlisting}
+$ make ex1
+# or this one too
+$ CFLAGS="-Wall" make ex1
+\end{lstlisting}
+\end{Terminal}
+
+在第一个命令里你在告诉make，“我希望创建一个叫做ex1的文件”，然后make就做了下面的：
+
+\begin{enumerate}
+\item Does the file \file{ex1} exist already?
+\item No. Ok, is there another file that starts with \file{ex1}?
+\item Yes, it's called \file{ex1.c}. Do I know how to build \file{.c} files?
+\item Yes, I run this command \verb|cc ex1.c   -o ex1| to build them.
+\item I shall make you one \file{ex1} by using \file{cc} to build it from \file{ex1.c}.
+\end{enumerate}
+
+第二个命令是一种通过“修改器”("modifiers")来实行make命令的一种方式。如果你不太熟悉Unix shell是如何工作的，你可以创建些“环境变量”("environment variables").有时候你可以根据你所使用的shell来运行像这样的命令： \verb|export CFLAGS="-Wall"|。你也同时可以直接将他们放在你想要运行的命令之前，这样环境变量将只在命令运行时才会被设定。
+
+In this example I did \verb|CFLAGS="-Wall" make ex1| so that it would
+add the command line option \verb|-Wall| to the \verb|cc| command that
+\ident{make} normally runs.  That command line option tells the compiler
+\ident{cc} to report all warnings (which in a sick twist of fate isn't
+actually all the warnings possible).
+
+You can actually get pretty far with just that way of using \ident{make},
+but let's get into making a \file{Makefile} so you can understand
+make a little better.  To start off, create a file with just this
+in it:
+
+\begin{code}{A simple Makefile}
+\begin{lstlisting}
+<< d['code/ex2.1.Makefile|dexy'] >>
+\end{lstlisting}
+\end{code}
+
+Save this file as \file{Makefile} in your current directory.  Make
+automatically assumes there's a file called \file{Makefile} and will
+just run it.  Also, \emph{WARNING: Make sure you are only entering TAB
+characters, not mixtures of TAB and spaces.}
+
+This \file{Makefile} is showing you some new stuff with make.  First we set
+\ident{CFLAGS} in the file so we never have to set it again, as well
+as adding the \verb|-g| flag to get debugging.  Then we have a 
+section named \ident{clean} which tells make how to clean up our
+little project.
+
+Make sure it's in the same directory as your \file{ex1.c} file, and then
+run these commands:
+
+\begin{Terminal}{Running a simple Makefile}
+\begin{lstlisting}
+$ make clean
+$ make ex1
+\end{lstlisting}
+\end{Terminal}
+
+\section{What You Should See}
+
+If that worked then you should see this:
+
+\begin{Terminal}{Full build with Makefile}
+\begin{lstlisting}
+<< d['code/ex2.out|dexy'] >>
+\end{lstlisting}
+\end{Terminal}
+
+Here you can see that I'm running \verb|make clean| which tells
+make to run our \ident{clean} target.  Go look at the Makefile
+again and you'll see that under this I indent and then I put
+the shell commands I want \ident{make} to run for me.  You could
+put as many commands as you wanted in there, so it's a great
+automation tool.
+
+\begin{aside}{Did You Fix ex1.c?}
+If you fixed \file{ex1.c} to have \verb|#include <stdio.h>| then your
+output will not have the warning (which should really be an error) about puts.  I have the error
+here because I didn't fix it.
+\end{aside}
+
+Notice also that, even though we don't mention \file{ex1} in the
+\file{Makefile}, \ident{make} still knows how to build it \emph{plus}
+use our special settings.
+
+
+\section{How To Break It}
+
+That should be enough to get you started, but first let's break this 
+make file in a particular way so you can see what happens.  Take
+the line \verb|rm -f ex1| and dedent it (move it all the way left)
+so you can see what happens.  Rerun \verb|make clean| and you should
+get something like this:
+
+\begin{Terminal}{Bad make run}
+\begin{lstlisting}
+$ make clean
+Makefile:4: *** missing separator.  Stop.
+\end{lstlisting}
+\end{Terminal}
+
+Always remember to indent, and if you get weird errors like this
+then double check you're consistently using tab characters since
+some make variants are very picky.
+
+\section{Extra Credit}
+
+\begin{enumerate}
+\item Create an \verb|all: ex1| target that will build \file{ex1} with
+    just the command \verb|make|.
+\item Read \verb|man make| to find out more information on how to run it.
+\item Read \verb|man cc| to find out more information on what the flags \verb|-Wall| and \verb|-g| do.
+\item Research Makefiles online and see if you can improve this one even more.
+\item Find a \file{Makefile} in another C project and try to understand
+    what it's doing.
+\end{enumerate}
+
