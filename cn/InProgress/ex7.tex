@@ -22,20 +22,14 @@
 \item[ex7.c:28-30] \ident{main}函数的结尾.
 \end{description}
 
-This bit of source is entirely just an exercise, and demonstrates how
-some math works.  At the end, it also demonstrates something you
-see in C, but not in many other languages.  To C, a "character" is just an
-integer.  It's a really small integer, but that's all it is.  This means
-you can do math on them, and a lot of software does just that, for good
-or bad.
+这些代码只是一些练习, 只是演示math函数是如何工作的.  在代码的结尾处你也看见了只有C中有，而别的语言中没有的东西. 对于C语言来说, 一个字符变量（character）只是一个整型变量.它是一种非常小的整型变量, 但它还可以表示字符. 这就是说你可以在它们上进行数学运算, 并且有很多程序是这么做的,但有些是好的有的是不好的.
 
-This last bit is your first glance at how C gives you direct access to 
-the machine.  We'll be exploring that more in later exercises.
+最后的这点是让你看看C语言是如何访问机器的. 之后会有更多的练习讨论这些内容.
 
 
-\section{What You Should See}
+\section{你应该看到的结果}
 
-As usual, here's what you should see for the output:
+和平常一样, 这些是你应该在输出中看到的:
 
 \begin{code}{ex7 output}
 \begin{lstlisting}
@@ -44,24 +38,18 @@ As usual, here's what you should see for the output:
 \end{code}
 
 
-\section{How To Break It}
+\section{让程序出错}
 
-Again, go through this and try breaking the \ident{printf} by passing in
-the wrong arguments.  See what happens when you try to print out that
-\ident{nul\_byte} variable too with \verb|%s| vs. \verb|%c|.  When you
-break it, run it under \program{Valgrind} to see what it says about your
-breaking attempts.
+同样的，试着往\ident{printf}中传递错的参数.  
+ 看看对比用修饰符\verb|%s|和\verb|%c|输出\ident{nul\_byte}有什么结果. 当你让程序出错后, 运行\program{Valgrind}查看错误原因.
 
-\section{Extra Credit}
+\section{加分题}
 
 \begin{enumerate}
-\item Make the number you assign to \ident{universe\_of\_defects} various 
-    sizes until you get a warning from the compiler.
-\item What do these really huge numbers actually print out?
-\item Change \ident{long} to \ident{unsigned long} and try to find 
-    the number that makes that one too big.
-\item Go search online to find out what \ident{unsigned} does.
-\item Try to explain to yourself (before I do in the next exercise)
-    why you can multiply a \ident{char} and an \ident{int}.
+\item 给\ident{universe\_of\_defects}赋不同大小的值直到从编译器获得警告信息.
+\item 这写大数（huge numbers）实际上打印出的是什么?
+\item 把\ident{long}换成\ident{unsigned long}， 试着找到比刚才那个数更大的值.
+\item 上网查查\ident{unsigned}是什么意思.
+\item 试着给自己解释(在我开始下一个练习之前)为什么一个\ident{char}可以和一个 \ident{int}型变量相乘.
 \end{enumerate}
 
