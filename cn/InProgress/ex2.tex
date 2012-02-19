@@ -10,7 +10,7 @@
 使用make的第一阶段就是直接写程序，事实上它已经知道怎样去构建程序了。Make对于在许多文件中构建差异是有着丰富的知识的（Make对于从一些文件来构建各种各样的其他文件有N多知识）。Make has decades of knowledge on building
 a wide variety of files from other files.在上一个练习里你已经使用了像这样的命令：
 
-\begin{Terminal}{通过 -Wall 创建ex1}
+\begin{Terminal}{Building ex1 with -Wall}
 \begin{lstlisting}
 $ make ex1
 # or this one too
@@ -69,7 +69,7 @@ $ make ex1
 
 这里你可以看到我在通过运行 \verb|make clean| 来实现我们的目标 \ident{clean}.  现在再来看看 Makefile， 你会发现我在文件中使用shell命令说明了我希望运行 \ident{make}。 你可以在这里尽可能多的放置命令 (所以说这还是个不错的简化工具)。 
 
-\begin{aside}{你修复 ex1.c 了么?}
+\begin{aside}{Did You Fix ex1.c?}
 如果你修复 \file{ex1.c} 来得到 \verb|#include <stdio.h>| 那么你的输出应该不会有关于puts的警告（但事实上应该是会有一个系统错误的）。我得到了警告是因为我并没有修复它。 then your output will not have the warning (which should really be an error) about puts.  I have the error here because I didn't fix it.
 \end{aside}
 
