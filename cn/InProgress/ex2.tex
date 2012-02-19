@@ -1,13 +1,14 @@
 \chapter{习题2: "Make"是你的Python了}
 
-在 \href{http://learnpythonthehardway.org}{Python} 中你只用键入\verb|python|和你希望运行的代码就能城启动脚本。Python编译器(interpreter)会直接运行他们，并载入任何其他你可能需要的库(libraries)。 C相对来说是完全不同的，在C中你需要编译(\emph{compile})你的源文件并手动将它们拼凑起来变成他们可以自己运行的二进制。而这个过程就是个悲剧，在上一个练习中你可以直接运行\file{make}来实现他。
+在 \href{http://learnpythonthehardway.org}{Python} 中你只用键入\verb|python|和你希望运行的代码文件就能城启动脚本。Python编译器(interpreter)会直接运行他们，并载入任何其他你可能需要的库(libraries)。 C相对来说是完全不同的，在C中你需要编译 (\emph{compile}) 源文件并手动将它们拼凑成一个可以自己运行的二进制程序。而这个过程就是个悲剧。在上个习题中你是通过直接运行\file{make}来实现他的。
 
-在这个习题中，你将迅速学习GUN make,并且你也会在往后的学习C语言的过程中继续学习如何使用它。 Make将在这本书中成为你的"Python编译器"。它将帮助你编写代码，测试代码，准备其他，做所有Python一般会做的事。而区别是在使用我即将向你展现的这个聪明的makefile的过程中你将不需要总是说明每一件比较白痴的细节来使程序运行。在习题2以及最开始的一段时间里我们将先使用婴儿级别的make("baby make"),之后大师级别的make("master make")才会闪亮登场。
+在这个习题中，你将迅速学习GUN make,当然你也会在往后的C语言学习过程中继续学习如何使用它。 Make将在这本书中成为你的"Python编译器"。它将帮助你编写代码，测试代码，准备其他，做所有Python一般会做的事。当然区别还是有的，在使用即将向你展现的这个智能makefile的过程中，你将不需要总是说明每一件白痴的细节来使程序运行。那么接下来，在本习题以及最开始的一段时间里我们将先使用婴儿级别的make("baby make"),之后，大师级别的make("master make")才会闪亮登场。
 
 
 \section{使用Make}
 
-使用make的第一阶段就是直接写程序，它已经知道怎样去构建程序了。Make对在许多文件中构建差异有着丰富的知识（Make对于从一些文件来构建各种各样的其他文件有N多知识）。在上一个练习里你已经使用了像这样的命令：
+使用make的第一阶段就是直接写程序，事实上它已经知道怎样去构建程序了。Make对于在许多文件中构建差异是有着丰富的知识的（Make对于从一些文件来构建各种各样的其他文件有N多知识）。Make has decades of knowledge on building
+a wide variety of files from other files.在上一个练习里你已经使用了像这样的命令：
 
 \begin{Terminal}{Building ex1 with -Wall}
 \begin{lstlisting}
@@ -20,25 +21,21 @@ $ CFLAGS="-Wall" make ex1
 在第一个命令里你在告诉make，“我希望创建一个叫做ex1的文件”，然后make就做了下面的：
 
 \begin{enumerate}
-\item Does the file \file{ex1} exist already?
-\item No. Ok, is there another file that starts with \file{ex1}?
-\item Yes, it's called \file{ex1.c}. Do I know how to build \file{.c} files?
-\item Yes, I run this command \verb|cc ex1.c   -o ex1| to build them.
-\item I shall make you one \file{ex1} by using \file{cc} to build it from \file{ex1.c}.
+\item \file{ex1} 是否已经存在了？
+\item 否。好吧，那么是否有另外一个文件以 \file{ex1} 开头呢?
+\item 是，它叫 \file{ex1.c}。 那么，我知道如何构建 \file{.c} 的文件吗?
+\item 是， 我将运行 \verb|cc ex1.c   -o ex1| 来构建它们。
+\item 我将通过使用 \file{cc} 从 \file{ex1.c} 中构建 \file{ex1}.
 \end{enumerate}
 
 第二个命令是一种通过“修改器”("modifiers")来实行make命令的一种方式。如果你不太熟悉Unix shell是如何工作的，你可以创建些“环境变量”("environment variables").有时候你可以根据你所使用的shell来运行像这样的命令： \verb|export CFLAGS="-Wall"|。你也同时可以直接将他们放在你想要运行的命令之前，这样环境变量将只在命令运行时才会被设定。
 
-In this example I did \verb|CFLAGS="-Wall" make ex1| so that it would
-add the command line option \verb|-Wall| to the \verb|cc| command that
-\ident{make} normally runs.  That command line option tells the compiler
-\ident{cc} to report all warnings (which in a sick twist of fate isn't
+在这个例子中我使用了 \verb|CFLAGS="-Wall" make ex1| 所以它将添加命令行选项 \verb|-Wall| 到命令 \verb|cc| 中，所以
+\ident{make} 一般都会运行.  命令行选项将指挥编译器 (compiler)
+\ident{cc} 将报告所有警告 (这有些纠结，因为事实上并不是所有有可能的警告都会出现) to report all warnings (which in a sick twist of fate isn't
 actually all the warnings possible).
 
-You can actually get pretty far with just that way of using \ident{make},
-but let's get into making a \file{Makefile} so you can understand
-make a little better.  To start off, create a file with just this
-in it:
+事实上单单使用 \ident{make} 你就已经可以做很多事情了， 但还是让我们来看看怎样构建一个 \file{Makefile} ，这样做可以帮助你更好的理解它。那么一开始请创建一个文件并键入以下内容：
 
 \begin{code}{A simple Makefile}
 \begin{lstlisting}
@@ -46,19 +43,11 @@ in it:
 \end{lstlisting}
 \end{code}
 
-Save this file as \file{Makefile} in your current directory.  Make
-automatically assumes there's a file called \file{Makefile} and will
-just run it.  Also, \emph{WARNING: Make sure you are only entering TAB
-characters, not mixtures of TAB and spaces.}
+将其在你目前的路径中保存为 \file{Makefile}. 此时你可以自动假设这里有一个叫做 \file{Makefile} 的文件，并会直接运行。 同时, \emph{警告: 确保你只是输入了 TAB 字符， 而不是 Tab 和空格键的组合输入。}
 
-This \file{Makefile} is showing you some new stuff with make.  First we set
-\ident{CFLAGS} in the file so we never have to set it again, as well
-as adding the \verb|-g| flag to get debugging.  Then we have a 
-section named \ident{clean} which tells make how to clean up our
-little project.
+这个 \file{Makefile} 将给你展现一些 make 的新玩意儿. 首先，我们需要在文件中设定好 \ident{CFLAGS} 并为 debugging 增加 \verb|-g| flag， 这样以来往后的编写过程中就不需要再设定它们了。 然后，我们将使用小节 \ident{clean} 来让你的小程序看起来美观一些。
 
-Make sure it's in the same directory as your \file{ex1.c} file, and then
-run these commands:
+先确保它在与文件 \file{ex1.c} 相同的路径下, 并运行以下命令：
 
 \begin{Terminal}{Running a simple Makefile}
 \begin{lstlisting}
@@ -67,9 +56,10 @@ $ make ex1
 \end{lstlisting}
 \end{Terminal}
 
-\section{What You Should See}
 
-If that worked then you should see this:
+\section{你应该看到的结果}
+
+如果一切正常你将可以看到：
 
 \begin{Terminal}{Full build with Makefile}
 \begin{lstlisting}
@@ -77,31 +67,18 @@ If that worked then you should see this:
 \end{lstlisting}
 \end{Terminal}
 
-Here you can see that I'm running \verb|make clean| which tells
-make to run our \ident{clean} target.  Go look at the Makefile
-again and you'll see that under this I indent and then I put
-the shell commands I want \ident{make} to run for me.  You could
-put as many commands as you wanted in there, so it's a great
-automation tool.
+这里你可以看到我在通过运行 \verb|make clean| 来运行我们的目标 \ident{clean}.  现在再来看看 Makefile 你会发现我使用shell命令在文件中说明了我希望运行 \ident{make}。 你可以在这里尽多的输入命令，所以说这是个不错的简化工具。 
 
-\begin{aside}{Did You Fix ex1.c?}
-If you fixed \file{ex1.c} to have \verb|#include <stdio.h>| then your
-output will not have the warning (which should really be an error) about puts.  I have the error
-here because I didn't fix it.
+\begin{aside}{你修复 ex1.c 了么?}
+如果你修复 \file{ex1.c} 以得到 \verb|#include <stdio.h>| 那么你的输出应该不会有关于puts的警告的（但事实上应该是有一个系统错误的）。我得到了警告是因为我并没有修复它。 then your output will not have the warning (which should really be an error) about puts.  I have the error here because I didn't fix it.
 \end{aside}
 
-Notice also that, even though we don't mention \file{ex1} in the
-\file{Makefile}, \ident{make} still knows how to build it \emph{plus}
-use our special settings.
+同时还需要注意的是，尽管我们没有在 \file{Makefile} 中提到 \file{ex1} ， \ident{make} 依然知道如何去构建它\emph{并}使用我们的特别设定。
 
 
-\section{How To Break It}
+\section{How To Break It如何打破}
 
-That should be enough to get you started, but first let's break this 
-make file in a particular way so you can see what happens.  Take
-the line \verb|rm -f ex1| and dedent it (move it all the way left)
-so you can see what happens.  Rerun \verb|make clean| and you should
-get something like this:
+以上这些应该已经够你起步了，但我们还是将这个make文件用某种方式细化一下，这样你可以进一步了解到底发生了什么。 请选择行 \verb|rm -f ex1| 并取消缩进 (将整行左移)， 你将得到：
 
 \begin{Terminal}{Bad make run}
 \begin{lstlisting}
@@ -110,19 +87,17 @@ Makefile:4: *** missing separator.  Stop.
 \end{lstlisting}
 \end{Terminal}
 
-Always remember to indent, and if you get weird errors like this
-then double check you're consistently using tab characters since
-some make variants are very picky.
+所以说，一定要记得缩进。
+如果你得到了类似的错误那么就检查一下是否你在使用tab键时保持了一致性。要知道有些make的variant数据类型是非常挑剔的。
 
-\section{Extra Credit}
+
+\section{加分习题}
 
 \begin{enumerate}
-\item Create an \verb|all: ex1| target that will build \file{ex1} with
-    just the command \verb|make|.
-\item Read \verb|man make| to find out more information on how to run it.
-\item Read \verb|man cc| to find out more information on what the flags \verb|-Wall| and \verb|-g| do.
-\item Research Makefiles online and see if you can improve this one even more.
-\item Find a \file{Makefile} in another C project and try to understand
-    what it's doing.
+\item 仅通过命令 \verb|make| 来创建目标 \verb|all: ex1| 和 \file{ex1}。
+\item 通过读取 \verb|man make| 来获取更多关于如何运行的信息。
+\item 通过读取 \verb|man cc| 来获取更多关于 flag \verb|-Wall| 和 \verb|-g| 是干什么的.
+\item 上网搜索一下 Makefiles 并看看你能不能进一步提高对它的使用。
+\item 在其他C语言程序中找到一个 \file{Makefile} 并尝试了解它在其中的作用是什么。
 \end{enumerate}
 
