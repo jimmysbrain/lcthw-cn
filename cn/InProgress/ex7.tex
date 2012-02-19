@@ -1,36 +1,25 @@
-\chapter{Exercise 7: More Variables, Some Math}
+\chapter{Exercise 7: 更多变量和一些数学运算}
 
-Let's get familiar with more things you can do with variables by 
-declaring various \ident{ints}, \ident{floats}, \ident{chars}, and 
-\ident{doubles}.  We'll then use these in various math expressions
-so you get introduced to C's basic math.
+让我们来熟悉一下通过声明更多的\ident{整型}（int）变量, \ident{单精度浮点型}（float）变量, \ident{字符型}（char）变量和\ident{双精度浮点型}（double）变量可以做什么. 我们会在稍后的各种数学表达式中用到它们，接下来会交给你C语言中的基础数学.
 
 \begin{code}{ex7.c}
 << d['code/ex7.c|pyg|l'] >>
 \end{code}
 
-Here's what's going on in this little bit of nonsense:
+这些就是要做的那些有意义的事情:
 
 \begin{description}
-\item[ex7.c:1-4] The usual start of a C program.
-\item[ex7.c:5-6] Declare an \ident{int} and \ident{double} for some fake bug data.
-\item[ex7.c:8-9] Print out those two, so nothing new here.
-\item[ex7.c:11] Declare a huge number using a new type \ident{long} for storing
-    big numbers.
-\item[ex7.c:12-13] Print out that number using \verb|%ld| which adds a modifier
-    to the usual \verb|%d|. Adding 'l' (the letter ell) means "print this
-    as a long decimal".
-\item[ex7.c:15-17] Just more math and printing.
-\item[ex7.c:19-21] Craft up a depiction of your bug rate compared to the bugs in
-    the universe, which is a completely inaccurate calculation.  It's so small
-    though that we have to use \verb|%e| to print it in scientific notation.
-\item[ex7.c:24] Make a character, with a special syntax \verb|'\0'| which creates
-    a 'nul byte' character.  This is effectively the number 0.
-\item[ex7.c:25] Multiply bugs by this character, which produces 0 for how much you
-    should care.  This demonstrates an ugly hack you find sometimes.
-\item[ex7.c:26-27] Print that out, and notice I've got a \verb|%%| (two percent
-        chars) so I can print a '\%' (percent) character.
-\item[ex7.c:28-30] The end of the \ident{main} function.
+\item[ex7.c:1-4] C程序的一般开始格式.
+\item[ex7.c:5-6] 为一些冒牌的bug数据声明\ident{整型}（int）和\ident{双精度浮点型}（double）变量.
+\item[ex7.c:8-9] 没什么新的知识点，就是把这俩变量打印出来.
+\item[ex7.c:11] 用一种新的变量类型\ident{long}声明一个大数（huge number）.
+\item[ex7.c:12-13] 使用\verb|%ld|输出那个数， %ld只是在\verb|%d|前加了个修饰符. 增加的'l' (字母l）的意思是是"按长整型（long decimal）打印出这个数".
+\item[ex7.c:15-17] 只是更多的声明并定义变量和打印输出.
+\item[ex7.c:19-21] 修改一下描述你的bug和世界上别的bug的比例的值, 这是一个不准确的计算.  我们可以用修饰符\verb|%e|用科学计数法输出结果.
+\item[ex7.c:24] 用\verb|'\0'|这样的语法赋值字符变量，就创建了一个空（nul byte）的字符.  这其实就是数字0.
+\item[ex7.c:25] 用这个字符乘以bugs变量, 你可能已经想到了得0. 这就是有时你发现的一种不怎么优雅的hack（通过巧妙的设计实现某些功能）技巧.
+\item[ex7.c:26-27] 输出那个结果, 注意到我使用\verb|%%| (两个百分号)，所以我可以输出'\%' (百分号).
+\item[ex7.c:28-30] \ident{main}函数的结尾.
 \end{description}
 
 This bit of source is entirely just an exercise, and demonstrates how
