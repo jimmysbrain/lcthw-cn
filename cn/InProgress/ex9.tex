@@ -1,28 +1,19 @@
-\chapter{Exercise 9: Arrays And Strings}
+\chapter{习题9: 数组和字符串}
 
-In the last exercise you went through an introduction to creating basic
-arrays and how they map to strings.  In this exercise we'll more completely
-show the similarity between arrays and strings, and get into more about
-memory layouts.
+在上一个习题中我们学习了如何创建基本数组以及如何将他们映射到字符串上。这个习题中我们将更全面的了解数组与字符串之间的相似之处，并更多的了解记忆布局(memory layouts)。
 
-This exercise shows you that C stores its strings simply as an array
-of bytes, terminated with the \verb|'\0'| (nul) byte.  You probably clued
-into this in the last exercise since we did it manually.  Here's
-how we do it in another way to make it even more clear by comparing it
-to an array of numbers:
+本练习会让你明白，C其实是直接将字符串存储为比特数组的，并且由 \verb|'\0'| (nul) 终止。在练习8中我们将这一步手动执行了，所以你还没有机会真正的了解这一点。 这里我们将用另一种方式将字符串与一个数字数组相比较：
 
 \begin{code}{ex9.c}
 << d['code/ex9.c|pyg|l'] >>
 \end{code}
 
-In this code, we setup some arrays the tedious way, by assigning a value
-to each element.  In \ident{numbers} we are setting up numbers, but in
-\ident{name} we're actually building a string manually.
+在这段代码中，我们用最无不给力的方法准备了数组：对每一个元素一一赋值。 在 \ident{numbers} 我们是在准备数字， 但在 \ident{name} 中我们实际上是在手动创建字符串。
 
-\section{What You Should See}
 
-When you run this code you should see first the arrays printed with
-their contents initialized to zero, then in its initialized form:
+\section{你应该看到的结果}
+
+运行这段代码，首先会看到数组以初始格式输出了它们的初始值0:
 
 \begin{code}{ex9 output}
 \begin{lstlisting}
@@ -30,43 +21,26 @@ their contents initialized to zero, then in its initialized form:
 \end{lstlisting}
 \end{code}
 
-You'll notice some interesting things about this program:
+关于这个程序，你将注意到以下几点有趣的事：
 
 \begin{enumerate}
-\item I didn't have to give all 4 elements of the arrays to initialize them.
-    This is a short-cut that C has where, if you set just one element, it'll
-    fill the rest in with 0.
-\item When each element of \ident{numbers} is printed they all come out as
-    0.
-\item When each element of \ident{name} is printed, only the first element 'a'
-    shows up because the \verb|'\0'| character is special and won't display.
-\item Then the first time we print \ident{name} it only prints "a" because,
-    since the array will be filled with 0 after the first 'a' in the 
-    initializer, then the string is correctly terminated by a \verb|'\0'|
-    character.
-\item We then setup the arrays with a tedious manual assignment to each thing
-    and print them out again.  Look at how they changed.  Now the numbers
-    are set, but see how the \ident{name} string prints my name correctly?
-
-\item There's also two syntaxes for doing a string:
+\item 我并不需要对四个元素一一处理来初始化它们。C有这个快捷功能：当你为一个元素设定好时，它会把剩下的都初始化为0。
+\item 当 \ident{numbers} 中的每一个元素都被输出且数值为0。
+\item 当 \ident{name} 中的每一个元素都被输出时, 只有第一个元素 'a' 出现了， 因为字符 \verb|'\0'| 是特别字符，不会被显示。 
+\item 第一次输出的时候，它只输出了 "a" 是因为, 整个数组在第一个 'a' 被初始化为0之后被0填充，然后此字符串会被字符 \verb|'\0'| 正确地关闭。
+\item 接下来我们要再一次用最不给力的方法来给它们一一赋值，并输出它们。看看他们是如何变化的。 现在数字也准备好了，但是你弄明白这字符串是怎样将我的名字正确输出的吗？
+\item 这里有两条需要遵循的语法规则：
     \verb|char name[4] = {'a'}| on line 6
-    vs. \verb|char *another = name| on line 44.  The first 
-    one is less common and the second is what you should use
-    for string literals like this.
-
+    vs. \verb|char *another = name| on line 44.  
+	第一个可能没有那么常见，第二个是你在处理像这样的字符串常量时应该使用的。
 \end{enumerate}
 
-Notice that I'm using the same syntax and style of code to interact with both
-an array of integers and an array of characters, but that \ident{printf}
-thinks that the \ident{name} is just a string.  Again, this is because to the
-C language there's no difference between a string and an array of characters.
+注意，我使用了完全一样的语法和代码风格来操作整数数组和字符数组进行， 但是 \ident{printf} 认为 \ident{name} 只是一个字符串。 再次声明，这是因为C语言在对待字符串和字符数组时是没有区别的。  
 
-Finally, when you make string literals you should usually use the
-\verb|char *another = "Literal"| syntax.  This works out to be the same thing, 
-but it's more idiomatic and easier to write.
+最后，当你创建字符串常量一般来说你应该使用一下语法结构： \verb|char *another = "Literal"| 。 这其实就是一样的东西，只是方便了你的输入并显得更加地道。 
 
 
-\section{How To Break It}
+\section{让程序出错}
 
 The source of almost all bugs in C come from forgetting to have enough
 space, or forgetting to put a \verb|'\0'| at the end of a string.  In
@@ -78,20 +52,16 @@ In this program the key to breaking it is to forget to put the \verb|'\0'|
 character at the end of the strings.  There's a few ways to do this:
 
 \begin{enumerate}
-\item Get rid of the initializers that setup \ident{name}.
-\item Accidentally set \verb|name[3] = 'A';| so that there's no terminator.
-\item Set the initializer to \verb|{'a','a','a','a'}| so there's too many
-    'a' characters and no space for the \verb|'\0'| terminator.
+\item 取消 \ident{name} 的初始设定。
+\item 意外设置 \verb|name[3] = 'A';| ，这样一来就没有终止符了.
+\item 将初始值设为 \verb|{'a','a','a','a'}| ，这样一来就有很多字符 'a' 却没有地方给终止符 \verb|'\0'|了.
 \end{enumerate}
 
-Try to come up with some other ways to break this, and as usual run all of
-these under Valgrind so you can see exactly what is going on and what the
-errors are called.  Sometimes you'll make these mistakes and even
-Valgrind can't find them, but try moving where you declare the variables
-to see if you get the error.  This is part of the voodoo of C, that
-sometimes just where the variable is located changes the bug.
+想想还有没有其他弄坏它的办法，并且就像之前一样，将它们通通放在 Valgrind 下，这样你就明白到底是什么情况以及错误的名字。有时候你的错误连 Valgrind 都找不出来，但是你可以试一下动一动你申明变量的那一节看看你会不会遇到错误。这个部分也是C语言的神秘之处，有时候bug会因为文件位置稍微有误而突然消失。
 
-\section{Extra Credit}
+
+
+\section{加分习题}
 
 \begin{enumerate}
 \item Assign the characters into \ident{numbers} and then use \ident{printf}
