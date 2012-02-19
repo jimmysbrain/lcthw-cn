@@ -1,22 +1,19 @@
-\chapter{Exercise 6: Types Of Variables}
+\chapter{习题6: 变量类型}
 
-You should be getting a grasp of how a simple C program is structured,
-so let's do the next simplest thing which is making some variables 
-of different types:
+现在你应该简略的对C语言的结构有些了解了，那么接下来我们再做些十分简单的事情，即，输出不同类型的变量：
 
 \begin{code}{ex6.c}
 << d['code/ex6.c|pyg|l'] >>
 \end{code}
 
-In this program we're declaring variables of different types 
-and then printing them with different \ident{printf} format
-strings.
+在这个程序中我们将：
+1. 申明不同类型的变量，并且
+2. 使用不同的字符串格式(string format) \ident{printf} 来打印输出它们。
 
-\section{What You Should See}
 
-Your output should look like mine, and you can start to see how
-the format strings for C are similar to Python and other languages.
-They've been around for a long time.
+\section{你应该看到的结果}
+
+你的输出应该和我的一样，你也许也会发现这些C的字符串格式与Python和其他语言的字符串格式是多么的相似。其实它们已经存在很长时间了。
 
 \begin{code}{ex6 output}
 \begin{lstlisting}
@@ -24,40 +21,24 @@ They've been around for a long time.
 \end{lstlisting}
 \end{code}
 
-What you can see is we have a set of "types", which are ways of
-telling the C compiler what each variable should represent, and then
-format strings to match different types.  Here's the breakdown
-of how they match up:
+你将看到一个类型集 (a set of "types"), 它们将告诉C编译器哪些变量应该被提出来，并格式化字符串以匹配不同类型。以下是它们匹配过程的细节：
 
 \begin{description}
-\item[Integers] You declare Integers with the \ident{int} keyword, and 
-    print them with \verb|%d|.
-\item[Floating Point] Declared with \ident{float} or \ident{double} depending
-    on how big they need to be (double is bigger), and printed with 
-    \verb|%f|.
-\item[Character] Declared with \ident{char}, written with a \verb|'| (single-quote)
-    character around the char, and then printed with \verb|%c|.
-\item[String (Array of Characters)] Declared with \verb|char name[]|, 
-    written with \verb|"| characters, and printed with \verb|%s|.
+\item[整数型 (Integer) ] 使用 \ident{int} 申明整数， 用 \verb|%d| 打印输出它。
+\item[浮点数型 (float)] 根据大小决定使用 \ident{float} or \ident{double} 申明浮点数(doule型更大些)， 用 \verb|%f| 打印输出它。
+\item[字符型 (char)] 使用 \ident{char} 申明字符型， 写法是用单引号 \verb|'| 包围字符，用 \verb|%c| 打印输出它。
+\item[字符串 (string)] 使用 \verb|char name[]| 申明字符串型， 写法是用双引号 \verb|"| 包围字符， 用 \verb|%s| 打印输出它。 
 \end{description}
 
-You'll notice that C makes a distinction between single-quote for \ident{char}
-and double-quote for \ident{char[]} or strings.
+这里需要注意的是C语言非常注意区分单双引号。单引号是为字符型 \ident{char} 所准备的，而双引号则是为一堆字符，既字符串型， \ident{char[]} 所准备的。
 
-
-\begin{aside}{C Type Short-Hand For English}
-When talking about C types, I will typically write in English char[] instead of the whole char SOMENAME[].
-This is not valid C code, just a simpler way to talk about types when writing English.
+\begin{aside}{C数据类型的英文缩写}
+当我们谈论到C数据类型时，在英语中我将直接使用 char[] 来表示， 而不会使用完整字符名 SOMENAME[]. 但事实上这是不合格的C代码， 缩写仅仅是书中一种表达数据类型的简便方式罢了。
 \end{aside}
 
-\section{How To Break It}
+\section{让程序出错}
 
-You can easily break this program by passing the wrong thing to the 
-printf statements.  For example, if you take the line that prints
-my name, but put the \ident{initial} variable before the \ident{first\_name}
-in the arguments, you'll get a bug.  Make that change and the compiler will
-yell at you, then when you run it you *might* get a "Segmentation fault"
-like I did:
+你可以通过给printf赋错误的值来轻易的搅坏这个程序。 用那条打印我的名字的指令来打个比方， 如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug就来了。 真这样运行的话，编译器就会对你发飙，你必须会得到个"段故障" "Segmentation fault" ，就像这发生的一样：
 
 \begin{code}{ex6 explosion}
 \begin{lstlisting}
@@ -65,18 +46,15 @@ like I did:
 \end{lstlisting}
 \end{code}
 
-Run this change under Valgrind too to see what it tells you about
-the error "Invalid read of size 1".
+在 Valgrind 下再次运行，看看关于 "Invalid read of size 1" 它会告诉你些什么。
 
-\section{Extra Credit}
+
+\section{加分习题}
 
 \begin{enumerate}
-\item Come up with other ways to break this C code by changing the
-    \ident{printf}, then fix them.
-\item Go search for "printf formats" and try using a few of the
-    more exotic ones.
-\item Research how many different ways you can write a number. Try
-    octal, hexadecimal, and others you can find.
-\item Try printing an empty string that's just \verb|""|.
+\item 除了改变 \ident{printf} 以外，再想想有没有别的办法来弄坏这个代码，并找出修复它的方法。
+\item 搜索 "printf formats" ，找出并尝试一些稀有格式。
+\item 探索一下有多少种方式可以写出数字。 尝试以下几个并找到更多：octal, hexadecimal。
+\item 尝试打印输出一个空字符串 \verb|""|.
 \end{enumerate}
 
