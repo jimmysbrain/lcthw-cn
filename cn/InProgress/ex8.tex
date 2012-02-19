@@ -1,54 +1,34 @@
-\chapter{Exercise 8: Sizes And Arrays}
+\chapter{习题8: 数组和大小}
 
-In the last exercise you did math, but with a \verb|'\0'| (nul) character.
-This may be odd coming from other languages, since they try to treat
-"strings" and "byte arrays" as different beasts.  C however treats strings
-as just arrays of bytes, and it's only the different printing functions
-that know there's a difference.
+上一个习题中你运用字符 \verb|'\0'| (nul) 做了些数学运算。
 
-Before I can really explain the significance of this, I have to
-introduce a few more concepts: \ident{sizeof} and arrays.  Here's
-the code we'll be talking about:
+如果是其他语言的话就有可能会要有奇怪的事情发生了，因为它们用非常不同的方式对待字符串 ( "strings" ) 和比特数组 ( "byte arrays" )。 然而C语言则将它们在承认差异的情况下等同而待，仅仅是使用了不同的输出函数。
+
+在解释这一点的意义重大之前，有几个概念一定要讲清楚： \ident{sizeof} 和数组。以下是我们即将探讨的代码：
 
 \begin{code}{ex8.c}
 << d['code/ex8.c|pyg|l'] >>
 \end{code}
 
-In this code we create a few arrays with different data types in them.  Because
-arrays of data are so central to how C works, there's a huge number of ways to
-create them.  For now, just use the syntax \verb|type name[] = {initializer};|
-and we'll explore more.  What this syntax means is, "I want an array of
-type that is initialized to {..}."  When C sees this it does the following:
+在这段代码中我们将创建一些包含不同数据类型的数组。 由于数组对于C语言的运行相当重要，所以我们可以用很多种不同的方法来创建数组。 这里将暂且使用语法格式 \verb|type name[] = {initializer};| ，往后我们还会介绍更多其他方式。这个语法格式的意思就是， “我需要一个初始化到{..}的数组” ("I want an array of
+type that is initialized to {..}." ), 当C接收到这个时将会： 
 
 \begin{enumerate}
-\item Look at the type, in this first case it's \ident{int}.
-\item Look at the \verb|[]| and see that there's no length given.
-\item Look at the initializer, \verb|{10, 12, 13, 14, 20}| and 
-    figure out that you want those 5 ints in your array.
-\item Create a piece of memory in the computer, that can hold 
-    5 integers one after another.
-\item Take the name you want, \ident{areas} and assign it this
-    location.
+\item 关于数据类型，整数型 ( \ident{int} ) 是第一情况。
+\item 关于 \verb|[]| ，并确定没有给出长度。
+\item 关于初始值，发现你希望将以下五个值放入到数组 \verb|{10, 12, 13, 14, 20}|。
+\item 在本机上腾出记可以保存这五个整数的存储空间(memory)。
+\item 命名, \ident{areas} 并指明存储位置。
 \end{enumerate}
 
-In the case of \ident{areas} it's creating an array of 5 ints
-that contain those numbers.  When it gets to \verb|char name[] = "Zed";|
-it's doing the same thing, except it's creating an array of 3 chars and
-assigning that to \ident{name}.  The final array we make is \ident{full\_name},
-but we use the annoying syntax of spelling it out, one character at a time.
-To C, \ident{name} and \ident{full\_name} are identical methods of creating 
-a char array.
 
-The rest of the file, we're using a keyword called \ident{sizeof} to
-ask C how big things are in \emph{bytes}.  C is all about the size
-and location of pieces of memory and what you do with them.  To help
-you keep that straight, it gives you \ident{sizeof} so you can ask
-how big something is before you work with it.
+在这种情况下 \ident{areas} 创建了容纳这五个整数型数据的数组。当在 \verb|char name[] = "Zed";|中运行时，它也是干了一样的活，除了它创建了一个有三个字符的数组并赋值到 \ident{name}。 我们创建出来的最终版数组是 \ident{full\_name}， 但一次一个字符的拼写方式却很恼人。对于C语言来说， \ident{name} 和 \ident{full\_name} 都等同的是创建字符数组的方式。
 
-This is where stuff gets tricky, so first let's run this and then
-explain further.
+接下来我们将使用一个叫做 \ident{sizeof} 的关键词来询问C文件大小以 \emph{bytes} 为单位计算是多少。事实上C语言就是一门关于记忆大小，记忆位置，以及如何处理文记忆(pieces of memory)的语言。 更简单一点说，\ident{sizeof} 这个玩意可以让你知道你之前编辑的文件有多大。
 
-\section{What You Should See}
+这里可能会让人有些头晕，所以我们先运行下面这段代码再来解释。
+
+\section{你应该看到的结果}
 
 \begin{code}{ex8 output}
 \begin{lstlisting}
@@ -56,60 +36,36 @@ explain further.
 \end{lstlisting}
 \end{code}
 
-Now you see the output of these different \ident{printf} calls
-and start to get a glimpse of what C is doing.  Your output could
-actually be totally different from mine, since your computer might
-have different size integers.  I'll go through my output:
+现在你看到不同的 \ident{printf} 指令的输出了。到这里你也算对C如何工作有了一个简单的了解。 由于你的电脑可能会有不同大小的整数，你的输出有可能跟我的输出会完全不同，这里是我的输出：
 
 \begin{description}
-\item [5] My computer thinks an \ident{int} is 4 bytes in size. Your computer
-    might use a different size if it's a 32-bit vs. 64-bit.
-\item [6] The \ident{areas} array has 5 integers in it, so it makes
-    sense that my computer requires 20 bytes to store it.
-\item [7] If we divide the size of \ident{areas} by size of an \ident{int}
-    then we get 5 elements.  Looking at the code, this matches what 
-    we put in the initializer.
-\item [8] We then did an array access to get \verb|areas[0]| and 
-    \verb|areas[1]| which means C is "zero indexed" like Python
-    and Ruby.
-\item [9-11] We repeat this for the \ident{name} array, but notice
-    something odd about the size of the array?  It says it's 
-    \emph{4} bytes long, but we only typed "Zed" for 3 characters.
-    Where's the 4th one coming from?
-\item [12-13] We do the same thing with \ident{full\_name} and 
-    notice it gets this correct.
-\item [13] Finally we just print out the \ident{name} and \ident{full\_name}
-    to prove that they actually are "strings" according to printf.
+\item [5] 我的电脑以为 \ident{int} 有4个比特那么大. 你的电脑如果是32-bit的话，可能会有不同结果。
+\item [6] 数组 \ident{areas} 里有5个整数， 我的电脑要求了20个比特来存储它。
+\item [7] 如果我们用 \ident{areas} 的大小除以 \ident{int} 的大小，我们将得到元素数5。再看看代码，这正匹配了初始值中的设定。
+\item [8] 我们来尝试一下使用数组直接得到 \verb|areas[0]| 和 \verb|areas[1]|， 这意味着C和Python/Ruby一样也是指针数从零位开始 ( "zero indexed" )。
+\item [9-11] 为数组 \ident{name} 重复这个部分， 却发现这个数组的大小有些奇怪？ \emph{4} 比特长？但 "Zed" 是三个字符。第四个字符是哪来的呢？
+\item [12-13] 对 \ident{full\_name} 再次运行，并发现这次的值是正确的。 
+\item [13] 最后我们打印输出 \ident{name} 和 \ident{full\_name} 以证明根据printf他们都是字符串 ( "strings" ).
 \end{description}
 
-Make sure you can go through and see how these output lines match
-what was created.  We'll be building on this and exploring more
-about arrays and storage next.
+请确保你可以弄懂这些代码，并且明白这些输出结果是如何与之匹配的。之后我们将在这个基础之上更多地探索关于数组和存储。
 
-\section{How To Break It}
+\section{让程序出错}
 
-Breaking this program is fairly easy.  Try some of these:
+让这个程序出错是相当简单的，试一试这些：
 
 \begin{enumerate}
-\item Get rid of the \verb|'\0'| at the end of \ident{full\_name}
-    and re-run it.  Run it under Valgrind too.  Now, move the definition
-    of \ident{full\_name} to the top of \ident{main} before \ident{areas}.
-    Try running it under Valgrind a few times and see if you get some 
-    new errors.  In some cases, you might still get lucky and not catch
-    any errors.
-\item Change it so that instead of \verb|areas[0]| you try to
-    print \verb|areas[10]| and see what Valgrind thinks of that.
-\item Try other versions of these, doing it to \ident{name} and
-    \ident{full\_name} too.
+\item 删除 \ident{full\_name} 尾部的 \verb|'\0'| 并重新运行程序。 也在 Valgrind 下运行。 现在，将 \ident{full\_name} 的定义到 \ident{main} 的顶部，并且要在 \ident{areas} 的前面。在 Valgrind 下运行几次看看你会不会得到新的系统错误。有些时候你可能好彩，一个系统错误都没有。
+\item 改变它，去尝试打印输出 \verb|areas[10]| 而非 \verb|areas[0]| ，并看看  是怎样认为的。
+\item 对 \ident{name} 和 \ident{full\_name} 都多尝试几个版本的尝试。
 \end{enumerate}
 
-\section{Extra Credit}
+\section{加分习题}
 
 \begin{enumerate}
-\item Try assigning to elements in the \ident{areas} array with \verb|areas[0] = 100;| and similar.
-\item Try assigning to elements of \ident{name} and \ident{full\_name}.
-\item Try setting one element of \ident{areas} to a character from \ident{name}.
-\item Go search online for the different sizes used for integers on different
-    CPUs.
+\item 使用 \verb|areas[0] = 100;|的类似语句对数组 \ident{areas} 中的元素进行赋值。
+\item 尝试对 \ident{name} 和 \ident{full\_name} 的元素进行复制。
+\item 尝试把 \ident{areas} 中的一个元素设置成 \ident{name} 中的一个字符.
+\item 上网搜索：在不同CPU上整数的大小差异 (the different sizes used for integers on different CPUs).
 \end{enumerate}
 
