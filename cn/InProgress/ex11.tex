@@ -1,26 +1,16 @@
-\chapter{Exercise 11: While-Loop And Boolean Expressions}
+\chapter{Exercise 11: While循环和布尔表达式}
 
-You've had your first taste of how C does loops, but the boolean
-expression \verb|i < argc| might have not been clear to you.  Let me
-explain something about it before we see how a \ident{while-loop} 
-works.
+你已经体验会过了C语言的循环, 但你可能对布尔表达式\verb|i < argc|不熟悉. 在我们看看 \ident{while循环} 是如何工作之前，先解释一些事儿.
 
-In C, there's not really a "boolean" type, and instead any integer
-that's 0 is "false" and otherwise it's "true".  In the last exercise
-the expression \verb|i < argc| actually resulted in 1 or 0, not 
-an explicit \ident{True} or \ident{False} like in Python.  This is
-another example of C being closer to how a computer works, because
-to a computer truth values are just integers.
+在C语言中, 根本就没有"布尔"（boolean）这种类型, 取而代之的是数字零为"false"(假) 其他数都为"true"（真）. 在最后一个练习中表达式 \verb|i < argc|实际上只返回1或0, 而不是像Python中那样返回\ident{True}或\ident{False}. 这是另一个用C语言展示计算机是如何工作的例子, 因为对于计算机来说真值（truth values）只是整型数.
 
-Now you'll take and implement the same program from the last exercise
-but use a \ident{while-loop} instead.  This will let you compare the
-two so you can see how one is related to another.
+现在你会遇到和最后一个练习一样的问题，并且试着自己解决它，但是是使用\ident{while循环}解决. 接下来会让你比较两者，看看两者之间有什么联系.
 
 \begin{code}{ex11.c}
 << d['code/ex11.c|pyg|l'] >>
 \end{code}
 
-You can see from this that a \ident{while-loop} is simpler:
+\ident{while循环}和下面的格式很像:
 
 \begin{Verbatim}
     while(TEST) {
@@ -28,14 +18,13 @@ You can see from this that a \ident{while-loop} is simpler:
     }
 \end{Verbatim}
 
-It simply runs the \ident{CODE} as long as \ident{TEST} is true (1).
-This means that to replicate how the \ident{for-loop} works we need to
-do our own intializing and incrementing of \ident{i}.
+这段程序只是在\ident{TEST}为true(1)时运行\ident{CODE}.
+这就是说我们要想像\ident{for循环}那样工作
+得自己初始化并递增\ident{i}.
 
 \section{What You Should See}
 
-The output is basically the same, so I just did it a little different
-so you can see another way it runs.
+输出和平常一样, 我只是小小的改动一下，你可以看见另一种运行结果.
 
 \begin{code}{ex11 output}
 \begin{lstlisting}
@@ -43,35 +32,23 @@ so you can see another way it runs.
 \end{lstlisting}
 \end{code}
 
-\section{How To Break It}
+\section{让程序出错}
 
-In your own code you should favor \ident{for-loop} constructs over
-\ident{while-loop} because a \ident{for-loop} is harder to break.  Here's a few
-common ways:
+在你的代码中你应该常用\ident{for循环}结构代替\ident{while循环}应为\ident{for循环}更难被中断跳出. 这有几种常用的方法:
 
 \begin{enumerate}
-\item Forget to initialize the first \verb|int i;| so have it 
-    loop wrong.
-\item Forget to initialize the second loop's \ident{i} so that it
-    retains the value from the end of the first loop.  Now your 
-    second loop might or might not run.
-\item Forget to do a \verb|i++| increment at the end of the loop
-    and you get a "forever loop", one of the dreaded problems
-    of the first decade or two of programming.
+\item 忘了初始化第一个循环的\verb|int i;|值，造成循环错误.
+\item 忘了初始化第二个循环的参数\ident{i}所以就会以第一个循环结束时的i值一直循环. 现在你的第二个循环可能运行也可能运行不了.
+\item 忘了在循环的结尾执行\verb|i++|自增，造成了"无限循环"（死循环，不会结束的循环）, 这是在初学编程时会遇到的那些可怕的问题中的一个.
 \end{enumerate}
 
-\section{Extra Credit}
+\section{加分习题}
 
 \begin{enumerate}
-\item Make these loops count backward by using \verb|i--| to start
-    at \verb|argc| and count down to 0.  You may have to do some
-    math to make the array indexes work right.
-\item Use a while loop to \emph{copy} the values from \ident{argv}
-    into \ident{states}.
-\item Make this copy loop never fail such that if there's too many
-    \ident{argv} elements it won't put them all into \ident{states}.
-\item Research if you've really copied these strings.  The answer may
-    surprise and confuse you though.
+\item 使用\verb|i--|让循环从\verb|argc|循环计数递减到0. 你可能需要做一些计算让数组的索引正常工作.
+\item 使用循环把\ident{argv}中的值\emph{拷贝}（copy）到\ident{states}中.
+\item 让这个拷贝循环永远不会失败，例如，如果\ident{argv}中有太多的元素，它们并不会都拷贝到\ident{states}中.
+\item 检验一下你是否真的已经完成了这些字符串的拷贝. 答案可能会使你感到惊讶与迷惑.
 \end{enumerate}
 
 
