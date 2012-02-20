@@ -64,21 +64,19 @@ character at the end of the strings.  There's a few ways to do this:
 \section{加分习题}
 
 \begin{enumerate}
-\item Assign the characters into \ident{numbers} and then use \ident{printf}
-    to print them a character at a time.  What kind of compiler warnings 
-    did you get?
-\item Do the inverse for \ident{name}, trying to treat it like an array
-    of \ident{int} and print it out one \ident{int} at a time.  What
-    does Valgrind think of that?
-\item How many other ways can you print this out?
-\item If an array of characters is 4 bytes long, and an integer is 4 bytes
+\item 将字符赋值到 \ident{numbers} ，并使用 \ident{printf} 一个字符一个字符的打印输出。看看你会得到哪种编译器警告？
+\item 反向操作?Do the inverse for \ident{name}, 试着像操作一个整数数组 (an array
+    of \ident{int}) 一样， 并一个整数一个整数 (\ident{int}) 的输出。 Valgrind 是怎样想的？
+\item 你还可以用多少种其他方式来打印输出它们？
+\item 如果一个字符数组有4个字节， 一个整数也是4个字节，你可以用同样的方式对待它们吗？你要怎样才能做到这一点？
+	If an array of characters is 4 bytes long, and an integer is 4 bytes
     long, then can you treat the whole \ident{name} array like it's just
     an integer?  How might you accomplish this crazy hack?
-\item Take out a piece of paper and draw out each of these arrays as a
+\item 用笔纸以一排盒子的形式画出这些数组。然后做你刚刚在纸上的操作，看看你是否正确了。
+	Take out a piece of paper and draw out each of these arrays as a
     row of boxes. Then do the operations you just did on paper to see
     if you get them right.
-\item Convert \ident{name} to be in the style of \ident{another} and see
-    if the code keeps working.
+\item 将 \ident{name} 转化成另一种 \ident{another} 风格，看看代码是否还能正常运行。
 \end{enumerate}
 
 
