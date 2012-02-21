@@ -1,18 +1,13 @@
 ﻿\chapter{Exercise 15: 指针，讨厌的指针}
 
-在C语言中，指针闻名遐迩，又神秘莫测。我将教给你们一些词汇，籍以揭开指针的神秘面纱。事实上它们并不复杂，只是常常被人们胡乱操作，致使难以操作。如果你避免愚蠢地操作指针，它们实际上相当容易。
+在C语言中，指针闻名遐迩，又神秘莫测。我将教给你们一些词汇，籍以揭开指针的神秘面纱。事实上它们并不复杂，只是常常被人们胡乱操作，致使难以操作。如果你尽量避免愚蠢地操作指针，它们实际上相当容易。
 
-为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄:\footnote{记住，本书中你要输入这些程序，也许你还不能理解，但请试着在我解释以前自己弄明白。}
+为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄:\footnote{记住，学习本书时你要输入这些程序，也许当时不能理解，但请尝试在我解释以前自己弄明白。}
 
 \begin{code}{ex15.c}
 << d['code/ex15.c|pyg|l'] >>
 \end{code}
-
-Before explaining how pointers work, let's break this program down
-line-by-line so you get an idea of what's going on.  As you go
-through this detailed description, try to answer the questions for 
-yourself on a piece of paper, then see if what you guessed was
-going on matches my description of pointers later.
+在解释指针的工作原理之前，我们先来逐行分析这个程序，了解它的工作过程。在你阅读这些详细描述的同时，试着在纸上写下答案，留待和我之后的解释相比较，看看是否相同。
 
 \begin{description}
 \item[ex15.c:6-10] Create two arrays, \ident{ages} storing some \ident{int}
