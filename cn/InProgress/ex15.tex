@@ -32,17 +32,12 @@
 \item[ex15.c:28-31] 依次访问\ident{ages}和\ident{names}，但这次使用指针
     加上\emph{i的偏移量}.  写为\verb|*(cur_name+i)|和\verb|name[i]|是等价的，
     你可以将它读成“(指针\ident{cur\_name}加i)的值”。
-\item[ex15.c:35-39] This shows the "magic" of how C treats pointers and
-    arrays as the same thing.  You just use the array syntax for
-    accessing the array, but use the pointer's name.  C figures it
-    all out for you.
-\item[ex15.c:44-50] Another admittedly insane loop that does the same thing
-    as the other two, but instead it uses various pointer arithmetic
-    methods:
+\item[ex15.c:35-39] 这显示了C语言如何奇妙的将指针和数组当作同一种事物来处理，
+    仍然用数组的语法来访问数组，只要换上指针的名称就可以了。C语言自然能分辨。
+\item[ex15.c:44-50] 像前两个一样，又一个让人抓狂的循环，只是它使用了不同的指针算法：
     \begin{description}
-    \item[ex15.c:44] Initialize our \ident{for-loop} by setting \ident{cur\_name}
-        and \ident{cur\_age} to the beginning of the \ident{names} and
-        \ident{ages} arrays.
+    \item[ex15.c:44] 通过将\ident{cur\_name}和\ident{cur\_age}设置到
+    \ident{names}和\ident{ages}数组来初始化\ident{for循环}。
     \item[ex15.c:45] The test portion of the \ident{for-loop} then compares
         the \emph{distance} of the pointer \ident{cur\_age} from the
         start of \ident{ages}.  Why does that work?
