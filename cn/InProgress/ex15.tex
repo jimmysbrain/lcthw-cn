@@ -34,30 +34,23 @@
     你可以将它读成“(指针\ident{cur\_name}加i)的值”。
 \item[ex15.c:35-39] 这显示了C语言如何奇妙的将指针和数组当作同一种事物来处理，
     仍然用数组的语法来访问数组，只要换上指针的名称就可以了。C语言自然能分辨。
-\item[ex15.c:44-50] 像前两个一样，又一个让人抓狂的循环，只是它使用了不同的指针算法：
+\item[ex15.c:44-50] 像前两个一样，又一个让人抓狂的循环，只是它用了不同的指针算法：
     \begin{description}
     \item[ex15.c:44] 通过将\ident{cur\_name}和\ident{cur\_age}设置到
-    \ident{names}和\ident{ages}数组来初始化\ident{for循环}。
-    \item[ex15.c:45] The test portion of the \ident{for-loop} then compares
-        the \emph{distance} of the pointer \ident{cur\_age} from the
-        start of \ident{ages}.  Why does that work?
-    \item[ex15.c:46] The increment part of the \ident{for-loop} then increments
-        both \ident{cur\_name} and \ident{cur\_age} so that they point
-        at the \emph{next} element of the \ident{name} and \ident{age}
-        arrays.
-    \item[ex15.c:48-49] The pointers \ident{cur\_name} and \ident{cur\_age} 
-        are now pointing at one element of the arrays they work on,
-        and we can print them out using just \verb|*cur_name| and
-        \verb|*cur_age|, which means "the value of wherever \ident{cur\_name}
-            is pointing".
+        \ident{names}和\ident{ages}数组的起点来初始化\ident{for循环}。
+    \item[ex15.c:45] 然后\ident{for-loop}的测试部分比较了指针\ident{cur\_age}
+        到起点\ident{ages}的\emph{距离}。 为何这样可行呢？
+    \item[ex15.c:46] 接下来\ident{for-loop}的增进部分同时增进了
+        \ident{cur\_name}和\ident{cur\_age}，以便二者指向数组
+        \ident{name}和\ident{age}的\emph{下一个}元素。
+    \item[ex15.c:48-49] 指针\ident{cur\_name}和\ident{cur\_age}现在数组中
+        正在操作的元素，我们只用\verb|*cur_name|和\verb|*cur_age|就可以将他们打印出来，
+        也就是“任何\ident{cur\_name}指向位置的值”。
     \end{description}
 \end{description}
 
-This seemingly simple program has a large amount of information, and the
-goal is to get you to attempt figuring pointers out for yourself before
-I explain them.  \emph{Don't continue until you've written down what
-you think a pointer does.}
-
+这段程序看似简单，却包含大量信息，它的目的是使你在看我解释之前，
+自己尝试理解指针。\emph{在你写下自己想法之前，请不要继续阅读}
 
 \section{What You Should See}
 
