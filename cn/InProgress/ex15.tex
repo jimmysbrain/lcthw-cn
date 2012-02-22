@@ -1,36 +1,37 @@
 ﻿\chapter{Exercise 15: 指针，讨厌的指针}
 
-在C语言中，指针闻名遐迩，又神秘莫测。我将教给你们一些词汇，籍以揭开指针的神秘面纱。事实上它们并不复杂，只是常常被人们胡乱操作，致使难以操作。如果你尽量避免愚蠢地操作指针，它们实际上相当容易。
+在C语言中，指针闻名遐迩，又神秘莫测。我将教给你们一些词汇
+，用以揭开指针的神秘面纱。事实上它们并不复杂，只是常常被人们胡乱操作，
+导致难以操作。如果你尽量避免愚蠢地操作，指针实际上相当容易。
 
-为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄:\footnote{记住，学习本书时你要输入这些程序，也许当时不能理解，但请尝试在我解释以前自己弄明白。}
+为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄:
+\footnote{记住，学习本书时你要输入这些程序，也许一时不能理解，
+但请尝试在我解释以前自己弄明白。}
 
 \begin{code}{ex15.c}
 << d['code/ex15.c|pyg|l'] >>
 \end{code}
-在解释指针的工作原理之前，我们先来逐行分析这个程序，了解它的工作过程。在你阅读这些详细描述的同时，试着在纸上写下答案，留待和我之后的解释相比较，看看是否相同。
+在解释指针的工作原理之前，我们先来逐行分析这个程序，了解它的工作过程。
+在你阅读这些详细描述的同时，试着在纸上写下答案，留待和我之后的解释相比较，
+看看是否相同。
 
 \begin{description}
-\item[ex15.c:6-10] Create two arrays, \ident{ages} storing some \ident{int}
-    data, and \ident{names} storing an array of strings.
-\item[ex15.c:12-13] Some variables for our \ident{for-loops} later.
-\item[ex15.c:16-19] You know this is just looping through the two arrays and
-    printing how old each person is.  This is using \ident{i} to 
-    index into the array.
-\item[ex15.c:24] Create a pointer that points at \ident{ages}.
-    Notice the use of \verb|int *| to create a
-    "pointer to integer" type of pointer.  That's similar to 
-    \verb|char *|, which is a "pointer to char", and a string
-    is an array of chars.  Seeing the similarity yet?
-\item[ex15.c:25] Create a pointer that points at \ident{names}.
-    A \verb|char *| is already a "pointer to char", so that's 
-    just a string.  You however need 2 levels, since \ident{names}
-    is 2-dimensional, that means you need \verb|char **| for
-    a "pointer to (a pointer to char)" type. Study that too, explain
-    it to yourself.
-\item[ex15.c:28-31] Loop through \ident{ages} and \ident{names} but instead
-    use the pointers \emph{plus an offset of i}.  Writing
-    \verb|*(cur_name+i)| is the same as writing \verb|name[i]|, and
-    you read it as "the value of (pointer \ident{cur\_name} plus i)".
+\item[ex15.c:6-10] 创建两个数组, \ident{ages} 用以存储一些 \ident{int}
+    数据，而数组\ident{names}则存储一些字符串。
+\item[ex15.c:12-13] 稍候\ident{for循环}要用到的一些变量。
+\item[ex15.c:16-19] 依次访问两个数组并打印出每人的年龄。此处使用
+     \ident{i} 作为数组的索引。
+\item[ex15.c:24] 创建指针，指向 \ident{ages}。
+    注意使用 \verb|int *| 来创建“整型指针”的指针类型。这点和
+    “字符指针”\verb|char *|相似，而字符串就是一个字符的数组。
+    发现相似之处了嘛？
+\item[ex15.c:25] 创建一个指针，指向\ident{names}。 \verb|char *| 
+    已经是一个“字符指针”，也就是一个字符串。而 \ident{names}是二维的，
+    所以你需要的两级指针，也就是 “（字符指针）的指针” \verb|char **|。
+    请推敲此处，尝试解释给自己听。
+\item[ex15.c:28-31] 依次访问\ident{ages}和\ident{names}，但这次使用指针
+    加上\emph{i的偏移量}.  写为\verb|*(cur_name+i)|和\verb|name[i]|是等价的，
+    你可以将它读成“(指针\ident{cur\_name}加i)的值”。
 \item[ex15.c:35-39] This shows the "magic" of how C treats pointers and
     arrays as the same thing.  You just use the array syntax for
     accessing the array, but use the pointer's name.  C figures it
