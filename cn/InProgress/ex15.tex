@@ -85,49 +85,39 @@
 
 \begin{enumerate}
 \item 在你的电脑上创建一块内存区域。
-\item 在该内存块起始初“指向”\ident{ages}名称。
-\item 通过基础地址\ident{ages}“检索”该内存块并获取\ident{i}以外的元素。
+\item 将该内存块起始初“指向”\ident{ages}名称。
+\item 通过基础地址\ident{ages}“检索”该内存块并获取\ident{i}个字节以外的元素。
 \item 将\ident{ages+i}处的地址转化为大小合适的有效\ident{整型}，以便索引正常工作
       并返回你所需求的：索引\ident{i}处的整型值。
 \end{enumerate}
 
-If you can take a base address, like \ident{ages}, and then "add" to it with
-another address like \ident{i} to produce a new address, then can you just make
-something that points right at this location all the time?  Yes, and that thing
-is called a "pointer".  This is what the pointers \ident{cur\_age} and
-\ident{cur\_name} are doing. They are variables pointing at the location where
-\ident{ages} and \ident{names} live in your computer's memory.  The example
-program is then moving them around or doing math on them to get values out of
-the memory.  In one instance, they just add \ident{i} to \ident{cur\_age},
-which is the same as what it does with \verb|array[i]|. In the last
-\ident{for-loop} though these two pointers are being moved on their own, without
-\ident{i} to help out.  In that loop, the pointers are treated like a combination
-of array and integer offset rolled into one.
+如果你能取得基础地址，比如\ident{ages}，再“加”上另一个地址比如\ident{i}
+以产生新的地址，那么你是否能得到一个始终指向此地址的某种东西呢？正式如此，
+你所得到的这种东西，就叫做“指针”。这就是指针\ident{cur\_age}和\ident{cur\_name}
+所做的事情。它们是指向你电脑内存里\ident{ages}和\ident{names}地址的变量。
+范例程序将它们移来移去，通过相关计算获得内存存储数值。在其中一例，它们只是
+将\ident{i}加到\ident{cur\_age}，这就相当于\verb|array[i]|。在最后一个\ident{for循环}
+里，两个指针没有\ident{i}的帮忙也能自行移动。这个循环中，指针被看作是数组和整数
+偏移量的整合。
 
-A pointer is simply an address pointing somewhere inside the computer's memory,
-with a type specifier so you get the right size of data with it.  It is kind of
-like a combined \ident{ages} and \ident{i} rolled into one data type.  C knows
-where pointers are pointing, knows the data type they point at, the size of
-those types, and how to get the data for you.  Just like \ident{i} you can
-increment them, decrement them, subtract or add to them.  But, just like
-\ident{ages} you can also get values out with them, put new values in, and all
-the array operations. 
+指针仅仅是指向电脑内存的一个地址，明确类型之后你就可以得到大小正确的数据。
+这有点像\ident{ages}与\ident{i}合二为一的数据类型。C语言知道指针指向何处，
+知道所指数据类型，该类型数据大小以及如何为你获取它们。正如\ident{i}一样，
+你可以让它们自增、自减，或者做加、减运算。也可以像\ident{ages}一样，你通过它们
+得到数值，输入新值，进行所有数组操作。
 
-The purpose of a pointer is to let you manually index into blocks or memory
-when an array won't do it right.  In almost all other cases you actually
-want to use an array.  But, there are times when you \emph{have} to work
-with a raw block of memory and that's where a pointer comes in.  A pointer
-gives you raw, direct access to a block of memory so you can work with it.
+指针的目的，在于当数组不能完全胜任的时候，手动检索一块内存区域。只要是不使用
+数组的情况，你大可放心使用指针。然后又些时候你\emph{不得不}操作原始内存区域，
+这才是指针的任务。指针为你操作内存提供了原始、直接的连接方式。
 
-The final thing to grasp at this stage is that you can use either syntax
-for most array or pointer operations.  You can take a pointer to something,
-but use the array syntax for accessing it.  You can take an array and do
-pointer arithmetic with it.  In the above example program I demonstrate this
-and it's a fundamental aspect of C: pointers and arrays are the same thing (mostly).
+本节最后一件要知道的事是，你既可以使用数组操作语法，也可以使用指针操作语法
+来编写程序。你可以用指针指向某个东西，然后用数组语法接入它，也可以利用指针算数
+来操作数组。在以上的范例程序中，我演示了这一点，它也是C语言的基本特征：
+指针和数组（基本上）是同一回事。
 
-\section{Practical Pointer Usage}
+\section{指针使用练习}
 
-There are four primary useful things you do with pointers in C code:
+在C语言中有四种主要的指针处理方法：
 
 \begin{enumerate}
 \item Ask the OS for a chunk of memory use a pointer
