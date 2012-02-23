@@ -120,77 +120,59 @@
 在C语言中有四种主要的指针处理方法：
 
 \begin{enumerate}
-\item Ask the OS for a chunk of memory use a pointer
-    to work with it.  This includes strings and something you haven't seen
-    yet, \ident{structs}.
-\item Passing large blocks of memory (like strings and arrays) to functions
-    with a pointer so you don't have to pass the whole thing to them.
-\item Taking the address of a function so you can use it as a dynamic callback.
-\item Complex scanning of chunks of memory such as converting bytes off a network
-    socket into data structures or parsing files.
+\item 向系统请求一块内存作为指针工作区域。这包括字符串和你还没见过的\ident{structs}。 
+\item 利用指针向函数传递一大块内存（比如字符串和数组），这样你就不必传递整个数据。
+\item 掌握函数地址以便于动态回调。
+\item 内存区域的复杂扫描，比如从网络套接字中将字节转换成数据结构或者解析文件。
 \end{enumerate}
 
-For nearly everything else you see people use pointers, they should be using
-arrays.  In the early days of C programming people used pointers to speed
-up their programs because the compilers were really bad at optimizing array 
-usage.  These days the syntax to access an array vs. a pointer are translated
-into the same machine code and optimized the same, so it's not as necessary.
-Instead, you go with arrays every time you can, and then only use pointers
-as a performance optimization if you absolutely have to.
+对于几乎其他所有你能看到的指针使用方法，应该都是作为数组。在C语言编程的初期，
+由于编译器对数组的优化还很糟糕，人们便使用指针来加速程序的运行。而现今，不同的
+数组与指针语法被翻译成相同的机器码，并被同样的优化，所以指针并不是必须的。
+相反，在能使用数组的情况下应该尽量使用，而只在必须使用指针进行性能优化的时候
+才使用指针。
 
+\section{指针词典}
 
-\section{The Pointer Lexicon}
-
-I'm now going to give you a little lexicon to use for reading and writing
-pointers.  Whenever you run into a complex pointer statement, just refer
-to this and break it down bit by bit (or just don't use that code since it's
-probably not good code):
+现在我要教给你一个小小的指针词典，用来读写指针。任何遇到复杂指针声明的时候
+就来参考它，然后一点点的解决问题。(或者如果代码本身不太好就直接放弃使用):
 
 \begin{description}
-\item[type *ptr] "a pointer of type named ptr"
-\item[*ptr] "the value of whatever ptr is pointed at"
-\item[*(ptr + i)] "the value of (whatever ptr is pointed at plus i)"
-\item[\&thing] "the address of thing"
-\item[type *ptr = \&thing] "a pointer of type named ptr set to the address of thing"
-\item[ptr++] "increment where ptr points"
+\item[type *ptr] "一个名ptr的type型指针"
+\item[*ptr] "任何ptr指向位置的值"
+\item[*(ptr + i)] "(任何ptr指向位置加i)的值"
+\item[\&thing] "thing的地址"
+\item[type *ptr = \&thing] "将名为ptr的type型指针设置到thing的地址"
+\item[ptr++] "增进ptr的指向位置"
 \end{description}
 
-We'll be using this simple lexicon to break down all of the pointers
-we use from now on in the book.
+我们将用这本简单的词典解决往后书中遇到的所有指针问题。
 
+\section{如何让程序出错}
 
-\section{How To Break It}
-
-You can break this program by simply pointing the pointers at the wrong things:
+你只需将指针指向错误的地方就能让这个程序出错。
 
 \begin{enumerate}
-\item Try to make \ident{cur\_age} point at \ident{names}.  You'll need to
-    use a C cast to force it, so go look that up and try to figure it out.
-\item In the final \ident{for-loop} try getting the math wrong in weird ways.
-\item Try rewriting the loops so they start at the end of the arrays and go
-    to the beginning.  This is harder than it looks.
+\item 尝试将\ident{cur\_age}指向\ident{names}。 你需要用一个C表达式来强制执行，
+	所以请
+\item 尝试让最后一个\ident{for循环}以奇怪的方式出错。
+\item 尝试重写这些循环，从结尾向开头访问数组。这比看上去要困难。
 \end{enumerate}
 
-\section{Extra Credit}
+\section{加分习题}
 
 \begin{enumerate}
-\item Rewrite all the array usage in this program so that it's pointers.
-\item Rewrite all the pointer usage so they're arrays.
-\item Go back to some of the other programs that use arrays and 
-    try to use pointers instead.
-\item Process command line arguments using just pointers similar to how
-    you did \ident{names} in this one.
-\item Play with combinations of getting the value of and the address of
-    things.
-\item Add another \ident{for-loop} at the end that prints out the
-    addresses these pointers are using.  You'll need the \verb|%p| format
-    for \func{printf}.
-\item Rewrite this program to use a function for each of the ways you're
-    printing out things.  Try to pass pointers to these functions so 
-    they work on the data.  Remember you can declare a function to accept
-    a pointer, but just use it like an array.
-\item Change the \ident{for-loops} to \ident{while-loops} and see what
-    works better for which kind of pointer usage.
+\item 将程序中所有数组重写为指针。
+\item 将程序中所有指针重写为数组。
+\item 回顾以往使用数组的程序，尝试使用指针替代。
+\item 只用指针处理命令行参数，方法与本例中处理\ident{names}相似。
+\item 尝试指针方法获取各种东西的地址与值。
+\item 在结尾加入另一个\ident{for循环}，打印指针被调用时地址。使用\func{printf}
+	打印时将会用到\verb|%p|格式。
+\item 重写程序，每种打印方式使用一个函数。尝试将指针传递给函数以便它们获得数据。
+	记住你可以声明一个函数接受指针，但只能按数组的方式使用它。
+\item 将\ident{for循环}改为\ident{while循环}，看看对于不同种类的指针使用，哪种循环
+	更加胜任。
 \end{enumerate}
 
 
