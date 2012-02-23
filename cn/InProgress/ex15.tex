@@ -44,8 +44,8 @@
         \ident{cur\_name}和\ident{cur\_age}，以便二者指向数组
         \ident{name}和\ident{age}的\emph{下一个}元素。
     \item[ex15.c:48-49] 指针\ident{cur\_name}和\ident{cur\_age}现在数组中
-        正在操作的元素，我们只用\verb|*cur_name|和\verb|*cur_age|就可以将他们打印出来，
-        也就是“任何\ident{cur\_name}指向位置的值”。
+        正在操作的元素，我们只用\verb|*cur_name|和\verb|*cur_age|就可以将
+        他们打印出来，也就是“任何\ident{cur\_name}指向位置的值”。
     \end{description}
 \end{description}
 
@@ -56,35 +56,28 @@
 
 运行程序之后，请你尝试根据每行打印结果追溯源代码。必要时，更改
 \func{printf}以确保你得到正确的行号。
-After you run this program try to trace back each line printed out to the
-line in the code that produced it.  If you have to, alter the \func{printf}
-calls to make sure you got the right line number.
 
-\begin{code}{ex15 output}
+\begin{code}{ex15 输出}
 \begin{lstlisting}
 << d['code/ex15.out|dexy'] >>
 \end{lstlisting}
 \end{code}
 
 
-\section{Explaining Pointers}
+\section{解释指针}
 
-When you type something like \verb|ages[i]| you are "indexing" into the array
-\ident{ages}, and you're using the number that's held in \ident{i} to do it.
-If \ident{i} is set to 0 then it's the same as typing \verb|ages[0]|.  We've
-been calling this number \ident{i} an "index" since it's a location inside
-\verb|ages| that we want.  It could also be called an "address", that's a way
-of saying "I want the integer in \ident{ages} that is at address \ident{i}".
+当你输入诸如\verb|ages[i]|的东西时， 其实是在数组\ident{ages}中“索引”,
+借助\idnet{i}中存储的数字实现所需功能。当\ident{i}被设为0时，相当于输入
+\verb|ages[0]|。 因为数字\ident{i}表示我们在\verb|age[0]|需要访问的位置，
+所以一直被称作“索引”。它也可以称作“地址”，比如说“我想要知道数组\ident{ages}
+中地址\ident{i}的整数是多少？”
 
-If \ident{i} is an index, then what's \ident{ages}?  To C \ident{ages} is a
-location in the computer's memory where all of these integers start.  It is
-\emph{also} an address, and the C compiler will replace anywhere you type
-\ident{ages} with the address of the very first integer in ages.  Another way
-to think of \ident{ages} is it's the "address of the first integer in
-ages".  But, the trick is \ident{ages} is an address inside the \emph{entire
-computer}.  It's not like \ident{i} which was just an address inside
-\ident{ages}.  The \ident{ages} array name is actually an address in the
-computer.
+如果\ident{i}是一个索引，那么\ident{ages}又是什么呢？对于C语言来说\ident{ages}
+是电脑内存中，所有整数的起始位置。它\emph{也}是一个地址，C编译器将会用它替换
+任何带有ages中第一个整数地址的\ident{ages}。另一种思考\ident{ages}的方法是，
+它是“ages中第一个整数的地址”。诀窍在于\ident{ages}是\emph{整个电脑}里的内存地址。
+不像\ident{i}只是\ident{ages}的内部地址。\ident{ages}的数组名就是电脑里的实际地址。
+
 
 That leads to a certain realization:  C thinks your whole computer is one
 massive array of bytes.  Obviously this isn't very useful, but then C layers on
