@@ -66,7 +66,7 @@
 
 \section{解释指针}
 
-当你输入诸如\verb|ages[i]|的东西时， 其实是在数组\ident{ages}中“索引”,
+当你输入诸如\verb|ages[i]|的东西时， 其实是在数组\ident{ages}中“检索”,
 借助\idnet{i}中存储的数字实现所需功能。当\ident{i}被设为0时，相当于输入
 \verb|ages[0]|。 因为数字\ident{i}表示我们在\verb|age[0]|需要访问的位置，
 所以一直被称作“索引”。它也可以称作“地址”，比如说“我想要知道数组\ident{ages}
@@ -85,12 +85,10 @@
 
 \begin{enumerate}
 \item 在你的电脑上创建一块内存区域。
-\item 在该内存块起始初“指出”\ident{ages}名称。
-\item "Indexing" into the block by taking the base address of \ident{ages} and 
-    getting the element that's \ident{i} away from there.
-\item Converting that address at \ident{ages+i} into a valid \ident{int} of
-    the right size, such that the index works to return what you want: the int at 
-    index \ident{i}.
+\item 在该内存块起始初“指向”\ident{ages}名称。
+\item 通过基础地址\ident{ages}“检索”该内存块并获取\ident{i}以外的元素。
+\item 将\ident{ages+i}处的地址转化为大小合适的有效\ident{整型}，以便索引正常工作
+      并返回你所需求的：索引\ident{i}处的整型值。
 \end{enumerate}
 
 If you can take a base address, like \ident{ages}, and then "add" to it with
