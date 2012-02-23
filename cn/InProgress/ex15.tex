@@ -78,17 +78,14 @@
 它是“ages中第一个整数的地址”。诀窍在于\ident{ages}是\emph{整个电脑}里的内存地址。
 不像\ident{i}只是\ident{ages}的内部地址。\ident{ages}的数组名就是电脑里的实际地址。
 
-
-That leads to a certain realization:  C thinks your whole computer is one
-massive array of bytes.  Obviously this isn't very useful, but then C layers on
-top of this massive array of bytes the concept of \emph{types} and \emph{sizes}
-of those types.  You already saw how this worked in previous exercises, but now
-you can start to get an idea that C is somehow doing the following with your
-arrays:
+至此我们得到一种认识：C语言将整个电脑视为一个巨大的字节数组。显然这不是很管用，
+但是接下来C在这个巨大的字节数组之上加上了\emph{类型}和这些类型\emph{大小}这类概念。
+从前面的练习中你已经见过这是如何运行的，现在你可以开始了解C是如何对数组进行
+以下操作的：
 
 \begin{enumerate}
-\item Creating a block of memory inside your computer.
-\item "Pointing" the name \ident{ages} at the beginning of that block.
+\item 在你的电脑上创建一块内存区域。
+\item 在该内存块起始初“指出”\ident{ages}名称。
 \item "Indexing" into the block by taking the base address of \ident{ages} and 
     getting the element that's \ident{i} away from there.
 \item Converting that address at \ident{ages+i} into a valid \ident{int} of
