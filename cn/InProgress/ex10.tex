@@ -31,7 +31,7 @@ Here's how the \ident{for-loop} works:
 
 \begin{enumerate}
 \item The \ident{INITIALIZER} is code that is run to setup the loop, in this
-    case \verb|i = 0|.
+    case \verb|i = 0|. 
 \item Next the \ident{TEST} boolean expression is checked, and if it's false (0)
     nothing is done.
 \item The \ident{CODE} runs, does whatever it does.
@@ -55,8 +55,8 @@ using \ident{argc} and \ident{argv} like this:
 \begin{enumerate}
 \item The OS passes each command line argument as a string in the \ident{argv}
     array.  The program's name (./ex10) is at 0, with the rest coming after it.
-\item The OS also sets \ident{argc} to the number of arguments in the \ident{argv}
-    array so you can process them without going past the end.
+\item The OS also sets \ident{argc} to the number of arguments in the 	
+	\ident{argv} array so you can process them without going past the end.
 \item The \ident{for-loop} sets up with \verb|i = 1| in the initializer.
 \item It then tests that \ident{i} is less than \ident{argc} with the
     test \verb|i < argc|. Since initially $0 < 1$ it will pass.
@@ -153,13 +153,10 @@ Ruby.
 \section{加分习题}
 
 \begin{enumerate}
-\item Figure out what kind of code you can put into the parts of a \ident{for-loop}.
-\item Look up how to use the \verb|','| (comma) character to separate multiple
-    statements in the parts of the \ident{for-loop}.
-\item Read what a \ident{NULL} is and try to use it in one of the elements of the
-    \ident{states} array to see what it'll print.
-\item See if you can assign an element from the \ident{states} array to the
-    \ident{argv} array before printing both.  Try the inverse.
+\item 想一想哪些种类的代码你可以放到 \ident{for-loop} 中。
+\item 查找一下应该如何使用字符 \verb|','| (comma) 在 \ident{for-loop} 中分隔多条命令。
+\item 查找一下 \ident{NULL} 是什么，并尝试在数组 \ident{states} 的元素中使用它，并看看它会打印输出什么。 
+\item 试试你可不可以在打印输出之前将数组 \ident{states} 的元素赋值到数组 \ident{argv} 中。
 \end{enumerate}
 
 
