@@ -37,7 +37,7 @@ works:
     blocks like \verb|case 'A':| into a location in the program
     that is that far away.  So the code under \verb|case 'A'| is
     at Y+'A' in the program.
-\item 编译器对于像 \verb|case 'A':| 这样的 \ident{case} 块也会产生一个相对于位置 Y 的偏移值，这个值就是 'A'。所以对于在 \verb|case 'A'| 下的代码来说，它们在程序中的位置是 Y + 'A'。
+\item 编译器对于像 \verb|case 'A':| 这样的 \ident{case} 块也会产生一个相对于位置 Y 的偏移值，这个偏移值就是 'A'。所以对于在 \verb|case 'A'| 下的代码来说，它们在程序中的位置是 Y + 'A'。
 \item It then does the math to figure out where Y+letter is
     located in the \ident{switch-statement}, and if it's too
     far then it adjusts it to Y+default.
@@ -45,7 +45,7 @@ works:
 \item Once it knows the location, the program "jumps" to that spot
     in the code, and then continues running.  This is why you have
     \ident{break} on some of the \ident{case} blocks, but not others.
-\item 一旦程序知道了这个位置，就会跳转到代码中的那个点，然后继续运行。这就是为什么有的代码块有 \ident{break} 语句而有的没有。\footnote{译者注：作者的意思应该是没有 \ident{break} 语句的话程序将会继续之下下面的 \ident{case} 语句，反之则跳出 \ident{switch} 代码块。}
+\item 一旦程序知道了这个位置，就会跳转到代码中的那个点，然后继续运行。这就是为什么有的代码块有 \ident{break} 语句而有的没有。\footnote{译者注：作者的意思应该是没有 \ident{break} 语句的话程序将会继续执行下面的 \ident{case} 语句，反之则跳出 \ident{switch} 代码块。}
 \item If \verb|'a'| is entered, then it jumps to \verb|case 'a'|, there's
     no break so it "falls through" to the one right under it \verb|case 'A'|
     which has code and a \ident{break}.
@@ -57,23 +57,26 @@ works:
 
 This is a deep dive into how the \ident{switch-statement} works, but
 in practice you just have to remember a few simple rules:
-
+这是对 \ident{switch} 语句如何工作的一个比较深入的研究，在这个练习中你需要记住的一些简单的规则是：
 \begin{enumerate}
 \item Always include a \ident{default:} branch so that you catch
     any missing inputs.
+\item 尽量总是包含一个 \ident{defaule:} 分支，这样就能捕捉到任何没有预料到的输入。
 \item Don't allow "fall through" unless you really want it, and
     it's a good idea to add a comment \verb|//fallthrough| so 
     people know it's on purpose.
+\item 除非你真的需要，否则不要使用"运行所有分支(fall through)"这样的代码。如果你使用了，那么包含一个注释 \verb|//fallthrough| 来告诉其他人这是你特意而为，不是因为疏忽。
 \item Always write the \ident{case} and the \ident{break} before
     you write the code that goes in it.
+\item 在你写具体的分支代码之前，最好始终同时写好 \ident{case} 语句和 \ident{break} 语句(\footnote{译者注：通过这种方式能很大程序上减少遗忘 break 语句而带来的麻烦})。
 \item Try to just use \ident{if-statements} instead if you can.
+\item 如果可以，请用 \ident{if}  语句来取代使用 \ident{switch} 语句。
 \end{enumerate}
 
-\section{What You Should See}
-
+\section{你会看到什么}
 Here's an example of me playing with this, and also demonstrating
 various ways to pass the argument in:
-
+下面是我如何使用这个程序的例子，同时来演示几种不同的给程序传递参数的方式。
 \begin{code}{ex13 output}
 \begin{lstlisting}
 << d['code/ex13.out|dexy'] >>
@@ -87,38 +90,50 @@ the program had an error.  Any value that's greater than 0 can be
 tested for in scripts and other programs to figure out what
 happened.
 
-\section{How To Break It}
+记住，在代码的最开始部分，有一个 \verb|return 1;| 语句保证在你没有提供足够的参数时退出程序。使用一个不为0的返回值可以通知操作系统，返回该值的程序发生了错误。任何大于0的返回值可以被脚本和其他程序用来检查到底发生了什么。
 
+\section{让程序出错}
+\section{}
 It is \emph{incredibly} easy to break a \ident{switch-statement}.
 Here's just a few of the ways you can mess one of these up:
-
+要破坏一个 \ident{switch} 语句的正常运行是非常简单的，以下就是一些你可以把事情搞糟的方法:
 \begin{enumerate}
 \item Forget a \ident{break} and it'll run two or more
     blocks of code you don't want it to run.
+\item 忘记 \ident{break} 语句将会运行两个或者更多你本不期望运行的代码块。
 \item Forget a \ident{default} and have it silently
     ignore values you forgot.
+\item 忘记 \indent{default} 语句使它安静地忽略那些你没考虑到的值。
 \item Accidentally put in variable into the \ident{switch} that
     evaluates to something unexpected, like an \ident{int}
     that becomes weird values.
+\item 错误地放一个值为未预期的变量在 \ident{switch} 语句中，比如一个值很怪异的 \ident{int} 值。
 \item Use uninitialized values in the \ident{switch}.
+\item 把一个未初始化的变量放到 \ident{switch} 语句中。
 \end{enumerate}
 
 You can also break this program in a few other ways.  See if you
 can bust it yourself.
-
+你也可以用其他方法来使程序错误地运行，看看你能否破坏它。
 \section{Extra Credit}
-
+\section{加分习题}
 \begin{enumerate}
 \item Write another program that uses math on the letter to
     convert it to lowercase, and then remove all the extraneous
     uppercase letters in the switch.
+\item 写一个新程序，对字母做一些数学操作，使他们成为小写字母，然后去除 switch 中的那些多余的大写字母的分支。
 \item Use the \verb|','| (comma) to initialize \ident{letter} 
     in the \ident{for-loop}.
+\item 使用 \verb|','|(逗号)来初始化 \ident{for 循环}中的 \ident{letter}。
 \item Make it handle all of the arguments you pass it with 
     yet another \ident{for-loop}.
+\item 使它能处理你使用一个 \ident{for 循环}传递的所有参数。
 \item Convert this \ident{switch-statement} to an \ident{if-statement}.
     Which do you like better?
+\item 把这个 \ident{switch} 表达式用 \ident{if} 语句改写，你更喜欢哪一个呢？
 \item In the case for 'Y' I have the break outside the \ident{if-statement}. What's the impact of this
     and what happens if you move it inside the \ident{if-statement}. Prove to yourself that you're right.
+\item 在 'Y' 这个分支中，我把 break 放在 \ident{if} 语句外面。如果把它放在 \ident{if} 语句里面会有什么影响？
+解释你的猜想并证明你是对的。
 \end{enumerate}
 
