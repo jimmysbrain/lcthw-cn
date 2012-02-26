@@ -5,17 +5,20 @@ You can make an array of various types, and have the idea down that a
 to take this one step further and do an array that has strings in it.
 We'll also introduce your first looping construct, the \ident{for-loop}
 to help print out this new data structure.
+你可以用多种数据类型组成一个数组，要记得“字符串”和“字节数组”就是一个东西。下一步就是将字符串放到数组里。这里还会为你介绍第一个循环结构，For循环 ( \ident{for-loop} ) 会帮助你打印出这个新的数据结构。
 
 The fun part of this is that there's been an array of strings hiding in
 your programs for a while now, the \ident{char *argv[]} in the \ident{main}
 function arguments.  Here's code that will print out any command line
 arguments you pass it:
+有个有趣的地方是，已经有个字符串数组在你的程序中躲藏了一段时间了， 那就是在 \ident{main} 函数形参中的 \ident{char *argv[]} 。这里是一段代码，它会打印出每一条你传递了的命令行：
 
 \begin{code}{ex10.c}
 << d['code/ex10.c|pyg|l'] >>
 \end{code}
 
 The format of a \ident{for-loop} is this:
+\ident{for-loop} 的格式是这样的：
 
 \begin{Verbatim}
     for(INITIALIZER; TEST; INCREMENTER) {
@@ -24,10 +27,11 @@ The format of a \ident{for-loop} is this:
 \end{Verbatim}
 
 Here's how the \ident{for-loop} works:
+这里将告诉你 \ident{for-loop} 是如何工作的：
 
 \begin{enumerate}
 \item The \ident{INITIALIZER} is code that is run to setup the loop, in this
-    case \verb|i = 0|.
+    case \verb|i = 0|. 
 \item Next the \ident{TEST} boolean expression is checked, and if it's false (0)
     nothing is done.
 \item The \ident{CODE} runs, does whatever it does.
@@ -36,14 +40,23 @@ Here's how the \ident{for-loop} works:
 \item And it continues again with Step 2 until the \ident{TEST} is false (0).
 \end{enumerate}
 
+\begin{enumerate}
+\item \ident{INITIALIZER} 是一个帮助你准备循环的代码，在这个情况下 \verb|i = 0| 。
+\item 下一步中， \ident{TEST} 检查布尔型表达式，如果它的值是假 false (0)，那么什么都不会发生。
+\item 运行代码 \ident{CODE} 。
+\item 运行代码之后， \ident{INCREMENTER}部分就会被运行，通常都是将某个变量递增，比如 \verb|i++| 。
+\item 然后代码会重新运行， 直到第二步 \ident{TEST} 中出现 false (0) 。
+\end{enumerate}
+
 This \ident{for-loop} is going through the command line arguments 
 using \ident{argc} and \ident{argv} like this:
+这个 \ident{for-loop} 将用 \ident{argc} 和 \ident{argv} 通过所有命令行参数：
 
 \begin{enumerate}
 \item The OS passes each command line argument as a string in the \ident{argv}
     array.  The program's name (./ex10) is at 0, with the rest coming after it.
-\item The OS also sets \ident{argc} to the number of arguments in the \ident{argv}
-    array so you can process them without going past the end.
+\item The OS also sets \ident{argc} to the number of arguments in the 	
+	\ident{argv} array so you can process them without going past the end.
 \item The \ident{for-loop} sets up with \verb|i = 1| in the initializer.
 \item It then tests that \ident{i} is less than \ident{argc} with the
     test \verb|i < argc|. Since initially $0 < 1$ it will pass.
@@ -55,13 +68,26 @@ using \ident{argc} and \ident{argv} like this:
     the loop exits and the program continues on.
 \end{enumerate}
 
+\begin{enumerate}
+\item OS将，像一个字符串在数组 \ident{argv} 中一样，传递每一条命令行参数。程序名称 (./ex10) 在第零位。
+\item The OS also sets \ident{argc} to the number of arguments in the 	
+	\ident{argv} array so you can process them without going past the end.
+\item 在初始值中 \ident{for-loop} 设定 \verb|i = 1| 。
+\item 之后它将测试 \ident{i} 是否小于 \ident{argc} (\verb|i < argc|)。初始中，$0 < 1$ 是会通过测试的。
+\item It then runs the code which just prints out the \ident{i} and 
+    uses \ident{i} to index into \ident{argv}.
+\item 之后递增器将通过语法 \verb|i++| 运行。 这是一种写出 \verb|i = i + 1| 的便捷方式。
+\item 然后它就会重复循环中的代码，直到 \verb|i < argc| 不成立，然后循环结束，余下的程序继续运行。
+\end{enumerate}
 
-\section{What You Should See}
+
+\section{你应该看到的结果}
 
 To play with this program you have to run it two ways.  The first way is to
 pass in some command line arguments so that \ident{argc} and \ident{argv}
 get set.  The second is to run it with no arguments so you can see that
 the first \ident{for-loop} doesn't run since \verb|i < argc| will be false.
+跟这个程序打交道你需要用两种方式运行它。第一种方式，通过传递一些命令行参数设定 \ident{argc} 和 \ident{argv} 。第二种方式，不使用参数运行，这样的话这个 \ident{for-loop} 将不会运行，因为一开始 \verb|i < argc| 的值就是假。
 
 \begin{code}{ex10 output}
 \begin{lstlisting}
@@ -69,7 +95,7 @@ the first \ident{for-loop} doesn't run since \verb|i < argc| will be false.
 \end{lstlisting}
 \end{code}
 
-\subsection{Understanding Arrays Of Strings}
+\subsection{弄明白字符串数组}
 
 From this you should be able to figure out that in C you make an "array of
 strings" by combining the \verb|char *str = "blah"| syntax with the
@@ -77,10 +103,12 @@ strings" by combining the \verb|char *str = "blah"| syntax with the
 array.  The syntax \verb|char *states[] = {...}| on line 13 is this
 2-dimension combination, with each string being one element, and each
 character in the string being another.
+这里你将弄明白，在C中做出一个“字符串数组”，是通过结合 语法\verb|char *str = "blah"| 和语法 \verb|char str[] = {'b','l','a','h'}| 来构建二维数组的。这个二维组合 (第13行的语法 \verb|char *states[] = {...}| ) ，每一个字符串是一个元素，而每一个字符串中的字符是另一个元素。
 
 Confusing? The concept of multiple dimensions is something most
 people never think about so what you should do is build this
 array of strings on paper:
+头晕？很多人都没有想过多重维度的概念，所以你现在应该试着在纸上 build 这个字符串数组：
 
 \begin{enumerate}
 \item Make a grid with the index of each \emph{string} on the left.
@@ -91,11 +119,19 @@ array of strings on paper:
     using this grid of paper.
 \end{enumerate}
 
-Another way to figure this is out is to build the same structure
+\begin{enumerate}
+\item 在这张纸上做一个网格，最左列放入每一个 \emph{字符串} 的指针数。
+\item 最顶行放入每一个 \emph{字符} 的指针数。
+\item 然后，将字符按照序列填入这个表格中。
+\item 你得到这个网格之后，就可以通过它来手动追踪代码了。
+\end{enumerate}
+
+Another way to figure it out is to build the same structure
 in a programming language you are more familiar with like Python or
 Ruby.
+另一个方法是通过使用你更熟悉的程序语言 (比如 Python 或者 Ruby) build 一个相同的结构。
 
-\section{How To Break It}
+\section{让程序出错}
 
 \begin{enumerate}
 \item Take your favorite other language, and use it to run this program, but
@@ -108,16 +144,19 @@ Ruby.
     it does.
 \end{enumerate}
 
-\section{Extra Credit}
+\begin{enumerate}
+\item 选一个你喜欢的语言，用它来运行这个程序，但是你要试着尽多的使用命令行参数。看看你能不能通过给出太多的形参把这程序给搅黄了。
+\item 初始化 \ident{i} 为 0 看看会发生什么。 你需要同时调整 \ident{argc} 吗？还是说它可以直接运行？为什么这里可以用 0-based 的指针法呢？
+\item 把 \ident{num\_states} 设置得更高导致错误，看看会发生什么。
+\end{enumerate}
+
+\section{加分习题}
 
 \begin{enumerate}
-\item Figure out what kind of code you can put into the parts of a \ident{for-loop}.
-\item Look up how to use the \verb|','| (comma) character to separate multiple
-    statements in the parts of the \ident{for-loop}.
-\item Read what a \ident{NULL} is and try to use it in one of the elements of the
-    \ident{states} array to see what it'll print.
-\item See if you can assign an element from the \ident{states} array to the
-    \ident{argv} array before printing both.  Try the inverse.
+\item 想一想哪些种类的代码你可以放到 \ident{for-loop} 中。
+\item 查找一下应该如何使用字符 \verb|','| (comma) 在 \ident{for-loop} 中分隔多条命令。
+\item 查找一下 \ident{NULL} 是什么，并尝试在数组 \ident{states} 的元素中使用它，并看看它会打印输出什么。 
+\item 试试你可不可以在打印输出之前将数组 \ident{states} 的元素赋值到数组 \ident{argv} 中。
 \end{enumerate}
 
 
