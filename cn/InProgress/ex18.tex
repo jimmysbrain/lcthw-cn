@@ -33,18 +33,16 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
 \end{enumerate}
 
 接下来需要解决的在使用函数指针时的问题是很难把它们作为形参传给函数， 就像你想把一个回调函数传给另一个函数的时候那样。 解决方法就是使用 \ident{typedef}－C语言中为其它复杂类型重新命名的关键字。
-唯一需要做的就是把 \ident{typedef} 放到声明函数指针语法的前面， 之后你就可以像使用一种类型一样的使用函数指针名。  I demonstrate this in the following exercise code:
+唯一需要做的就是把 \ident{typedef} 放到声明函数指针语法的前面， 之后你就可以像使用一种类型一样的使用函数指针名。 我用下面的练习代码演示一下:
 
 \begin{code}{ex18.c}
 << d['code/ex18.c|pyg|l'] >>
 \end{code}
 
-In this program you're creating a dynamic sorting algorithm that can sort
-an array of integers using a comparison callback.  Here's the breakdown
-of this program so you can clearly understand it:
+在这个程序中，你创建了一个可以通过比较回调函数（comparison callback）排序整型数组的动态排序算法。 这是修改后的程序，你可以清晰的理解它:
 
 \begin{description}
-\item[ex18.c:1-6] The usual includes needed for all the functions we call.
+\item[ex18.c:1-6] 所有我们调用的函数都需要include包含。
 \item[ex18.c:7-17] This is the \func{die} function from the previous exercise
     which I'll use to do error checking.
 \item[ex18.c:21] This is where the \ident{typedef} is used, and later I use 
@@ -92,7 +90,7 @@ of this program so you can clearly understand it:
 \end{description}
 
 
-\section{What You Should See}
+\section{你应该看到的结果}
 
 Running this program is simple, but try different combinations of numbers, and
 try even non-numbers to see what it does.
@@ -104,7 +102,7 @@ try even non-numbers to see what it does.
 \end{code}
 
 
-\section{How To Break It}
+\section{让程序出错}
 
 I'm going to have you do something kind of weird to break this.  These function
 pointers are pointers like every other pointer, so they point at blocks of
@@ -139,7 +137,7 @@ possible that this loop isn't getting all of the function or is getting too
 much and stomping on another piece of the program.  Without more analysis
 you wouldn't know.
 
-\section{Extra Credit}
+\section{加分习题}
 
 \begin{enumerate}
 \item Get a hex editor and open up \program{ex18}, then find this sequence
