@@ -32,11 +32,8 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
 \item 重命名: \verb|char *(*coolness_cb)(int awesome_levels)|
 \end{enumerate}
 
-接下来需要解决的在使用函数指针时的问题是很难把它们作为形参传给函数， 就像你想把一个回调函数传给另一个函数的时候那样。 The solution to this is to use \ident{typedef}
-which is a C keyword for making new names for other more complex types.
-The only thing you need to do is put \ident{typedef} before the same 
-function pointer syntax, and then after that you can use the name like
-it's a type.  I demonstrate this in the following exercise code:
+接下来需要解决的在使用函数指针时的问题是很难把它们作为形参传给函数， 就像你想把一个回调函数传给另一个函数的时候那样。 解决方法就是使用 \ident{typedef}－C语言中为其它复杂类型重新命名的关键字。
+唯一需要做的就是把 \ident{typedef} 放到声明函数指针语法的前面， 之后你就可以像使用一种类型一样的使用函数指针名。  I demonstrate this in the following exercise code:
 
 \begin{code}{ex18.c}
 << d['code/ex18.c|pyg|l'] >>
