@@ -144,6 +144,97 @@ and those are the worst kind of defects for a beginner (or expert).
 Instead of code that only works in this delicate balance, we will strive to
 create code that has a higher probability of working in any situation.
 
+\subsection{Why copy() Fails}
+
+Many people have looked at this copy function and thought that it is not
+defective.  They claim that, as long as it's used correctly, it is correct.
+One person even went so far as to say, "It's not defective, it's just unsafe."
+Odd, since I'm sure this person wouldn't get into a car if the manufacturer
+said, "Our car is not defective, it's just unsafe."
+
+However, there is a way to formally prove that this function is defective by
+enumerating the possible inputs and then seeing if any of them cause the
+while loop to never terminate.  If we ignore the concept of buffer overflows
+and assume that the while loop will run forever, then we can actually walk
+through all possible inputs and see what happens.
+
+What we'll do is have two strings, A and B, and figure out what copy() does
+with them:
+
+\begin{enumerate}
+\item \verb|A = {'a','b','\0'}; B = {'a', 'b', '\0'};  copy(A,B);|
+\item \verb|A = {'a','b'}; B = {'a', 'b', '\0'};  copy(A,B);|
+\item \verb|A = {'a','b','\0'}; B = {'a', 'b'};  copy(A,B);|
+\item \verb|A = {'a','b'}; B = {'a', 'b'};  copy(A,B);|
+\end{enumerate}
+
+This is all the basic permutations of strings that can be passed to the function based
+on whether they are terminated with a \verb|'\0'| or not.  We can then go through each case
+and determine if the while loop in copy() terminates:
+
+\begin{enumerate}
+\item while-loop finds first \verb|'\0'| in A, terminates.
+\item while-loop does not find \verb|'\0'| in A, but finds second \verb|'\0'| in B, terminates.
+\item while-loop finds first \verb|'\0'| in A, terminates.
+\item while-loop does not find \verb|'\0'| in A, and does not find \verb|'\0'| B, \emph{runs forever}.
+\end{enumerate}
+
+This provides a formal proof that the function is defective because there is a possible
+input that causes the while-loop to run forever.
+
+Next, if we put back the practical limitations of memory and that we can overflow if there
+is a missing terminator in one of the strings, then we find that permutations 2-4 have
+an additional error.  In conditions 2-4 there is a probability of having a buffer overflow
+that is either exploitable or can cause the system to crash.  This depends on the lengths
+of the two strings, but this makes the function vulnerable in 3/4th of the possible 
+inputs.
+
+Let's now compare this to a copy function that knows the lengths of all the inputs:
+
+\begin{enumerate}
+\item \verb|A = {'a','b','\0'}; B = {'a', 'b', '\0'};  safercopy(2, A, 2, B);|
+\item \verb|A = {'a','b'}; B = {'a', 'b', '\0'};  safercopy(2, A, 2, B);|
+\item \verb|A = {'a','b','\0'}; B = {'a', 'b'};  safercopy(2, A, 2, B);|
+\item \verb|A = {'a','b'}; B = {'a', 'b'};  safercopy(2, A, 2, B);|
+\end{enumerate}
+
+Also assume that the safercopy() function uses a for-loop that does not test
+for a \verb|'\0'| only, but instead uses the given lengths to determine the amount 
+to copy.  With that we can then do the same analysis:
+
+\begin{enumerate}
+\item for-loop processes 2 characters of A, terminates.
+\item for-loop processes 2 characters of A, terminates.
+\item for-loop processes 2 characters of A, terminates.
+\item for-loop processes 2 characters of A, terminates.
+\end{enumerate}
+
+In every case the for-loop variant with string length given as arguments will terminate
+no matter what.  To really test the for-loop variant we'd need to add some permutations
+for differing lengths of strings A and B, but in every case we come to the for-loop
+will always stop because it will only go through a fixed previously known finite number
+of characters.
+
+That means the for-loop will never loop forever, and as long as it handles all the
+possible differing lengths of A and B, never overflow either side.  The only way to
+break safercopy() is to lie about the lengths of the strings, but even then it will
+\emph{still always terminate}.  The worst possible scenario for the safercopy() function
+is that you are given an erroneous length for one of the strings and that string does
+not have a \verb|'\0'| properly, so the function buffer overflows.
+
+This shows exactly why the copy() function is defective, because it does not terminate
+cleanly for most possible inputs, and is only reliable for one of the conditions (A and B both
+terminated).  It also shows why a for-loop variant with a given fixed length for each
+input is superior.
+
+Finally, the significance of this is that I've effectively done a formal proof (well, mostly
+formal) that shows what you should be doing to analyze code.  Each function has to stand on
+its own and not have any defects such as while-loops that do not terminate.  In the above
+discussion I've shown that the original \krc is defective, and fatally so since there is
+no way to fix it given the inputs.  There's no way from just a pointer to ask if a 
+string is properly formed since the only way to test that is to scan it, and scanning it
+runs into this same problem.
+
 
 \subsection{Stylistic Issues}
 
