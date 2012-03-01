@@ -1,6 +1,6 @@
 \chapter{习题6: 变量类型}
 
-现在你应该简略的对C语言的结构有些了解了，那么接下来我们再做些十分简单的事情，即，输出不同类型的变量：
+现在你应该对 C 语言的结构有了大概的了解，那么接下来我们再做些十分简单的事情，即输出不同类型的变量：
 
 \begin{code}{ex6.c}
 << d['code/ex6.c|pyg|l'] >>
@@ -13,7 +13,7 @@
 
 \section{你应该看到的结果}
 
-你的输出应该和我的一样，你也许也会发现这些C的字符串格式与Python和其他语言的字符串格式是多么的相似。其实它们已经存在很长时间了。
+你的输出应该和我的一样，你也许也会发现这些 C 的字符串格式与 Python 和其他语言的字符串格式是多么的相似。其实它们已经存在很长时间了。
 
 \begin{code}{ex6 output}
 \begin{lstlisting}
@@ -21,7 +21,7 @@
 \end{lstlisting}
 \end{code}
 
-你将看到一个类型集 (a set of "types"), 它们将告诉C编译器哪些变量应该被提出来，并格式化字符串以匹配不同类型。以下是它们匹配过程的细节：
+你将看到一系列的“类型（types）”, 它们将告诉 C 编译器哪些变量应该被提出来，并格式化字符串以匹配不同类型。以下是它们匹配过程的细节：
 
 \begin{description}
 \item[整数型 (Integer) ] 使用 \ident{int} 申明整数， 用 \verb|%d| 打印输出它。
@@ -33,12 +33,12 @@
 这里需要注意的是C语言非常注意区分单双引号。单引号是为字符型 \ident{char} 所准备的，而双引号则是为一堆字符，既字符串型， \ident{char[]} 所准备的。
 
 \begin{aside}{C数据类型的英文缩写}
-当我们谈论到C数据类型时，在英语中我将直接使用 char[] 来表示， 而不会使用完整字符名 SOMENAME[]. 但事实上这是不合格的C代码， 缩写仅仅是书中一种表达数据类型的简便方式罢了。
+当我们谈论到 C 数据类型时，在英语中我将直接使用 char[] 来表示， 而不会使用完整字符名 SOMENAME[]. 但事实上这是不合格的 C 代码， 缩写仅仅是书中一种表达数据类型的简便方式罢了。
 \end{aside}
 
 \section{让程序出错}
 
-你可以通过给printf赋错误的值来轻易的搅坏这个程序。 用那条打印我的名字的指令来打个比方， 如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug就来了。 真这样运行的话，编译器就会对你发飙，你必须会得到个"段故障" "Segmentation fault" ，就像这发生的一样：
+你可以通过给 printf 赋错误的值来轻易的搅坏这个程序。 用那条打印我的名字的指令来打个比方，如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug 就来了。 真这样运行的话，编译器就会对你发飙，你必须会得到个“段故障（Segmentation fault）”，就像这发生的一样：
 
 \begin{code}{ex6 explosion}
 \begin{lstlisting}
@@ -46,15 +46,15 @@
 \end{lstlisting}
 \end{code}
 
-在 Valgrind 下再次运行，看看关于 "Invalid read of size 1" 它会告诉你些什么。
+在 Valgrind 下再次运行，看看关于“Invalid read of size 1”的内容，这些内容会告诉你些什么。
 
 
 \section{加分习题}
 
 \begin{enumerate}
 \item 除了改变 \ident{printf} 以外，再想想有没有别的办法来弄坏这个代码，并找出修复它的方法。
-\item 搜索 "printf formats" ，找出并尝试一些稀有格式。
-\item 探索一下有多少种方式可以写出数字。 尝试以下几个并找到更多：octal, hexadecimal。
+\item 上网搜索 "printf formats" ，找出并尝试一些稀有格式。
+\item 探索一下有多少种方式可以写出数字。 尝试以下几个并找到更多： octal, hexadecimal。
 \item 尝试打印输出一个空字符串 \verb|""|.
 \end{enumerate}
 
