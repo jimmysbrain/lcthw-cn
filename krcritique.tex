@@ -154,9 +154,7 @@ said, "Our car is not defective, it's just unsafe."
 
 However, there is a way to formally prove that this function is defective by
 enumerating the possible inputs and then seeing if any of them cause the
-while loop to never terminate.  If we ignore the concept of buffer overflows
-and assume that the while loop will run forever, then we can actually walk
-through all possible inputs and see what happens.
+while loop to never terminate. 
 
 What we'll do is have two strings, A and B, and figure out what copy() does
 with them:
@@ -169,27 +167,30 @@ with them:
 \end{enumerate}
 
 This is all the basic permutations of strings that can be passed to the function based
-on whether they are terminated with a \verb|'\0'| or not.  We can then go through each case
-and determine if the while loop in copy() terminates:
+on whether they are terminated with a \verb|'\0'| or not. To be complete I'm covering
+all possible permutations, even if they seem irrelevant.  You may think there's no
+need to include permutations on A, but as you'll see in the analysis, not including
+A fails to find buffer overflows that are possible.
+
+We can then go through each case and determine if the while loop in copy() terminates:
 
 \begin{enumerate}
-\item while-loop finds first \verb|'\0'| in A, terminates.
-\item while-loop does not find \verb|'\0'| in A, but finds second \verb|'\0'| in B, terminates.
-\item while-loop finds first \verb|'\0'| in A, terminates.
-\item while-loop does not find \verb|'\0'| in A, and does not find \verb|'\0'| B, \emph{runs forever}.
+\item while-loop finds \verb|'\0'| in B, copy fits in A, terminates.
+\item while-loop finds \verb|'\0'| in B, overflows A, terminates.
+\item while-loop does not find \verb|'\0'| in B, overflows A, does not terminate.
+\item while-loop does not find \verb|'\0'| in B, overflows A, does not terminate.
 \end{enumerate}
 
-This provides a formal proof that the function is defective because there is a possible
-input that causes the while-loop to run forever.
+This provides a formal proof that the function is defective because there are
+possible inputs that causes the while-loop to run forever or overflow the
+target.  If you were to try and use this function safely, you would need to
+follow all paths to its usage, and confirm that the data is correct along every
+path.  That gives every path to this function a 50\% to 75\% chance it will
+fail with just the inputs above.  You could find some more permutations of
+failure but these are the most basic ones.
 
-Next, if we put back the practical limitations of memory and that we can overflow if there
-is a missing terminator in one of the strings, then we find that permutations 2-4 have
-an additional error.  In conditions 2-4 there is a probability of having a buffer overflow
-that is either exploitable or can cause the system to crash.  This depends on the lengths
-of the two strings, but this makes the function vulnerable in 3/4th of the possible 
-inputs.
-
-Let's now compare this to a copy function that knows the lengths of all the inputs:
+Let's now compare this to a copy function that knows the lengths of all the inputs
+to see what it's probability of failure is:
 
 \begin{enumerate}
 \item \verb|A = {'a','b','\0'}; B = {'a', 'b', '\0'};  safercopy(2, A, 2, B);|
@@ -211,7 +212,7 @@ to copy.  With that we can then do the same analysis:
 
 In every case the for-loop variant with string length given as arguments will terminate
 no matter what.  To really test the for-loop variant we'd need to add some permutations
-for differing lengths of strings A and B, but in every case we come to the for-loop
+for differing lengths of strings A and B, but in every case the for-loop
 will always stop because it will only go through a fixed previously known finite number
 of characters.
 
@@ -222,10 +223,10 @@ break safercopy() is to lie about the lengths of the strings, but even then it w
 is that you are given an erroneous length for one of the strings and that string does
 not have a \verb|'\0'| properly, so the function buffer overflows.
 
-This shows exactly why the copy() function is defective, because it does not terminate
-cleanly for most possible inputs, and is only reliable for one of the conditions (A and B both
-terminated).  It also shows why a for-loop variant with a given fixed length for each
-input is superior.
+This shows exactly why the copy() function is defective, because it does not
+terminate cleanly for most possible inputs, and is only reliable for one of the
+conditions: B terminated and A the right size.  It also shows why a for-loop
+variant with a given fixed length for each input is superior.
 
 Finally, the significance of this is that I've effectively done a formal proof (well, mostly
 formal) that shows what you should be doing to analyze code.  Each function has to stand on
@@ -234,6 +235,78 @@ discussion I've shown that the original \krc is defective, and fatally so since 
 no way to fix it given the inputs.  There's no way from just a pointer to ask if a 
 string is properly formed since the only way to test that is to scan it, and scanning it
 runs into this same problem.
+
+\subsection{But, That's Not A C String}
+
+Some folks then defend this function (despite the proof above) by claiming that the 
+strings in the proof aren't C strings.  They want to apply an artful dodge that says
+"the function is not defective because you aren't giving it the right inputs", but 
+I'm saying the function is defective because most of the \emph{possible} inputs
+cause it to crash the software.
+
+The problem with this mindset is there's no way to confirm that a C string is
+valid.  Imagine you wanted to write a little \verb|assert_good_string| function
+that checks if a C string is correctly terminated before using it.  This function
+needs to go to the end of the string and see if there's a \verb|'\0'| terminator.
+How does it do this?  This function would also have to scan the target function
+to confirm that it ended in \verb|'\0'|, which means it has the same problem
+as copy() because the input may not be terminated.
+
+This may seem silly, but people actually do this with strlen().  They take an
+input and think that they just have to run strlen() on the input to confirm
+that it's the right length, but strlen() itself has the same fatal flaw because
+it has to scan and if the string isn't terminated it will also overflow.
+
+This means any attempt to fix the problem using just C strings also has this problem.
+The only way to solve it is to include the length of every string and use that
+to scan it.
+
+If you can't validate a C string in your function, then your only choice is to
+do full code reviews manually.  This introduces human error and no matter what
+you do the error will happen.  
+
+
+\subsection{Just Don't Do That}
+
+Another argument in favor of this copy() function is when the proponents
+of \krc state that you are "just supposed to not use bad strings".  Despite
+the mountains of empirical evidence that this is impossible in C code, they
+are basically correct and that's what I'm teaching in this exercise.  But,
+instead of saying "just don't do that by checking all possible inputs", I'm
+advocating "just don't do that by not using this kind of function".  I'll
+explain further.
+
+In order to confirm that all inputs to this function are valid I have to 
+go through a code review process that involves this:
+
+\begin{enumerate}
+\item Find all the places the copy() function is called.
+\item Trace backwards from that call point to where the inputs are created.
+\item Confirm that the data is created correctly.
+\item Follow the path from the creation point of the data to where it's used and confirm that
+    no line of code alters the data.
+\item Repeat this for all paths and all branches, including all loops and if-statements
+    involving the data.
+\end{enumerate}
+
+In my experience this is only possible in small programs like the little ones
+that \krc has.  In real software the number of possible branches you'd need to
+check is much too high for most people to validate, especially in a team
+environment where individuals have varying degrees of capability.  A way to
+quantify this difficulty is that each branch in the code leading to a function
+like copy() has a 50-70\% chance of causing the defect.
+
+However, if you can use a different function and avoid all of these checks then
+doesn't that mean the copy() function is defective by comparison?  These people
+are right, the solution is to "just not do that" by just not using the copy()
+function.  You can change the function to one that includes the sizes of the
+two strings and the problem is solved.  If that's the case then the people who
+think "just don't do that" have just proved that the function is defective,
+because the simpler way to "not do that" is to use a better function.
+
+If you think copy() is valid as long as you avoid the errors I outline, and if
+safercopy() avoids the errors, then safercopy() is superior and copy() is defective
+by comparison.
 
 
 \subsection{Stylistic Issues}
