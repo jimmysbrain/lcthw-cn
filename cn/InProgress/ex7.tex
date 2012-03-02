@@ -1,6 +1,6 @@
 \chapter{Exercise 7: 更多变量和一些数学运算}
 
-让我们通过声明更多的变量类型来熟悉变量的用法，这些类型包括 \ident{整型}（int）变量、\ident{单精度浮点型}（float）变量、\ident{字符型}（char）变量、以及\ident{双精度浮点型}（double）变量。 我们会在稍后的各种数学表达式中用到它们，这样你还能学到 C 语言的基础数学。
+让我们通过声明更多的变量类型来熟悉变量的用法，这些类型包括 \ident{整数型}（int）、\ident{单精度浮点型}（float）、\ident{字符型}（char）、以及\ident{双精度浮点型}（double）。 我们会在稍后的各种数学表达式中用到它们，同时你还会学到 C 语言的基础数学。
 
 \begin{code}{ex7.c}
 << d['code/ex7.c|pyg|l'] >>
@@ -39,7 +39,7 @@
 
 \section{让程序出错}
 
-同样的，试着往 \ident{printf} 中传递错的参数来让程序出错。看看对比用修饰符\verb|%s| 和 \verb|%c| 输出 \ident{nul\_byte} 有什么结果。当你让程序出错后，在 \program{Valgrind} 运行你的程序， 看看它对你的破坏行为有什么说法。
+同样的，试着往 \ident{printf} 中传递错的参数来让程序出错。对比使用修饰符\verb|%s| 和 \verb|%c| 输出 \ident{nul\_byte} 有什么不同结果。当你让程序出错后，在 \program{Valgrind} 运行你的程序， 看看它对你的破坏行为如何报错。
 
 \section{加分习题}
 
@@ -48,6 +48,6 @@
 \item 这些庞大数字实际上打印出的是什么？
 \item 把 \ident{long} 换成 \ident{unsigned long}， 试着找到比刚才那个数更大的值。
 \item 上网查查 \ident{unsigned} 的功能是什么。
-\item 试着向自己解释(在我开始下一个练习之前)为什么 \ident{char} 可以和 \ident{int} 相乘.
+\item 在下一个练习之前，试着向自己解释为什么 \ident{char} 可以和 \ident{int} 相乘.
 \end{enumerate}
 
