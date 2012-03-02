@@ -1,30 +1,28 @@
 \chapter{习题8: 数组和大小}
 
-上一个习题中你运用字符 \verb|'\0'| (nul) 做了些数学运算。
+上一个习题中你运用字符 \verb|'\0'| (null) 做了些数学运算，但如果是其他语言可能就要产生错误了。很多其他语言用不同的方式对待字符串 ( "strings" ) 和字节数组 ( "byte arrays" )， 然而 C 语言则将它们在承认差异的情况下等同而待。在 C 中,只要求使用不同的输出函数来输出字符串和字节数组。
 
-如果是其他语言的话就有可能会要有奇怪的事情发生了，因为它们用非常不同的方式对待字符串 ( "strings" ) 和比特数组 ( "byte arrays" )。 然而C语言则将它们在承认差异的情况下等同而待，仅仅是使用了不同的输出函数。
-
-在解释这一点的意义重大之前，有几个概念一定要讲清楚： \ident{sizeof} 和数组。以下是我们即将探讨的代码：
+明白 C 语言将字符串和字节数组等同对待是很重要的，而在解释这一点之前，有几个概念一定要讲清楚： \ident{sizeof} 和数组。以下是我们即将探讨的代码：
 
 \begin{code}{ex8.c}
 << d['code/ex8.c|pyg|l'] >>
 \end{code}
 
-在这段代码中我们将创建一些包含不同数据类型的数组。 由于数组对于C语言的运行相当重要，所以我们可以用很多种不同的方法来创建数组。 这里将暂且使用语法格式 \verb|type name[] = {initializer};| ，往后我们还会介绍更多其他方式。这个语法格式的意思就是， “我需要一个初始化到{..}的数组” ("I want an array of
-type that is initialized to {..}." ), 当C接收到这个时将会： 
+在这段代码中我们将创建一些包含不同数据类型的数组。 数组对 C 语言的运行是很重要的，我们可以用很多种不同的方法来创建数组。 这里将暂且使用语法格式 \verb|type name[] = {initializer};| ，往后我们还会介绍更多方式。这个语法格式的意思就是， “我需要一个初始化到{..}的数组” ("I want an array of
+type that is initialized to {..}." ), 当 C 接收到这个指令时，将会： 
 
 \begin{enumerate}
-\item 关于数据类型，整数型 ( \ident{int} ) 是第一情况。
-\item 关于 \verb|[]| ，并确定没有给出长度。
-\item 关于初始值，发现你希望将以下五个值放入到数组 \verb|{10, 12, 13, 14, 20}|。
-\item 在本机上腾出记可以保存这五个整数的存储空间(memory)。
+\item 数据类型：整数型 ( \ident{int} ) 是第一情况。
+\item \verb|[]| ：确定没有给出长度。
+\item 初始值：发现你希望将以下五个值放入到数组 \verb|{10, 12, 13, 14, 20}|。
+\item 在本机上腾出可以保存这五个整数的内存 (memory)。
 \item 命名, \ident{areas} 并指明存储位置。
 \end{enumerate}
 
 
-在这种情况下 \ident{areas} 创建了容纳这五个整数型数据的数组。当在 \verb|char name[] = "Zed";|中运行时，它也是干了一样的活，除了它创建了一个有三个字符的数组并赋值到 \ident{name}。 我们创建出来的最终版数组是 \ident{full\_name}， 但一次一个字符的拼写方式却很恼人。对于C语言来说， \ident{name} 和 \ident{full\_name} 都等同的是创建字符数组的方式。
+在这种情况下， \ident{areas} 创建了容纳这五个整数型数据的数组。当在 \verb|char name[] = "Zed";|中运行时，它也是干了一样的活，除了它创建了一个有三个字符的数组并赋值到 \ident{name}。 我们创建出来的最终数组是 \ident{full\_name}， 但逐字符的拼写方式却很恼人。对于 C 语言来说， \ident{name} 和 \ident{full\_name} 都是创建字符数组的方式。
 
-接下来我们将使用一个叫做 \ident{sizeof} 的关键词来询问C文件大小以 \emph{bytes} 为单位计算是多少。事实上C语言就是一门关于记忆大小，记忆位置，以及如何处理文记忆(pieces of memory)的语言。 更简单一点说，\ident{sizeof} 这个玩意可以让你知道你之前编辑的文件有多大。
+接下来我们将使用一个叫做 \ident{sizeof} 来询问文件大小 (以 \emph{bytes} 为单位)。事实上 C 语言就是一门关于内存大小，内存位置，以及如何处理内存(pieces of memory)的语言。 更简单一点说，\ident{sizeof} 可以告诉你，之前编辑的文件有多大。
 
 这里可能会让人有些头晕，所以我们先运行下面这段代码再来解释。
 
@@ -36,36 +34,36 @@ type that is initialized to {..}." ), 当C接收到这个时将会：
 \end{lstlisting}
 \end{code}
 
-现在你看到不同的 \ident{printf} 指令的输出了。到这里你也算对C如何工作有了一个简单的了解。 由于你的电脑可能会有不同大小的整数，你的输出有可能跟我的输出会完全不同，这里是我的输出：
+现在你看到不同的 \ident{printf} 指令的输出了。到这里你也算对 C 如何工作有了一个简单的了解。 由于你的电脑可能会有不同大小的整数，你的输出有可能跟我的输出会完全不同，这里是我的输出：
 
 \begin{description}
-\item [5] 我的电脑以为 \ident{int} 有4个比特那么大. 你的电脑如果是32-bit的话，可能会有不同结果。
-\item [6] 数组 \ident{areas} 里有5个整数， 我的电脑要求了20个比特来存储它。
-\item [7] 如果我们用 \ident{areas} 的大小除以 \ident{int} 的大小，我们将得到元素数5。再看看代码，这正匹配了初始值中的设定。
-\item [8] 我们来尝试一下使用数组直接得到 \verb|areas[0]| 和 \verb|areas[1]|， 这意味着C和Python/Ruby一样也是指针数从零位开始 ( "zero indexed" )。
-\item [9-11] 为数组 \ident{name} 重复这个部分， 却发现这个数组的大小有些奇怪？ \emph{4} 比特长？但 "Zed" 是三个字符。第四个字符是哪来的呢？
+\item [5] 我的电脑以为 \ident{int} 有4个字节. 你的电脑如果是32-bit的话，可能会不一样。
+\item [6] 数组 \ident{areas} 里有5个整数， 我的电脑要求了20个字节来存储它。
+\item [7] 如果用 \ident{areas} 的大小除以 \ident{int} 的大小，我们将得到元素数5。再看看代码，这正是初始值中的设定。
+\item [8] 我们来尝试一下使用数组直接得到 \verb|areas[0]| 和 \verb|areas[1]|， 这意味着 C 和 Python/Ruby 一样也是指针数从零位开始 ( "zero indexed" )。
+\item [9-11] 对数组 \ident{name} 重复这个部分， 却发现这个数组的大小有些奇怪？ \emph{4} 字节长？但 "Zed" 是三个字符。第四个字符是哪来的呢？
 \item [12-13] 对 \ident{full\_name} 再次运行，并发现这次的值是正确的。 
 \item [13] 最后我们打印输出 \ident{name} 和 \ident{full\_name} 以证明根据printf他们都是字符串 ( "strings" ).
 \end{description}
 
-请确保你可以弄懂这些代码，并且明白这些输出结果是如何与之匹配的。之后我们将在这个基础之上更多地探索关于数组和存储。
+请确保弄懂这些代码，并且明白这些输出结果跟输入代码的对应关系。之后我们将在这个基础上更多地探索数组和存储。
 
 \section{让程序出错}
 
-让这个程序出错是相当简单的，试一试这些：
+让这个程序出错很简单，试一试这些：
 
 \begin{enumerate}
-\item 删除 \ident{full\_name} 尾部的 \verb|'\0'| 并重新运行程序。 也在 Valgrind 下运行。 现在，将 \ident{full\_name} 的定义到 \ident{main} 的顶部，并且要在 \ident{areas} 的前面。在 Valgrind 下运行几次看看你会不会得到新的系统错误。有些时候你可能好彩，一个系统错误都没有。
-\item 改变它，去尝试打印输出 \verb|areas[10]| 而非 \verb|areas[0]| ，并看看  是怎样认为的。
+\item 删除 \ident{full\_name} 尾部的 \verb|'\0'| 并重新运行程序。 也在 Valgrind 下运行。 现在，将 \ident{full\_name} 的定义放到 \ident{main} 的顶部，并且要在 \ident{areas} 的前面。在 Valgrind 下运行几次看看你会不会得到新的系统错误。有时候你可能会幸运得一个系统错误都没有。
+\item 改变它，去尝试打印输出 \verb|areas[10]| 而非 \verb|areas[0]| ，并看看 Valgrind 是怎样认为的。
 \item 对 \ident{name} 和 \ident{full\_name} 都多尝试几个版本的尝试。
 \end{enumerate}
 
 \section{加分习题}
 
 \begin{enumerate}
-\item 使用 \verb|areas[0] = 100;|的类似语句对数组 \ident{areas} 中的元素进行赋值。
+\item 使用类似 \verb|areas[0] = 100;|的语句，对数组 \ident{areas} 中的元素进行赋值。
 \item 尝试对 \ident{name} 和 \ident{full\_name} 的元素进行复制。
 \item 尝试把 \ident{areas} 中的一个元素设置成 \ident{name} 中的一个字符.
-\item 上网搜索：在不同CPU上整数的大小差异 (the different sizes used for integers on different CPUs).
+\item 上网搜索：在不同CPU上整数的内存大小差异 (the different sizes used for integers on different CPUs).
 \end{enumerate}
 
