@@ -13,6 +13,7 @@
 这个程序表面看似简单，其实不然。这里面用到了一个函数 \func{fscanf}，它是用来做文件扫描 "file scanf"。
  \func{scanf} 相关的一系列函数与 \func{printf} 一系列函数作用正相反。 
 \func{printf} 按着指定格式输出数据, \func{scanf} 按着格式读取（或者扫描输入）。
+ \func{printf} 按着指定格式输出数据, \func{scanf} 按着格式读取（或者扫描输入）。
 
 There's nothing original in the beginning of the file, so here's what
 the \func{main} is doing:
@@ -29,6 +30,13 @@ the \func{main} is doing:
     to give the \emph{address} of \ident{you.age} so that \ident{fscanf} has
     a pointer to it and can modify it.  This is a good example of using a
     pointer to a piece of data as an "out parameter".
+\item[ex24.c:24-28] 创建一些必须的变量。
+\item[ex24.c:30-32] 用\func{fgets} 获取姓名中的名字, 这个函数从输入获取一个字符串
+    (这里是从 \ident{stdin}) 输入名字的时候要小心，不要把存储名字的缓冲区搞溢出。
+\item[ex24.c:34-36] 同样的在获取\ident{you.last\_name}的时候, 依然用 \func{fgets}。
+\item[ex24.c:38-39] 用\func{fscanf} 从\func{stdin} 获取一个整数，而且这个整数存储在
+    \ident{you.age}.  你可以看到在用\ident{printf} 打印整数的时候使用了同样的格式。
+    你也看到为了让 \ident{fscanf} 可以把输入存储在某个指针变量指定的位置上，你必须提供把\emph{address} 的地址取出来作为指针变量的值。 从这个例子，你可以知道如何把一串数据的内存地址作为输出参数。
 \item[ex24.c:41-45] Print out all the options available for eye color, with a matching
     number that works with the \ident{EyeColor} enum above.
 \item[ex24.c:47-50] Using \func{fscanf} again, get a number for the \ident{you.eyes}, 
