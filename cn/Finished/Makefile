@@ -4,6 +4,9 @@ WEBSITE=/var/www/learncodethehardway.org/c/
 FINAL=learn-c-the-hard-way
 
 book:
+	cp -n ../InProgress/*.tex .
+	cp -n ../../*.tex .
+	cp -r ../../code .
 	dexy
 	cp Makefile output/
 	cp style.sty output/
