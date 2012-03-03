@@ -22,7 +22,7 @@ $(FINAL).pdf:
 	xelatex $(FINAL).tex
 
 html: 
-	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in"
+	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in" -utf8
 	sed -i -f clean.sed output/*.html
 	cat output/fixes.css >> output/$(FINAL).css
 	
