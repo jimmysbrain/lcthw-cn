@@ -1,5 +1,0 @@
-$ make ex5
-cc -Wall -g    ex5.c   -o ex5
-$ ./ex5
-You are 100 miles away.
-$ 
