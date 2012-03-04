@@ -66,8 +66,7 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
 
 \section{你应该看到的结果}
 
-Running this program is simple， but try different combinations of numbers， and
-try even non-numbers to see what it does。
+运行这个程序很简单， 那就尝试不同数值的组合，甚至是非数值的组合并产看结果。
 
 \begin{code}{ex18 output}
 \begin{lstlisting}
@@ -78,12 +77,7 @@ try even non-numbers to see what it does。
 
 \section{让程序出错}
 
-I'm going to have you do something kind of weird to break this。  These function
-pointers are pointers like every other pointer， so they point at blocks of
-memory。  C has this ability to take one pointer and convert it to another so
-you can process the data in different ways。  It's usually not necessary， but
-to show you how to hack your computer， I want you to add this at the end of
-\func{test\_sorting}:
+我将让你做一些奇怪的事情去破坏它。  这些函数指针和别的指针一样， 所以它们指向的是内存块（blocks of memory）。  C可以把一种指针类型转换成另一种所以你可以用不同的方法处理数据。  这通常不是必要的， 但还是让你看看如何修改（hack）你的电脑， 我希望你在 \func{test\_sorting} 函数结尾加上这些:
 
 \begin{code}{Function Pointer Evil}
 \begin{lstlisting}
