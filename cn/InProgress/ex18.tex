@@ -43,27 +43,15 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
 
 \begin{description}
 \item[ex18.c:1-6] 所有我们调用的函数都需要include包含。
-\item[ex18.c:7-17] This is the \func{die} function from the previous exercise
-    which I'll use to do error checking.
-\item[ex18.c:21] This is where the \ident{typedef} is used, and later I use 
-    \ident{compare\_cb} like it's a type similar to \ident{int} or 
-    \ident{char} in \func{bubble\_sort} and \func{test\_sorting}.
-\item[ex18.c:27-49] A bubble sort implementation, which is a very inefficient way
-    to sort some integers.  This function contains:
+\item[ex18.c:7-17] 这是我们前一个练习中的 \func{die} 函数，我们会用它来做错误检查。
+\item[ex18.c:21] 在这里使用了 \ident{typedef}，稍后我们会像在 \func{bubble\_sort} 和 \func{test\_sorting} 中使用 \ident{int} 或 \ident{char} 一样把\ident{compare\_cb}当做类型使用。
+\item[ex18.c:27-49] 一种冒泡排序（bubble sort）的实现， 这是一种排序整型数效率很差的方法。 这个函数包含:
     \begin{description}
-    \item[ex18.c:27] Here's where I use the \ident{typedef} for \ident{compare\_cb}
-        as the last parameter \ident{cmp}.  This is now a function that will
-        return a comparison between two integers for sorting.
-    \item[ex18.c:29-34] The usual creation of variables on the stack, followed by
-    a new array of integers on the heap using \func{malloc}.  Make sure you
-    understand what \verb|count * sizeof(int)| is doing.
-    \item[ex18.c:38] The outer-loop of the bubble sort.
-    \item[ex18.c:39] The inner-loop of the bubble sort
-    \item[ex18.c:40] Now I call the \func{cmp} callback just like it's a normal
-        function, but instead of being the name of something we defined, 
-        it's just a pointer to it.  This lets the caller pass in anything
-        they want as long as it matches the "signature" of the \ident{compare\_cb}
-        \ident{typedef}.
+    \item[ex18.c:27] 这个我为最后一个参数\ident{cmp}使用 \ident{typedef} 类型 \ident{compare\_cb}。 这是一个为了排序而返回的两个整型的比较结果的函数.
+    \item[ex18.c:29-34] 先是在栈上创建变量的一般方法， 接着是在堆上使用 \func{malloc} 创建整型数组的方法. 确保你知道 \verb|count * sizeof(int)| 做的什么事。
+    \item[ex18.c:38] 冒泡排序的外层循环。
+    \item[ex18.c:39] 冒泡排序的内层循环。
+    \item[ex18.c:40] 现在我像调用一般函数一样的调用 \func{cmp} 函数， 但是用我们定义好的一些名字代替，只是指向它的指针。 这就让调用器（caller）传递近任何它们想要的东西，只要满足\ident{compare\_cb} \ident{typedef}的“特征”（signature）.
     \item[ex18.c:41-43] The actual swapping operation a bubble sort needs to do what it
         does.
     \item[ex18.c:48] Finally return the newly created and sorted result array \ident{target}.
