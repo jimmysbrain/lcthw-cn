@@ -1,0 +1,284 @@
+\chapter{Exercise 21: Advanced Data Types And Flow Control}
+
+This exercise will be a complete compendium of the available C data types and
+flow control structures you can use.  It will work as a reference to complete
+your knowledge, and won't have any code for you to enter.  I'll have you
+memorize some of the information by creating flash cards so you can get 
+the important concepts solid in your mind.
+
+For this exercise to be useful, you should spend at least a week hammering 
+the content and filling out all the element I have missing here.  You'll be
+writing out what each one means, and then writing a program to confirm
+what you've researched.
+
+
+\section{Available Data Types}
+
+\begin{description}
+\item[int] Stores a regular integer, defaulting to 32 bits in size.
+\item[double] Holds a large floating point number.
+\item[float] Holds a smaller floating point number.
+\item[char] Holds a single 1 byte character.
+\item[void] Indicates "no type" and used to say a function returns
+    nothing, or a pointer has no type as in \verb|void *thing|.
+\item[enum] Enumerated types, work as integers, convert to integers,
+    but give you symbolic names for sets.  Some compilers will warn
+    you when you don't cover all elements of an enum in \ident{switch-statements}.
+\end{description}
+
+\subsection{Type Modifiers}
+
+\begin{description}
+\item[unsigned] Changes the type so that it does not have negative numbers,
+    giving you a larger upper bound but nothing lower than 0.
+\item[signed] Gives you negative and positive numbers, but halves your 
+    upper bound in exchange for the same lower bound negative.
+\item[long] Uses a larger storage for the type so that it can hold
+    bigger numbers, usually doubling the current size.
+\item[short] Uses smaller storage for the type so it stores less, but
+    takes half the space.
+\end{description}
+
+
+\subsection{Type Qualifiers}
+
+\begin{description}
+\item[const] Indicates the variable won't change after being initialized.
+\item[volatile] Indicates that all bets are off, and the compiler should leave
+    this alone and try not to do any fancy optimizations to it.  You usually
+    only need this if you're doing really weird stuff to your variables.
+\item[register] Forces the compiler to keep this variable in a register, and
+    the compiler can just ignore you.  These days compilers are better at 
+    figuring out where to put variables, so only use this if you actually
+    can measure it improving the speed.
+\end{description}
+
+
+\subsection{Type Conversion}
+
+C uses a sort of "stepped type promotion" mechanism, where it looks at two operands on
+either side of an expression, and promotes the smaller side to match the larger side
+before doing the operation.  If one side of an expression is on this list, then the 
+other side is converted to that type before the operation is done, and this goes
+in this order:
+
+\begin{enumerate}
+\item long double
+\item double 
+\item float
+\item int (but only \ident{char} and \ident{short int});
+\item long
+\end{enumerate}
+
+If you find yourself trying to figure out how your conversions are working in
+an expression, then don't leave it to the compiler.  Use explicit casting
+operations to make it exactly what you want.  For example, if you have:
+
+\verb|long + char - int * double|
+
+Rather than trying to figure out if it will be converted to double correctly,
+just use casts:
+
+\verb|(double)long - (double)char - (double)int * double|
+
+Putting the type you want in parenthesis before the variable name is how you
+force it into the type you really need.  The important thing though is 
+\emph{always promote up, not down}.  Don't cast \ident{long} into \ident{char}
+unless you know what you're doing.
+
+\subsection{Type Sizes}
+
+The \file{stdint.h} defines both a set of \ident{typdefs} for exact sized integer
+types, as well as a set of macros for the sizes of all the types.  This is easier
+to work with than the older \file{limits.h} since it is consistent.  The types
+defined are:
+
+\begin{description}
+\item[int8\_t] 8 bit signed integer.
+\item[uint8\_t] 8 bit unsigned integer.
+\item[int16\_t] 16 bit signed integer.
+\item[uint16\_t] 16 bit unsigned integer.
+\item[int32\_t] 32 bit signed integer.
+\item[uint32\_t] 32 bit unsigned integer.
+\item[int64\_t] 64 bit signed integer.
+\item[uint64\_t] 64 bit unsigned integer.
+\end{description}
+
+The pattern here is of the form (u)int(BITS)\_t where a \emph{u} is put in front to indicate
+"unsigned", then \emph{BITS} is a number for the number of bits.  This pattern is then repeated
+for macros that return the maximum values of these types:
+
+\begin{description}
+\item[INT\emph{N}\_MAX] Maximum positive number of the signed integer of bits \emph{N}.
+\item[INT\emph{N}\_MIN] Minimum negative number of signed integer of bits \emph{N}.
+\item[UINT\emph{N}\_MAX] Maximum positive number of unsigned integer of bits \emph{N}. Since it's unsigned the minimum is 0 and can't have a negative value.
+\end{description}
+
+There are also macros in \file{stdint.h} for sizes of the \ident{size\_t} type, integers large enough to hold pointers,
+and other handy size defining macros.  Compilers have to at least have these, and then they can allow
+other larger types.
+
+Here is a full list should be in \file{stdint.h}:
+
+\begin{description}
+\item[int\_least\emph{N}\_t] holds at least \emph{N} bits.
+\item[uint\_least\emph{N}\_t] holds at least \emph{N} bits unsigned.
+\item[INT\_LEAST\emph{N}\_MAX] max value of the matching least\emph{N} type.
+\item[INT\_LEAST\emph{N}\_MIN] min value of the matching least\emph{N} type.
+\item[UINT\_LEAST\emph{N}\_MAX] unsigned maximum of the matching \emph{N} type.
+\item[int\_fast\emph{N}\_t] similar to \ident{int\_least\emph{N}\_t} but asking for the "fastest" with at least that precision.
+\item[uint\_fast\emph{N}\_t] unsigned fastest least integer.
+\item[INT\_FAST\emph{N}\_MAX] max value of the matching fastest\emph{N} type.
+\item[INT\_FAST\emph{N}\_MIN] min value of the matching fastest\emph{N} type.
+\item[UINT\_FAST\emph{N}\_MAX] unsigned max value of the matching fastest\emph{N} type.
+\item[intptr\_t] a \emph{signed} integer large enough to hold a pointer.
+\item[uintptr\_t] an \emph{unsigned} integer large enough to hold a pointer.
+\item[INTPTR\_MAX] max value of a \ident{intptr\_t}.
+\item[INTPTR\_MIN] min value of a \ident{intptr\_t}.
+\item[UINTPTR\_MAX] unsigned max value of a \ident{uintptr\_t}.
+\item[intmax\_t] biggest number possible on that system.
+\item[uintmax\_t] biggest unsigned number possible.
+\item[INTMAX\_MAX] largest value for the biggest signed number.
+\item[INTMAX\_MIN] smallest value for the biggest signed number.
+\item[UINTMAX\_MAX] largest value for the biggest unsigned number.
+\item[PTRDIFF\_MIN] minimum value of \ident{ptrdiff\_t}.
+\item[PTRDIFF\_MAX] maximum value of \ident{ptrdiff\_t}.
+\item[SIZE\_MAX] maximum of a \ident{size\_t}.
+\end{description}
+
+\section{Available Operators}
+
+This is a comprehensive list of all the operators you have in the C language.
+In this list, I'm indicating the following:
+
+\begin{description}
+\item[(binary)] The operator has a left and right: \verb|X + Y|.
+\item[(unary)] The operator is on its own: \verb|-X|.
+\item[(prefix)] The operator comes before the variable: \verb|++X|.
+\item[(postfix)] Usually the same as the \ident{(prefix)} version, but placing it
+    after gives it a different meaning: \verb|X++|.
+\item[(ternary)] There's only one of these, so it's actually called the
+    ternary but it means "three operands": \verb|X ? Y : Z|.
+\end{description}
+
+
+\subsection{Math Operators}
+
+These are your basic math operations, plus I put \verb|()| in
+with these since it calls a function and is close to a "math"
+operation.
+
+\begin{description}
+\item[()] Function call.
+\item[* (binary)] multiply.
+\item[/] divide.
+\item[+ (binary)] addition.
+\item[+ (unary)] positive number.
+\item[++ (postfix)] read, then increment.
+\item[++ (prefix)] increment, then read.
+\item[$--$ (postfix)] read, then decrement.
+\item[$--$ (prefix)] decrement, then read.
+\item[- (binary)] subtract.
+\item[- (unary)] negative number.
+\end{description}
+
+\subsection{Data Operators}
+
+These are used to access data in different ways and forms.
+
+\begin{description}
+\item[-\textgreater{}] struct pointer access.
+\item[.] struct value access.
+\item{[]} Array index.
+\item[sizeof] size of a type or variable.
+\item[\& (unary)] Address of.
+\item[* (unary)] Value of.
+\end{description}
+
+\subsection{Logic Operators}
+
+These handle testing equality and inequality of variables.
+
+\begin{description}
+\item[!=] does not equal.
+\item[\textless{}] less than.
+\item[\textless{}=] less than or equal.
+\item[==] equal (not assignment).
+\item[\textgreater{}] greater than.
+\item[\textgreater{}=] greater than or equal.
+\end{description}
+
+\subsection{Bit Operators}
+
+These are more advanced and for shifting and modifying the 
+raw bits in integers.
+
+\begin{description}
+\item[\& (binary)] Bitwise and.
+\item[\textless{}\textless{}] Shift left.
+\item[\textgreater{}\textgreater{}] Shift right.
+\item[\^{}] bitwise xor (exclusive or).
+\item[$\vert$] bitwise or.
+\item[\textasciitilde{}] compliment (flips all the bits).
+\end{description}
+
+
+\subsection{Boolean Operators}
+
+Used in truth testing.  Study the ternary operator carefully, it is very handy.
+
+\begin{description}
+\item[!] not.
+\item[\&\&] and.
+\item[$\vert\vert$] or.
+\item[?:] Ternary truth test, read \verb|X ? Y : Z| as "if X then Y else Z".
+\end{description}
+
+\subsection{Assignment Operators}
+
+Compound assignment operators that assign a value, and/or perform
+an operation at the same time.  Most of the above operations
+can also be combined into a compound assignment operator.
+
+\begin{description}
+\item[=] assign.
+\item[\%=] modulus assign.
+\item[\&=] bitwise and assign.
+\item[*=] multiply assign.
+\item[+=] plus assign.
+\item[-=] minus assign.
+\item[/=] divid assign.
+\item[\textless{}\textless{}=] shift left, assign.
+\item[\textgreater{}\textgreater{}=] shift right, assign.
+\item[\^{}=] bitwise xor, assign.
+\item[$\vert$=] bitwise or, assign.
+\end{description}
+
+\section{Available Control Structures}
+
+There's a few control structures you haven't encountered yet:
+
+\begin{description}
+\item[do-while] \verb|do { ... } while(X);| First does the code in the block, then
+    tests the \ident{X} expression before exiting.
+\item[break] Put this in a loop, and it breaks out ending it early.
+\item[continue] Stops the body of a loop and jumps to the test so it can continue.
+\item[goto] Jumps to a spot in the code where you've placed a \verb|label:|, and
+    you've been using this in the \file{dbg.h} macros to go to the \verb|error:|
+    label.
+\end{description}
+
+
+\subsection{Extra Credit}
+
+\begin{enumerate}
+\item Read \file{stdint.h} or a description of it and write out all the possible
+    available size identifiers.
+\item Go through each item here and write out what it does in code.  Research it so you
+     know you got it right by looking it up online.
+\item Get this information solid as well by making flash cards and spending 15 
+    minutes a day memorizing it.
+\item Create a program that prints out examples of each type and confirm that your
+    research is right.
+\end{enumerate}
+
