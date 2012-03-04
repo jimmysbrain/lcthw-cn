@@ -1,66 +1,70 @@
-\chapter{Exercise 21: Advanced Data Types And Flow Control}
+\chapter{习题 21: 高级数据类型与流程控制}
 
 This exercise will be a complete compendium of the available C data types and
+这个习题将会是 C 语言中你可使用的数据类型以及流程控制结构的一个完备的缩影。它可以作为你补充与巩固知识的参考，而且不需要你写任何代码。
 flow control structures you can use.  It will work as a reference to complete
 your knowledge, and won't have any code for you to enter.  I'll have you
 memorize some of the information by creating flash cards so you can get 
 the important concepts solid in your mind.
+我会通过制作一些学习卡来让你记忆这个信息，这让你可以夯实你脑海中的重要概念。
 
 For this exercise to be useful, you should spend at least a week hammering 
 the content and filling out all the element I have missing here.  You'll be
 writing out what each one means, and then writing a program to confirm
 what you've researched.
+为了让习题有所帮助，你应该至少花一个星期去仔细推敲其内容并且完成填空。你应该写出每一个题在表达什么意思，然后写一个程序去验证你的研究
 
 
-\section{Available Data Types}
+\section{可用数据类型}
 
 \begin{description}
-\item[int] Stores a regular integer, defaulting to 32 bits in size.
-\item[double] Holds a large floating point number.
-\item[float] Holds a smaller floating point number.
-\item[char] Holds a single 1 byte character.
-\item[void] Indicates "no type" and used to say a function returns
-    nothing, or a pointer has no type as in \verb|void *thing|.
-\item[enum] Enumerated types, work as integers, convert to integers,
-    but give you symbolic names for sets.  Some compilers will warn
+\item[int] 通常存放一个整数, 一般大小默认是32位。
+\item[double] 存放一个较大的浮点数。
+\item[float] 存放一个较小的浮点数。
+\item[char] 存放单个字符
+\item[void] 表示“没有类型”，用于表示一个函数不返回信息，或者一个没有类型的指针，例如 \verb|void *thing| 。
+\item[enum] 枚举类型，像整型一样，值是整型，但是会返回集合中对应的符号名称。 work as integers, convert to integers,
+    but give you symbolic names for sets. 在 \ident{分支选择语句(switch-statements)} 中，当你没有涵盖一个枚举类型里的所有元素的时候，一些编译器会发出警告  Some compilers will warn
     you when you don't cover all elements of an enum in \ident{switch-statements}.
 \end{description}
 
-\subsection{Type Modifiers}
+\subsection{类型修饰符}
 
 \begin{description}
 \item[unsigned] Changes the type so that it does not have negative numbers,
-    giving you a larger upper bound but nothing lower than 0.
+	giving you a larger upper bound but nothing lower than 0. 使得某一类型不用表示负数，这样虽然不会有负数，但是会有一个较大的上界。
 \item[signed] Gives you negative and positive numbers, but halves your 
-    upper bound in exchange for the same lower bound negative.
+    upper bound in exchange for the same lower bound negative. 有正数与负数，会将无符号的上界一分为二，转换成相同大小的负下界。
 \item[long] Uses a larger storage for the type so that it can hold
-    bigger numbers, usually doubling the current size.
+    bigger numbers, usually doubling the current size.会为这个类型使用一个较大的存储来存放更大的数值，通常是原来大小的两倍。
 \item[short] Uses smaller storage for the type so it stores less, but
-    takes half the space.
+    takes half the space. 为这个类型使用较小的存储，所以它存放的数值小一些，但是空间节省了一半。
 \end{description}
 
 
-\subsection{Type Qualifiers}
+\subsection{类型限定符}
 
 \begin{description}
-\item[const] Indicates the variable won't change after being initialized.
+\item[const] Indicates the variable won't change after being initialized.表明这个变量在初始化之后就不会再发生改变。
 \item[volatile] Indicates that all bets are off, and the compiler should leave
     this alone and try not to do any fancy optimizations to it.  You usually
-    only need this if you're doing really weird stuff to your variables.
+    only need this if you're doing really weird stuff to your variables.表明这个变量的变化无法预测，编译器不会去假设这个变量的值，也不会做任何优化。只有当你要对这个变量做一些怪事情的时候才需要使用这个限定符。
 \item[register] Forces the compiler to keep this variable in a register, and
     the compiler can just ignore you.  These days compilers are better at 
     figuring out where to put variables, so only use this if you actually
-    can measure it improving the speed.
+    can measure it improving the speed.强制要求编译器将这个变量放在寄存器里，编译器可以就这么忽略掉你。如今编译器更善于决定一个变量应该放在哪里，所以最好只有当你确定这样可以提高速度的时候才这么做。
 \end{description}
 
 
-\subsection{Type Conversion}
+\subsection{类型转换}
 
 C uses a sort of "stepped type promotion" mechanism, where it looks at two operands on
 either side of an expression, and promotes the smaller side to match the larger side
 before doing the operation.  If one side of an expression is on this list, then the 
 other side is converted to that type before the operation is done, and this goes
 in this order:
+C 语言使用了一种“阶梯式的类型提升”的机制，当面对一个表达式两边的操作数时，会在执行这个运算之前，提升较小的一边去适应较大的一边。如果表达式的一边在这个列表中，那么另一边会在运算完成前按照如下顺序被转换 
+
 
 \begin{enumerate}
 \item long double
@@ -73,6 +77,7 @@ in this order:
 If you find yourself trying to figure out how your conversions are working in
 an expression, then don't leave it to the compiler.  Use explicit casting
 operations to make it exactly what you want.  For example, if you have:
+如果你想弄清除表达式中的类型转换到底是怎么回事，
 
 \verb|long + char - int * double|
 
