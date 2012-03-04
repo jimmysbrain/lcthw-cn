@@ -52,9 +52,8 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
     \item[ex18.c:38] 冒泡排序的外层循环。
     \item[ex18.c:39] 冒泡排序的内层循环。
     \item[ex18.c:40] 现在我像调用一般函数一样的调用 \func{cmp} 函数， 但是用我们定义好的一些名字代替，只是指向它的指针。 这就让调用器（caller）传递近任何它们想要的东西，只要满足\ident{compare\_cb} \ident{typedef}的“特征”（signature）.
-    \item[ex18.c:41-43] The actual swapping operation a bubble sort needs to do what it
-        does.
-    \item[ex18.c:48] Finally return the newly created and sorted result array \ident{target}.
+    \item[ex18.c:41-43] 冒泡排序的实际需要做的交换操作.
+    \item[ex18.c:48] 最后返回新创建并排序的结果数组 \ident{target}.
     \end{description}
 \item[ex18.c:51-68] Three different versions of the \ident{compare\_cb} function type,
     which needs to have the same definition as the \ident{typedef} we created.
