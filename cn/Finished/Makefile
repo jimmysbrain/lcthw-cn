@@ -7,6 +7,9 @@ book:
 	dexy
 	cp Makefile output/
 	cp style.sty output/
+	cp -n ../InProgress/*.tex .
+	cp -n ../../*.tex .
+	cp -r ../../code .
 	${MAKE} -C output clean $(FINAL).pdf
 	rm -rf output/*.dvi output/*.pdf
 	${MAKE} -C output $(FINAL).pdf
