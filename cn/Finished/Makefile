@@ -4,12 +4,12 @@ WEBSITE=/var/www/learncodethehardway.org/c/
 FINAL=learn-c-the-hard-way
 
 book:
-	dexy
-	cp Makefile output/
-	cp style.sty output/
 	cp -n ../InProgress/*.tex .
 	cp -n ../../*.tex .
 	cp -r ../../code .
+	dexy
+	cp Makefile output/
+	cp style.sty output/
 	${MAKE} -C output clean $(FINAL).pdf
 	rm -rf output/*.dvi output/*.pdf
 	${MAKE} -C output $(FINAL).pdf
