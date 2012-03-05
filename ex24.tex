@@ -45,12 +45,11 @@
 \end{code}
 
 
-\section{How To Break It}
+\section{如何中断它}
 
-This is all fine and good, but the real important part of this exercise is
-how \func{scanf} actually sucks.  It's fine for simple conversion of numbers,
-but fails for strings because it's difficult to tell \func{scanf} how big a buffer
-is before you read.  There's also a problem with a function like \func{gets}
+目前一切都很好，但是这个练习真正重要的地方是 \func{scanf} 实际上是怎么完蛋的。
+. 处理简单的数字转换的时候还好，但是当处理字符串的时候就完全的玩完了，
+因为很难在读取完成以前告诉 \func{scanf}函数缓冲区有多大。There's also a problem with a function like \func{gets}
 (not \func{fgets}, the non-f version) which we avoided.  That function has
 no idea how big the input buffer is at all and will just trash your program.
 
