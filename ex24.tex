@@ -47,16 +47,15 @@
 
 \section{如何中断它}
 
-目前一切都很好，但是这个练习真正重要的地方是 \func{scanf} 实际上是怎么完蛋的。
-. 处理简单的数字转换的时候还好，但是当处理字符串的时候就完全的玩完了，
-因为很难在读取完成以前告诉 \func{scanf}函数缓冲区有多大。There's also a problem with a function like \func{gets}
-(not \func{fgets}, the non-f version) which we avoided.  That function has
-no idea how big the input buffer is at all and will just trash your program.
+到目前一切顺利，但是这个练习的关键是 \func{scanf} 是怎么被输入搞垮的。
+. 当处理简单的数字转换的时候还好，但是当处理字符串的时候就完全的垮掉了，
+因为读取动作完成以前告诉 \func{scanf}输入缓冲区有多大非常困难。函数 \func{gets}
+(不是 \func{fgets}, the non-f version) 也有同样的问题。 这类函数完全无法知道输入的缓冲区有多大, 过大的缓冲区会搞垮程序。
+把那行代码从用\func{fgets} 替换成\verb|fscanf(stdin, "%50s", you.first_name)| 然后再运行一次程序
+就能看到仅靠\func{fscanf} 和字符串就能如何搞垮代码。
 
-To demonstrate the problems with \func{fscanf} and strings, change the lines
-that use \func{fgets} so they are \verb|fscanf(stdin, "%50s", you.first_name)|
-and then try to use it again.  Notice it seems to read too much and then 
-eat your enter key?  This doesn't do what you think it does, and really
+注意到程序似乎读入了太多而且似乎吃掉了你的回车键么？这东西似乎没有做你希望做的，
+and really
 rather than deal with weird \func{scanf} issues, just use \func{fgets}.
 
 Next, change the \func{fgets} to use \func{gets}, then bust out your
