@@ -49,87 +49,49 @@ Mac OSX 上面的安装就更简单了。首先你需要从 Apple 下载最新�
 我还是建议你从 DVD 安装好了。另外，你可以上网搜索一下“安装 xcode”，找点说明来
 看看。
 
-装完 XCode 
-Once you're done installing XCode, and probably restarting your computer
-if it didn't make you do that, you can go find your Terminal program
-and get it put into your Dock.  You'll be using Terminal a lot in
-the book, so it's good to put it in a handy location.
-
+装完 XCode 可能需要重启电脑。一切完成以后，你可以找到命令行终端(Terminal)程序并把它放到 dock 中。本书里会大量用到命令行终端，所以还是把它放到方便的地方比较好。
 
 \section{Windows}
 
-For Windows users I'll show you how to get a basic Ubuntu Linux system up and
-running in a virtual machine so that you can still do all of my exercises, but
-avoid all the painful Linux installation problems.
+对于 Windows 用户来说，我就教教你们怎样在虚拟机里安装并运行 Ubuntu Linux 吧。这样你可以有一个做本书习题的环境，但也省得面对各种痛苦的 Linux 安装问题了。
 
-... have to figure this one out.
+【本节内容尚未完成】... have to figure this one out.
 
 
-\section{Text Editor}
+\section{文本编辑器}
 
-The choice of text editor for a programmer is a tough one.  For beginners
-I tell them to just use \href{http://projects.gnome.org/gedit/}{Gedit} since
-it's simple and works for code.  However, it doesn't work in certain
-internationalized situations, and chances are you already have a favorite
-text editor if you've been programming for a while.
+编辑器的选择对于程序员来说总是个难题。对于初学者来说我跟他们讲用 \href{http://projects.gnome.org/gedit/}{Gedit} 就可以了，Gedit 功能简单，对代码支持也不错，不过 Gedit 在某些非英语环境下会有问题，而且如果你已经写过一阵子程序的话，你没准已经有自己喜欢的编辑器了。
 
-With this in mind, I want you to try out a few of the standard programmer
-text editors for your platform and then stick with the one that you like
-best.  If you've been using GEdit and like it then stick with it.  If you
-want to try something different, then try it out real quick and pick one.
+在此前提下，我要求你试着用用几种支持你的系统平台的代码编辑器，然后选一个你最喜欢的坚持用下去。如果你喜欢 GEdit 就继续用 GEdit，如果你想要换个不一样的，那就简单地试试别的编辑器，然后从中选一个就行了。
 
-The most important thing is \emph{do not get stuck picking the perfect editor}.
-Text editors all just kind of suck in odd ways.  Just pick one, stick with it,
-and if you find something else you like try it out.  Don't spend days
-on end configuring it and making it perfect.
+最重要的一点是\emph{不要纠结于挑选一个完美的编辑器}。文本编辑器总有各种奇怪的不好用之处。选一个然后用下去就行了。如果你看到别的喜欢的编辑器，就拿来试试。别没玩没了花时间去配置打造那所谓的完美编辑器。
 
-Some text editors to try out are:
+以下是你要去试试的编辑器：
 
 \begin{enumerate}
-\item \href{http://projects.gnome.org/gedit/}{Gedit} on Linux and OSX.
-\item \href{http://www.barebones.com/products/textwrangler/}{TextWrangler} on OSX.
-\item \href{http://www.nano-editor.org/}{Nano} which runs in Terminal and works nearly everywhere.
-\item \href{http://www.gnu.org/software/emacs/}{Emacs} and \href{http://emacsformacosx.com/}{Emacs for OSX}.  Be prepared to do some learning though.
-\item \href{http://www.vim.org/}{Vim} and \href{http://code.google.com/p/macvim/}{MacVim}
+\item Linux 和 OSX 下的  \href{http://projects.gnome.org/gedit/}{Gedit}。
+\item OSX 下的  \href{http://www.barebones.com/products/textwrangler/}{TextWrangler}。
+\item \href{http://www.nano-editor.org/}{Nano}， 这是一个命令行终端下的编辑器，基本任何地方都支持。
+\item \href{http://www.gnu.org/software/emacs/}{Emacs} 以及 \href{http://emacsformacosx.com/}{Emacs for OSX}，不过要做好学习的准备。
+\item \href{http://www.vim.org/}{Vim} 和  \href{http://code.google.com/p/macvim/}{MacVim}。
 \end{enumerate}
 
-There is probably a different editor for every person out there, but these are
-just a few of the free ones that I know work.  Try a few out, and maybe some
-commercial ones until you find one that you like.
+编辑器的种类实在太多了，给大街上的人们每人分一个大概都够，不过上面列出的只是我确定可以用的。试试其它我没提到的编辑器，收费版的也可以试试，直到找到你喜欢的为止。
 
 \subsection{警告: 不要使用IDE}
 
-An IDE, or "Integrated Development Environment" will turn you stupid.  They are
-the worst tools if you want to be a good programmer because they hide what's
-going on from you, and your job is to know what's going on.  They are useful
-if you're trying to get something done and the platform is designed around 
-a particular IDE, but for learning to code C (and many other languages) they
-are pointless.
+IDE，也就是“集成开发环境（Integrated Development Environment）”，它会让你变傻。如果你想要成为一个好程序员，那么 IDE 就是最坏的工具。因为 IDE 会为你隐藏真正进行中的事情，而你的任务正是知道真正发生了什么。如果你想要完成某件任务，而该任务的系统平台又是围绕这个 IDE 设计的，这种情况下 IDE 还是有用的。不过对于学习 C 以及很多其他语言来说，IDE 是毫无意义的。
 
 \begin{aside}{IDE和吉他谱}
 
-玩过吉他的人都知道吉他谱是什么东西，不过还是让我给其他没玩过吉他的人解释一下吧。有一种约定俗成
-的音乐记谱方式叫做“线谱”，这是一种普遍的，古老的，通用的记录如何演奏乐器的方法。线谱很大程度上
-是为钢琴和作曲家而生，所以如果你弹钢琴的话，线谱是很容易使用的。
+玩过吉他的人都知道吉他谱是什么东西，不过还是让我给其他没玩过吉他的人解释一下吧。有一种约定俗成的音乐记谱方式叫做“线谱”，这是一种普遍的，古老的，通用的记录如何演奏乐器的方法。线谱很大程度上是为钢琴和作曲家而生，所以如果你弹钢琴的话，线谱是很容易使用的。
 
-然而吉他这种乐器有些古怪，它并不适合这种记谱方式，所以演奏吉他的人使用了一种另类的记谱方式，称
-作“吉他谱（tablature）”。吉他谱告诉你的不是要演奏的音调，而是你在某一时刻要弹的指位和琴弦。你可
-以在不了解任何曲调的情况下学会弹奏一首曲子，很多人也是这么去学的。然而如果你想从中读出你弹奏的
-\emph{曲调}，吉他谱就没什么用处了。
+然而吉他这种乐器有些古怪，它并不适合这种记谱方式，所以演奏吉他的人使用了一种另类的记谱方式，称作“吉他谱（tablature）”。吉他谱告诉你的不是要演奏的音调，而是你在某一时刻要弹的指位和琴弦。你可以在不了解任何曲调的情况下学会弹奏一首曲子，很多人也是这么去学的。然而如果你想从中读出你弹奏的\emph{曲调}，吉他谱就没什么用处了。
 
-传统的记谱方式也许比吉他谱难学，但它可以告诉你如何演奏\emph{音乐}，而不仅仅是如何弹吉他。拿着
-一份线谱，我可以走到一架钢琴前面弹出同样的一首歌曲，我可以用贝司把它弹出来，我还可以把它输入到
-计算机中重新设计整份乐谱。然而拿着吉他谱，我就只能用它弹弹吉他。
+传统的记谱方式也许比吉他谱难学，但它可以告诉你如何演奏\emph{音乐}，而不仅仅是如何弹吉他。拿着一份线谱，我可以走到一架钢琴前面弹出同样的一首歌曲，我可以用贝司把它弹出来，我还可以把它输入到计算机中重新设计整份乐谱。然而拿着吉他谱，我就只能用它弹弹吉他。
 
-IDE和吉他谱类似。毫无疑问你可以使用IDE快速地写出代码，但你只能在一个固定的平台上使用一种特定的
-语言。这也是公司企业喜欢兜售这些东西给你的原因。他们知道你是个懒人，而IDE只在他们的平台上面工作，
-就这样，由于你的懒惰，他们就把你禁锢在他们的平台上了。
+IDE和吉他谱类似。毫无疑问你可以使用IDE快速地写出代码，但你只能在一个固定的平台上使用一种特定的语言。这也是公司企业喜欢兜售这些东西给你的原因。他们知道你是个懒人，而IDE只在他们的平台上面工作，就这样，由于你的懒惰，他们就把你禁锢在他们的平台上了。
 
-打破这个循环的方法也不是没有，你需要卧薪尝胆，最终学会如何不使用IDE进行编程。简单的文本编辑器，
-或者像Vim和Emacs这样的程序员编辑器，会让代码真正成为你的工作对象。比起使用IDE来这样会更难一些，
-不过最终的结果就是你可以应对\emph{任何}代码，不管它在什么样的计算机平台上，不管它使用的是什么
-语言，而且你懂它的深层原理。
+打破这个循环的方法也不是没有，你需要卧薪尝胆，最终学会如何不使用IDE进行编程。简单的文本编辑器，或者像Vim和Emacs这样的程序员编辑器，会让代码真正成为你的工作对象。比起使用IDE来这样会更难一些，不过最终的结果就是你可以应对\emph{任何}代码，不管它在什么样的计算机平台上，不管它使用的是什么语言，而且你懂它的深层原理。
 
 \end{aside}
-
-
