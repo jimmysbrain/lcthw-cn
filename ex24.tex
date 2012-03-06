@@ -86,15 +86,12 @@
 仔细浏览一遍这些函数，记住他们的区别和作用。比如有\func{fscanf} 的卡片上，同样会有\func{scanf}，\func{sscanf}，\func{vscanf}，卡片背面会有函数作用的说明。
 最后，可以用 \program{man} 读取卡片的相关信息。例如\verb|man fscanf|就可以得到\func{fscanf}的帮助信息。 
 
-\section{Extra Credit}
+\section{额外小作业}
 
 \begin{enumerate}
-\item Rewrite this to not use \func{fscanf} at all.  You'll need to use
-    functions like \func{atoi} to convert the input strings to numbers.
-\item Change this to use plain \func{scanf} instead of \func{fscanf} to
-    see what the difference is.
-\item Fix it so that the input names get stripped of the trailing newline
-    characters and any whitespace.
+\item 不用 \func{fscanf} 完全重写一遍代码。  你将会用到诸如 \func{atoi}的函数来把输入的字符串转换成数字。
+\item 把\func{fscanf}改成只用\func{scanf}看看有什么不同。
+\item 把代码改成输入的名字会被回车以及任何空格截断的形式。
 \item Use \ident{scanf} to write a function that reads a character at a time
     and files in the names but doesn't go past the end.  Make this function
     generic so it can take a size for the string, and make sure you end
