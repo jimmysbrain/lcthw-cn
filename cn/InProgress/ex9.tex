@@ -1,19 +1,19 @@
-\chapter{习题9: 数组和字符串}
+\chapter{习题 9: 数组和字符串}
 
-在上一个习题中我们学习了如何创建基本数组以及如何将他们映射到字符串上。这个习题中我们将更全面的了解数组与字符串之间的相似之处，并更多的了解记忆布局(memory layouts)。
+在上一个习题中我们学习了如何创建基本数组以及数组和字符串的对应关系。这个习题中我们将更全面的了解数组与字符串之间的相似之处，并更多地了解关于内存分布的知识。
 
-本练习会让你明白，C其实是直接将字符串存储为比特数组的，并且由 \verb|'\0'| (nul) 终止。在练习8中我们将这一步手动执行了，所以你还没有机会真正的了解这一点。 这里我们将用另一种方式将字符串与一个数字数组相比较：
+这节习题展示给你的是 C 语言将字符串作为字节数组存放的，该数组以 \verb|'\0'| (nul)作为终止。在上一习题中我们是手动这样去做的，所以你可能已经得出这个结论了。 这里我们将用另一种方式更清晰地去展示这一点，将字符串与一个数字数组相比较：
 
 \begin{code}{ex9.c}
 << d['code/ex9.c|pyg|l'] >>
 \end{code}
 
-在这段代码中，我们用最无不给力的方法准备了数组：对每一个元素一一赋值。 在 \ident{numbers} 我们是在准备数字， 但在 \ident{name} 中我们实际上是在手动创建字符串。
+在这段代码中我们建立了一些数组，用的是对每一个元素一一赋值这种无聊乏味的方法。 在 \ident{numbers} 我们是在创建一些数值， 但在 \ident{name} 中我们实际上是在手动创建字符串。
 
 
 \section{你应该看到的结果}
 
-运行这段代码，首先会看到数组以初始格式输出了它们的初始值0:
+运行这段代码，你应该看到数组的内容被打印出来。首先打印出来的是初始为 0 的内容，接着打印出来的是初始化后的内容。
 
 \begin{code}{ex9 output}
 \begin{lstlisting}
@@ -24,59 +24,44 @@
 关于这个程序，你将注意到以下几点有趣的事：
 
 \begin{enumerate}
-\item 我并不需要对四个元素一一处理来初始化它们。C有这个快捷功能：当你为一个元素设定好时，它会把剩下的都初始化为0。
-\item 当 \ident{numbers} 中的每一个元素都被输出且数值为0。
-\item 当 \ident{name} 中的每一个元素都被输出时, 只有第一个元素 'a' 出现了， 因为字符 \verb|'\0'| 是特别字符，不会被显示。 
-\item 第一次输出的时候，它只输出了 "a" 是因为, 整个数组在第一个 'a' 被初始化为0之后被0填充，然后此字符串会被字符 \verb|'\0'| 正确地关闭。
-\item 接下来我们要再一次用最不给力的方法来给它们一一赋值，并输出它们。看看他们是如何变化的。 现在数字也准备好了，但是你弄明白这字符串是怎样将我的名字正确输出的吗？
-\item 这里有两条需要遵循的语法规则：
-    \verb|char name[4] = {'a'}| on line 6
-    vs. \verb|char *another = name| on line 44.  
-	第一个可能没有那么常见，第二个是你在处理像这样的字符串常量时应该使用的。
+\item 初始化数组的时候，我并不需要将 4 个元素一一赋予数组。这是 C 语言的一个快捷功能：当你只设置了一个元素的值，它就会把剩下的都初始化为 0。
+\item 打印 \ident{numbers} 中的每一个元素时，打印出来的值都是 0。
+\item 打印 \ident{name} 中的每一个元素时，只有第一个元素 'a' 被打印出来了， 因为 \verb|'\0'| 这个特殊字符是不会被显示出来的。 
+\item 第一次打印 \ident{name} 这个数组（字符串）的时候，它只输出了“a”。由于这个数组在第一个元素“a”之后的其它元素都是被 0 填充的，所以这个字符串正确地使用了 \verb|'\0'| 作为终结字符。
+\item 接下来我们再次创建数组，用的还是最单调乏味的手动一一赋值的方法，然后再次将它们打印出来。看看结果有什么变化。现在数字设置是生效了，不过你有没有看到我的名字也被正确地打印出来了？
+\item 处理字符串有两种语法： 第 6 行的 \verb|char name[4] = {'a'}| 和 第 44 行的 \verb|char *another = name| 。第一种不太常用，第二种才是你在处理这样的字符串常值(string literal)时应该使用的语法。
 \end{enumerate}
 
-注意，我使用了完全一样的语法和代码风格来操作整数数组和字符数组进行， 但是 \ident{printf} 认为 \ident{name} 只是一个字符串。 再次声明，这是因为C语言在对待字符串和字符数组时是没有区别的。  
+注意，我使用了完全一样的语法和代码风格来操作整数数组和字符数组进行，但是 \ident{printf} 认为 \ident{name} 只是一个字符串。 这里再次解释一下，这是因为对于 C 语言来说，字符串和字符数组时是没有区别的。  
 
-最后，当你创建字符串常量一般来说你应该使用一下语法结构： \verb|char *another = "Literal"| 。 这其实就是一样的东西，只是方便了你的输入并显得更加地道。 
+最后一点，当你创建字符串时，你一般应该使用 \verb|char *another = "Literal"| 这样的语法。 这其实和前面的方法是一回事，只不过这样写更符合习惯，而且写起来更容易而已。
 
 
 \section{让程序出错}
 
-The source of almost all bugs in C come from forgetting to have enough
-space, or forgetting to put a \verb|'\0'| at the end of a string.  In
-fact it's so common and hard to get right that the majority of good C
-code just doesn't use C style strings.  In later exercises we'll actually
-learn how to avoid C strings completely.
+几乎所有的 C 程序的 bug 都来自两个地方，一是没有分配足够的空间，二是字符串的结尾没有
+放 \verb|'\0'| 。事实上这些 bug 及其常见而且很难弄对，以至于大部分高质量的 C 代码
+都会避免使用 C 风格的字符串。后面的习题中我们将学到如何完全避免使用 C 语言的字符串。
 
-In this program the key to breaking it is to forget to put the \verb|'\0'|
-character at the end of the strings.  There's a few ways to do this:
+对本节的程序而言，让它出错的关键方法就是忘记在字符串结尾放 \verb|'\0'| 。试一下下面的方法：
 
 \begin{enumerate}
 \item 取消 \ident{name} 的初始设定。
-\item 意外设置 \verb|name[3] = 'A';| ，这样一来就没有终止符了.
-\item 将初始值设为 \verb|{'a','a','a','a'}| ，这样一来就有很多字符 'a' 却没有地方给终止符 \verb|'\0'|了.
+\item 不小心设了 \verb|name[3] = 'A';| ，这样一来就没有终止符了.
+\item 将初始值设为 \verb|{'a','a','a','a'}| ，这样就会字符 'a' 过多而终止符 \verb|'\0'| 没地方放了.
 \end{enumerate}
 
-想想还有没有其他弄坏它的办法，并且就像之前一样，将它们通通放在 Valgrind 下，这样你就明白到底是什么情况以及错误的名字。有时候你的错误连 Valgrind 都找不出来，但是你可以试一下动一动你申明变量的那一节看看你会不会遇到错误。这个部分也是C语言的神秘之处，有时候bug会因为文件位置稍微有误而突然消失。
-
-
+想想还有没有其他弄坏它的办法，并且就像之前一样，将它们通通放在 Valgrind 下运行，这样你就会知道到底发生了什么以及各种错误的名字。有时候你的错误连 Valgrind 都找不出来，但是你可以试变更一下申明变量的位置然后看会不会遇到错误。这也是 C 语言歪门邪道的地方，有时候你只不过动了一下变量的位置， bug 就奇怪地不见了。
 
 \section{加分习题}
 
 \begin{enumerate}
-\item 将字符赋值到 \ident{numbers} ，并使用 \ident{printf} 一个字符一个字符的打印输出。看看你会得到哪种编译器警告？
-\item 反向操作?Do the inverse for \ident{name}, 试着像操作一个整数数组 (an array
-    of \ident{int}) 一样， 并一个整数一个整数 (\ident{int}) 的输出。 Valgrind 是怎样想的？
+\item 将字符赋值给 \ident{numbers} ，并使用 \ident{printf} 将字符逐一的打印输出。看看你会得到什么样的编译器警告？
+\item 反过来处理一下 \ident{name}, 试着像操作 \ident{int} 数组一样， 并逐一打印 (\ident{int}) 值。Valgrind 是怎样认为的？
 \item 你还可以用多少种其他方式来打印输出它们？
-\item 如果一个字符数组有4个字节， 一个整数也是4个字节，你可以用同样的方式对待它们吗？你要怎样才能做到这一点？
-	If an array of characters is 4 bytes long, and an integer is 4 bytes
-    long, then can you treat the whole \ident{name} array like it's just
-    an integer?  How might you accomplish this crazy hack?
-\item 用笔纸以一排盒子的形式画出这些数组。然后做你刚刚在纸上的操作，看看你是否正确了。
-	Take out a piece of paper and draw out each of these arrays as a
-    row of boxes. Then do the operations you just did on paper to see
-    if you get them right.
-\item 将 \ident{name} 转化成另一种 \ident{another} 风格，看看代码是否还能正常运行。
+\item 如果一个字符数组的长度是 4 个字节，一个整数的长度也是 4 个字节，你可以把整个 \ident{name} 数组当做一个整数来处理吗？你要通过怎样的手段才能做到这一点？
+\item 在纸上把数组画出来，用一排盒子的格式表示出这些数组。然后将你上面的操作在纸上模拟出来，看看你是否弄对了。
+\item 将 \ident{name} 用 \ident{another} 的申明风格申明一次，看看代码是否还能正常运行。
 \end{enumerate}
 
 
