@@ -2,50 +2,35 @@
 
 是时候学习另外一个工具 \program{Valgrind} 了，它将伴随你学习 C 语言的整个过程。我现在介绍 \program{Valgrind} 给你，因为从现在起，在“让程序出错”这个小节里，每个练习你都将用到它。\program{Valgrind} 运行你的程序，然后报告你犯下的所有致命错误。它是一个很棒的自由软件，我经常在我写 C 代码的时候用到它。
 
-Remember in the last exercise that I told you to break your code by
-removing one of the arguments to \ident{printf}?  It printed out some
-funky results, but I didn't tell you why it printed those results out.
-In this exercise we're going to use \program{Valgrind} to find out 
-why.
+还记得在上一个习题里，我让你修改你的代码移除了 \ident{printf} 函数的参数吗？它打印出了一些补寻常的结果，但我没有告诉你，为什么它会打印出这些结果。在这个习题里，我们将用 \program{Valgrind} 来探个究竟。
 
 \begin{aside}{What's With All The Tools}
-These first few exercises are mixing some essential tools the rest
-of the book needs with learning a little bit of code.  The reason is
-that most of the folks who read this book are not familiar with compiled
-languages, and definitely not with automation and helpful tools.  By 
-getting you to use \ident{make} and \program{Valgrind} right now I can
-then use them to teach you C faster and help you find all your bugs
-early.
+只经过几章，我们就学习了本书所需要的所有工具，而只学写了一点点代码。这是因为这本书的大部分读者不熟悉编译语言，当然也不知道自动化处理和有用的工具。让你马上接触 \ident{make}  和 \program{Valgrind} ，我就能用他们更快的教会你 C 语言并帮助你找到你在程序中犯的错误。
 
-After this exercise we won't do many more tools, it'll be mostly
-code and syntax for a while.  But, we'll also have a few tools we
-can use to really see what's going on and get a good understanding
-of common mistakes and problems.
+在这章练习后，一段时间内，我们将不会介绍其他任何工具，大部分将是代码和语法。但我们还将会学习一些工具，用来查看程序如何运行和帮我们理解一些常见错误和问题 。
+
 \end{aside}
 
-\section{Installing Valgrind}
+\section{安装 Valgrind}
 
-You could install \program{Valgrind} with the package manager for your
-OS, but I want you to learn to install things from source.  This involves
-the following process:
+ 你能通过操作系统的包管理器来安装 \program{Valgrind}，但我要你学习如何从源代码安装程序。它包括以下几个步骤：
 
 \begin{enumerate}
-\item Download a source archive file to get the source.
-\item Unpack the archive to extract the files onto your computer.
-\item Run \program{./configure} to setup build configurations.
-\item Run \program{make} to make it build, just like you've been doing.
-\item Run \program{sudo make install} to install it onto your computer.
+\item 下载源代码包。
+\item 解压文件到你的电脑。
+\item 运行 \program{./configure} 设置配置。
+\item 运行 \program{make} 创建程序, 就像你以前做过的那样。
+\item 运行 \program{sudo make install} 把程序安装到你的电脑。
 \end{enumerate}
 
-Here's a script of me doing this very process, which I want you to
+下面是我流程的一个脚本，我要你试着重复做一次。
 try to replicate:
 
 \begin{code}{ex4.sh}
 << d['code/ex4.sh|pyg|l'] >>
 \end{code}
 
-Follow this, but obviously update it for new Valgrind versions.  If it
-doesn't build then try digging into why as well.
+按以上流程，但很明显，要根据新版的 Valgrind 更新流程。如果它创建失败，那么查出为什么出错。
 
 \section{Using Valgrind}
 
