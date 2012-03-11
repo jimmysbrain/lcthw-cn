@@ -61,7 +61,7 @@ C 语言使用了一种“阶梯式的类型提升”的机制，当面对一个
 
 \subsection{类型大小}
 
-头文件 \file{stdint.h} 为整数类型定义了一组 \ident{typdefs} ，同时也定义了一组所有数据类型大小的宏。 这个在一致性上优于老的 \file{limits.h} ，使用起来更加方便，类型定义如下：
+头文件 \file{stdint.h} 为整数类型定义了一组 \ident{typdefs} ，同时也定义了一组所有数据类型大小的宏。 这个在兼容性上优于老的 \file{limits.h} ，使用起来更加方便，类型定义如下：
 
 \begin{description}
 \item[int8\_t] 8比特符号整型
@@ -82,174 +82,157 @@ C 语言使用了一种“阶梯式的类型提升”的机制，当面对一个
 \item[UINT\emph{N}\_MAX] 比特数为 \emph{N} 的无符号整型的最大正数值。因为是无符号的，所以最小值是0，没有负数。
 \end{description}
 
-There are also macros in \file{stdint.h} for sizes of the \ident{size\_t} type, integers large enough to hold pointers,
-头文件 \file{stdint.h} 中也有表示 \indent{size\_t} 类型大小的宏，这个类型是大小可以用来装指针的整型还有其他关于大小的宏定义。
-and other handy size defining macros.  Compilers have to at least have these, and then they can allow
-other larger types.
+头文件 \file{stdint.h} 中也有表示 \indent{size\_t} 类型大小的宏，这个类型是大小可以用来装指针的整型还有其他关于大小定义的方便的宏。
 编译器必须得有这些定义，这样才能允许有其他更大的类型。
 
 
 这是 \file{stdint.h}中的一个列表：
 
 \begin{description}
-\item[int\_least\emph{N}\_t] holds at least \emph{N} bits.
-\item[uint\_least\emph{N}\_t] holds at least \emph{N} bits unsigned.
-\item[INT\_LEAST\emph{N}\_MAX] max value of the matching least\emph{N} type.
-\item[INT\_LEAST\emph{N}\_MIN] min value of the matching least\emph{N} type.
-\item[UINT\_LEAST\emph{N}\_MAX] unsigned maximum of the matching \emph{N} type.
-\item[int\_fast\emph{N}\_t] similar to \ident{int\_least\emph{N}\_t} but asking for the "fastest" with at least that precision.
-\item[uint\_fast\emph{N}\_t] unsigned fastest least integer.
-\item[INT\_FAST\emph{N}\_MAX] max value of the matching fastest\emph{N} type.
-\item[INT\_FAST\emph{N}\_MIN] min value of the matching fastest\emph{N} type.
-\item[UINT\_FAST\emph{N}\_MAX] unsigned max value of the matching fastest\emph{N} type.
-\item[intptr\_t] a \emph{signed} integer large enough to hold a pointer.
-\item[uintptr\_t] an \emph{unsigned} integer large enough to hold a pointer.
-\item[INTPTR\_MAX] max value of a \ident{intptr\_t}.
-\item[INTPTR\_MIN] min value of a \ident{intptr\_t}.
-\item[UINTPTR\_MAX] unsigned max value of a \ident{uintptr\_t}.
-\item[intmax\_t] biggest number possible on that system.
-\item[uintmax\_t] biggest unsigned number possible.
-\item[INTMAX\_MAX] largest value for the biggest signed number.
-\item[INTMAX\_MIN] smallest value for the biggest signed number.
-\item[UINTMAX\_MAX] largest value for the biggest unsigned number.
-\item[PTRDIFF\_MIN] minimum value of \ident{ptrdiff\_t}.
-\item[PTRDIFF\_MAX] maximum value of \ident{ptrdiff\_t}.
-\item[SIZE\_MAX] maximum of a \ident{size\_t}.
+\item[int\_least\emph{N}\_t] 能存储至少 \emph{N} 比特的整型\footnote{译者注：字长最小整型，即规定的最小长度为 \emph{N} 比特的整型。}。
+\item[uint\_least\emph{N}\_t] 能存储至少 \emph{N} 比特的无符号整型。
+\item[INT\_LEAST\emph{N}\_MAX] 至少能存储\emph{N} 比特的整型对应的最大值。
+\item[INT\_LEAST\emph{N}\_MIN] 至少能存储\emph{N} 比特的整型对应的最小值。
+\item[UINT\_LEAST\emph{N}\_MAX] 至少能存储\emph{N} 比特的无符号整型对应的最小值。。
+\item[int\_fast\emph{N}\_t]  同 \ident{int\_least\emph{N}\_t} 接近，但是要求的是“最快速”的至少 \emph{N} 比特的整型\footnote{译者注：字长最小快速整型，理论上来说，CPU处理和其字长（word）长度相同的整型会比较快。}。
+\item[uint\_fast\emph{N}\_t] 无符号字长最小快速整型.
+\item[INT\_FAST\emph{N}\_MAX] 字长最小快速整型对应的最大值。
+\item[INT\_FAST\emph{N}\_MIN] 字长最小快速整型对应的最小。
+\item[UINT\_FAST\emph{N}\_MAX] 字长最小快速无符号整型。
+\item[intptr\_t] 大小容纳一个指针的 \emph{signed} 整型。
+\item[uintptr\_t] 大小容纳一个指针的 \emph{unsigned} 整型。
+\item[INTPTR\_MAX] \ident{intptr\_t}的最大值。
+\item[INTPTR\_MIN] \ident{intptr\_t}的最小值。
+\item[UINTPTR\_MAX] 无符号 \ident{uintptr\_t} 的最大值。
+\item[intmax\_t] 系统允许的最大的符号整型。
+\item[uintmax\_t] 系统允许的最大的无符号整型。
+\item[INTMAX\_MAX] 最大的符号整型的最大值。
+\item[INTMAX\_MIN] 最大的符号整型的最小值。
+\item[UINTMAX\_MAX] 最大的无符号整型的最大值。
+\item[PTRDIFF\_MIN] \ident{ptrdiff\_t} 的最小值。
+\item[PTRDIFF\_MAX]  ident{ptrdiff\_t} 的最大值。
+\item[SIZE\_MAX] \ident{size\_t} 的最大值。
 \end{description}
 
-\section{Available Operators}
+\section{可用运算符}
 
-This is a comprehensive list of all the operators you have in the C language.
-In this list, I'm indicating the following:
+这是C语言中可用的运算符的完整列表。
+在这个列表中，我做了如下说明：
 
 \begin{description}
-\item[(binary)] The operator has a left and right: \verb|X + Y|.
-\item[(unary)] The operator is on its own: \verb|-X|.
-\item[(prefix)] The operator comes before the variable: \verb|++X|.
-\item[(postfix)] Usually the same as the \ident{(prefix)} version, but placing it
-    after gives it a different meaning: \verb|X++|.
-\item[(ternary)] There's only one of these, so it's actually called the
-    ternary but it means "three operands": \verb|X ? Y : Z|.
+\item[双目运算符(binary)] 有左右两个运算对象: \verb|X + Y|.
+\item[单目运算符(unary)] 对自身做运算: \verb|-X|.
+\item[前置运算符(prefix)] 运算符在变量的前面: \verb|++X|.
+\item[后置运算符(postfix)] 通常是与 \ident{(prefix)} 相同，但是放置在后面会有不同的含义: \verb|X++|.
+\item[三目运算符(ternary)] 只有一个，虽然被叫做三目运算符，但是实际上是“三个操作数”: \verb|X ? Y : Z|.
 \end{description}
 
 
-\subsection{Math Operators}
+\subsection{数学运算符}
 
-These are your basic math operations, plus I put \verb|()| in
-with these since it calls a function and is close to a "math"
-operation.
+这里有一些基本的数学运算符, 而且我把 \verb|()| 也放了进来，因为它是调用一个函数，很像一个“数学”运算符。
 
 \begin{description}
-\item[()] Function call.
-\item[* (binary)] multiply.
-\item[/] divide.
-\item[+ (binary)] addition.
-\item[+ (unary)] positive number.
-\item[++ (postfix)] read, then increment.
-\item[++ (prefix)] increment, then read.
-\item[$--$ (postfix)] read, then decrement.
-\item[$--$ (prefix)] decrement, then read.
-\item[- (binary)] subtract.
-\item[- (unary)] negative number.
+\item[()] 调用函数
+\item[* (binary)] 乘
+\item[/] 除
+\item[+ (binary)] 加
+\item[+ (unary)] 正数
+\item[++ (postfix)] 先读值，再自增
+\item[++ (prefix)] 先自增，再读值
+\item[$--$ (postfix)] 先读值，再自减
+\item[$--$ (prefix)] 先自减，再读值
+\item[- (binary)] 减
+\item[- (unary)] 负数
 \end{description}
 
-\subsection{Data Operators}
+\subsection{数据运算符}
 
-These are used to access data in different ways and forms.
+这些运算符使用不同的方法和形式来存取数据。
 
 \begin{description}
-\item[-\textgreater{}] struct pointer access.
-\item[.] struct value access.
-\item{[]} Array index.
-\item[sizeof] size of a type or variable.
-\item[\& (unary)] Address of.
-\item[* (unary)] Value of.
+\item[-\textgreater{}] 访问指针指向的结构体的成员
+\item[.] 访问结构体成员
+\item{[]} 数组下标.
+\item[sizeof] 类型或变量的大小
+\item[\& (unary)] 取地址
+\item[* (unary)] 取值
 \end{description}
 
-\subsection{Logic Operators}
+\subsection{逻辑运算符}
 
-These handle testing equality and inequality of variables.
+这些运算符用来检验变量相等或者不相等。
 
 \begin{description}
-\item[!=] does not equal.
-\item[\textless{}] less than.
-\item[\textless{}=] less than or equal.
-\item[==] equal (not assignment).
-\item[\textgreater{}] greater than.
-\item[\textgreater{}=] greater than or equal.
+\item[!=] 不相等
+\item[\textless{}] 小于
+\item[\textless{}=] 小于等于或者不大于
+\item[==] 相等(不是赋值的等于)
+\item[\textgreater{}] 大于
+\item[\textgreater{}=] 大于等于或者不小于
 \end{description}
 
-\subsection{Bit Operators}
+\subsection{位运算符}
 
-These are more advanced and for shifting and modifying the 
-raw bits in integers.
+这些运算符要更高级一些，用来对正数的原始二进制数进行移位和修改的。
 
 \begin{description}
-\item[\& (binary)] Bitwise and.
-\item[\textless{}\textless{}] Shift left.
-\item[\textgreater{}\textgreater{}] Shift right.
-\item[\^{}] bitwise xor (exclusive or).
-\item[$\vert$] bitwise or.
-\item[\textasciitilde{}] compliment (flips all the bits).
+\item[\& (binary)] 按位与.
+\item[\textless{}\textless{}] 左移位
+\item[\textgreater{}\textgreater{}] 右移位
+\item[\^{}] 按位异或 （互斥或）
+\item[$\vert$] 按位或
+\item[\textasciitilde{}] 按位取反 （翻转所有的位）
 \end{description}
 
 
-\subsection{Boolean Operators}
+\subsection{布尔运算符}
 
-Used in truth testing.  Study the ternary operator carefully, it is very handy.
+用在真值检验中。好好学习三目运算符，非常的好用。
 
 \begin{description}
-\item[!] not.
-\item[\&\&] and.
-\item[$\vert\vert$] or.
-\item[?:] Ternary truth test, read \verb|X ? Y : Z| as "if X then Y else Z".
+\item[!] 非
+\item[\&\&] 与
+\item[$\vert\vert$] 或
+\item[?:] 三目运算符，条件运算符，将 \verb|X ? Y : Z| 读作 “如果 X 则 Y 否则 Z”.
 \end{description}
 
-\subsection{Assignment Operators}
+\subsection{赋值运算符}
 
-Compound assignment operators that assign a value, and/or perform
-an operation at the same time.  Most of the above operations
-can also be combined into a compound assignment operator.
+复合赋值运算符是在赋值的时候，加上其他的运算符。上面的大部分运算符，都可以用来组成复合运算符。
 
 \begin{description}
-\item[=] assign.
-\item[\%=] modulus assign.
-\item[\&=] bitwise and assign.
-\item[*=] multiply assign.
-\item[+=] plus assign.
-\item[-=] minus assign.
-\item[/=] divid assign.
-\item[\textless{}\textless{}=] shift left, assign.
-\item[\textgreater{}\textgreater{}=] shift right, assign.
-\item[\^{}=] bitwise xor, assign.
-\item[$\vert$=] bitwise or, assign.
+\item[=] 等于
+\item[\%=] 取余等于
+\item[\&=] 按位与等于
+\item[*=] 乘等于
+\item[+=] 加等于
+\item[-=] 减等于
+\item[/=] 除等于
+\item[\textless{}\textless{}=] 左移位等于
+\item[\textgreater{}\textgreater{}=] 右移位等于
+\item[\^{}=] 按位异或等于
+\item[$\vert$=] 按位或等于
 \end{description}
 
-\section{Available Control Structures}
+\section{可用的控制结构}
 
-There's a few control structures you haven't encountered yet:
+还有一些你还没有接触到的控制结构：
 
 \begin{description}
-\item[do-while] \verb|do { ... } while(X);| First does the code in the block, then
-    tests the \ident{X} expression before exiting.
-\item[break] Put this in a loop, and it breaks out ending it early.
-\item[continue] Stops the body of a loop and jumps to the test so it can continue.
-\item[goto] Jumps to a spot in the code where you've placed a \verb|label:|, and
-    you've been using this in the \file{dbg.h} macros to go to the \verb|error:|
-    label.
+\item[do-while] \verb|do { ... } while(X);| 先执行循环体中的代码，再验证 \ident{X} 表达式，直到结束。
+\item[break] 把这个放入到循环体中，就会提前结束循环。
+\item[continue] 跳出循环体，直接验证表达式，进行下一次循环。
+\item[goto] 跳到代码中，你放置了 \verb|label:| 的地方 ，你已经在 \file{dbg.h} 的宏中用过这个跳到 \verb|error:| 标签处。
 \end{description}
 
 
-\subsection{Extra Credit}
+\subsection{加分习题}
 
 \begin{enumerate}
-\item Read \file{stdint.h} or a description of it and write out all the possible
-    available size identifiers.
-\item Go through each item here and write out what it does in code.  Research it so you
-     know you got it right by looking it up online.
-\item Get this information solid as well by making flash cards and spending 15 
-    minutes a day memorizing it.
-\item Create a program that prints out examples of each type and confirm that your
-    research is right.
+\item 浏览 \file{stdint.h} 文件或者它的介绍然后写出所有可能的可用大小标识符。
+\item 浏览这的每一项，然后写出其在代码中是做什么的。可以通过网上查找来确定你的研究是否正确。
+\item 可以利用记忆卡片每天花费15分钟来加强记忆，夯实基础。
+\item 写一个程序打印出各种类型的例子来确认你的研究结果是正确的。
 \end{enumerate}
 
