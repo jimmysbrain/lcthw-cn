@@ -23,62 +23,49 @@
 \item 运行 \program{sudo make install} 把程序安装到你的电脑。
 \end{enumerate}
 
-下面是我流程的一个脚本，我要你试着重复做一次。
+下面是我流程的一个脚本，我要你试着 按它重做一次。
 try to replicate:
 
 \begin{code}{ex4.sh}
 << d['code/ex4.sh|pyg|l'] >>
 \end{code}
 
-按以上流程，但很明显，要根据新版的 Valgrind 更新流程。如果它创建失败，那么查出为什么出错。
+但要根据新版的 Valgrind 更新流程。如果它创建失败，那么查出为什么出错。
 
-\section{Using Valgrind}
+\section{ 使用 Valgrind}
 
-Using \program{Valgrind} is easy, you just run \verb|valgrind theprogram| and
-it runs your program, then prints out all the errors your program made while it
-was running.  In this exercise we'll break down one of the error outputs and
-you can get an instant crash course in "Valgrind hell".  Then we'll fix the
-program.
+使用 \program{Valgrind} 很简单, 你只要运行 \verb|valgrind theprogram| 它就会运行你的程序，然后打印出你程序运行时的错误。在这个习题里，我们将让程序出错，然后我们修正这个程序。
 
-First, here's a purposefully broken version of the \file{ex3.c} code
-for you to build, now called \file{ex4.c}.  For practice, type it
-in again:
+ 首先，我们把 \file{ex3.c} 的代码拿来用，换个名字叫 \file{ex4.c} ，当然，代码会故意弄错，为了练习，你需要重新输入一遍。
 
 \begin{code}{ex4.c}
 << d['code/ex4.c|pyg|l'] >>
 \end{code}
 
-You'll see it's the same except I've made two classic mistakes:
+你可以看到，除了我在上面犯了两个经典错误之外，其余都是一样的。
 
 \begin{enumerate}
-\item I've failed to initialize the \ident{height} variable.
-\item I've forgot to give the first \ident{printf} the \ident{age} variable.
+\item 我没有初始化 \ident{height} 变量.
+\item 我忘记给头一个 \ident{printf} 函数加上 \ident{age} 变量。
 \end{enumerate}
 
-\section{What You Should See}
+\section{你应该看到的结果}
 
-Now we will build this just like normal, but instead of running it
-directly, we'll run it with \program{Valgrind} (see Source: "Building and running ex4.c with Valgrind"):
+现在我们像平常一样创建它，然后用 \program{Valgrind} 运行它，而不是像以前那样直接运行程序（看 Source: “创建并用 Valgrind 运行 ex4.c”）：
 
-\begin{Terminal}{Building and running ex4.c with Valgrind}
+\begin{Terminal}{创建并用 Valgrind 运行 ex4.c}
 \begin{lstlisting}
 << d['code/ex4.out|dexy'] >>
 \end{lstlisting}
 \end{Terminal}
 
-This one is huge because \program{Valgrind} is telling you exactly where
-every problem in your program is.  Starting at the top here's what you're
-reading, line by line (line numbers are on the left so you can follow):
+输出很长，因为 \program{Valgrind} 会精确告知你，程序每一个错误的所在。你要逐行从头到尾的读一遍（行号在左边，这样你可以对照）:
 
 \begin{description}
-\item[1] You do the usual \verb|make ex4| and that builds it. Make sure the \ident{cc} command
-    you see is the same and has the \verb|-g| option or your \program{Valgrind} output won't
-    have line numbers.
-\item[2-6] Notice that the compiler is also yelling at you about this source file and it
-    warns you that you have "too few arguments for format".  That's where you 
-    forgot to include the \ident{age} variable.
-\item[7] Then you run your program using \verb|valgrind ./ex4|.
-\item[8] Then \program{Valgrind} goes crazy and yells at you for:
+\item[1] 你像平常一样用 \verb|make ex4| 创建程序。 请确认你的 \ident{cc} 指令编译时用了同样的参数，没有 \verb|-g| 选项，\program{Valgrind} 的输出将不带行号。
+\item[2-6] 可以注意到编译器也对你发出了警告，它提醒你 "too few arguments for format". 那是你忘了加 \ident{age} 变量。
+\item[7] 用 \verb|valgrind ./ex4| 运行你的程序。
+\item[8] 然后 \program{Valgrind} 就:
     \begin{description}
         \item[14-18] On line \verb|main (ex4.c:11)| (read as "in the main function in
             file ex4.c at line 11) you have "Use of uninitialised value of size 8".
@@ -92,8 +79,7 @@ reading, line by line (line numbers are on the left so you can follow):
         \item[25-35] The remaining errors are more of the same because the variable keeps getting
         used.
     \end{description}
-\item[37-46] Finally the program exits and \program{Valgrind} tells you a summary of how bad
-    your program is.
+\item[37-46] 最后，程序退出然后 \program{Valgrind} 做了个概要，向你展示你的程序有多糟糕。
 \end{description}
 
 That is quite a lot of information to take in, but here's how you deal with it:
@@ -108,19 +94,14 @@ That is quite a lot of information to take in, but here's how you deal with it:
     have probably learned something about how you write code.
 \end{enumerate}
 
-In this exercise I'm not expecting you to fully grasp \program{Valgrind} right
-away, but instead get it installed and learn how to use it real quick so we
-can apply it to all the later exercises.
+在这个习题里，我没指望你能立马就熟练运用 \program{Valgrind} ，只是让你装好它并学习如何快速上手，这样我们就能在以后的习题里用上它。
 
-\section{Extra Credit}
+\section{加分习题}
 
 \begin{enumerate}
-\item Fix this program using \program{Valgrind} and the compiler as your guide.
-\item Read up on \program{Valgrind} on the internet.
-\item Download other software and build it by hand. Try something you already
-    use but never built for yourself.
-\item Look at how the \program{Valgrind} source files are laid out in the
-    source directory and read its Makefile.  Don't worry, none of that
-    makes sense to me either.
+\item 根据 \program{Valgrind} 和编译器的提示，修正错误。
+\item 在网上研读 \program{Valgrind} 。
+\item 下载其他软件源码，自己创建它。尝试一些你已经用过但还从没自己动手编译创建过的软件。
+\item 看看 \program{Valgrind} 的源码，读一下它的 Makefile ，别担心，这些对我也没有意义。
 \end{enumerate}
 
