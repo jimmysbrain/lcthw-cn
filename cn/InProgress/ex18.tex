@@ -90,37 +90,22 @@ C中的函数（译注：函数名即为指针名）实际上只是指向程序�
 \end{lstlisting}
 \end{code}
 
-This loop is sort of like converting your function to a string and then
-printing out it's contents。  This won't break your program unless the CPU and
-OS you're on has a problem with you doing this。  What you'll see is a string of
-hexadecimal numbers after it prints the sorted array:
+这个循环像先把你的函数转换成字符串然后在排序，接着输出它们的内容。 这个循环不会中断（break）你的程序，除非你正在使用的 CPU 或 操作系统（OS）因为你的操作而产生问题。当它输出这个排序后的数组，你会看到一个十六进制数的字符串:
 
 \begin{Verbatim}
 55:48:89:e5:89:7d:fc:89:75:f8:8b:55:fc:8b:45:f8:29:d0:c9:c3:55:48:89:e5:89:
 \end{Verbatim}
 
-That should be the raw assembler byte code of the function itself， and you
-should see they start the same， but then have different endings。  It's also
-possible that this loop isn't getting all of the function or is getting too
-much and stomping on another piece of the program。  Without more analysis
-you wouldn't know。
+那应该是这个函数自身的汇编字节码，你会看到它们开头都相同，但结尾不同。 还可能是这个循环没取得完整的函数或者是取的太多了，取了一部分别的函数的代码。 不多分析一下你永远都不会知道。
 
 \section{加分习题}
 
 \begin{enumerate}
-\item Get a hex editor and open up \program{ex18}， then find this sequence
-    of hex digits that start a function to see if you can find the function
-    in the raw program。
-\item Find other random things in your hex editor and change them。  Rerun your
-    program and see what happens。  Changing strings you find are the easiest
-    things to change。
-\item Pass in the wrong function for the \ident{compare\_cb} and see what
-    the C compiler complains about。
-\item Pass in NULL and watch your program seriously bite it。  Then run
-    \program{Valgrind} and see what that reports。
-\item Write another sorting algorithm， then change \func{test\_sorting} so
-    that it takes \emph{both} an arbitrary sort function and the sort function's
-    callback comparison。  Use it to test both of your algorithms。
+\item 找一个十六进制编辑器打开 \program{ex18}，然后找到包含这个十六进制位串的函数，看看你是否可以在这个程序中找到这个函数。
+\item 在你的十六进制编辑器中随便找点别的东西，修改它们。回到你的程序看看发生了什么。  修改你找到的字符串是相当容易的。
+\item 给 \ident{compare\_cb} 传入错误的参数， 然后看看C编译器提示什么信息。
+\item 传入 NULL 看看你的程序出了什么问题。 然后运行 \program{Valgrind} 看看报告了什么。
+\item 写另外一个排序算法，修改 \func{test\_sorting} 调用这两个函数并比较排序结果。
 \end{enumerate}
 
 
