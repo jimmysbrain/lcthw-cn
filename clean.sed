@@ -12,3 +12,6 @@ d
 /<div class="crosslinks"><p class="noindent">/{
 r header.html
 }
+/<link rel="stylesheet" type="text\/css" href="learn-c-the-hard-way.css">/{
+r styles.html
+}
