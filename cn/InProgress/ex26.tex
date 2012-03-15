@@ -13,16 +13,14 @@ you need to finish it.  If so, tell me at help@learncodethehardway.org
 and then wait until I finish the other exercises.
 \end{aside}
 
-\section{What Is \program{devpkg}?}
+\section{什么是 \program{devpkg}?}
 
-\program{Devpkg} is a simple C program that installs other software.  I made it
-specifically for this book as a way to teach you how a real software project is
-structured, and also how to reuse other people's libraries.  It uses a
-portability library called \href{http://apr.apache.org/}{The Apache Portable
-Runtime (APR)} that has many handy C functions which work on tons of platforms,
-including Windows.  Other than that, it just grabs code from the internet
-(or local files) and does the usual \verb|./configure ; make ; make install|
-every programmer does.
+\program{Devpkg} 是一个简单的 C 程序，它的功能是用来安装别的软件。这个软件是我专为
+这本书写的，目的是教你学习真正的软件项目是怎样构架的，以及学习怎样重复使用别人写的 library。
+它使用了一个称作 \href{http://apr.apache.org/}{The Apache Portable
+Runtime (APR)} 可移植性 library，它里边有很多好用适用于很多平台（包括 Windows）的 C 函数。
+除此之外，它所做的就是从网上或者本地抓到代码，然后执行一下我们每个人都会的 
+\verb|./configure ; make ; make install| 而已。
 
 Your goal in this exercise is to build \program{devpkg} from source, 
 finish each \emph{Challenge} I give, and use the source to understand
