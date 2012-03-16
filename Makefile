@@ -17,7 +17,7 @@ $(FINAL).pdf:
 	pdflatex -halt-on-error $(FINAL).tex
 
 html: 
-	cp -r site/help.html site/course.html site/js site/css output/
+	cp -r site/js site/css output/
 	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
 	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in"
 	gsed -i -f clean.sed output/*.html
