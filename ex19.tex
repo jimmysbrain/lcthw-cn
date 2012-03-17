@@ -90,7 +90,7 @@ syntax you haven't encountered before:
     we'll call \func{Object\_new} and avoids potential errors with calling it
     wrong.  The way the macro works is the \ident{T} and \ident{N} parameters
     to \ident{NEW} are "injected" into the line of code on the right.  The
-    syntax \verb|T##Proto| says to "concat Base at the end of T", so if you had
+    syntax \verb|T##Proto| says to "concat Proto at the end of T", so if you had
     \verb|NEW(Room, "Hello.")| then it'd make \ident{RoomProto} there.
 \item[\#define \_(N)] This macro is a bit of "syntactic sugar" for the object
     system and basically helps you write \verb|obj->proto.blah| as simply
