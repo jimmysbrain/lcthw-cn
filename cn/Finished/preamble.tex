@@ -1,23 +1,24 @@
 \documentclass{book}
-\usepackage{iwona,palatino}
-\usepackage{style}
-%\usepackage{palatino}
+\usepackage{palatino}
+\usepackage[default]{droidserif}
+\usepackage[T1]{fontenc}
+<< pygments['tango.tex'] >>
 \usepackage[
-    pdftitle={笨办法学 C 语言: 一本清晰直观的现代 C 语言编程介绍},
-    pdfauthor={Zed A. Shaw},
-    pdfsubject={An introduction to C programming for people who know one other language.},
-    pdfkeywords={C, Programming},
-    bookmarks, bookmarksopen,
-    pdfstartview=FitH,
-    colorlinks,linkcolor=blue,citecolor=blue,
-    urlcolor=red,
-    CJKbookmarks=true,
+   pdftitle={笨办法学 C 语言: 一本清晰直观的现代 C 语言编程介绍},
+   pdfauthor={Zed A. Shaw},
+   pdfsubject={一本写给学过一门编程语言的人的 C 语言入门书},
+   pdfkeywords={C, Programming},
+   bookmarks, bookmarksopen,
+   pdfstartview=FitH,
+   colorlinks,linkcolor=blue,citecolor=blue,
+   urlcolor=red,
+   CJKbookmarks=true,
 ]{hyperref}
 \setcounter{chapter}{0}
 \usepackage{upquote}
 \usepackage{float}
 \usepackage{fancybox}
-%\usepackage{savetrees}
+\usepackage[all=normal,margins=tight]{savetrees}
 \usepackage{fancyvrb}
 \usepackage{color}
 \usepackage{parskip}
@@ -25,6 +26,7 @@
 \usepackage{listings}
 \usepackage{attrib}
 \usepackage{ctexutf8}
+\usepackage{framed}
 \parskip 7.2pt
 
 \lstset{basicstyle=\ttfamily,

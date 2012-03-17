@@ -1,0 +1,238 @@
+\chapter{习题 21: 高级数据类型与流程控制}
+
+这个习题将会是 C 语言中你可使用的数据类型以及流程控制结构的一个完备的缩影。它可以作为你补充与巩固知识的参考，而且不需要你写任何代码。
+我会通过制作一些学习卡来让你记忆这个信息，这让你可以夯实你脑海中的重要概念。
+
+为了让习题有所帮助，你应该至少花一个星期去仔细推敲其内容并且完成填空。你应该写出每一个题在表达什么意思，然后写一个程序去验证你的研究
+
+\section{可用数据类型}
+
+\begin{description}
+\item[整型(int)] 通常存放一个整数, 一般大小默认是32位。
+\item[双精度浮点型(double)] 存放一个较大的浮点数。
+\item[单精度浮点型(float)] 存放一个较小的浮点数。
+\item[字符型(char)] 存放单个字符
+\item[空类型(void)] 表示“没有类型”，用于表示一个函数不返回信息，或者一个没有类型的指针，例如 \verb|void *thing| 。
+\item[枚举类型(enum)] 枚举类型，像整型一样，值是整型，但是会返回集合中对应的符号名称。在 \ident{分支选择语句(switch-statements)} 中，当你没有涵盖一个枚举类型里的所有元素的时候，一些编译器会发出警告。
+\end{description}
+
+\subsection{类型修饰符}
+
+\begin{description}
+\item[unsigned] 使得某一类型不用表示负数，这样虽然不会有负数，但是会有一个较大的上界。
+\item[signed] 有正数与负数，会将无符号的上界一分为二，转换成相同大小的负下界\footnote{译者注：unsigned 与 signed 可以用来修饰 char 和任意整型 }。
+\item[long] 会为这个类型使用一个较大的存储来存放更大的数值，通常是原来大小的两倍。
+\item[short] 为这个类型使用较小的存储，所以它存放的数值小一些，但是空间节省了一半。
+\end{description}
+
+
+\subsection{类型限定符}
+
+\begin{description}
+\item[const] 表明这个变量在初始化之后就不会再发生改变。
+\item[volatile] 表明这个变量的变化无法预测，编译器不会去假设这个变量的值，也不会做任何优化。只有当你要对这个变量做一些怪事情的时候才需要使用这个限定符。
+\item[register] 强制要求编译器将这个变量放在寄存器里，编译器可以就这么忽略掉你。如今编译器更善于决定一个变量应该放在哪里，所以最好只有当你确定这样可以提高速度的时候才这么做。
+\end{description}
+
+
+\subsection{类型转换}
+
+C 语言使用了一种“阶梯式的类型提升”的机制，当面对一个表达式两边的操作数时，会在执行这个运算之前，提升较小的一边去适应较大的一边。如果表达式的一边在这个列表中，那么另一边会在运算完成前按照如下顺序被转换: 
+
+\begin{enumerate}
+\item long double
+\item double 
+\item float
+\item int (仅指 \ident{char} 和 \ident{short int});
+\item long
+\end{enumerate}
+
+如果你想弄清除表达式中的类型转换到底是怎么回事，那么就不要把这个工作交给编译器来做。使用明确的转换操作将其转换成你想要的类型。例如，如果给你：
+
+\verb|long + char - int * double|
+
+与其揣测结果是否会被正确的转换成 double ，不如使用如下转换:
+
+\verb|(double)long - (double)char - (double)int * double|
+
+将你想要转换的类型放在变量的前面的括号中，就可以进行强制转换。重要的一点是
+\emph{数据类型转换只能提升不能降低}.  不要试图将 \ident{long} 转换成 \ident{char}
+除非你明确的知道你这么做的后果。
+
+\subsection{类型大小}
+
+头文件 \file{stdint.h} 为整数类型定义了一组 \ident{typdefs} ，同时也定义了一组所有数据类型大小的宏。 这个在兼容性上优于老的 \file{limits.h} ，使用起来更加方便，类型定义如下：
+
+\begin{description}
+\item[int8\_t] 8比特符号整型
+\item[uint8\_t] 8比特无符号整型
+\item[int16\_t] 16比特符号整型
+\item[uint16\_t] 16比特无符号整型
+\item[int32\_t] 32比特符号整型
+\item[uint32\_t] 32比特无符号整型
+\item[int64\_t] 64比特符号整型
+\item[uint64\_t] 64比特无符号整型
+\end{description}
+
+这个匹配的模式是 (u)int(BITS)\_t ， 其中 \emph{u} 放在前面表明是"unsigned"，  \emph{BITS} 是比特数。这个模式也用在了返回这些数据类型最大值的宏定义上：
+
+\begin{description}
+\item[INT\emph{N}\_MAX] 比特数为 \emph{N} 的符号整型的最大正数值。
+\item[INT\emph{N}\_MIN] 比特数为 \emph{N} 的符号整型的最小负数值。
+\item[UINT\emph{N}\_MAX] 比特数为 \emph{N} 的无符号整型的最大正数值。因为是无符号的，所以最小值是0，没有负数。
+\end{description}
+
+头文件 \file{stdint.h} 中也有表示 \indent{size\_t} 类型大小的宏，这个类型是大小可以用来装指针的整型还有其他关于大小定义的方便的宏。
+编译器必须得有这些定义，这样才能允许有其他更大的类型。
+
+
+这是 \file{stdint.h}中的一个列表：
+
+\begin{description}
+\item[int\_least\emph{N}\_t] 能存储至少 \emph{N} 比特的整型\footnote{译者注：字长最小整型，即规定的最小长度为 \emph{N} 比特的整型。}。
+\item[uint\_least\emph{N}\_t] 能存储至少 \emph{N} 比特的无符号整型。
+\item[INT\_LEAST\emph{N}\_MAX] 至少能存储\emph{N} 比特的整型对应的最大值。
+\item[INT\_LEAST\emph{N}\_MIN] 至少能存储\emph{N} 比特的整型对应的最小值。
+\item[UINT\_LEAST\emph{N}\_MAX] 至少能存储\emph{N} 比特的无符号整型对应的最小值。。
+\item[int\_fast\emph{N}\_t]  同 \ident{int\_least\emph{N}\_t} 接近，但是要求的是“最快速”的至少 \emph{N} 比特的整型\footnote{译者注：字长最小快速整型，理论上来说，CPU处理和其字长（word）长度相同的整型会比较快。}。
+\item[uint\_fast\emph{N}\_t] 无符号字长最小快速整型.
+\item[INT\_FAST\emph{N}\_MAX] 字长最小快速整型对应的最大值。
+\item[INT\_FAST\emph{N}\_MIN] 字长最小快速整型对应的最小。
+\item[UINT\_FAST\emph{N}\_MAX] 字长最小快速无符号整型。
+\item[intptr\_t] 大小容纳一个指针的 \emph{signed} 整型。
+\item[uintptr\_t] 大小容纳一个指针的 \emph{unsigned} 整型。
+\item[INTPTR\_MAX] \ident{intptr\_t}的最大值。
+\item[INTPTR\_MIN] \ident{intptr\_t}的最小值。
+\item[UINTPTR\_MAX] 无符号 \ident{uintptr\_t} 的最大值。
+\item[intmax\_t] 系统允许的最大的符号整型。
+\item[uintmax\_t] 系统允许的最大的无符号整型。
+\item[INTMAX\_MAX] 最大的符号整型的最大值。
+\item[INTMAX\_MIN] 最大的符号整型的最小值。
+\item[UINTMAX\_MAX] 最大的无符号整型的最大值。
+\item[PTRDIFF\_MIN] \ident{ptrdiff\_t} 的最小值。
+\item[PTRDIFF\_MAX]  ident{ptrdiff\_t} 的最大值。
+\item[SIZE\_MAX] \ident{size\_t} 的最大值。
+\end{description}
+
+\section{可用运算符}
+
+这是C语言中可用的运算符的完整列表。
+在这个列表中，我做了如下说明：
+
+\begin{description}
+\item[双目运算符(binary)] 有左右两个运算对象: \verb|X + Y|.
+\item[单目运算符(unary)] 对自身做运算: \verb|-X|.
+\item[前置运算符(prefix)] 运算符在变量的前面: \verb|++X|.
+\item[后置运算符(postfix)] 通常是与 \ident{(prefix)} 相同，但是放置在后面会有不同的含义: \verb|X++|.
+\item[三目运算符(ternary)] 只有一个，虽然被叫做三目运算符，但是实际上是“三个操作数”: \verb|X ? Y : Z|.
+\end{description}
+
+
+\subsection{数学运算符}
+
+这里有一些基本的数学运算符, 而且我把 \verb|()| 也放了进来，因为它是调用一个函数，很像一个“数学”运算符。
+
+\begin{description}
+\item[()] 调用函数
+\item[* (binary)] 乘
+\item[/] 除
+\item[+ (binary)] 加
+\item[+ (unary)] 正数
+\item[++ (postfix)] 先读值，再自增
+\item[++ (prefix)] 先自增，再读值
+\item[$--$ (postfix)] 先读值，再自减
+\item[$--$ (prefix)] 先自减，再读值
+\item[- (binary)] 减
+\item[- (unary)] 负数
+\end{description}
+
+\subsection{数据运算符}
+
+这些运算符使用不同的方法和形式来存取数据。
+
+\begin{description}
+\item[-\textgreater{}] 访问指针指向的结构体的成员
+\item[.] 访问结构体成员
+\item{[]} 数组下标.
+\item[sizeof] 类型或变量的大小
+\item[\& (unary)] 取地址
+\item[* (unary)] 取值
+\end{description}
+
+\subsection{逻辑运算符}
+
+这些运算符用来检验变量相等或者不相等。
+
+\begin{description}
+\item[!=] 不相等
+\item[\textless{}] 小于
+\item[\textless{}=] 小于等于或者不大于
+\item[==] 相等(不是赋值的等于)
+\item[\textgreater{}] 大于
+\item[\textgreater{}=] 大于等于或者不小于
+\end{description}
+
+\subsection{位运算符}
+
+这些运算符要更高级一些，用来对正数的原始二进制数进行移位和修改的。
+
+\begin{description}
+\item[\& (binary)] 按位与.
+\item[\textless{}\textless{}] 左移位
+\item[\textgreater{}\textgreater{}] 右移位
+\item[\^{}] 按位异或 （互斥或）
+\item[$\vert$] 按位或
+\item[\textasciitilde{}] 按位取反 （翻转所有的位）
+\end{description}
+
+
+\subsection{布尔运算符}
+
+用在真值检验中。好好学习三目运算符，非常的好用。
+
+\begin{description}
+\item[!] 非
+\item[\&\&] 与
+\item[$\vert\vert$] 或
+\item[?:] 三目运算符，条件运算符，将 \verb|X ? Y : Z| 读作 “如果 X 则 Y 否则 Z”.
+\end{description}
+
+\subsection{赋值运算符}
+
+复合赋值运算符是在赋值的时候，加上其他的运算符。上面的大部分运算符，都可以用来组成复合运算符。
+
+\begin{description}
+\item[=] 等于
+\item[\%=] 取余等于
+\item[\&=] 按位与等于
+\item[*=] 乘等于
+\item[+=] 加等于
+\item[-=] 减等于
+\item[/=] 除等于
+\item[\textless{}\textless{}=] 左移位等于
+\item[\textgreater{}\textgreater{}=] 右移位等于
+\item[\^{}=] 按位异或等于
+\item[$\vert$=] 按位或等于
+\end{description}
+
+\section{可用的控制结构}
+
+还有一些你还没有接触到的控制结构：
+
+\begin{description}
+\item[do-while] \verb|do { ... } while(X);| 先执行循环体中的代码，再验证 \ident{X} 表达式，直到结束。
+\item[break] 把这个放入到循环体中，就会提前结束循环。
+\item[continue] 跳出循环体，直接验证表达式，进行下一次循环。
+\item[goto] 跳到代码中，你放置了 \verb|label:| 的地方 ，你已经在 \file{dbg.h} 的宏中用过这个跳到 \verb|error:| 标签处。
+\end{description}
+
+
+\subsection{加分习题}
+
+\begin{enumerate}
+\item 浏览 \file{stdint.h} 文件或者它的介绍然后写出所有可能的可用大小标识符。
+\item 浏览这的每一项，然后写出其在代码中是做什么的。可以通过网上查找来确定你的研究是否正确。
+\item 可以利用记忆卡片每天花费15分钟来加强记忆，夯实基础。
+\item 写一个程序打印出各种类型的例子来确认你的研究结果是正确的。
+\end{enumerate}
+

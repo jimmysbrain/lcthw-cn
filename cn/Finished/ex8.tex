@@ -1,0 +1,68 @@
+\chapter{习题8: 数组和大小}
+
+上一个习题中你做了些数学运算，不过你在运算中使用了 \verb|'\0'| (null) 字符。如果你学过其他的语言，这对你来说就会有些奇怪，因为其他的语言会将字符串(string)和字节数组(byte array)当作不同的怪兽来对待，然而 C 语言则将字符串直接当字节数组对待，而只有那些实现打印功能的 C 函数才知道它们是不同的。
+
+明白 C 语言将字符串和字节数组等同对待是很重要的，而在解释这一点之前，有几个概念一定要讲清楚： \ident{sizeof} 和数组。以下是我们即将探讨的代码：
+
+\begin{code}{ex8.c}
+<< d['code/ex8.c|pyg|l'] >>
+\end{code}
+
+在这段代码中我们创建了一些包含不同数据类型的数组。 由于数组是 C 语言工作原理的核心，我们可以用很多种不同的方法来创建数组。这里将就用 \verb|type name[] = {initializer};| 这种格式了，往后我们还会碰到更多的方式。这个语法的意思就是： “我需要一个初始化为{..}类型的数组”，当 C 接收到这个指令时，将会： 
+
+\begin{enumerate}
+\item 检查数据类型，这里我们看到的是 \ident{int}。
+\item 检查 \verb|[]|，发现长度值没有给出。
+\item 检查初始值：发现 \verb|{10, 12, 13, 14, 20}| ，于是知道了你要将这 5 个整数放入数组。
+\item 在本机创建出一篇内存区域，用以顺次保存这五个整数。
+\item 把上面创建的内存位置赋给 \ident{areas} 这个名字。
+\end{enumerate}
+
+
+也就是说， \ident{areas} 这一行的作用就是创建了容纳这 5 个整数的数组。而到了 \verb|char name[] = "Zed";| 这一行，它实现的事情也是一样的，只不过它创建了另一个有三个字符的数组并赋值到 \ident{name}。我们创建出来的最终数组是 \ident{full\_name}， 但逐字符的拼写方式却很恼人。对于 C 语言来说， \ident{name} 和 \ident{full\_name} 都是创建字符数组的方式。
+
+接下来我们将使用一个叫做 \ident{sizeof} 的关键字来询问东西的大小(以 \emph{bytes} 为单位)。C 语言就是一门关于内存大小，内存位置，以及如何处理内存区块的语言。更简单一点说，C 语言提供了 \ident{sizeof}，就是为了让你在用到某样东西之前，可以问到这个东西的大小。
+
+这里可能会让人有些头晕，所以我们先运行下面这段代码再来解释。
+
+\section{你应该看到的结果}
+
+\begin{code}{ex8 output}
+\begin{lstlisting}
+<< d['code/ex8.out'] >>
+\end{lstlisting}
+\end{code}
+
+现在你看到了不同的 \ident{printf} 指令的输出，也大致看到了 C 是如何工作的了。由于你的电脑的整型大小可能不一样，你的输出有可能跟我的会完全不同，我就拿输出来讲讲吧：
+
+\begin{description}
+\item [5] 我的电脑认为 \ident{int} 的大小是 4 个字节. 电脑系统有 32-bit 和 64-bit 之分，所以你的电脑可能会使用一个不同的整形大小。。
+\item [6] 数组 \ident{areas} 里有 5 个整数，我的电脑就合情合理地用了 20 个字节来存储它。
+\item [7] 如果用 \ident{areas} 的大小除以 \ident{int} 的大小，我们将得到元素数 5。再看看代码，这正是初始值中的设定。
+\item [8] 我们访问了数组，得到了 \verb|areas[0]| 和 \verb|areas[1]|，这意味着 C 和 Python/Ruby 一样，数组的索引也是从 0 开始的。
+\item [9-11] 一样的方法去访问 \ident{name} 这个数组，有没有发现数组的大小有些奇怪？"Zed" 是三个字符，可它的长度怎么是 \emph{4} 个字节呢？这第 4 个字符是哪来的呢？
+\item [12-13] 一样的方法去读取 \ident{full\_name}，我们看到这次的值是正确的。 
+\item [13] 最后我们打印输出 \ident{name} 和 \ident{full\_name} 以证明对于 printf 来说，他们都是字符串。
+\end{description}
+
+请确保弄懂这些代码，并且明白这些输出结果跟输入代码的对应关系。之后我们将在这个基础上更多地探索数组和存储。
+
+\section{让程序出错}
+
+让这个程序出错很简单，试一试这些：
+
+\begin{enumerate}
+\item 删除 \ident{full\_name} 尾部的 \verb|'\0'| 并重新运行程序。再在 Valgrind 下运行一次。现在将 \ident{full\_name} 的定义放到 \ident{main} 的顶部，\ident{areas} 的前面。在 Valgrind 下运行几次，看看会不会得到新的错误信息。有时候你可能会幸运到一个错误都看不见。
+\item 尝试打印输出 \verb|areas[10]| 而非 \verb|areas[0]| ，并看看 Valgrind 是怎样认为的。
+\item 多做几个不同的尝试，在 \ident{name} 和 \ident{full\_name} 上面也试一下。
+\end{enumerate}
+
+\section{加分习题}
+
+\begin{enumerate}
+\item 使用 \verb|areas[0] = 100;| 这样的语句，对数组 \ident{areas} 中的元素进行赋值。
+\item 尝试对 \ident{name} 和 \ident{full\_name} 的元素进行赋值。
+\item 尝试把 \ident{areas} 中的一个元素设置成 \ident{name} 中的一个字符.
+\item 上网搜索一下，了解一下不同 CPU 整形大小差异。
+\end{enumerate}
+

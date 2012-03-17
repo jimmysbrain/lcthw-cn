@@ -1,99 +1,70 @@
 \chapter{Exercise 24: Input, Output, Files}
+\chapter{Exercise 24: 输入, 输出, 文件}
 
-You've been using \ident{printf} to print things, and that's great and all, but
-you need more.  In this exercise program you're using the functions
-\func{fscanf} and \func{fgets} to build information about a person in a
-structure.  After this simple introduction to reading input, you'll get
-a full list of the functions that C has for I/O.  Some of these you've
-already seen and used, so this will be another memorization exercise.
+你已经可以用 \ident{printf} 来打印了, 这非常好。但是你肯定不满足于此。 
+在这一节，你将会用 \func{fscanf} 和 \func{fgets} 来构建一个结构体以存贮某个人的信息。
+简单介绍过如何读取数据之后，你将会看到一个c语言所拥有的处理IO的完整函数列表。
+你应该已经见过而且用过其中的一部分，所以本节会帮助你回想起很多东西。
 
 \begin{code}{ex24.c}
 << d['code/ex24.c|pyg|l'] >>
 \end{code}
 
-This program is deceptively simple, and introduces a function called
-\func{fscanf} which is the "file scanf".  The \func{scanf} family of
-functions are the inverse of the \func{printf} versions.  Where 
-\func{printf} printed out data based on a format, \func{scanf} reads
-(or scans) input based on a format.
+这个程序表面看似简单，其实不然。这里面用到了函数 \func{fscanf}，它是用来做文件扫描的。
+ \func{scanf} 相关的一系列函数与 \func{printf} 相关的一系列函数起的作用正相反。 
+ \func{printf} 按着指定格式输出数据, \func{scanf} 按着指定格式读取数据（或者扫描输入数据）。
 
-There's nothing original in the beginning of the file, so here's what
-the \func{main} is doing:
+文件的开头什么也没有，函数 \func{main} 做了如下一些事情：
 
 \begin{description}
-\item[ex24.c:24-28] Set up some variables we'll need.
-\item[ex24.c:30-32] Get your first name using the \func{fgets} function, which reads a
-    string from the input (in this case \ident{stdin}) but makes sure it
-    doesn't overflow the given buffer.
-\item[ex24.c:34-36] Same thing for \ident{you.last\_name}, again using \func{fgets}.
-\item[ex24.c:38-39] Uses \func{fscanf} to read an integer from \func{stdin} and put it
-    into \ident{you.age}.  You can see that the same format string is used
-    as \ident{printf} to print an integer.  You should also see that you have
-    to give the \emph{address} of \ident{you.age} so that \ident{fscanf} has
-    a pointer to it and can modify it.  This is a good example of using a
-    pointer to a piece of data as an "out parameter".
-\item[ex24.c:41-45] Print out all the options available for eye color, with a matching
-    number that works with the \ident{EyeColor} enum above.
-\item[ex24.c:47-50] Using \func{fscanf} again, get a number for the \ident{you.eyes}, 
-    but make sure the input is valid.  This is important because someone can
-    enter a value outside the \ident{EYE\_COLOR\_NAMES} array and cause a 
-    segfault.
-\item[ex24.c:52-53] Get how much you make as a \ident{float} for the \ident{you.income}.
-\item[ex24.c:55-61] Print everything out so you can see if you have it right.  Notice
-    that \ident{EYE\_COLOR\_NAMES} is used to print out what the \ident{EyeColor}
-    enum is actually called.
+\item[ex24.c:24-28] 创建一些必须的变量。
+\item[ex24.c:30-32] 用\func{fgets} 获取姓名中的名字, 从输入获取一个字符串
+    (这里是从 \ident{stdin}获取字符串) 输入名字的时候不要太长，防止存储名字的缓冲区不够长导致内存溢出。
+\item[ex24.c:34-36] 依然用 \func{fgets}来获取\ident{you.last\_name} 。
+\item[ex24.c:38-39] 用\func{fscanf} 从\func{stdin} 获取一个整数，并且将这个整数存储在变量
+    \ident{you.age}.  可以看到用\ident{printf} 打印整数的时候使用了同样的格式表示符。
+    为了让 \ident{fscanf} 可以把输入的值存储在某个指针变量指定的位置上，你必须把\emph{address} 的地址取出来作为指针变量的值。 
+    这个例子生动的展示了如何把一串数据的内存地址作为输出参数。
+\item[ex24.c:41-45] 通过遍历枚举 \ident{EyeColor} 的全部数值，输出眼睛的颜色所具有的所有可能性。
+\item[ex24.c:47-50] 继续 \func{fscanf} ，给\ident{you.eyes}赋值， 
+    同时确保这个数值是有真实有效的。 这很重要，因为有的人会输入一个不在\ident{EYE\_COLOR\_NAMES}数组范围之内的数字，导致一个段错误。
+\item[ex24.c:52-53] 知道你挣了多少\ident{float} 收入知道你的到了多少收入 \ident{you.income}。
+\item[ex24.c:55-61] 打印所有的东西来确认一下程序运行无误。注意我们用 \ident{EYE\_COLOR\_NAMES} 来打印真正的\ident{EyeColor} 的内容。
 \end{description}
 
 
-\section{What You Should See}
+\section{你将看到}
 
-When you run this program you should see your inputs being properly converted.
-Make sure you try to give it bogus input too so you can see how it protects
-against the input.
+当运行这个程序的时候，会看到你的输入被正确的处理。
+可以试试给一些奇怪的输入来检查一下代码是不是能够很好的保护自己而不是出现奇怪问题。
 
 \begin{code}{ex24 output}
 \begin{lstlisting}
-<< d['code/ex24.out|dexy'] >>
+<< d['code/ex24.out'] >>
 \end{lstlisting}
 \end{code}
 
 
-\section{How To Break It}
+\section{如何中断它}
 
-This is all fine and good, but the real important part of this exercise is
-how \func{scanf} actually sucks.  It's fine for simple conversion of numbers,
-but fails for strings because it's difficult to tell \func{scanf} how big a buffer
-is before you read.  There's also a problem with a function like \func{gets}
-(not \func{fgets}, the non-f version) which we avoided.  That function has
-no idea how big the input buffer is at all and will just trash your program.
+到目前为止一切顺利，其实这个练习的主要目的是看 \func{scanf} 是怎么被输入搞垮的。
+. 处理简单数字转换的时候还凑活，一旦处理字符串的时候就完全的垮掉了，
+因为很难在读取动作完成以前告诉 \func{scanf}输入缓冲区有多大。函数 \func{gets}
+(不是 \func{fgets}, the non-f version) 也有同样的问题。 这类函数完全无法知道输入的缓冲区有多大, 过大的缓冲区会搞垮程序。
+把那行代码从用\func{fgets} 替换成\verb|fscanf(stdin, "%50s", you.first_name)| 然后再运行一次程序
+就能看到仅靠\func{fscanf} 和字符串就能搞垮我们的程序。
 
-To demonstrate the problems with \func{fscanf} and strings, change the lines
-that use \func{fgets} so they are \verb|fscanf(stdin, "%50s", you.first_name)|
-and then try to use it again.  Notice it seems to read too much and then 
-eat your enter key?  This doesn't do what you think it does, and really
-rather than deal with weird \func{scanf} issues, just use \func{fgets}.
+注意到程序似乎读取了太多内容而且好像你敲的回车似乎没工作了么？程序似乎没有按着你的期望方式工作，
+而且似乎还不如奇怪的由 \func{scanf} 引起的问题,仅仅是用 \func{fgets}就可以。
 
-Next, change the \func{fgets} to use \func{gets}, then bust out your
-\program{valgrind} and do this:  \verb|valgrind ./ex24 < /dev/urandom|
-to feed random garbage into your program.  This is called "fuzzing"
-your program, and it is a good way to find input bugs.  In this case,
-you're feeding garbage from the \file{/dev/urandom} file, and then watching
-it crash.  On some platforms you may have to do this a few times, or even
-adjust the \ident{MAX\_DATA} define so it's small enough.
+下一步，把\func{fgets} 替换成 \func{gets}, 然后这样运行\program{valgrind} ：  \verb|valgrind ./ex24 < /dev/urandom|，这将把一些随机生成的垃圾丢给程序。这称作Fuzzing程序，这是一种有效的发现输入处理逻辑bug的方法。目前这种情况，是从 \file{/dev/urandom}获得随机数并且喂给程序处理，然后看着它崩溃掉。在某些操作系统上，你可能需要多试几次，或者把\ident{MAX\_DATA} 的定义改的小一点来让程序崩溃。
 
-The \func{gets} function is so bad that some platforms actually warn you
-when the \emph{program} runs that you're using \func{gets}.  You should
-never use this function, ever.
+\func{gets} 确实非常差劲，以至于某些操作系统平台会在\emph{program} 运行\func{gets}的时候发出警告。你应该离这个函数越远越好，如果非要加个期限，我希望是一万年。
+最后，继续给\ident{you.eyes}赋值并且把确保输入在合理范围内的代码删掉。然后输入一些有问题的数字比如－1, 或者1000。在Valgrind里面再来一遍看看会发生什么。
 
-Finally, take the input for \ident{you.eyes} and remove the check that the
-number given is within the right range.  Then feed it bad numbers like -1 or
-1000.  Do this under Valgrind too so you can see what happens.
+\section{I/O 函数}
 
-\section{The I/O Functions}
-
-This is a short list of various I/O functions that you should look up and
-create index cards that have the function name, what it does, and all the
-variants similar to it.
+你应该为如下的函数列表创建索引卡，在上面写上函数名字，作用，以及类似变种。
 
 \begin{enumerate}
 \item fscanf
@@ -112,27 +83,17 @@ variants similar to it.
 \item fread
 \end{enumerate}
 
-Go through these and memorize the different variants and what they do.  For example,
-for the card on \func{fscanf} you'll have \func{scanf}, \func{sscanf}, \func{vscanf},
-etc. and then what each of those do on the back.
+仔细浏览一遍这些函数，记住他们的区别和作用。比如有\func{fscanf} 的卡片上，同样会有\func{scanf}，\func{sscanf}，\func{vscanf}，卡片背面会有函数作用的说明。
+最后，可以用 \program{man} 读取卡片的相关信息。例如\verb|man fscanf|就可以得到\func{fscanf}的帮助信息。 
 
-Finally, to get the information you need for these cards, use \program{man} to
-read the help for it.  For example, the page for \func{fscanf} comes from 
-\verb|man fscanf|.
-
-
-\section{Extra Credit}
+\section{额外小作业}
 
 \begin{enumerate}
-\item Rewrite this to not use \func{fscanf} at all.  You'll need to use
-    functions like \func{atoi} to convert the input strings to numbers.
-\item Change this to use plain \func{scanf} instead of \func{fscanf} to
-    see what the difference is.
-\item Fix it so that the input names get stripped of the trailing newline
-    characters and any whitespace.
+\item 不用 \func{fscanf} 完全重写一遍代码。  你将会用到诸如 \func{atoi}的函数来把输入的字符串转换成数字。
+\item 把\func{fscanf}改成只用\func{scanf}看看有什么不同。
+\item 把代码改成输入的名字会被回车以及任何空格截断的形式。
 \item Use \ident{scanf} to write a function that reads a character at a time
     and files in the names but doesn't go past the end.  Make this function
     generic so it can take a size for the string, and make sure you end
     the string with \verb|'\0'| no matter what.
 \end{enumerate}
-

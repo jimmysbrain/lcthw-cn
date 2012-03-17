@@ -20,9 +20,11 @@
             "linenos": "true"
         }
     },
-    "*.conf|dexy": {},
-    "*Makefile|dexy": {},
-    "*.out|dexy": {},
+    "*.conf": {},
+    "*Makefile": {},
+    "*.out": {},
     "*.css|jinja" : {  },
-    "*.cfg|jinja" : {  }
+    "*.cfg|jinja" : {  },
+    "*.sty" : { },
+    "*.js" : {}
 }
