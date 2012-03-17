@@ -38,7 +38,8 @@
 
 \section{让程序出错}
 
-你可以通过给 printf 赋错误的值来搅坏这个程序。 用那条打印我的名字的指令来打个比方，如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug 就来了。 真这样运行的话，编译器会对你发飙，你会得到个“段故障（Segmentation fault）”，就像以下这样：
+你可以通过给 printf 赋错误的值来搅坏这个程序。 用那条打印我的名字的指令来打个比方，如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug 就来了。 真这样运行的话，编译器会对你发飙，你没准会看到个
+“段故障（Segmentation fault）”，就像下面这样：
 
 \begin{code}{ex6 explosion}
 \begin{lstlisting}

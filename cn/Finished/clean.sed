@@ -6,9 +6,17 @@ s/&#x0022;/"/g
 s/&#x22C6;/*/g
 s/^ *$//g
 /<\/body>/{
-r ga.html
+r site/footer.html
 d
 }
-/<div class="crosslinks"><p class="noindent">/{
-r header.html
+/<link rel="stylesheet" type="text\/css" href="learn-c-the-hard-way.css">/{
+r site/styles.html
+d
+}
+/<\/head><body/{
+N
+    />/{
+        r site/tabs.html
+        d
+    }
 }
