@@ -1,1 +1,5 @@
 .*.sw*
+*.dSYM
+*.o
+code/ex[0-9][0-9]
+code/ex[0-9]
