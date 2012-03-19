@@ -7,10 +7,10 @@ import glob
 import lxml.html
 from lxml import etree
 
-for htfile in glob.iglob("learn*.html"):
+for htfile in glob.iglob("learn-c-the-hard-waych6.html"):
     print "Cleaning", htfile
-    html = open(htfile).read().decode('utf8').encode('utf8')
-
+    #html = open(htfile).read().decode('utf8').encode('utf8')
+    html = open(htfile).read()
     doc = lxml.html.document_fromstring(html)
 
     content = doc.find("body").find("div").find("div").findall("div")[1].find("div")
@@ -19,6 +19,16 @@ for htfile in glob.iglob("learn*.html"):
     for para in content.findall("p"):
         if para is not None and para.text is not None:
             para.text = para.text.replace("\n", "")
+
+    # Remove extra line breaks from <dd> tags.
+    for dl in content.findall("dl"):
+        if dl is not None:
+            for dd in dl.findall("dd"):
+                if dd is not None and dd.text is not None:
+                    for txt in dd.itertext():
+                        dd.text = dd.text.replace("\n", "").replace("     ", "")
+                    print dd.text
+                print "BBB"
 
     # Remove extra line breaks from source code captions.
     for srcdiv in content.findall("div"):
