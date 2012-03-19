@@ -22,10 +22,12 @@ $(FINAL).pdf:
 
 html: 
 	cp -r site/js site/css output/
+	cp clean_p.py output/
 	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
 	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in,xhtml,charset=utf-8,NoFonts" "-cunihtf -utf8"
 	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in" -utf8
 	sed -i -f clean.sed output/*.html
+	cd output && python clean_p.py
 	
 view: $(FINAL).pdf
 	evince $(FINAL).pdf

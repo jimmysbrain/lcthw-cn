@@ -8,6 +8,7 @@ import lxml.html
 from lxml import etree
 
 for htfile in glob.iglob("learn*.html"):
+    print "Cleaning", htfile
     html = open(htfile).read().decode('utf8').encode('utf8')
 
     doc = lxml.html.document_fromstring(html)
@@ -16,7 +17,8 @@ for htfile in glob.iglob("learn*.html"):
 
     # Remove extra line breaks from <p> tags.
     for para in content.findall("p"):
-        para.text = para.text.replace("\n", "")
+        if para is not None and para.text is not None:
+            para.text = para.text.replace("\n", "")
 
     # Remove extra line breaks from source code captions.
     for srcdiv in content.findall("div"):
@@ -27,7 +29,7 @@ for htfile in glob.iglob("learn*.html"):
 
     # Correct page title.
     h2 = content.find("h2")
-    if h2:
+    if h2 is not None:
         it = list(h2.itertext())[1]
         head = doc.find("head").find("title")
         head.text = it
