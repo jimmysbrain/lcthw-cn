@@ -1,41 +1,36 @@
 # A dirty script to produce readable Chinese html pages.
 
 import os
-import shutil
 import glob
+import re
 
-import lxml.html
 from lxml import etree
 
-for htfile in glob.iglob("learn-c-the-hard-waych6.html"):
-    print "Cleaning", htfile
-    #html = open(htfile).read().decode('utf8').encode('utf8')
-    html = open(htfile).read()
-    doc = lxml.html.document_fromstring(html)
+parser = etree.HTMLParser()
 
-    content = doc.find("body").find("div").find("div").findall("div")[1].find("div")
+for htfile in glob.iglob("learn-c-the-hard-waych*.html"):
+    print "Cleaning", htfile
+    doc = etree.parse(htfile, parser)
+
+    content = doc.xpath('/html/body/div/div[1]/div[2]/div')[0]
 
     # Remove extra line breaks from <p> tags.
-    for para in content.findall("p"):
-        if para is not None and para.text is not None:
-            para.text = para.text.replace("\n", "")
+    for para in content.xpath("p/*"):
+        if para.text is not None:
+            para.text = re.sub("\n\s+", "", para.text)
+        if para.tail is not None:
+            para.tail = re.sub("\n\s+", "", para.tail)
 
     # Remove extra line breaks from <dd> tags.
-    for dl in content.findall("dl"):
-        if dl is not None:
-            for dd in dl.findall("dd"):
-                if dd is not None and dd.text is not None:
-                    for txt in dd.itertext():
-                        dd.text = dd.text.replace("\n", "").replace("     ", "")
-                    print dd.text
-                print "BBB"
+    for dd in content.xpath("dl/dd/*"):
+        if dd.text is not None:
+			dd.text = re.sub("\n\s+", "", dd.text)
+        if dd.tail is not None:
+            dd.tail = re.sub("\n\s+", "", dd.tail)
 
     # Remove extra line breaks from source code captions.
-    for srcdiv in content.findall("div"):
-        _cnt = srcdiv.find("div")
-        if _cnt is not None:
-            cnt = _cnt.findall("span")[1]
-            cnt.text = cnt.text.replace("\n", "")
+    for cap in content.xpath("div/div[1]/span[2]"):
+        cap.text = re.sub("\n\s+", "", cap.text)
 
     # Correct page title.
     h2 = content.find("h2")
@@ -44,9 +39,5 @@ for htfile in glob.iglob("learn-c-the-hard-waych6.html"):
         head = doc.find("head").find("title")
         head.text = it
 
-    result = etree.tostring(doc,
-                            pretty_print=True,
-                            method='html',encoding="utf8")
+	doc.write_c14n(htfile)
 
-    with open(htfile, 'w') as r:
-        r.write(result)
