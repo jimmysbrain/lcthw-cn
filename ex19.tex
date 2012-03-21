@@ -168,7 +168,7 @@ Taking a look at \file{object.c:52} you can see where I use a pointer
 macro in \file{object.h} and you can see that it is getting the \func{sizeof}
 another struct, say \ident{Room}, and I allocate that much.  However, because
 I've pointed a \ident{Object} pointer at this block of memory, and because
-I put an \ident{Object proto} field at the from of \ident{Room}, I'm able
+I put an \ident{Object proto} field at the front of \ident{Room}, I'm able
 to treat a \ident{Room} like it's an \ident{Object}.
 
 The way to break this down is like so:
