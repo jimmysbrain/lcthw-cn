@@ -1,22 +1,192 @@
-\chapter{Exercise 27: Defensive Programming}
+\chapter{Exercise 27: Creative And Defensive Programming}
 
-Welcome to part 2 of the book, where we take your freshly minted basic skills and
-apply them to a real project.  We first need to cover some concepts you'll need
-to use while you work on the project.  First up is the idea of "defensive programming"
-and how to write rock solid C code (or at least as close as you can get to it).
+You have now learned most of the basics of C programming and are ready to start becoming a serious
+programmer.  This is where you go from beginner to expert, both with C and hopefully with
+core computer science concepts.  I will be teaching you a few of the core data structures and
+algorithms that every programmer should know, and then a few very interesting ones I've used
+in real software for years.
 
-In this exercise we'll expand on the macros you learned in Exercise 26 and 
-use them religiously during the rest of the book.  You'll also learn a set of
-rules you need to follow while you code and review your code.
+Before I can do that I have to teach you some basic skills and ideas that will help you
+make better software.  Exercises 27 through 31 will teach you advanced concepts and feature
+more talking than code, but after those you'll apply what you learn to making a core library
+of useful data structures.
+
+The first step in getting better at writing C code (and really any language) is
+to learn a new mindset called "defensive programming".  Defensive programming
+assumes that you are going to make many mistakes and then attempts to prevent
+them at every possible step.   In this exercise I'm going to teach you how 
+to think about programming defensively.
+
+\section{The Creative Programmer Mindset}
+
+It's not possible to tell you how to be creative in a short exercise like this,
+but I will tell you that creativity involves taking risks and being open minded.
+Fear will quickly kill creativity, so the mindset I adopt, and many programmers
+adopt on, accident is designed to make me unafraid of taking chances and 
+looking like an idiot:
+
+\begin{enumerate}
+\item I can't make a mistake.
+\item It doesn't matter what people think.
+\item Whatever my brain comes up with is going to be a great idea.
+\end{enumerate}
+
+I only adopt this mindset temporarily, and even have little tricks to turn it on.
+By doing this I can come up with ideas, find creative solutions, open my thoughts
+to odd connections, and just generally invent weirdness without fear.  In this
+mindset I will typically write a horrible first version of something just to get
+the idea out.
+
+However, when I've finished my creative prototype I will throw it out and 
+get serious about making it solid.  Where other people make a mistake is
+carrying the creative mindset into their implementation phase.  This
+then leads to a very different destructive mindset that is the dark side
+of the creative mindset:
+
+\begin{enumerate}
+\item It is possible to write perfect software.
+\item My brain tells me the truth, and it can't find any errors, therefore I have written perfect software.
+\item My code is who I am and people who criticize its perfection are criticizing me.
+\end{enumerate}
+
+These are lies.  You will frequently run into programmers who feel intense
+pride about what they've created, which is natural, but this pride gets in the
+way of their ability to objectively improve their craft.  Because of pride and
+attachment to what they've written, they can continue to believe that what they
+write is perfect.  As long as they ignore other people's criticism of their
+code they can protect their fragile ego and never improve.
+
+The trick to being creative \emph{and} making solid software is to 
+also be able to adopt a defensive programming mindset.
 
 
-\section{What You Should See}
+\section{The Defensive Programmer Mindset}
+
+After you have a working creative prototype and you're feeling good about the
+idea, it's time to switch to being a defensive programmer.  The defensive
+programmer basically hates your code and believes these things:
+
+\begin{enumerate}
+\item Software has errors.
+\item You are not your software, yet you are are responsible for the errors.
+\item You can never remove the errors, only reduce their probability.
+\end{enumerate}
+
+This mindset lets you be honest about your work and critically analyze it 
+for improvements.  Notice that it doesn't say \emph{you} are full of errors?
+It says your \emph{code} is full of errors.  This is a significant thing to
+understand because it gives you the power of objectivity for the next
+implementation.
+
+Just like the creative mindset, the defensive programming mindset has a
+dark side as well.  The defensive programmer is a paranoid who is afraid
+of everything, and this fear prevents them from possibly being wrong or
+making mistakes.  That's great when you are trying to be ruthlessly
+consistent and correct, but it is murder on creative energy and 
+concentration.
 
 
-\section{How To Break It}
+\section{The Eight Defensive Programmer Strategies}
+
+Once you've adopted this mindset, you can then rewrite your prototype and follow
+a set of eight strategies I use to make my code as solid as I can.  While I work
+on the "real" version I ruthlessly follow these strategies and try to remove
+as many errors as I can, thinking like someone who wants to break the software.
+
+
+\begin{description}
+\item[Never Trust Input] Never trust the data you are given and always validate it.
+\item[Prevent Errors] If an error is possible, no matter how probable, try to prevent it.
+\item[Fail Early And Openly] Fail early, cleanly, and openly, stating what happened, where and how to fix it.
+\item[Document Assumptions] Clearly state the pre-conditions, post-conditions, and invariants.
+\item[Prevention Over Documentation] Do not do with documentation, that which can be done with code or avoided completely.
+\item[Automate Everything] Automate everything, especially testing.
+\item[Simplify And Clarify] Always simplify the code to the smallest, cleanest form that works without sacrificing safety.
+\item[Question Authority] Do not blindly follow or reject rules.
+\end{description}
+
+These aren't the only ones, but they're the core things I feel programmers have
+to focus on when trying to make good solid code.  Notice that I don't really
+say exactly how to do these.  I'll go into each of these in more detail, and
+some of the exercises actually cover them extensively.
+
+
+\section{Applying The Eight Strategies}
+
+I'll now go through each of the eight strategies and give some basic advice and examples on how to use them in real code.
+This will help you understand these better since they may be vague or misinterpreted.
+
+
+\subsection{Never Trust Input}
+
+Explain untrusted inputs. Use a few examples from the real world, maybe the recent Rails and Github attack.
+Show a simple C examples using C strings taken from a socket.
+
+\subsection{Prevent Errors}
+
+Discuss the difference between a possible error and a probable error, then how humans are very bad
+at determining probability, therefore you should try to block all the possible errors you can.
+
+
+\subsection{Fail Early And Openly}
+
+Show how my awesome macros help you do this and discuss good error messages.  Make sure they understand
+that you should try to explain how to maybe fix it, or report the defect.
+
+\subsection{Document Assumptions}
+
+Explain design by contract and how you can use it to create pre-conditions, post-conditions, and 
+invariants.  Show a simple example of this with a function that has it all.
+
+\subsection{Prevention Over Documentation}
+
+Talk about how programmers think that a documented flaw means there is no flaw and that they
+should just remove the flaw.
+
+\subsection{Automate Everything}
+
+Discuss the advantages of automated testing and how I'll teach that in a later exercise.
+
+\subsection{Simplify And Clarify}
+
+Talk about how simpler code wins over more complex code because it reduces the probability of
+an error by reducing the number of branches and couplings in the code.
+
+\subsection{Question Authority}
+
+The final strategy is the most important because it breaks you out of the
+defensive programming mindset and lets you transition into the creative
+mindset.  Defensive programming is authoritarian and it can be cruel.  The
+job of this mindset is to make you follow rules because without them you'll
+miss something or get distracted.
+
+This authoritarian attitude has the disadvantage of disabling independent 
+creative thought.  Rules are necessary for getting things done, but being
+a slave to them will kill your creativity.
+
+This final strategy means you should question the rules you follow periodically
+and assume that they could be wrong, just like the software you are reviewing.
+What I will typically do is, after a session of defensive programming, I'll go
+take a non-programming break and let the rules go.  Then I'll be ready to do
+some creative work or do more defensive coding if need to.
+
+\section{Order Is Not Important}
+
+The final thing I'll say on this philosophy is that I'm not telling you to do this in
+a strict oder of "CREATE! DEFEND! CREATE! DEFEND!"  At first you may want to do that,
+but I will actually do either in varying amounts depend on what I want to do, and I may
+even meld them together with no defined boundary.
+
+I also don't think one mindset is better than another, or that there are strict separation
+between them.  You need both creativity and strictness to do programming well, so work
+on both if you want to improve.
 
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item The code in the book up to this point (and for the rest of it) potentially violates these rules.  Go back through and apply what you've learned to one 
+    exercise to see if you can improve it or find bugs.
+\item Find an open source project and give some of the files a similar code review.  Submit a patch that fixes a bug if you find it.
+\end{enumerate}
 

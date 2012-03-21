@@ -6,9 +6,17 @@ s/&#x0022;/"/g
 s/&#x22C6;/*/g
 s/^ *$//g
 /<\/body>/{
-r ga.html
+r output/site/footer.html
 d
 }
-/<div class="crosslinks"><p class="noindent">/{
-r header.html
+/<link rel="stylesheet" type="text\/css" href="{{ PROJECT_NAME }}.css">/{
+r output/site/styles.html
+d
+}
+/<\/head><body/{
+N
+    />/{
+        r output/site/tabs.html
+        d
+    }
 }

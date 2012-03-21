@@ -20,9 +20,17 @@
             "linenos": "true"
         }
     },
-    "*.conf|dexy": {},
-    "*Makefile|dexy": {},
-    "*.out|dexy": {},
+    "*.conf": {},
+    "*Makefile": {},
+    "*.out": {},
     "*.css|jinja" : {  },
-    "*.cfg|jinja" : {  }
+    "*.cfg|jinja" : {  },
+    "*.sty" : { },
+    "*.js" : {},
+
+    "styles.html|jinja": {},
+    "tabs.html|jinja": {},
+    "footer.html|jinja": {"inputs": ["ga.html", "comments.html", "course.html", "related.html"]},
+    "*.sed|jinja": {},
+    "$variables": { "PROJECT_NAME": "learn-c-the-hard-way", "TITLE": "Learn C The Hard Way"}
 }
