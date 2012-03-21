@@ -1,36 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include "dbg.h"
-#define FROM 1
-#define TO 0
-#define DEG
 
-
-void print(char *str, int style)
-{
-#ifdef DEG
-	switch(style)
-	{
-		case FROM:
-			printf("\nThis is 'from' begin \n");
-			printf(str);
-			printf("\nThis is  'from' end\n");
-			break;
-		case TO:
-			printf("\nThis is 'to' begin\n");
-			printf(str);
-			printf("\nThis is 'to' end \n");
-			break;
-	}
-#endif
-	
-}
 
 int normal_copy(char *from, char *to, int count)
 {
     int i = 0;
 
-    for(i = 0; i <= count; i++) {
+    for(i = 0; i < count; i++) {
         to[i] = from[i];
     }
 
@@ -102,20 +79,15 @@ int main(int argc, char *argv[])
     int rc = 0;
 
     // setup the from to have some stuff
-    memset(from, 'x',1000);
+    memset(from, 'x', 1000);
     // set it to a failure mode
     memset(to, 'y', 1000);
-	print(from,FROM);
-	print(to,TO);
-    //check(valid_copy(to, 1000, 'y'), "Not initialized right.");
+    check(valid_copy(to, 1000, 'y'), "Not initialized right.");
 
     // use normal copy to 
     rc = normal_copy(from, to, 1000);
-	printf("rc=%d \n",rc);
     check(rc == 1000, "Normal copy failed: %d", rc);
     check(valid_copy(to, 1000, 'x'), "Normal copy failed.");
-//	print(from,FROM);
-//	print(to,TO);
 
     // reset
     memset(to, 'y', 1000);
@@ -124,8 +96,6 @@ int main(int argc, char *argv[])
     rc = duffs_device(from, to, 1000);
     check(rc == 1000, "Duff's device failed: %d", rc);
     check(valid_copy(to, 1000, 'x'), "Duff's device failed copy.");
-//	print(from,FROM);
-	//print(to,TO);
 
     // reset
     memset(to, 'y', 1000);
@@ -134,8 +104,6 @@ int main(int argc, char *argv[])
     rc = zeds_device(from, to, 1000);
     check(rc == 1000, "Zed's device failed: %d", rc);
     check(valid_copy(to, 1000, 'x'), "Zed's device failed copy.");
-	//print(from,FROM);
-	//print(to,TO);
 
     return 0;
 error:
