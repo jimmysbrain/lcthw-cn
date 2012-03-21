@@ -8,7 +8,7 @@ from lxml import etree
 
 parser = etree.HTMLParser()
 
-for htfile in glob.iglob("learn-c-the-hard-waych1.html"):
+for htfile in glob.iglob("learn-c-the-hard-way*.html"):
     print "Cleaning", htfile
     doc = etree.parse(htfile, parser)
 
@@ -23,7 +23,7 @@ for htfile in glob.iglob("learn-c-the-hard-waych1.html"):
             para.tail = re.sub("\n\s*", "", para.tail)
 
     # Remove extra line breaks from <dd> tags.
-    for dd in content.xpath("dl/dd"):
+    for dd in content.xpath("//dl/dd"):
         if dd.text is not None:
 			dd.text = re.sub("\n\s*", "", dd.text)
         if dd.tail is not None:
