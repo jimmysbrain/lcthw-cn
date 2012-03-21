@@ -1,0 +1,102 @@
+\chapter{习题 4: 介绍 Valgrind}
+
+是时候学习另外一个工具 \program{Valgrind} 了，它将伴随你学习 C 语言的整个过程。我现在介绍 \program{Valgrind} 给你，因为从现在起，在“让程序出错”这个小节里，每个练习你都将用到它。\program{Valgrind} 运行你的程序，然后报告你犯下的所有致命错误。它是一个很棒的自由软件，我经常在我写 C 代码的时候用到它。
+
+还记得在上一个习题里，我让你修改你的代码移除了 \ident{printf} 函数的参数吗？它打印出了一些不寻常的结果，但我没有告诉你为什么它会打印出这些结果。在这个习题里，我们将用 \program{Valgrind} 来探个究竟。
+
+\begin{aside}{为什么要介绍这些工具？}
+只经过几章，我们就学习了本书所需要的所有工具，而只学写了一点点代码。这是因为这本书的大部分读者不熟悉编译语言，当然也不知道自动化处理和有用的工具。让你马上接触 \ident{make}  和 \program{Valgrind} ，我就能用他们更快的教会你 C 语言并帮助你找到你在程序中犯的错误。
+
+在这章练习后，一段时间内，我们将不会介绍其他任何工具，大部分将是代码和语法。但我们还将会学习一些工具，用来查看程序如何运行和帮我们理解一些常见错误和问题 。
+
+\end{aside}
+
+\section{安装 Valgrind}
+
+ 你能通过操作系统的包管理器来安装 \program{Valgrind}，但我要你学习如何从源代码安装程序。它包括以下几个步骤：
+
+\begin{enumerate}
+\item 下载源代码包。
+\item 解压文件到你的电脑。
+\item 运行 \program{./configure} 设置配置。
+\item 运行 \program{make} 创建程序, 就像你以前做过的那样。
+\item 运行 \program{sudo make install} 把程序安装到你的电脑。
+\end{enumerate}
+
+下面是我流程的一个脚本，我要你试着用同样的方法做一遍。
+
+\begin{code}{ex4.sh}
+<< d['code/ex4.sh|pyg|l'] >>
+\end{code}
+
+照着上面的做，不过如果你用了更新的 Valgrind 版本，就记得更新脚本里的版本号。如果它 build 失败，那么查出为什么出错。
+
+\section{使用 Valgrind}
+
+使用 \program{Valgrind} 很简单, 你只要运行 \verb|valgrind theprogram| 它就会运行你的程序，然后打印出你程序运行时的错误。在这个习题里，我们将让程序出错，然后我们修正这个程序。
+
+ 首先，我们把 \file{ex3.c} 的代码拿来用，换个名字叫 \file{ex4.c} ，当然，代码会故意弄错，为了练习，你需要重新输入一遍。
+
+\begin{code}{ex4.c}
+<< d['code/ex4.c|pyg|l'] >>
+\end{code}
+
+你可以看到，除了我在上面犯了两个经典错误之外，其余都是一样的。
+
+\begin{enumerate}
+\item 我没有初始化 \ident{height} 变量.
+\item 我忘记给头一个 \ident{printf} 函数加上 \ident{age} 变量。
+\end{enumerate}
+
+\section{你应该看到的结果}
+
+现在我们像平常一样创建它，然后用 \program{Valgrind} 运行它，而不是像以前那样直接运行程序（看 Source: “Build 并用 Valgrind 运行 ex4.c”）：
+
+\begin{Terminal}{Build 并用 Valgrind 运行 ex4.c}
+\begin{lstlisting}
+<< d['code/ex4.out'] >>
+\end{lstlisting}
+\end{Terminal}
+
+输出很长，因为 \program{Valgrind} 会精确告知你程序每一个错误的所在。你要逐行从头到尾的读一遍（最左边的是行号，这样你可以对照查看）:
+
+\begin{description}
+\item[1] 你像平常一样用 \verb|make ex4| build 程序。 请确认你的 \ident{cc} 指令编译时用了同样的参数，没有 \verb|-g| 选项，\program{Valgrind} 的输出将不带行号。
+\item[2-6] 可以注意到编译器也对你发出了警告，它提醒你 "too few arguments for format". 那是你忘了加 \ident{age} 变量。
+\item[7] 用 \verb|valgrind ./ex4| 运行你的程序。
+\item[8] 然后 \program{Valgrind} 就抓狂了，丢了一堆错误出来:
+    \begin{description}
+        \item[14-18] 在 \verb|main (ex4.c:11)| 这一行(读作“文件 ex4.c 的第 11 行，main 函数里面)
+            你看到了“Use of uninitialised value of size 8”，你从错误中找到这条，然后在它下面就能看到
+            所谓的“栈追踪(stack trace)”。你看到的(ex4.c:11)这行是栈的最底下一层，如果你看不出哪里有
+            问题那就继续往栈的上一层看，这回你要检查代码的 printf.c:35 这个位置。通常最底下的一行是最
+            重要的（在这里是第 18 行）。
+        \item[20-24] 这个接下来的错误依然是 main 函数 ex4.c:11 这行的错误 \program{Valgrind}
+            恨死这行了。这个错误是说某个 if 语句或者 while 循环是基于这个未被初始化的变量运行的，这次
+            是 height 这个变量。
+        \item[25-35] 剩下的错误基本是一样的，因为这个变量被重复用到了。
+    \end{description}
+\item[37-46] 最后，程序退出然后 \program{Valgrind} 做了个概要，向你展示你的程序有多糟糕。
+\end{description}
+
+要学的东西真不少，不过你要用下面的方法来应对：
+
+\begin{enumerate}
+\item 每次运行你的 C 程序，都在 \program{Valgrind} 下重跑一遍检查一下。
+\item 针对你看到的每一个错误，都到 source:line 所指的位置检查并修正它们。你可能需要上网搜索
+    错误信息的意义。
+\item 如果你的程序被 Valgrind “认证通过”了，那这个程序应该就不错了，而且你也许还从中学到了
+    关于怎样写代码的一些知识。
+\end{enumerate}
+
+在这个习题里，我没指望你能立马就熟练运用 \program{Valgrind} ，只是让你装好它并学习如何快速上手，这样我们就能在以后的习题里用上它。
+
+\section{加分习题}
+
+\begin{enumerate}
+\item 根据 \program{Valgrind} 和编译器的提示，修正错误。
+\item 在网上研读 \program{Valgrind} 。
+\item 下载其他软件的源码，自己 build 一下。尝试一些你已经用过但还从没自己动手 build 过的软件。
+\item 看看 \program{Valgrind} 的源码的路径组织架构，读一下它的 Makefile ，别担心，我也觉得这东西一团糟。
+\end{enumerate}
+

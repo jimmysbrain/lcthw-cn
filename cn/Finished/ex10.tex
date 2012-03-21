@@ -1,0 +1,102 @@
+\chapter{习题 10: 字符串数组，循环}
+
+你可以用多种数据类型组成一个数组，要记得“字符串”和“字节数组”就是一个东西。
+下一步就是将字符串放到数组里。这里还会为你介绍第一个循环结构—— \ident{for-loop}
+（for 循环）——它会帮助你打印出这个新的数据结构。
+
+有个有趣的地方是，其实已经有个字符串数组在你的程序中躲藏了一段时间了，那就是在
+\ident{main} 函数参数里的 \ident{char *argv[]} 。下面一段代码会
+打印出你通过命令行传递的所有参数：
+
+\begin{code}{ex10.c}
+<< d['code/ex10.c|pyg|l'] >>
+\end{code}
+
+\ident{for-loop} 的格式是这样的：
+
+\begin{Verbatim}
+    for(INITIALIZER; TEST; INCREMENTER) {
+        CODE;
+    }
+\end{Verbatim}
+
+接下来讲讲 \ident{for-loop} 的工作原理：
+
+\begin{enumerate}
+\item \ident{INITIALIZER} 是完成循环前的准备工作的代码，在本例中就是 \verb|i = 0| 
+这句。
+\item 接下来运行的是 \ident{TEST} 这个布尔表达式的检查动作，如果它的值是 false (0)，
+那么接下来就什么都不做了。
+\item 运行代码 \ident{CODE}，完成它要做的事情。
+\item \ident{CODE} 运行之后，\ident{INCREMENTER} 部分就会被运行，
+通常都是将某个变量递增，比如本例中的 \verb|i++| 。
+\item 然后代码会从第 2 步开始重新运行， 直到 \ident{TEST} 的值成为 false (0) 为止。
+\end{enumerate}
+
+这个 \ident{for-loop} 将使用 \ident{argc} 和 \ident{argv} 
+这两个变量来对命令行参数做如下处理：
+
+\begin{enumerate}
+\item 操作系统将每一条命令行参数当做字符串传递到数组 \ident{argv} 中，程序的名称
+(./ex10)的位置是 0，其它的参数向后依次排列。
+\item 操作系统还将 \ident{argc} 设为 \ident{argv} 中参数的个数，这样你处理它的时候
+就不必担心超过最后一个参数了。
+\item \ident{for-loop} 做了预备工作，设定 \verb|i = 1| 。
+\item 之后它通过 \verb|i < argc| 这句判断 \ident{i} 是否小于 \ident{argc}。
+一开始 $0 < 1$，所以判断通过。
+\item 然后它接着运行代码，打印出 \ident{i} ，然后使用 \ident{i} 作为 \ident{argv}
+ 数组内部的索引。
+\item 接着递增器将通过语法 \verb|i++| 运行。这算是 \verb|i = i + 1| 的简写方式。
+\item 然后它就会重复上述代码，直到 \verb|i < argc| 的值成为 false （0），然后循环就结束了，余下的程序将继续运行。
+\end{enumerate}
+
+\section{你应该看到的结果}
+
+跟这个程序打交道你需要用两种方式运行它。第一种是传递一些命令行参数从而赋值给 \ident{argc} 和 \ident{argv} 。第二种是运行时不传递任何参数，这样的话由于 \verb|i < argc|
+一开始就是 false，\ident{for-loop} 将不会运行。
+
+\begin{code}{ex10 output}
+\begin{lstlisting}
+<< d['code/ex10.out'] >>
+\end{lstlisting}
+\end{code}
+
+\subsection{理解字符串数组}
+
+从习题中你应该已经知道了 C 语言中“字符串数组”是怎样构造出来的了——通过结合
+ \verb|char *str = "blah"| 和 \verb|char str[] = {'b','l','a','h'}| 
+ 来构建一个二维数组。第 14 行的 \verb|char *states[] = {...}| 就是这个二维组合的动作，
+ 其中一维是以字符串为元素，另一维度则是以构成字符串的字符作为元素。
+
+头晕了吧？很多人都没有想过多重维度的概念，所以你应该试着在纸上构建出这个字符串数组：
+
+\begin{enumerate}
+\item 在这张纸上做一个矩形网格，最左列填入每一个 \emph{string(字符串)} 的索引值。
+\item 最上面一行填入每一个 \emph{character(字符)} 的索引值。
+\item 然后将字符串填入表格中间的空位，每个字符占一格。
+\item 做好这个表格后，用它来手动追踪一遍代码。
+\end{enumerate}
+
+另一个弄明白的方法是通过使用你更熟悉的语言 (比如 Python 或者 Ruby) 建造一个相同的结构。
+
+\section{让程序出错}
+
+\begin{enumerate}
+\item 选一个你喜欢的别种语言，用它来运行这个程序，但是要给它尽可能多的命令行参数。看看你能不能
+通过给出太多的形参把这程序给搞崩了。
+\item 将 \ident{i} 初始化为 0 看看会发生什么。你需要同时调整 \ident{argc} 吗？还是说它可以直接运行？为什么这里可以用基于 0 的索引方式呢？
+\item 把 \ident{num\_states} 设置得更高导致错误，看看会发生什么。
+\end{enumerate}
+
+\section{加分习题}
+
+\begin{enumerate}
+\item 弄明白什么样的代码你可以放到 \ident{for-loop} 中。
+\item 查找一下应该如何在 \ident{for-loop} 中使用字符 \verb|','| (comma) 分隔多条命令。
+\item 阅读以下什么是 \ident{NULL}，并尝试将数组 \ident{states} 的元素之一设为 
+\ident{NULL}，看看它会打印输出什么。 
+\item 试试你可不可以在打印输出之前将数组 \ident{states} 的元素赋值到数组 
+\ident{argv} 中，然后再反过来试一下。
+\end{enumerate}
+
+

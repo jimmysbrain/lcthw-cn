@@ -1,12 +1,14 @@
 JUNK_FILES=$(FINAL).* *.aux *.log styles/*.aux
 SOURCE=book
-WEBSITE=/var/www/learncodethehardway.org/c/
+WEBSITE=learncodethehardway.org:/var/www/learncodethehardway.org/c/
 FINAL=learn-c-the-hard-way
 
 book:
+	cp -n ../InProgress/*.tex .
+	cp -n ../../*.tex .
+	cp -r ../../code .
 	dexy
 	cp Makefile output/
-	cp style.sty output/
 	${MAKE} -C output clean $(FINAL).pdf
 	rm -rf output/*.dvi output/*.pdf
 	${MAKE} -C output $(FINAL).pdf
@@ -19,9 +21,13 @@ $(FINAL).pdf:
 	xelatex $(FINAL).tex
 
 html: 
-	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in"
+	cp -r site/js site/css output/
+	cp clean_p.py output/
+	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
+	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in,xhtml,charset=utf-8,NoFonts" "-cunihtf -utf8"
+	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in" -utf8
 	sed -i -f clean.sed output/*.html
-	cat output/fixes.css >> output/$(FINAL).css
+	cd output && python clean_p.py
 	
 view: $(FINAL).pdf
 	evince $(FINAL).pdf
