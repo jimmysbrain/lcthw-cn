@@ -8,29 +8,30 @@ from lxml import etree
 
 parser = etree.HTMLParser()
 
-for htfile in glob.iglob("learn-c-the-hard-waych*.html"):
+for htfile in glob.iglob("learn-c-the-hard-waych1.html"):
     print "Cleaning", htfile
     doc = etree.parse(htfile, parser)
 
     content = doc.xpath('/html/body/div/div[1]/div[2]/div')[0]
 
     # Remove extra line breaks from <p> tags.
-    for para in content.xpath("p/*"):
+    for para in content.xpath("//p"):
         if para.text is not None:
-            para.text = re.sub("\n\s+", "", para.text)
+            print para.text
+            para.text = re.sub("\n\s*", "", para.text)
         if para.tail is not None:
-            para.tail = re.sub("\n\s+", "", para.tail)
+            para.tail = re.sub("\n\s*", "", para.tail)
 
     # Remove extra line breaks from <dd> tags.
-    for dd in content.xpath("dl/dd/*"):
+    for dd in content.xpath("dl/dd"):
         if dd.text is not None:
-			dd.text = re.sub("\n\s+", "", dd.text)
+			dd.text = re.sub("\n\s*", "", dd.text)
         if dd.tail is not None:
-            dd.tail = re.sub("\n\s+", "", dd.tail)
+            dd.tail = re.sub("\n\s*", "", dd.tail)
 
     # Remove extra line breaks from source code captions.
     for cap in content.xpath("div/div[1]/span[2]"):
-        cap.text = re.sub("\n\s+", "", cap.text)
+        cap.text = re.sub("\n\s*", "", cap.text)
 
     # Correct page title.
     h2 = content.find("h2")
