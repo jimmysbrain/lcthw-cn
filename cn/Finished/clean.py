@@ -7,8 +7,9 @@ import re
 from lxml import etree
 
 parser = etree.HTMLParser()
+prefix = "learn-c-the-hard-way"
 
-for htfile in glob.iglob("learn-c-the-hard-way*.html"):
+for htfile in glob.iglob(prefix + "*.html"):
     print "Cleaning", htfile
     doc = etree.parse(htfile, parser)
 
@@ -17,7 +18,6 @@ for htfile in glob.iglob("learn-c-the-hard-way*.html"):
     # Remove extra line breaks from <p> tags.
     for para in content.xpath("//p"):
         if para.text is not None:
-            print para.text
             para.text = re.sub("\n\s*", "", para.text)
         if para.tail is not None:
             para.tail = re.sub("\n\s*", "", para.tail)
@@ -25,7 +25,7 @@ for htfile in glob.iglob("learn-c-the-hard-way*.html"):
     # Remove extra line breaks from <dd> tags.
     for dd in content.xpath("//dl/dd"):
         if dd.text is not None:
-			dd.text = re.sub("\n\s*", "", dd.text)
+            dd.text = re.sub("\n\s*", "", dd.text)
         if dd.tail is not None:
             dd.tail = re.sub("\n\s*", "", dd.tail)
 
@@ -34,11 +34,28 @@ for htfile in glob.iglob("learn-c-the-hard-way*.html"):
         cap.text = re.sub("\n\s*", "", cap.text)
 
     # Correct page title.
-    h2 = content.find("h2")
-    if h2 is not None:
-        it = list(h2.itertext())[1]
-        head = doc.find("head").find("title")
-        head.text = it
+    if prefix + "ch" in htfile:  # chapters
+        h2 = content.find("h2")
+        if h2 is not None:
+            it = list(h2.itertext())[1]
+            head = doc.find("head").find("title")
+            head.text = it
 
-	doc.write_c14n(htfile)
+    elif prefix + "li" in htfile:  # preface
+        continue
+        if h2 is not None:
+            print "i", h2.itertext()
+            print "t", h2.text
+            head = doc.find("head").find("title")
+            head.text = h2.text
+
+    elif prefix + "pa" in htfile:  # toc
+        continue
+        h1 = content.find("h1")
+        if h1 is not None:
+            head = doc.find("head").find("title")
+            head.text = h1.text
+
+    doc.write_c14n(htfile)
+
 
