@@ -52,8 +52,8 @@ for htfile in glob.iglob(prefix + "*.html"):
         name = h1.tail
         if h1 is not None:
             head = doc.find("head").find("title")
-            head.text = part + ": " + name
+            head.text = part
 
-    doc.write_c14n(htfile, method="html")
+    doc.write_c14n(htfile)
 
 
