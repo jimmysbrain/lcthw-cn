@@ -1,4 +1,5 @@
 # A dirty script to produce readable Chinese html pages.
+# TODO: s/([Chinese])([A-Za-z0-9])/\1 \2/
 
 import os
 import glob
@@ -40,12 +41,10 @@ for htfile in glob.iglob(prefix + "*.html"):
             it = list(h2.itertext())[1]
             head = doc.find("head").find("title")
             head.text = it
-
     elif prefix + "li" in htfile:  # preface
         h2 = content.xpath("//h2/*")[0]
         head = doc.find("head").find("title")
         head.text = h2.tail
-
     elif prefix + "pa" in htfile:  # toc
         h1 = content.find("h1")
         part = h1.find("span").text
