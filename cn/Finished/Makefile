@@ -25,9 +25,10 @@ html:
 	cp clean.py output/
 	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
 	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in,charset=utf-8,NoFonts" "-cunihtf -utf8"
-	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in" -utf8
-	cd output && python clean.py
+	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,xhtml,fn-in" -utf8
 	sed -i -f clean.sed output/*.html
+	cd output && python clean.py
+	sed -i -e 's#</br>##g' output/*.html
 	
 	
 view: $(FINAL).pdf
