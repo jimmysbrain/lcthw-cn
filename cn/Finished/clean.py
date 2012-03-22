@@ -42,19 +42,17 @@ for htfile in glob.iglob(prefix + "*.html"):
             head.text = it
 
     elif prefix + "li" in htfile:  # preface
-        continue
-        if h2 is not None:
-            print "i", h2.itertext()
-            print "t", h2.text
-            head = doc.find("head").find("title")
-            head.text = h2.text
+        h2 = content.xpath("//h2/*")[0]
+        head = doc.find("head").find("title")
+        head.text = h2.tail
 
     elif prefix + "pa" in htfile:  # toc
-        continue
         h1 = content.find("h1")
+        part = h1.find("span").text
+        name = h1.tail
         if h1 is not None:
             head = doc.find("head").find("title")
-            head.text = h1.text
+            head.text = part + ": " + tail
 
     doc.write_c14n(htfile)
 
