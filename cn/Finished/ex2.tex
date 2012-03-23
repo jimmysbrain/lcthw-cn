@@ -11,7 +11,7 @@
 
 有些程序 make 已经知道如何 build 了，使用 make 的第一阶段就是去 build 这样的程序。Make 已经拥有了数十年积累的丰富相关知识，用以将一些文件 build 出各种其他文件。在上一个练习里你已经使用了像这样的命令：
 
-\begin{Terminal}{Building ex1 with -Wall}
+\begin{Terminal}{Build ex1，使用 -Wall 参数}
 \begin{lstlisting}
 $ make ex1
 # or this one too
@@ -35,7 +35,7 @@ $ CFLAGS="-Wall" make ex1
 
 事实上单单使用 \ident{make} 你就已经可以做很多事情了，但还是让我们来看一看怎样写一个 \file{Makefile} ，这会帮你更好的理解它。请创建一个文件并输入以下内容：
 
-\begin{code}{A simple Makefile}
+\begin{code}{一个简单的 Makefile}
 \begin{lstlisting}
 << d['code/ex2.1.Makefile'] >>
 \end{lstlisting}
@@ -47,7 +47,7 @@ $ CFLAGS="-Wall" make ex1
 
 先确保它在与文件 \file{ex1.c} 在相同路径下, 然后运行以下命令：
 
-\begin{Terminal}{Running a simple Makefile}
+\begin{Terminal}{运行简单的 Makefile}
 \begin{lstlisting}
 $ make clean
 $ make ex1
@@ -59,7 +59,7 @@ $ make ex1
 
 如果一切正常你将可以看到：
 
-\begin{Terminal}{Full build with Makefile}
+\begin{Terminal}{使用 Makefile 做完整的 build}
 \begin{lstlisting}
 << d['code/ex2.out'] >>
 \end{lstlisting}
@@ -78,7 +78,7 @@ $ make ex1
 
 以上这些应该已经够你起步了，但我们还是将这个 make 文件用某种方式打乱一下，这样你可以进一步了解到底发生了什么。 请选择 \verb|rm -f ex1| 这一行并取消缩进 (将整行左移)，你将得到：
 
-\begin{Terminal}{Bad make run}
+\begin{Terminal}{运行 make 出错}
 \begin{lstlisting}
 $ make clean
 Makefile:4: *** missing separator.  Stop.

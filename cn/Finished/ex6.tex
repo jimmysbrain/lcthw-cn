@@ -15,7 +15,7 @@
 
 你的输出应该和我的一样，你也许也会发现这些 C 的字符串格式与 Python 和其他语言的字符串格式是多么的相似。其实它们已经存在很长时间了。
 
-\begin{code}{ex6 output}
+\begin{code}{ex6 的输出}
 \begin{lstlisting}
 << d['code/ex6.out'] >>
 \end{lstlisting}
@@ -33,15 +33,15 @@
 这里需要注意的是C语言非常注意区分单双引号。单引号是为字符 \ident{char} 所准备的，而双引号则是为一堆字符，既字符串型， \ident{char[]} 所准备的。
 
 \begin{aside}{C数据类型的英文缩写}
-当我们谈论到 C 数据类型时，在英语中我将直接使用 char[] 来表示， 而不会使用完整字符名 SOMENAME[]. 但事实上作为 C 代码这是不对的， 缩写仅仅是书中一种表达数据类型的简便方式。
+当我们谈论到 C 数据类型时，在英语中我将直接使用 char[] 来表示，而不会使用完整字符名 SOMENAME[]. 但事实上作为 C 代码这是不对的，缩写仅仅是书中一种表达数据类型的简便方式。
 \end{aside}
 
 \section{让程序出错}
 
-你可以通过给 printf 赋错误的值来搅坏这个程序。 用那条打印我的名字的指令来打个比方，如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面， bug 就来了。 真这样运行的话，编译器会对你发飙，你没准会看到个
+你可以通过给 printf 赋错误的值来搅坏这个程序。用那条打印我的名字的指令来打个比方，如果在参数中，把变量 \ident{initial} 放在变量 \ident{first\_name} 的前面，bug 就来了。真这样运行的话，编译器会对你发飙，你没准会看到个
 “段故障（Segmentation fault）”，就像下面这样：
 
-\begin{code}{ex6 explosion}
+\begin{code}{ex6 的爆炸现场}
 \begin{lstlisting}
 << d['code/ex6.bad.out'] >>
 \end{lstlisting}

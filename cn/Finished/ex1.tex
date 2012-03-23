@@ -8,7 +8,7 @@
 
 把它保存为 \file{ex1.c} 然后输入：
 
-\begin{Terminal}{Building ex1}
+\begin{Terminal}{Build ex1}
 \begin{lstlisting}
 $ make ex1
 cc     ex1.c   -o ex1
@@ -21,7 +21,7 @@ cc     ex1.c   -o ex1
 
 你运行这个程序应该会看到以下输出。
 
-\begin{Terminal}{Running ex1}
+\begin{Terminal}{运行 ex1}
 \begin{lstlisting}
 $ ./ex1
 Hello world.
@@ -37,7 +37,7 @@ Hello world.
 
 对于这个程序，打开编译器的所有警告项，重新编译它：
 
-\begin{Terminal}{Building ex1 with -Wall}
+\begin{Terminal}{Build ex1，使用 -Wall 参数}
 \begin{lstlisting}
 $ rm ex1
 $ CFLAGS="-Wall" make ex1
