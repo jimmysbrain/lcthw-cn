@@ -164,7 +164,7 @@ That sets up three new Objects you'll be using: \ident{Monster}, \ident{Room},
 and \ident{Map}.
 
 Taking a look at \file{object.c:52} you can see where I use a pointer
-\verb|Object *el = calloc(size, 1)|.  Go back and look at the \func{NEW}
+\verb|Object *el = calloc(1, size)|.  Go back and look at the \func{NEW}
 macro in \file{object.h} and you can see that it is getting the \func{sizeof}
 another struct, say \ident{Room}, and I allocate that much.  However, because
 I've pointed a \ident{Object} pointer at this block of memory, and because
