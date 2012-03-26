@@ -33,11 +33,6 @@ for htfile in glob.iglob(prefix + "*.html"):
             if part.tail is not None:
                 part.tail = spacify(part.tail)
 
-    # Remove extra line breaks from source code captions.
-    # for cap in content.xpath("div/div[1]/span[2]"):
-    #     cap.text = spacify(cap.text)
-
-    # Correct page title.
     if prefix + "ch" in htfile:  # chapters
         h2 = content.find("h2")
         if h2 is not None:

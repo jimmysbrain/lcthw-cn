@@ -27,14 +27,14 @@ Runtime (APR)} 可移植性 library，它里边有很多好用适用于很多平
 
 \subsection{What We Want To Make}
 
-We want a tool that has three commands:
+我们要做一个工具，它有三条命令:
 
 \begin{enumerate}
-\item[devpkg -S] Sets up a new install on a computer.
-\item[devpkg -I] Installs a piece of software from a URL.
-\item[devpkg -L] Lists all the software that's been installed.
-\item[devpkg -F] Fetches some source code for manual building.
-\item[devpkg -B] Builds fetches source code and installs it, even if already installed.
+\item[devpkg -S] 执行软件的全新安装。
+\item[devpkg -I] 通过 URL 安装软件。
+\item[devpkg -L] 列出所有安装了的软件。
+\item[devpkg -F] 下载源代码以供手动 build。
+\item[devpkg -B] 下载源代码，build 并且安装软件，即使在软件已被安装的情况下也会再装一遍。
 \end{enumerate}
 
 We want \program{devpkg} to be able to take almost any URL, figure
