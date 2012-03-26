@@ -17,14 +17,12 @@ draft: $(FINAL).dvi
 
 $(FINAL).pdf:
 	cp $(SOURCE).tex $(FINAL).tex
-	#pdflatex -halt-on-error $(FINAL).tex
 	xelatex $(FINAL).tex
 
 html: 
 	cp -r site/js site/css output/
 	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
 	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in,charset=utf-8,NoFonts" "-cunihtf -utf8"
-	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,xhtml,fn-in" -utf8
 	sed -ire '/<head><title>/c\<head><title><\/title>' output/*.html  # title has encoding issues
 	python clean.py output/*.html
 	
