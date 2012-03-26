@@ -27,8 +27,6 @@ html:
 	#cd output && htlatex $(FINAL).tex "book,index=1,2,next,xhtml,fn-in" -utf8
 	sed -ire '/<head><title>/c\<head><title><\/title>' output/*.html  # title has encoding issues
 	python clean.py output/*.html
-	sed -i -e 's#</br>##g' output/*.html
-	
 	
 view: $(FINAL).pdf
 	evince $(FINAL).pdf
