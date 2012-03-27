@@ -65,36 +65,28 @@ Runtime (APR)} 可移植性 library，它里边有很多好用适用于很多平
 
 \subsection{Apache Portable Runtime}
 
-One more thing you'll do is leverage the \href{http://apr.apache.org/}{The
-Apache Portable Runtime (APR)} libraries to get a good set of portable routines
-for doing this kind of work.  The APR isn't necessary, and you could probably
-write this program without them, but it'd take more code than necessary.
-I'm also forcing you to use APR now so you get used to linking and using
-other libraries.  Finally, the APR also works on \emph{Windows} so your
-skills with it are transferable to many other platforms.
+接下来你要做的是利用 \href{http://apr.apache.org/}{Apache Portable Runtime (APR)} 
+里一成套的可移植函数库以完成本项目。APR 不是必须项，就算不用它你也可以完成本程序，只不过你
+需要写更多的代码罢了。我要求你使用 APR 的原因是让你习惯于链接并使用别的库文件。最后要说的
+一点是，APR 在 \emph{Windows} 下也能工作，所以你学的 APL 技能可以用在很多别的平台上面。
 
-You should go get both the \library{apr-1.4.5} and the \library{apr-util-1.3}
-libraries, as well as browse through the documentation available at the 
-\href{http://apr.apache.org/}{main APR site at apr.apache.org}.
+你需要下载 \library{apr-1.4.5} 和 \library{apr-util-1.3} 这两个函数库，同时阅读一下
+\href{http://apr.apache.org/}{APR 主站}提供的文档。
 
-Here's a shell script that will install all the stuff you need.  You
-should write this into a file by hand, and then run it until it can
-install APR without any errors.
+下面是一个用来安装的 shell 脚本，你需要将这个脚本手动誊写一遍，然后运行它，直到它能毫不
+出错地安装 APR 为止。
 
-\begin{code}{APR Install Script}
+\begin{code}{APR 安装脚本}
 << d['code/ex26.1.sh|pyg|l'] >>
 \end{code}
 
-I'm having you write this script out because this is basically what
-we want \program{devpkg} to do, but with extra options and checks.
-In fact, you could just do it all in shell with less code, but then
-that wouldn't be a very good program for a C book would it?
+我要求你写这个脚本是因为 \program{devpkg} 实现的功能和这个脚本一样，只不过参数更多，
+功能也更完善而已。其实你可以用 shell 完全实现本项目，而且这样做代码量更少，不过在一本 C 语言
+的书里教你 shell 程序还是有些不合适吧？
 
-Simply run this script and fix it until it works, then you'll have the
-libraries you need to complete the rest of this project.
+运行这个脚本，如果有错就修改过来，直到它能正常工作为止。这样你就装好了实现剩余项目所需的函数库。
 
-
-\section{Project Layout}
+\section{项目结构}
 
 You need to setup some simple project files to get started.  Here's how I
 usually craft a new project:

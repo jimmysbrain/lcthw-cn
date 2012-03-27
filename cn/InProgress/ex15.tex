@@ -1,8 +1,8 @@
-﻿\chapter{Exercise 15: 指针，讨厌的指针}
+﻿\chapter{Exercise 15: 指针啊指针，恐怖的指针}
 
-在C语言中，指针闻名遐迩，又神秘莫测。我将教给你们一些词汇
-，用以揭开指针的神秘面纱。事实上它们并不复杂，只是常常被人们胡乱操作，
-导致难以操作。如果你尽量避免愚蠢地操作，指针实际上相当容易。
+指针是 C 语言中闻名遐迩而又神秘莫测的东西。我将教给你们一些处理指针所用的词汇
+，从而揭开指针的神秘面纱。事实上指针并不复杂，只是常常被以各种方式滥用，导致它
+显得十分难用。如果你尽量避免那些愚蠢的使用方法，指针实际上是相当容易的。
 
 为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄:
 \footnote{记住，学习本书时你要输入这些程序，也许一时不能理解，
@@ -17,42 +17,42 @@
 
 \begin{description}
 \item[ex15.c:6-10] 创建两个数组, \ident{ages} 用以存储一些 \ident{int}
-    数据，而数组\ident{names}则存储一些字符串。
-\item[ex15.c:12-13] 稍候\ident{for循环}要用到的一些变量。
-\item[ex15.c:16-19] 依次访问两个数组并打印出每人的年龄。此处使用
+    数据，而数组 \ident{names} 则存储一些字符串。
+\item[ex15.c:12-13] 稍候 \ident{for 循环}要用到的一些变量。
+\item[ex15.c:16-19] 你懂的，循环访问两个数组并打印出每人的年龄。此处使用
      \ident{i} 作为数组的索引。
 \item[ex15.c:24] 创建指针，指向 \ident{ages}。
-    注意使用 \verb|int *| 来创建“整型指针”的指针类型。这点和
-    “字符指针”\verb|char *|相似，而字符串就是一个字符的数组。
+    注意 \verb|int *| 的作用是创建“指向整数类的指针”。这点和
+    “指向字符类的指针” \verb|char *| 相似，而字符串就是一个字符的数组。
     发现相似之处了嘛？
 \item[ex15.c:25] 创建一个指针，指向\ident{names}。 \verb|char *| 
-    已经是一个“字符指针”，也就是一个字符串。而 \ident{names}是二维的，
+    已经是一个“指向字符类的指针”，也就是一个字符串。而 \ident{names} 是二维的，
     所以你需要的两级指针，也就是 “（字符指针）的指针” \verb|char **|。
-    请推敲此处，尝试解释给自己听。
-\item[ex15.c:28-31] 依次访问\ident{ages}和\ident{names}，但这次使用指针
-    加上\emph{i的偏移量}.  写为\verb|*(cur_name+i)|和\verb|name[i]|是等价的，
-    你可以将它读成“(指针\ident{cur\_name}加i)的值”。
-\item[ex15.c:35-39] 这显示了C语言如何奇妙的将指针和数组当作同一种事物来处理，
-    仍然用数组的语法来访问数组，只要换上指针的名称就可以了。C语言自然能分辨。
+    请推敲研究此处，尝试解释给自己听。
+\item[ex15.c:28-31] 依次访问 \ident{ages} 和 \ident{names}，但这次使用指针
+    加上 \emph{i 的偏移量}.  写为 \verb|*(cur_name+i)|和\verb|name[i]| 是等价的，
+    你可以将它读成“(指针 \ident{cur\_name} 加 i)的值”。
+\item[ex15.c:35-39] 这显示了 C 语言如何奇妙的将指针和数组当作同一种事物来处理，
+    仍然用数组的语法来访问数组，只要换上指针的名称就可以了。C 语言自然能分辨。
 \item[ex15.c:44-50] 像前两个一样，又一个让人抓狂的循环，只是它用了不同的指针算法：
     \begin{description}
-    \item[ex15.c:44] 通过将\ident{cur\_name}和\ident{cur\_age}设置到
-        \ident{names}和\ident{ages}数组的起点来初始化\ident{for循环}。
-    \item[ex15.c:45] 然后\ident{for-loop}的测试部分比较了指针\ident{cur\_age}
-        到起点\ident{ages}的\emph{距离}。 为何这样可行呢？
-    \item[ex15.c:46] 接下来\ident{for-loop}的增进部分同时增进了
-        \ident{cur\_name}和\ident{cur\_age}，以便二者指向数组
-        \ident{name}和\ident{age}的\emph{下一个}元素。
-    \item[ex15.c:48-49] 指针\ident{cur\_name}和\ident{cur\_age}现在数组中
-        正在操作的元素，我们只用\verb|*cur_name|和\verb|*cur_age|就可以将
-        他们打印出来，也就是“任何\ident{cur\_name}指向位置的值”。
+    \item[ex15.c:44] 通过将 \ident{cur\_name} 和 \ident{cur\_age} 设置到
+        \ident{names} 和 \ident{ages} 数组的起点来初始化 \ident{for 循环}。
+    \item[ex15.c:45] 然后 \ident{for-loop} 的测试部分比较了指针 \ident{cur\_age}
+        到起点 \ident{ages} 的 \emph{距离}。为何这样可行呢？
+    \item[ex15.c:46] 接下来 \ident{for-loop} 的增进部分同时增进了
+        \ident{cur\_name} 和 \ident{cur\_age}，以便二者指向数组
+        \ident{name} 和 \ident{age} 的\emph{下一个}元素。
+    \item[ex15.c:48-49] 指针 \ident{cur\_name} 和 \ident{cur\_age} 现在数组中
+        正在操作的元素，我们只用 \verb|*cur_name| 和 \verb|*cur_age| 就可以将
+        他们打印出来，也就是“任何 \ident{cur\_name} 指向位置的值”。
     \end{description}
 \end{description}
 
 这段程序看似简单，却包含大量信息，它的目的是使你在看我解释之前，
 自己尝试理解指针。\emph{在你写下自己想法之前，请不要继续阅读}
 
-\section{你应见到的结果}
+\section{你应该看到的结果}
 
 运行程序之后，请你尝试根据每行打印结果追溯源代码。必要时，更改
 \func{printf}以确保你得到正确的行号。
@@ -66,17 +66,17 @@
 
 \section{解释指针}
 
-当你输入诸如\verb|ages[i]|的东西时， 其实是在数组\ident{ages}中“检索”,
-借助\ident{i}中存储的数字实现所需功能。当\ident{i}被设为0时，相当于输入
-\verb|ages[0]|。 因为数字\ident{i}表示我们在\verb|age[0]|需要访问的位置，
-所以一直被称作“索引”。它也可以称作“地址”，比如说“我想要知道数组\ident{ages}
-中地址\ident{i}的整数是多少？”
+当你输入诸如 \verb|ages[i]| 的东西时， 其实是在数组 \ident{ages} 中“检索”,
+借助 \ident{i} 中存储的数字实现所需功能。当 \ident{i} 被设为0时，相当于输入
+\verb|ages[0]|。 因为数字 \ident{i} 表示我们在 \verb|age[0]| 需要访问的位置，
+所以一直被称作“索引”。它也可以称作“地址”，比如说“我想要知道数组 \ident{ages}
+中地址 \ident{i} 的整数是多少？”
 
-如果\ident{i}是一个索引，那么\ident{ages}又是什么呢？对于C语言来说\ident{ages}
+如果 \ident{i} 是一个索引，那么 \ident{ages} 又是什么呢？对于C语言来说 \ident{ages}
 是电脑内存中，所有整数的起始位置。它\emph{也}是一个地址，C编译器将会用它替换
-任何带有ages中第一个整数地址的\ident{ages}。另一种思考\ident{ages}的方法是，
-它是“ages中第一个整数的地址”。诀窍在于\ident{ages}是\emph{整个电脑}里的内存地址。
-不像\ident{i}只是\ident{ages}的内部地址。\ident{ages}的数组名就是电脑里的实际地址。
+任何带有 ages 中第一个整数地址的 \ident{ages}。另一种思考 \ident{ages} 的方法是，
+它是“ages 中第一个整数的地址”。诀窍在于 \ident{ages} 是\emph{整个电脑}里的内存地址。
+不像 \ident{i} 只是 \ident{ages} 的内部地址。\ident{ages}的数组名就是电脑里的实际地址。
 
 至此我们得到一种认识：C语言将整个电脑视为一个巨大的字节数组。显然这不是很管用，
 但是接下来C在这个巨大的字节数组之上加上了\emph{类型}和这些类型\emph{大小}这类概念。
@@ -85,25 +85,25 @@
 
 \begin{enumerate}
 \item 在你的电脑上创建一块内存区域。
-\item 将该内存块起始初“指向”\ident{ages}名称。
-\item 通过基础地址\ident{ages}“检索”该内存块并获取\ident{i}个字节以外的元素。
-\item 将\ident{ages+i}处的地址转化为大小合适的有效\ident{整型}，以便索引正常工作
-      并返回你所需求的：索引\ident{i}处的整型值。
+\item 将该内存块起始初“指向” \ident{ages} 名称。
+\item 通过基础地址 \ident{ages} “检索”该内存块并获取 \ident{i} 个字节以外的元素。
+\item 将 \ident{ages+i} 处的地址转化为大小合适的有效\ident{整型}，以便索引正常工作
+      并返回你所需求的：索引 \ident{i} 处的整型值。
 \end{enumerate}
 
-如果你能取得基础地址，比如\ident{ages}，再“加”上另一个地址比如\ident{i}
+如果你能取得基础地址，比如 \ident{ages}，再“加”上另一个地址比如 \ident{i}
 以产生新的地址，那么你是否能得到一个始终指向此地址的某种东西呢？正式如此，
-你所得到的这种东西，就叫做“指针”。这就是指针\ident{cur\_age}和\ident{cur\_name}
-所做的事情。它们是指向你电脑内存里\ident{ages}和\ident{names}地址的变量。
+你所得到的这种东西，就叫做“指针”。这就是指针 \ident{cur\_age} 和 \ident{cur\_name}
+所做的事情。它们是指向你电脑内存里 \ident{ages} 和 \ident{names} 地址的变量。
 范例程序将它们移来移去，通过相关计算获得内存存储数值。在其中一例，它们只是
-将\ident{i}加到\ident{cur\_age}，这就相当于\verb|array[i]|。在最后一个\ident{for循环}
-里，两个指针没有\ident{i}的帮忙也能自行移动。这个循环中，指针被看作是数组和整数
+将 \ident{i} 加到 \ident{cur\_age}，这就相当于 \verb|array[i]|。在最后一个 \ident{for 循环}
+里，两个指针没有 \ident{i} 的帮忙也能自行移动。这个循环中，指针被看作是数组和整数
 偏移量的整合。
 
 指针仅仅是指向电脑内存的一个地址，明确类型之后你就可以得到大小正确的数据。
-这有点像\ident{ages}与\ident{i}合二为一的数据类型。C语言知道指针指向何处，
-知道所指数据类型，该类型数据大小以及如何为你获取它们。正如\ident{i}一样，
-你可以让它们自增、自减，或者做加、减运算。也可以像\ident{ages}一样，你通过它们
+这有点像 \ident{ages} 与 \ident{i} 合二为一的数据类型。C语言知道指针指向何处，
+知道所指数据类型，该类型数据大小以及如何为你获取它们。正如 \ident{i} 一样，
+你可以让它们自增、自减，或者做加、减运算。也可以像 \ident{ages} 一样，你通过它们
 得到数值，输入新值，进行所有数组操作。
 
 指针的目的，在于当数组不能完全胜任的时候，手动检索一块内存区域。只要是不使用
@@ -120,7 +120,7 @@
 在C语言中有四种主要的指针处理方法：
 
 \begin{enumerate}
-\item 向系统请求一块内存作为指针工作区域。这包括字符串和你还没见过的\ident{structs}。 
+\item 向系统请求一块内存作为指针工作区域。这包括字符串和你还没见过的 \ident{structs}。 
 \item 利用指针向函数传递一大块内存（比如字符串和数组），这样你就不必传递整个数据。
 \item 掌握函数地址以便于动态回调。
 \item 内存区域的复杂扫描，比如从网络套接字中将字节转换成数据结构或者解析文件。
@@ -138,12 +138,12 @@
 就来参考它，然后一点点的解决问题。(或者如果代码本身不太好就直接放弃使用):
 
 \begin{description}
-\item[type *ptr] "一个名ptr的type型指针"
-\item[*ptr] "任何ptr指向位置的值"
-\item[*(ptr + i)] "(任何ptr指向位置加i)的值"
+\item[type *ptr] "一个名 ptr 的 type 型指针"
+\item[*ptr] "任何 ptr 指向位置的值"
+\item[*(ptr + i)] "(任何 ptr 指向位置加 i)的值"
 \item[\&thing] "thing的地址"
-\item[type *ptr = \&thing] "将名为ptr的type型指针设置到thing的地址"
-\item[ptr++] "增进ptr的指向位置"
+\item[type *ptr = \&thing] "将名为 ptr 的 type 型指针设置到 thing 的地址"
+\item[ptr++] "增进 ptr 的指向位置"
 \end{description}
 
 我们将用这本简单的词典解决往后书中遇到的所有指针问题。
@@ -153,9 +153,9 @@
 你只需将指针指向错误的地方就能让这个程序出错。
 
 \begin{enumerate}
-\item 尝试将\ident{cur\_age}指向\ident{names}。 你需要用一个C表达式来强制执行，
-	所以请
-\item 尝试让最后一个\ident{for循环}以奇怪的方式出错。
+\item 尝试将 \ident{cur\_age} 指向 \ident{names}。 你需要用 C 语言中的指针映射(cast)来强制执行，
+	研究一下具体需要怎样做。
+\item 尝试让最后一个 \ident{for 循环}中，用各种方法让算术出错。
 \item 尝试重写这些循环，从结尾向开头访问数组。这比看上去要困难。
 \end{enumerate}
 
@@ -165,13 +165,13 @@
 \item 将程序中所有数组重写为指针。
 \item 将程序中所有指针重写为数组。
 \item 回顾以往使用数组的程序，尝试使用指针替代。
-\item 只用指针处理命令行参数，方法与本例中处理\ident{names}相似。
+\item 只用指针处理命令行参数，方法与本例中处理 \ident{names} 相似。
 \item 尝试指针方法获取各种东西的地址与值。
-\item 在结尾加入另一个\ident{for循环}，打印指针被调用时地址。使用\func{printf}
-	打印时将会用到\verb|%p|格式。
+\item 在结尾加入另一个 \ident{for 循环}，打印指针被调用时地址。使用 \func{printf}
+	打印时将会用到 \verb|%p| 格式。
 \item 重写程序，每种打印方式使用一个函数。尝试将指针传递给函数以便它们获得数据。
 	记住你可以声明一个函数接受指针，但只能按数组的方式使用它。
-\item 将\ident{for循环}改为\ident{while循环}，看看对于不同种类的指针使用，哪种循环
+\item 将\ident{for循环}改为 \ident{while 循环}，看看对于不同种类的指针使用，哪种循环
 	效果更好。
 \end{enumerate}
 
