@@ -1,103 +1,64 @@
-\chapter{Exercise 14: 创建和使用函数}
+\chapter{习题 14: 创建和使用函数}
 
-Until now you've just used functions that are part of the
-\file{stdio.h} header file.  In this exercise you will write
-some functions and use some other functions.
-目前为止你已经使用了部分由头文件 \file{stdio.h} 包含的函数。在这个练习中你将会写一些函数并使用一些其他的函数。
+目前为止你已经使用了部分由头文件 \file{stdio.h} 包含的函数。在这个练习中你将会写一些函数并使用一些别的函数。
+
 \begin{code}{ex14.c}
 << d['code/ex14.c|pyg|l'] >>
 \end{code}
 
-In this example you're creating functions to print out the
-characters and ASCII codes for any that are "alpha" or "blanks".
-Here's the breakdown:
-在这个例子中你创建了一个函数来打印"字母(alpha)"或者"空白符(blanks)"代表的字符和 ASCII 码值。
+在这个例子中你创建了一个函数，用来打印属于“alpha(字母)”或者“blanks(空白符)”类型的字符和它们
+对应的 ASCII 码值。以下是代码详解：
+
 \begin{description}
-\item[ex14.c:2] Include a new header file so we can gain access to
-    \func{isalpha} and \func{isblank}.
-\item[ex14.c:2] 为了能使用函数 \func{isalpha} 和 \func{isblank}, 需要包含一个新的头文件。
-\item[ex14.c:5-6] Tell C that you will be using some functions later
-    in your program, without having to actually define them.
-    This is a "forward declaration" and it solves the chicken-and-egg
-    problem of needing to use a function before you've defined it.
-\item[ex14.c:5-6] 你可以在没有实际定义函数之前就告诉 C 你稍后会在程序中使用的函数。这就是"前置声明(forward declaration)"，它解决了在未定义函数之前就使用函数这个鸡生蛋还是蛋生鸡的问题。
-\item[ex14.c:8-15] Define the \func{print\_arguments} which knows how
-    to print the same array of strings that \func{main} typically
-    gets.
+\item[ex14.c:2] 为了能使用函数 \func{isalpha} 和 \func{isblank}, 我们需要包含一个新的头文件。
+\item[ex14.c:5-6] 你可以在没有实际定义函数之前就告诉 C 你稍后会在程序中使用的函数。这就是
+    “前置声明(forward declaration)”，它解决了在未定义函数之前就使用函数这个鸡生蛋还是蛋生鸡的问题。
 \item[ex14.c:8-15] 定义函数 \func{print\_arguments}, 用来打印由 \func{main} 函数接收到的参数数组的值。
-\item[ex14.c:17-30] Define the next function \func{print\_letters} that 
-    is called \emph{by} \func{print\_arguments} and knows
-    how to print each of the characters and their codes.
-\item[ex14.c:17-30] 定义下一个函数 \func{print\_letters}, 它由 \func{print\_arguments} 函数\emph{调用}, 用来输出每个字母的字符值和它们的 ASCII 码值。
-\item[ex14.c:32-35] Define \func{can\_print\_it} which simply returns
-    the truth value (0 or 1) of \verb,isalpha(ch) || isblank(ch),
-    back to its caller \func{print\_letters}.
-\item[ex14.c:32-35] 定义函数 \func{can\_print\_it} 用来给调用它的函数 \func{print\_letters} 返回一个值，这个值是0或者1，由 \verb,isalpha(ch) || isblank(ch) , 决定该值。
-\item[ex14.c:38-42] Finally \func{main} simply calls \func{print\_arguments}
-    to make the whole chain of function calls go.
-\item[ex14.c:38-42] 最后，\func{main} 函数调用了函数 \func{print\_arguments}，整个函数调用链从这里开始。
+\item[ex14.c:17-30] 定义下一个函数 \func{print\_letters}, 它由 \func{print\_arguments} 
+    函数\emph{调用}, 用来输出每个字母的字符值和它们的 ASCII 码值。
+\item[ex14.c:32-35] 定义函数 \func{can\_print\_it} 用来给调用它的函数 \func{print\_letters} 返回一个真值（0 或者 1），由 \verb,isalpha(ch) || isblank(ch), 决定该值。
+\item[ex14.c:38-42] 最后，\func{main} 函数调用了函数 \func{print\_arguments}，
+    整个函数调用链就从这里开始了。
 \end{description}
 
-I shouldn't have to describe what's in each function because it's all
-things you've ran into before.  What you should be able to see though
-is that I've simply defined functions the same way you've been defining
-\func{main}.  The only difference is you have to help C out by telling
-it ahead of time if you're going to use functions it hasn't encountered
-yet in the file.  That's what the "forward declarations" at the top do.
-我没有描述各个函数中的实际内容因为这些都是你在之前的练习中遇到过的。你能看到的是我用类似于定义 \func{main} 函数的方式定义了一个函数。唯一的不同是你需要告诉 C 那些还没有在文件中遇到但之后要使用的函数，也就是那些代码头部的"前置声明(forward declaration)"所做的事情。
+其实我没必要描述各个函数中的实际内容，因为这些都是你在之前的练习中遇到过的。你应该看到的是
+我用和定义 \func{main} 函数一样的方式定义了一些函数。唯一的不同是你需要提前告诉 C 那些
+还没有在文件中遇到但之后要使用的函数，也就是那些代码头部的“前置声明(forward declaration)”
+所做的事情。
 
-\section{你应该看到的}
+\section{你应该看到的结果}
 
-To play with this program you just feed it different command line 
-arguments, which get passed through your functions.  Here's me
-playing with it to demonstrate:
-只要在命令行上输入不同的参数，你就能使用这个程序。以下是我的演示：
-\begin{code}{ex14 output}
+要体验这个程序，你只需给它提供不同的参数即可，这些参数将被传递到你的函数里边。以下是我的演示：
+
+\begin{code}{ex14 的输出}
 \begin{lstlisting}
 << d['code/ex14.out'] >>
 \end{lstlisting}
 \end{code}
 
-The \func{isalpha} and \func{isblank} do all the work of figuring
-out if the given character is a letter or a blank.  When I do the
-last run it prints everything but the '3' character, since that 
-is a digit.
-函数 \func{isalpha} 和 \func{isblank} 所做的工作就是来判断一个输入的字符是否是字母(letter)或者空白符(blank)。我最后一个示例中它打印了除了'3'以外的所有字符，因为'3'是一个数字。\footnote{译者注：这里的3是指数字3而不是 ASCII 表中的字符'3'}。
+函数 \func{isalpha} 和 \func{isblank} 所做的工作就是来判断一个输入的字符是否是字母(letter)
+或者空白符(blank)。我最后一个示例中它打印了除了 '3' 以外的所有字符，因为 '3' 是一个数字\footnote{译者注： 这里的 3 是指数字 3 而不是 ASCII 表中的字符'3'}。
+
 \section{让程序出错}
 
-There's two different kinds of "breaking" in this program:
 有两种不同的方式来破坏这个程序:
 \begin{enumerate}
-\item Confuse the compiler by removing the forward declarations
-    so it complains about \func{can\_print\_it} and \func{print\_letters}.
 \item 把前置声明去除以此来迷惑编译器，它将会抱怨找不到函数 \func{can\_print\_it} 和 \func{print\_letters}。
-\item When you call \func{print\_arguments} inside \func{main} try
-    adding 1 to \ident{argc} so that it goes past the end of the
-    \ident{argv} array.
-\item 当你在 \func{main} 函数中调用 \func{print\_arguments} 时对 \ident{argc} 加1，这样就越过了 \ident{argv} 数组的最后一个参数。\footnote{译者注：这时候函数 \func{print\_arguments} 函数最后将会访问越界}。
+\item 当你在 \func{main} 函数中调用 \func{print\_arguments} 时对 \ident{argc} 加1，这样就越过了 \ident{argv} 数组的最后一个参数\footnote{译者注：这时候函数 \func{print\_arguments} 函数最后将会访问越界}。
 \end{enumerate}
 
 
 \section{加分习题}
 
 \begin{enumerate}
-\item Rework these functions so that you have fewer functions.  For example,
-    do you really need \func{can\_print\_it}?
 \item 重构这些代码似的你能使用更少的函数完成相同的工作。比如，你真的需要 \func{can\_print\_it} 这个函数吗？
-\item Have \func{print\_arguments} figure how long each argument string
-    is using the \func{strlen} function, and then pass that length
-    to \func{print\_letters}.  Then, rewrite \func{print\_letters} 
-    so it only processes this fixed length and doesn't rely on the
-    \verb|'\0'| terminator.
-\item 让 \func{print\_arguments} 函数调用 \func{strlen} 函数来获知每个字符串参数的长度，然后把长度作为参数传递给 \func{print\_letters}。然后，重写函数 \func{print\_letters} 函数使它只处理这个固定长度的字符串，这样就不需要依赖于 \verb|'\0'| 来决定字符串长度。
-\item Use \program{man} to lookup information on \func{isalpha}
-    and \func{isblank}.  Use the other similar functions to
-    print out only digits or other characters.
-\item 使用 \program{man} 来查询 \func{isalpha} 和 \func{isblank} 函数的信息。用其他类似的函数来打印出数字或其他字符。\footnote{译者注：man 程序是UNIX和UNIX-Like 系统上一个软件文档描述程序，使用它可以用来查询库函数等信息。通常在控制台执行。}。
-\item Go read about how different people like to format their
-    functions.  Never use the "K\&R syntax" as it's antiquated and
-    confusing, but understand what it's doing in case you run
-    into someone who likes it.
-\item 去看看不同的人们格式化函数的不同风格。不要使用"K\&R语法"的形式，这是一种过时也是让人迷惑的方式。除非你要给那些熟悉且喜欢这种风格的人看代码。
+\item 让 \func{print\_arguments} 函数调用 \func{strlen} 函数来获知每个字符串参数的长度，
+    然后把长度作为参数传递给 \func{print\_letters}。然后重写 \func{print\_letters}  函数
+    使它只处理这个固定长度的字符串，这样就不需要依赖于 \verb|'\0'| 来决定字符串长度了。
+\item 使用 \program{man} 来查询 \func{isalpha} 和 \func{isblank} 函数的信息。
+    用其他类似的函数来实现只打印数字或其他字符的功能。\footnote{译者注：man 程序是 Unix 和
+    类 Unix 系统上一个软件文档描述程序，使用它可以用来查询库函数等信息。通常在控制台执行。}。
+\item 去看看不同的人们格式化函数的不同风格。不要使用“K\&R语法”，这是一种过时也是让人迷惑的方式。
+    不过你要了解这种风格的成因，这样等你碰到喜欢这种风格的人，你就知道他们为什么喜欢了。
 \end{enumerate}
 
