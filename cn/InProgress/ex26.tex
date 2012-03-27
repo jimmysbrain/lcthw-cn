@@ -37,40 +37,33 @@ Runtime (APR)} 可移植性 library，它里边有很多好用适用于很多平
 \item[devpkg -B] 下载源代码，build 并且安装软件，即使在软件已被安装的情况下也会再装一遍。
 \end{enumerate}
 
-We want \program{devpkg} to be able to take almost any URL, figure
-out what kind of project it is, download it, install it, and register
-that it downloaded that software.  We'd also like it to process a
-simple dependency list so it can install all the software that a
-project might need as well.
+我们要求 \program{devpkg} 能够识别绝大部分的 URL，识别出这个 URL 对应的是哪个项目，然后
+下载并且安装软件，最后记录下来它下载了哪个软件。我们还要求 \program{devpkg} 能够处理一份
+简单的需求列表(dependency list)，这样它就能同时将当前要安装的软件依赖的软件也安装起来。
 
-\subsection{The Design}
+\subsection{软件设计}
 
-To accomplish this goal \program{devpkg} will have a very simple design:
+我们将通过非常简单的设计来达到我们的目的：
 
 \begin{description}
-\item[Use external commands] You'll do most of the work through external
-    commands like \program{curl}, \program{git}, and \program{tar}.  This
-    reduces the amount of code \program{devpkg} needs to get things done.
-\item[Simple File Database] You could easily make it more complex, but to
-    start you'll just make a single simple file database at
-    \file{/usr/local/.devpkg/db} to keep track of what's installed.
-\item[/usr/local Always] Again you could make this more advanced, but for
-    starters just assume it's always \file{/usr/local} which is a standard
-    install path for most software on Unix.
-\item[configure, make, make install] It's assumed that most software can
-    install with just a \program{configure; make; make install} and maybe
-    \program{configure} is optional.  If the software can't at a minimum
-    do that, then there's some options ot modify the commands, but otherwise
-    \program{devpkg} won't bother.
-\item[The User Can Be root] We'll assume the user can become root using
-    sudo, but that they don't want to become root until the end.
+\item[使用外部命令] 你的大部分工作将通过外部命令诸如 \program{curl}、\program{git}、\program{tar}
+    来完成。这样可以减少实现 \program{devpkg} 所需的代码量。
+\item[简单的文件数据库] 要做复杂也不难，不过起始阶段你只要建立一个单个文件的简单数据库
+    \file{/usr/local/.devpkg/db}，用来记录所安装的软件即可。
+\item[只适用 /usr/local] 这里你也可以做得更高级，不过初始阶段我们就假设所有的东西都装到
+    \file{/usr/local} 好了，这也是大部分 Unix 下软件的标准安装路径。
+\item[configure, make, make install] 我们假设绝大部分软件可以通过执行 
+    \program{configure; make; make install} 来安装，而 \program{configure} 可能
+    不是必须的一步。如果你要安装的软件不支持这些基本的安装方式，那你可以通过一个选项来修改
+    安装命令，不过更多的东西 \program{devpkg} 就不去理会了。
+\item[用户可以是 root] 我们将假设用户可以通过 sudo 命令得到 root 权限，不过在执行完安装
+    命令以后他们将回到普通用户级别。
 \end{description}
 
-This will keep our program small at first and work well enough to get it
-going, at which point you'll be able to modify it further for this exercise.
+这样我们可以让程序的初始体积比较小，而功能也都能实现，这样我们就能顺利进行后面的学习，而以后
+你也能够进一步修改它。
 
-
-\subsection{The Apache Portable Runtime}
+\subsection{Apache Portable Runtime}
 
 One more thing you'll do is leverage the \href{http://apr.apache.org/}{The
 Apache Portable Runtime (APR)} libraries to get a good set of portable routines
