@@ -88,43 +88,41 @@ Runtime (APR)} 可移植性 library，它里边有很多好用适用于很多平
 
 \section{项目结构}
 
-You need to setup some simple project files to get started.  Here's how I
-usually craft a new project:
+你需要通过建立一些文件来开始一个新项目。以下是我通常建立新项目的方法：
 
-\begin{code}{Project Skeleton Directory}
+\begin{code}{项目骨架目录}
 << d['code/ex26.2.sh|pyg|l'] >>
 \end{code}
 
-\subsection{Other Dependencies}
+\subsection{其他需求}
 
-You should have already installed APR and APR-util, so now you need 
-a few more files as basic dependencies:
+ 你应该已经装了 APR 和 APR-util，所以现在你还需要几个文件作为基本 dependency：
 
 \begin{enumerate}
-\item \file{dbg.h} from Exercise 20.
-\item \file{bstrlib.h} and \file{bstrlib.c} from \href{http://bstring.sourceforge.net/}{http://bstring.sourceforge.net/}. Download the .zip file, extract it, and copy just those two files out.
-\item Type \verb|make bstrlib.o| and if it doesn't work, read the "Fixing bstring" 
-    instructions below.
+\item 习题 20 中的 \file{dbg.h}
+\item \file{bstrlib.h} 和 \file{bstrlib.c}，它们来自 \href{http://bstring.sourceforge.net/}{http://bstring.sourceforge.net/}。下载并解压 .zip 文件，
+把这两个文件复制出来即可。
+\item 键入命令 \verb|make bstrlib.o|，如果执行失败，请阅读下面的“解决 bstring 的问题”。
 \end{enumerate}
 
-\begin{aside}{Fixing bstring}
-In some platforms the bstring.c file will have an error like:
+\begin{aside}{解决 bstring 的问题}
+有些平台上面 bstring.c 会出现如下的错误：
 
 \begin{lstlisting}
 bstrlib.c:2762: error: expected declaration specifiers or '...' before numeric constant
 \end{lstlisting}
 
-This is from a bad define the authors added which doesn't work always.  Just
-delete this \verb|#ifdef| then recompile and it should work.
+这是因为 bstrlib.c 的作者用了一个有问题的 define 语句，这个语句有时不能正常工作。只要把这个 
+\verb|#ifdef| 删掉并且重新编译即可。
 \end{aside}
 
-When that's all done, you should have a \file{Makefile}, \file{README},
-\file{dbg.h}, \file{bstrlib.h}, and \file{bstrlib.c} ready to go.
+上述步骤完成以后，你应该准备了以下文件：\file{Makefile}、 \file{README}、
+\file{dbg.h}、 \file{bstrlib.h}、 \file{bstrlib.c}。现在你可以继续了。
 
-\section{The Makefile}
+\section{Makefile}
 
-A good place to start is the \file{Makefile} since this lays out 
-how things are built and what source files you'll be creating.
+\file{Makefile} 是一个很好的开始着手点，这样你可以计划好要 build 的内容，以及你需要建立的
+代码文件。
 
 \begin{code}{Makefile}
 \begin{lstlisting}
@@ -132,11 +130,10 @@ how things are built and what source files you'll be creating.
 \end{lstlisting}
 \end{code}
 
-There's nothing in this that you haven't seen before, except maybe the strange
-\verb|?=| syntax, which says "set PREFIX equal to this unless PREFIX is already
-set".
+除了这个奇怪的 \verb|?=| 语法以外，这里基本没有你没见过的东西。这个表达式的意思是“如果 PREFIX 
+的值还没被设定，那么就将 PREFIX 设为该值”。
 
-\section{The Source Files}
+\section{代码文件}
 
 From the make file, we see that there's four dependencies for \program{devpkg}
 which are:
