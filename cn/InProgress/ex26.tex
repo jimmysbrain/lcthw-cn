@@ -135,47 +135,36 @@ bstrlib.c:2762: error: expected declaration specifiers or '...' before numeric c
 
 \section{代码文件}
 
-From the make file, we see that there's four dependencies for \program{devpkg}
-which are:
+从 Makefile 里我们可以看出 \program{devpkg} 需要以下四个 dependency：
 
 \begin{description}
-\item[bstrlib.o] Comes from \file{bstlib.c} and header file \file{bstlib.h} which
-    you already have.
-\item[db.o] From \file{db.c} and header file \file{db.h}, and it
-    will contain code for our little "database" routines.
-\item[shell.o] From \file{shell.c} and header \file{shell.h}, with a couple
-    functions that make running other commands like \program{curl} easier.
-\item[commands.o] From \file{command.c} and header \file{command.h}, and
-    contains all the commands that \program{devpkg} needs to be useful.
-\item[devpkg] It's not explicitly mentioned, but instead is the target
-    (on the left) in this part of the \file{Makefile}. It comes from
-    \file{devpkg.c} which contains the \func{main} function for the whole
-    program.
+\item[bstrlib.o]，编译自你下载的 \file{bstlib.c} 和 \file{bstlib.h}。
+\item[db.o]，编译自 \file{db.c} 和 \file{db.h} 头文件。它包含我们即将需要的“数据库”功能。
+\item[shell.o]，编译自 \file{shell.c} 和 \file{shell.h}，它里边包含一些方便运行外部命令（例如 curl）
+    的辅助函数。
+\item[commands.o]，编译自 \file{command.c} 和 \file{command.h}，它包含了实现 \program{devpkg} 
+    命令行功能所须的各种函数。
+\item[devpkg] 我们并没有特别提及它，不过其实它是这部分 Makefile 的 build target（就在最左边）。
+    它是由 \file{devpkg.c} 编译而来，该文件包含了整个程序的 \func{main} 函数。
 \end{description}
 
-Your job is to now create each of these files and type in their code
-and get them correct.
+你现在的任务是创建上面提到的每个文件，键入必须的代码并确保正确。
 
-\begin{aside}{Don't Be Fooled By The Magic Show}
-You may read this description and think, "Man! How is it that Zed is
-so smart he just sat down and typed these files out like this!? I
-could never do that."  I didn't magically craft \program{devpkg} 
-in this form with my awesome code powers.  Instead, what I did is this:
+\begin{aside}{别被这场魔法秀忽悠了}
+读到这里也许你会想：“神啊，Zed 怎么能这么牛，这么多东西随便搞搞就弄出来了？！我这辈子都做不到。”
+其实我并不是用我强悍的编程技术妙笔生花般地地写出这个 \program{devpkg} 结构的，我做的是下面
+这些事情：
 
 \begin{enumerate}
-\item I wrote a quick little README to get an idea of how I wanted it
-    to work.
-\item I created a simple bash script (like the one you did) to figure
-    out all the pieces that you need.
-\item I made one .c file and hacked on it for a few days working through
-    the idea and figuring it out.
-\item I got it mostly working and debugged, \emph{then} I started
-    breaking up the one big file into these four files.
-\item After getting these files laid down, I renamed and refined the
-    functions and data structures so they'd be more logical and "pretty".
-\item Finally, after I had it working the \emph{exact same} but with
-    the new structure, I added a few features like the \program{-F} and
-    \program{-B} options.
+\item 我写了一个短小的 README 用来梳理思路，从而决定了我要为 \program{devpkg} 实现什么样
+    的功能。
+\item 我创建了一个简单的 Bash 脚本（跟你刚写的那个类似），用以找出所有要实现的细节。
+\item 我创建了一个 .c 文件，并且花了几天时间去实现它的功能。
+\item 待到功能基本实现，bug 基本没有了的时候，我\emph{接着}就把一整个大文件分割成了这四个文件。
+\item 分割完以后，我把里边的函数和数据结构该重命名的重命名，该完善的完善，从而让它们的逻辑更
+    完整，而且更“美观”。
+\item 最后，等我让这个重新构架过的程序成功运行起来之后，我又加了一些诸如 \program{-F} 和
+    \program{-B} 这样的命令行选项。
 \end{enumerate}
 
 You're reading this in the order I want to teach it to you, but don't think
