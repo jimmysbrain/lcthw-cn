@@ -10,7 +10,7 @@
      width: 28px;
 }
 
-.fancyvrb span.pplr7t-x-x-50 {
+div.fancyvrb span.pplr7t-x-x-50 {
      float: left;
      font-size: 70%;
      width: 15px;
@@ -45,16 +45,16 @@ li {
      border-radius: 3px 3px 3px 3px;
      border: 1px solid rgba(0, 0, 0, 0.15);
      font-size: 14px;
-     line-height: 1.7em;
+     line-height: 1.4em;
      padding: 8.5px;
 }
 
-.fancyvrb, .lstlisting {
+div.fancyvrb, .lstlisting {
      background-color: #F5F5F5;
      border-radius: 3px 3px 3px 3px;
      border: 1px solid rgba(0, 0, 0, 0.15);
      font-size: 14px;
-     line-height: 1.3em;
+     line-height: 1.1em;
      padding: 8.5px;
 }
 
@@ -153,3 +153,18 @@ h1.partHead {
 #footer p{color:#FFF;text-shadow:0px 1px  #1c1c1c;}
 #copyrights{width:910px;float:left;background:#1c1c1c;padding:0px 30px 0px 30px;min-height:20px;}
 #copyrights p{color:#898989;font-family:'Yanone Kaffeesatz';letter-spacing:1px;margin-top:5px;margin-bottom:5px;}
+
+#course {
+    min-height: 350px;
+    margin-top: 1em;
+}
+
+#course_image {
+     float: right;
+     margin-left: 10px;
+     margin-top: -56px;
+}
+
+#related {
+    margin-top: 1em;
+}
