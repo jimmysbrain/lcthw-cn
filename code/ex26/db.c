@@ -18,7 +18,7 @@ static void DB_close(FILE *db)
 }
 
 
-static bstring DB_load(const char *path)
+static bstring DB_load()
 {
     FILE *db = NULL;
     bstring data = NULL;
