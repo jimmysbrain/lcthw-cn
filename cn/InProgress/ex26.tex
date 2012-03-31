@@ -175,69 +175,60 @@ bstrlib.c:2762: error: expected declaration specifiers or '...' before numeric c
 要么他们其实不是高手。
 \end{aside}
 
-\subsection{The DB Functions}
+\subsection{数据库函数}
 
-There must be a way to record URLs that have been installed, list these
-URLs, and check if something has already been installed so we can
-skip it.  I'll use a simple flat file database and the \file{bstrlib.h}
-library to do it.
+我们有必要把安装过的软件的 URL 用某种方式记录下来，并且能够随时列出这些 URL，并通过这些
+记检查并跳过那些安装过的软件。我采用的是一个单个文件的数据库，并通过 \file{bstrlib.h} 
+这个头文件来实现它的功能。
 
-First, create the \file{db.h} header file so you know what you'll be
-implementing.
+首先创建 \file{db.h} 以供你实现必要的功能：
 
 \begin{code}{db.h}
 << d['code/ex26/db.h|pyg|l'] >>
 \end{code}
 
-Then implement those functions in \file{db.c}, as you build this, use
-\program{make} like you've been to get it to compile cleanly.
+然后在 \file{db.c} 中实现这些函数，在你 build 它的时候，使用 \program{make} 
+来实现干净的编译，就跟你以前学过的一样。
 
 \begin{code}{db.c}
 << d['code/ex26/db.c|pyg|l'] >>
 \end{code}
 
-\subsubsection{Challenge 1: Code Review}
+\subsubsection{挑战 1: 代码审查}
 
-Before continuing, read every line of these files carefully and 
-confirm that you have them entered in \emph{exactly}.  Read them
-line-by-line backwards to practice that. Also trace each function 
-call and make sure you are using \func{check} to validate the
-return codes.  Finally, look up \emph{every} function that you
-don't recognize either on the APR web site documentation, or
-in the \file{bstrlib.h} and \file{bstrlib.c} source.
+继续下一步之前，仔细阅读每一行代码，确认你输入的内容和书里的\emph{完全相同}。练习倒着一行一行
+读回去，你还要检查每一处函数调用，确认你使用了 \func{check} 来检查返回值。最后，如果你有不
+认识或者不了解的函数，你需要到 APR 网站的文档中，或者在 \file{bstrlib.h} 和  \file{bstrlib.c} 
+这两个代码文件中寻找答案。
 
 
-\subsection{The Shell Functions}
+\subsection{Shell 函数}
 
-A key design decision for \program{devpkg} is to do most of the work
-using external tools like \program{curl}, \program{tar}, and \program{git}.
-We could find libraries to do all of this internally, but it's pointless
-if we just need the base features of these programs.  There is no shame
-in running another command in Unix.
+\program{devpkg} 设计最关键的一个设计决策就是使用外部工具来实现大部分功能，例如 \program{curl}、
+\program{tar}、\program{git} 等程序。我们其实也能找到需要的函数库，在不借用外部工具的情况
+下实现这个项目，不过如果我们需要的只是这些程序的基本功能，那么使用函数库是没必要的，再说在 
+Unix 下多运行几条命令也不是啥丢人的事情。
 
-To do this I'm going to use the \file{apr\_thread\_proc.h} functions
-to run programs, but I also want to make a simple kind of "template"
-system.  I'll use a \ident{struct Shell} that holds all the information
-needed to run a program, but has "holes" in the arguments list where I
-can replace them with values.
+为了达到目的，我将使用 \file{apr\_thread\_proc.h} 里的函数来运行外部程序，不过我还想
+创建一个简单的“模板”系统。我将使用 \ident{struct Shell} 来存储运行程序必须的所有信息，
+不过我会在参数列表中留出“空位”，实际用到的参数将被填入到这些空位中。
 
-Look at the \file{shell.h} file to see the structure and the commands I'll use.
-You can see I'm using \ident{extern} to indicate that other \file{.c} files
-can access variables I'm defining in \file{shell.c}.
+从下面的 \file{shell.h} 文件中你可以看到我们需要使用的结构和命令。我用了 \ident{extern} 
+来表示别的 \file{.c} 文件可以访问到我在 \file{shell.c} 中定义的变量。
 
 \begin{code}{shell.h}
 << d['code/ex26/shell.h|pyg|l'] >>
 \end{code}
 
-Make sure you've created \file{shell.h} exactly, and that you've got the
-same names and number of \ident{extern Shell} variables.  Those are used
-by the \func{Shell\_run} and \func{Shell\_exec} functions to run commands.
-I define these two functions, and create the real variables in \file{shell.c}.
+确认你一字不差地创建了 \file{shell.h}，而且获得了一样名称和数量的 \ident{extern Shell} 
+变量。这些变量将被 \func{Shell\_run} 函数和 \func{Shell\_exec} 函数用以执行外部命令。
+我定义了这两个函数，然后在 \file{shell.c} 中创建了真正用到的变量。
 
 \begin{code}{shell.c}
 << d['code/ex26/shell.c|pyg|l'] >>
 \end{code}
 
+从下往上倒着阅读 \file{shell.c} 
 Read the \file{shell.c} from the bottom to the top (which is a common C source
 layout) and you see I've created the actual \ident{Shell} variables that you
 indicated were \ident{extern} in \file{shell.h}.  They live here, but are 
