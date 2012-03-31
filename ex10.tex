@@ -43,10 +43,11 @@ using \ident{argc} and \ident{argv} like this:
 \item The OS passes each command line argument as a string in the \ident{argv}
     array.  The program's name (./ex10) is at 0, with the rest coming after it.
 \item The OS also sets \ident{argc} to the number of arguments in the \ident{argv}
-    array so you can process them without going past the end.
+    array so you can process them without going past the end.  Remember that if you
+    give one argument, the program's name is the first, so argc is 2.
 \item The \ident{for-loop} sets up with \verb|i = 1| in the initializer.
 \item It then tests that \ident{i} is less than \ident{argc} with the
-    test \verb|i < argc|. Since initially $0 < 1$ it will pass.
+    test \verb|i < argc|. Since initially $1 < 2$ it will pass.
 \item It then runs the code which just prints out the \ident{i} and 
     uses \ident{i} to index into \ident{argv}.
 \item The incrementer is then run using the \verb|i++| syntax, which is
