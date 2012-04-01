@@ -15,6 +15,11 @@
             "linenos": "true"
         }
     },
+    "*.sh-session|pyg|l": {
+        "pygments": {
+            "linenos": "true"
+        }
+    },
     "*.sh|pyg|l": {
         "pygments": {
             "linenos": "true"
@@ -22,6 +27,7 @@
     },
     "*.conf": {},
     "*Makefile": {},
+    "Makefile": {},
     "*.out": {},
     "*.css|jinja" : {  },
     "*.cfg|jinja" : {  },
