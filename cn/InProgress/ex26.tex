@@ -228,29 +228,22 @@ Unix 下多运行几条命令也不是啥丢人的事情。
 << d['code/ex26/shell.c|pyg|l'] >>
 \end{code}
 
-从下往上倒着阅读 \file{shell.c} 
-Read the \file{shell.c} from the bottom to the top (which is a common C source
-layout) and you see I've created the actual \ident{Shell} variables that you
-indicated were \ident{extern} in \file{shell.h}.  They live here, but are 
-available to the rest of the program.  This is how you make global variables
-that live in one \file{.o} file but are used everywhere.  You shouldn't make
-many of these, but they are handy for things like this.
+从下往上倒着阅读 \file{shell.c} 里边的代码（这也是常见的 C 代码布局格式），你会看到我创建了
+实际用到的 \ident{Shell} 变量，它们在 \file{shell.h} 中是以 \ident{extern} 的形式声明的。
+它们就住在这里，但它们对于程序剩下的部分都是有效的。这样你就创建了一个住在 \file{.o} 文件中，
+但是可以在任何位置使用的全局变量。创造太多的全局变量不是一件好事情，不过在当前场合下还是比较合适的。
 
-Continuing up the file we get to the \func{Shell\_run} function, which is
-a "base" function that just runs a command based on what's in a \ident{Shell}
-struct.  It uses many of the functions defined in \file{apr\_thread\_proc.h}
-so go look up each one to see how it works.  This seems like a lot of work
-compared to just using the \func{system} function call, but this also gives
-you more control over the other program's execution.  For example, in our
-\ident{Shell} struct we have a \ident{.dir} attribute which forces the program
-to be in a specific directory before running.
+继续向上阅读我们就看到了 \func{Shell\_run} 函数，这是一个“基础”函数，它会基于 \ident{Shell} struct 
+中的内容执行一条指定的命令。这里使用了很多定义在 \file{apr\_thread\_proc.h} 中的函数，所以
+你需要去找出并学习每条函数的作用。比起直接调用 \func{system} 而言，这样似乎麻烦了许多，不过
+这样做的一个好处就是能让你更好地控制外部命令执行的一些细节。例如，在 \ident{Shell} struct 
+中我们有一个 \ident{.dir} 属性，它可以强制规定程序在某个指定的路径下运行。
 
-Finally, I have the \func{Shell\_exec} function, which is a "variable arguments"
-function.  You've seen this before, but make sure you grasp the \file{stdarg.h}
-functions and how to write one of these.  In the challenge for this section
-you are going to analyze this function.
+最后，我写了 \func{Shell\_exec} 这个函数，它是一个“可变参数”函数。这样的函数你已经见过了，
+不过请确认你明白了 \file{stdarg.h} 里的各个函数定义，并且知道怎样可以写出来这样的函数。在
+本节的挑战环节你将需要却分析这个函数。
 
-\subsubsection{Challenge 2: Analyze Shell\_exec}
+\subsubsection{挑战 2: 分析 Shell\_exec}
 
 Challenge for these files (in addition to a full code review just like you
 did in Challenge 1) is to fully analyze \func{Shell\_exec} and break down
