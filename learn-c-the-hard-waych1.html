@@ -1,0 +1,109 @@
+<html><head><title>习题0: 准备工作</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych2.html">next</a>] [<a href="learn-c-the-hard-waypa1.html">prev</a>] [<a href="learn-c-the-hard-waypa1.html#taillearn-c-the-hard-waypa1.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych1.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych1.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 1</span><br><a id="x6-90001"></a>习题0: 准备工作</h2>
+<!--l. 3--><p class="noindent">本章你将学会架设 C 语言编程的系统环境。如果你使用的是 Linux 或者 Mac OSX，那么有个好消息可以告诉你，你的系统本来就是为 C 语言编程设计的。C 语言的发明人也曾是 Unix 操作系统的创作者，而 Linux 和 OSX 都是基于 Unix 的操作系统。所以，
+整个架设过程会非常简单。
+<!--l. 7--></p><p class="indent">    对于 Windows 的用户，我就只有坏消息了：在 Windows 下学习 C 语言是一件痛苦的事情。在 Windows 下写 C 语言代码不是问题，问题是 Windows 下所有的库、函数、以及工具和 Unix 下的 C 语言环境比起来就是有那么一点“跑偏”的感觉。恐怕这也是你不得不接受的事实了。
+                                                                  
+
+                                                                  
+<!--l. 11--></p><p class="indent">    你也别被这条突如其来的坏消息吓到。我不是说要完全避开 Windows，我的意思是说，如果你想最不费力地学习 C 语言，那么你最好还是从 Unix 下手。了解一点 Unix
+还有另外一个好处，那就是你可以学到一些 C 语言的惯用技巧，从而扩展你的编程技术。
+<!--l. 15--></p><p class="indent">    这也意味着你将会用到命令行。没错，我是说命令行。你需要在命令行输入命令。不过别害怕，我会告诉你该输入什么命令，以及执行命令会有什么样的结果，这样你同时也会学到不少让你大开眼界的技能。
+    </p><h3 class="sectionHead"><span class="titlemark">1.1    </span> <a id="x6-100001.1"></a>Linux</h3>
+<!--l. 21--><p class="noindent">对于大部分 Linux 系统来说，你只需要安装若干软件包就可以了。在基于 Debian 的系统（例如 Ubuntu）上面，你只要使用下面的命令安装即可：
+                                                                  
+
+                                                                  
+<!--l. 24--></p><p class="indent">    <a id="x6-10001r1"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 1: </span><span class="content">                                                                      在 Ubuntu 上面安装需求软件包</span></div><!--tex4ht:label?: x6-10001r1 -->
+<!--l. 25-->
+<div class="lstlisting" id="listing-1"><span class="label"><a id="x6-10002r1"></a>1</span>$ sudo aptitude install build-essential
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 30--><p class="indent">    以上是一个命令行的例子，所以你要先找到系统里的“命令行终端（terminal）”
+并且把它运行起来，才能执行上述的命令。你会看到一个类似上面提到的’$’ 的提示界面，然后键入上述命令。’$’ 这个符号是无需键入的，只要把后面的内容键入即可。
+<!--l. 34--></p><p class="indent">    以下是基于 RPM 的 Linux 发行版要做的准备工作，以 Fedora 为例：
+                                                                  
+
+                                                                  
+<!--l. 36--></p><p class="indent">    <a id="x6-10003r2"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 2: </span><span class="content">                                                                        在 Fedora 上面安装需求软件包</span></div><!--tex4ht:label?: x6-10003r2 -->
+<!--l. 37-->
+<div class="lstlisting" id="listing-2"><span class="label"><a id="x6-10004r1"></a>1</span>$ su -c yum groupinstall development-tools
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 42--><p class="indent">    执行完上述指令后，你应该可以顺利完成第一个习题了。如果不行，请向作者反馈。
+    </p><h3 class="sectionHead"><span class="titlemark">1.2    </span> <a id="x6-110001.2"></a>Mac OSX</h3>
+<!--l. 47--><p class="noindent">Mac OSX 上面的安装就更简单了。首先你需要从 Apple 下载最新版的 XCode，或者从你的安装 DVD 中找出来安装也可以。文件很大，可能你一辈子都下不下来，所以我还是建议你从 DVD 安装好了。另外，你可以上网搜索一下“安装 xcode”，找点说明来看看。
+<!--l. 52--></p><p class="indent">    装完 XCode 可能需要重启电脑。一切完成以后，你可以找到命令行终端(Terminal)程序并把它放到 dock 中。本书里会大量用到命令行终端，所以还是把它放到方便的地方比较好。
+<!--l. 54--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">1.3    </span> <a id="x6-120001.3"></a>Windows</h3>
+<!--l. 56--><p class="noindent">对于 Windows 用户来说，我就教教你们怎样在虚拟机里安装并运行 Ubuntu Linux
+吧。这样你可以有一个做本书习题的环境，但也省得面对各种痛苦的 Linux 安装问题了。
+<!--l. 58--></p><p class="indent">    【本节内容尚未完成】... have to figure this one out.
+<!--l. 61--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">1.4    </span> <a id="x6-130001.4"></a>文本编辑器</h3>
+<!--l. 63--><p class="noindent">编辑器的选择对于程序员来说总是个难题。对于初学者来说我跟他们讲用 <a href="http://projects.gnome.org/gedit/">Gedit</a> 就可
+以了，Gedit 功能简单，对代码支持也不错，不过Gedit 在某些非英语环境下会有问
+                                                                  
+
+                                                                  
+题，而且如果你已经写过一阵子程序的话，你没准已经有自己喜欢的编辑器
+了。
+<!--l. 65--></p><p class="indent">    在此前提下，我要求你试着用用几种支持你的系统平台的代码编辑器，然后选一个你最喜欢的坚持用下去。如果你喜欢 GEdit 就继续用 GEdit，如果你想要换个不一样的，那就简单地试试别的编辑器，然后从中选一个就行了。
+<!--l. 67--></p><p class="indent">    最重要的一点是不要纠结于挑选一个完美的编辑器。文本编辑器总有各种奇怪的不好用之处。选一个然后用下去就行了。如果你看到别的喜欢的编辑器，就拿来试试。别没玩没了花时间去配置打造那所谓的完美编辑器。
+<!--l. 69--></p><p class="indent">    以下是你要去试试的编辑器：
+<!--l. 71--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x6-13002x1">Linux 和 OSX 下的 <a href="http://projects.gnome.org/gedit/">Gedit</a> 。
+     </li>
+     <li class="enumerate" id="x6-13004x2">OSX 下的 <a href="http://www.barebones.com/products/textwrangler/">TextWrangler</a> 。
+     </li>
+     <li class="enumerate" id="x6-13006x3"><a href="http://www.nano-editor.org/">Nano</a>，这是一个命令行终端下的编辑器，基本任何地方都支持。
+     </li>
+     <li class="enumerate" id="x6-13008x4"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 以及 <a href="http://emacsformacosx.com/">Emacs for OSX</a>，不过要做好学习的准备。
+     </li>
+     <li class="enumerate" id="x6-13010x5"><a href="http://www.vim.org/">Vim</a> 和 <a href="http://code.google.com/p/macvim/">MacVim</a> 。</li></ol><!--l. 79--><p class="indent">    编辑器的种类实在太多了，给大街上的人们每人分一个大概都够，不过上面列出的只是我确定可以用的。试试其它我没提到的编辑器，收费版的也可以试试，直到找到你喜欢的为止。
+<!--l. 81--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">1.4.1    </span> <a id="x6-140001.4.1"></a>警告: 不要使用IDE</h4>
+                                                                  
+
+                                                                  
+<!--l. 83--><p class="noindent">IDE，也就是“集成开发环境（Integrated Development Environment）”，它会让你变傻。如果你想要成为一个好程序员，那么 IDE 就是最坏的工具。因为 IDE 会为你隐藏真正进行中的事情，而你的任务正是知道真正发生了什么。如果你想要完成某件任务，而该任务的系统平台又是围绕这个 IDE 设计的，这种情况下 IDE 还是有用的。不过对于学习 C 以及很多其他语言来说，IDE 是毫无意义的。
+                                                                  
+
+                                                                  
+<!--l. 85--></p><p class="indent">    <a id="x6-14001r1"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Note 1: </span><span class="content">                                                                                                        IDE 和吉他谱</span></div><!--tex4ht:label?: x6-14001r1 -->
+     <div class="quote">
+     <!--l. 87--><p class="indent"> 玩过吉他的人都知道吉他谱是什么东西，不过还是让我给其他没玩过吉他的人解释一下吧。有一种约定俗成的音乐记谱方式叫做
+    “线谱”，这是一种普遍的，古老的，通用的记录如何演奏乐器的方法。线谱很大程度上是为钢琴和作曲家而生，所以如果你弹钢琴的话，线谱是很容易使用的。
+     <!--l. 89--></p><p class="indent"> 然而吉他这种乐器有些古怪，它并不适合这种记谱方式，所以演奏吉他的人使用了一种另类的记谱方式，称作“吉他谱
+    （tablature）”。吉他谱告诉你的不是要演奏的音调，而是你在某一时刻要弹的指位和琴弦。你可以在不了解任何曲调的情况下学会弹奏一首曲子，很多人也是这么去学的。然而如果你想从中读出你弹奏的曲调，吉他谱就没什么用处了。
+     <!--l. 91--></p><p class="indent"> 传统的记谱方式也许比吉他谱难学，但它可以告诉你如何演奏音乐，而不仅仅是如何弹吉他。拿着一份线谱，我可以走到一架钢琴前面弹出同样的一首歌曲，我可以用贝司把它弹出来，我还可以把它输入到计算机中重新设计整份乐谱。然而拿着吉他谱，我就只能用它弹弹吉他。
+     <!--l. 93--></p><p class="indent"> IDE 和吉他谱类似。毫无疑问你可以使用 IDE 快速地写出代码，但你只能在一个固定的平台上使用一种特定的语言。这也是公司企业喜欢兜售这些东西给你的原因。他们知道你是个懒人，而 IDE 只在他们的平台上面工作，就这样，由于你的懒惰，他们就把你禁锢在他们的平台上了。
+     <!--l. 95--></p><p class="indent"> 打破这个循环的方法也不是没有，你需要卧薪尝胆，最终学会如何不使用 IDE 进行编程。简单的文本编辑器，或者像 Vim 和 Emacs 这样的程序员编辑器，会让代码真正成为你的工作对象。比起使用 IDE 来这样会更难一些，不过最终的结果就是你可以应对任何代码，不管它在什么样的计算机平台上，不管它使用的是什么语言，
+     而且你懂它的深层原理。
+      </p></div>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych2.html">next</a>] [<a href="learn-c-the-hard-waypa1.html">prev</a>] [<a href="learn-c-the-hard-waypa1.html#taillearn-c-the-hard-waypa1.html">prev-tail</a>] [<a href="learn-c-the-hard-waych1.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych1.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych1.html"></a>    
+</p></body></html>

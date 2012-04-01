@@ -1,0 +1,64 @@
+<html><head><title>Exercise 12: If, Else-If, Else</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych14.html">next</a>] [<a href="learn-c-the-hard-waych12.html">prev</a>] [<a href="learn-c-the-hard-waych12.html#taillearn-c-the-hard-waych12.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych13.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych13.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 13</span><br><a id="x18-6300013"></a>Exercise 12: If, Else-If, Else</h2>
+<!--l. 3--><p class="noindent">在每一种语言中都共有的就是 if   ，C 语言中同样也有。下面的代码使用的就是 if   以确认你只输入一个或两个参数:
+                                                                  
+
+                                                                  
+<!--l. 6--></p><p class="indent">    <a id="x18-63001r33"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 33: </span><span class="content">                                                                                                            ex12.c</span></div><!--tex4ht:label?: x18-63001r33 -->
+<div class="fancyvrb" id="fancyvrb14"><a id="x18-63003r1"></a>1  <span id="textcolor655">#</span><span id="textcolor656">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x18-63005r2"></a>2  <br class="fancyvrb"><a id="x18-63007r3"></a>3  <span id="textcolor657">int</span> <span id="textcolor658">main</span>(<span id="textcolor659">int</span> argc, <span id="textcolor660">char</span> ⋆argv[])<br class="fancyvrb"><a id="x18-63009r4"></a>4  {<br class="fancyvrb"><a id="x18-63011r5"></a>5      <span id="textcolor661">int</span> i = <span id="textcolor662">0</span>;<br class="fancyvrb"><a id="x18-63013r6"></a>6  
+<br class="fancyvrb"><a id="x18-63015r7"></a>7      <span id="textcolor663">if</span>(argc == <span id="textcolor664">1</span>) {<br class="fancyvrb"><a id="x18-63017r8"></a>8          printf(<span class="colorbox" id="colorbox665"><span id="textcolor666">"</span></span><span class="colorbox" id="colorbox667"><span id="textcolor668">You only have one argument. You suck.</span></span><span class="colorbox" id="colorbox669"><span id="textcolor670">\n</span></span><span class="colorbox" id="colorbox671"><span id="textcolor672">"</span></span>);
+<br class="fancyvrb"><a id="x18-63019r9"></a>9      } <span id="textcolor673">else</span> <span id="textcolor674">if</span>(argc &gt; <span id="textcolor675">1</span> &amp;&amp; argc 4) {<br class="fancyvrb"><a id="x18-63021r10"></a>10          printf(<span class="colorbox" id="colorbox677"><span id="textcolor678">"</span></span><span class="colorbox" id="colorbox679"><span id="textcolor680">Here’s your arguments:</span></span><span class="colorbox" id="colorbox681"><span id="textcolor682">\n</span></span><span class="colorbox" id="colorbox683"><span id="textcolor684">"</span></span>);
+<br class="fancyvrb"><a id="x18-63023r11"></a>11  <br class="fancyvrb"><a id="x18-63025r12"></a>12          <span id="textcolor685">for</span>(i = <span id="textcolor686">0</span>; i <a id="x18-63027r13"></a>13              printf(<span class="colorbox" id="colorbox687"><span id="textcolor688">"</span></span><span class="colorbox" id="colorbox689"><span id="textcolor690">%s </span></span><span class="colorbox" id="colorbox691"><span id="textcolor692">"</span></span>, argv[i]);
+<br class="fancyvrb"><a id="x18-63029r14"></a>14          }<br class="fancyvrb"><a id="x18-63031r15"></a>15          printf(<span class="colorbox" id="colorbox693"><span id="textcolor694">"</span></span><span class="colorbox" id="colorbox695"><span id="textcolor696">\n</span></span><span class="colorbox" id="colorbox697"><span id="textcolor698">"</span></span>);<br class="fancyvrb"><a id="x18-63033r16"></a>16      } <span id="textcolor699">else</span> {
+<br class="fancyvrb"><a id="x18-63035r17"></a>17          printf(<span class="colorbox" id="colorbox700"><span id="textcolor701">"</span></span><span class="colorbox" id="colorbox702"><span id="textcolor703">You have too many arguments. You suck.</span></span><span class="colorbox" id="colorbox704"><span id="textcolor705">\n</span></span><span class="colorbox" id="colorbox706"><span id="textcolor707">"</span></span>);<br class="fancyvrb"><a id="x18-63037r18"></a>18      }<br class="fancyvrb"><a id="x18-63039r19"></a>19  <br class="fancyvrb"><a id="x18-63041r20"></a>20      <span id="textcolor708">return</span> <span id="textcolor709">0</span>;<br class="fancyvrb"><a id="x18-63043r21"></a>21  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 33--><p class="indent">    if   的格式是这样的：
+    </p><div class="fancyvrb" id="fancyvrb15"><a id="x18-63045r1"></a>      if(TEST) {<br class="fancyvrb"><a id="x18-63047r2"></a>          CODE;<br class="fancyvrb"><a id="x18-63049r3"></a>      } else if(TEST) {
+<br class="fancyvrb"><a id="x18-63051r4"></a>          CODE;<br class="fancyvrb"><a id="x18-63053r5"></a>      } else {<br class="fancyvrb"><a id="x18-63055r6"></a>          CODE;<br class="fancyvrb"><a id="x18-63057r7"></a>      }</div>
+<!--l. 45--><p class="indent">    这和其他大多数语言里的类似，除了几处 C 语言特有的不同点:
+     </p><ol class="enumerate1"><li class="enumerate" id="x18-63059x1">正如前面所提到的，如果 TEST 的部分值为 0，结果就为假，其他情况则为真。
+     </li>
+     <li class="enumerate" id="x18-63061x2">你必须把 TEST 元素放到圆括号中，但其他的一些语言不需要你这样做。
+     </li>
+     <li class="enumerate" id="x18-63063x3">你不需要用 <span class="obeylines-h"><span class="verb">{}</span></span>花括号把代码包括起来，但这是一种非常不好的格式。花括号可以让你更清楚地看出某个代码分支开始和结束的位置。如果你不使用花括号，各种令人讨厌的错误就会出现。</li></ol><!--l. 55--><p class="indent">    除了这些，它和其他语言中的功能一样。else if 和 else 部分也都不是必须的。
+    </p><h3 class="sectionHead"><span class="titlemark">13.1    </span> <a id="x18-6400013.1"></a>你应该看到的结果</h3>
+<!--l. 59--><p class="noindent">这个程序运行起来很简单:
+                                                                  
+
+                                                                  
+<!--l. 61--></p><p class="indent">    <a id="x18-64001r34"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 34: </span><span class="content">                                                                                                      ex12 的输出</span></div><!--tex4ht:label?: x18-64001r34 -->
+<!--l. 62-->
+<div class="lstlisting" id="listing-23"><span class="label"><a id="x18-64002r1"></a>1</span>$ make ex12 <br><span class="label"><a id="x18-64003r2"></a>2</span>cc -Wall -g    ex12.c   -o ex12 <br><span class="label"><a id="x18-64004r3"></a>3</span>$ ./ex12 <br><span class="label"><a id="x18-64005r4"></a>4</span>You only have one argument. You suck. <br><span class="label"><a id="x18-64006r5"></a>5</span>$ ./ex12 one <br><span class="label"><a id="x18-64007r6"></a>6</span>Here’s your arguments: <br><span class="label"><a id="x18-64008r7"></a>7</span>./ex12 one <br><span class="label"><a id="x18-64009r8"></a>8</span>$ ./ex12 one two <br><span class="label"><a id="x18-64010r9"></a>9</span>Here’s your arguments: <br><span class="label"><a id="x18-64011r10"></a>10</span>./ex12 one two <br><span class="label"><a id="x18-64012r11"></a>11</span>$ ./ex12 one two three <br><span class="label"><a id="x18-64013r12"></a>12</span>You have too many arguments. You suck. <br><span class="label"><a id="x18-64014r13"></a>13</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">13.2    </span> <a id="x18-6500013.2"></a>让程序出错</h3>
+<!--l. 81--><p class="noindent">这个例子不容易出错，因为它太简单了，不过可以试着把 if   里的测试条件改乱掉试一下。
+<!--l. 84--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x18-65002x1">移除结尾的 else，这样程序就永远不会找到边缘条件（edge case）了。
+     </li>
+     <li class="enumerate" id="x18-65004x2">把 <span class="obeylines-h"><span class="verb">&amp;&amp;</span></span>换成 <span class="obeylines-h"><span class="verb">||</span></span>你就用“或（or）”代替了“与（and）”测试，看看结果是怎样的。</li></ol><!--l. 89--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">13.3    </span> <a id="x18-6600013.3"></a>加分习题</h3>
+<!--l. 91--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x18-66002x1">你已经简单学到了 <span class="obeylines-h"><span class="verb">&amp;&amp;</span></span>，它的功能是执行“与”的比较，再上网研究一下各种不同的“布尔操作符(boolean operator)”。
+     </li>
+     <li class="enumerate" id="x18-66004x2">多写写条件判断语句，看看你还能得出些什么来。
+     </li>
+     <li class="enumerate" id="x18-66006x3">回到习题 10 和 11，使用 if   将循环提前结束。完成操作你需要 break
+     语句。自己查查怎么用。
+     </li>
+     <li class="enumerate" id="x18-66008x4">第一个条件判断是否真的是对的呢？对于你来说”第一个参数”和用户输入的第一个参数是不一样的。把这里修改正确。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych14.html">next</a>] [<a href="learn-c-the-hard-waych12.html">prev</a>] [<a href="learn-c-the-hard-waych12.html#taillearn-c-the-hard-waych12.html">prev-tail</a>] [<a href="learn-c-the-hard-waych13.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych13.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych13.html"></a>   
+</p></body></html>

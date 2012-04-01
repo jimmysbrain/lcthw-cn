@@ -1,0 +1,68 @@
+<html><head><title>Exercise 5: C 程序的结构</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych7.html">next</a>] [<a href="learn-c-the-hard-waych5.html">prev</a>] [<a href="learn-c-the-hard-waych5.html#taillearn-c-the-hard-waych5.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych6.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych6.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 6</span><br><a id="x11-340006"></a>Exercise 5: C 程序的结构</h2>
+<!--l. 3--><p class="noindent">你现在已经知道了怎么使用 printf，也有了一些可供你支配使用的基本工具，所以我们现在来逐行分析一个简单 C 语言程序的结构。在这个程序里你将会敲一些你还不熟悉的东西，我将会慢慢地拆解他们。在接下来的一些练习中我们将继续与这些概念打交道。
+                                                                  
+
+                                                                  
+<!--l. 5--></p><p class="indent">    <a id="x11-34001r18"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 18: </span><span class="content">                                                                                                              ex5.c</span></div><!--tex4ht:label?: x11-34001r18 -->
+<div class="fancyvrb" id="fancyvrb5"><a id="x11-34003r1"></a>1  <span id="textcolor73">#</span><span id="textcolor74">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x11-34005r2"></a>2  <br class="fancyvrb"><a id="x11-34007r3"></a>3  <span id="textcolor75">/⋆ This is a comment. ⋆/</span><br class="fancyvrb"><a id="x11-34009r4"></a>4  <span id="textcolor76">int</span> <span id="textcolor77">main</span>(<span id="textcolor78">int</span> argc, <span id="textcolor79">char</span> ⋆argv[])
+<br class="fancyvrb"><a id="x11-34011r5"></a>5  {<br class="fancyvrb"><a id="x11-34013r6"></a>6      <span id="textcolor80">int</span> distance = <span id="textcolor81">100</span>;<br class="fancyvrb"><a id="x11-34015r7"></a>7  <br class="fancyvrb"><a id="x11-34017r8"></a>8      <span id="textcolor82">// this is also a comment</span>
+<br class="fancyvrb"><a id="x11-34019r9"></a>9      printf(<span class="colorbox" id="colorbox83"><span id="textcolor84">"</span></span><span class="colorbox" id="colorbox85"><span id="textcolor86">You are %d miles away.</span></span><span class="colorbox" id="colorbox87"><span id="textcolor88">\n</span></span><span class="colorbox" id="colorbox89"><span id="textcolor90">"</span></span>, distance);<br class="fancyvrb"><a id="x11-34021r10"></a>10  <br class="fancyvrb"><a id="x11-34023r11"></a>11      <span id="textcolor91">return</span> <span id="textcolor92">0</span>;<br class="fancyvrb"><a id="x11-34025r12"></a>12  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 23--><p class="indent">    把这些代码敲出来，然后使它运行并且保证 Valgrind 没有报错。你也许没法确保，
+但是你要养成检查的好习惯。
+    </p><h3 class="sectionHead"><span class="titlemark">6.1    </span> <a id="x11-350006.1"></a>你应该看到的结果</h3>
+<!--l. 27--><p class="noindent">这是个很无聊的输出，但是这个练习的关键是分析代码:
+                                                                  
+
+                                                                  
+<!--l. 29--></p><p class="indent">    <a id="x11-35001r19"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 19: </span><span class="content">                                                                                                        ex5 的输出</span></div><!--tex4ht:label?: x11-35001r19 -->
+<!--l. 30-->
+<div class="lstlisting" id="listing-15"><span class="label"><a id="x11-35002r1"></a>1</span>$ make ex5 <br><span class="label"><a id="x11-35003r2"></a>2</span>cc -Wall -g    ex5.c   -o ex5 <br><span class="label"><a id="x11-35004r3"></a>3</span>$ ./ex5 <br><span class="label"><a id="x11-35005r4"></a>4</span>You are 100 miles away. <br><span class="label"><a id="x11-35006r5"></a>5</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">6.2    </span> <a id="x11-360006.2"></a>代码详解</h3>
+<!--l. 42--><p class="noindent">在敲这些代码的时候，也许你已经察觉到这些代码中包含的 C 语言特征。让我们来快速地逐行解读一下这些代码，然后通过练习来更好地理解每一个部分。
+     </p><dl class="description"><dt class="description">
+ex5.c:1 </dt><dd class="description">include 指令的作用是把被包含的文件内容导出到当前源文件中。C
+     语言的惯例是使用.h 后缀来表示头文件，头文件包含了你在程序中需要用到的函数的列表。
+     </dd><dt class="description">
+ex5.c:3 </dt><dd class="description">这是一个多行的  (comment)，你可以随意在 <span class="obeylines-h"><span class="verb">/⋆</span></span>和 <span class="obeylines-h"><span class="verb">⋆/</span></span>之间包含任意多的字符。
+     </dd><dt class="description">
+ex5.c:4 </dt><dd class="description">到现在为止你一直在”盲目地”使用一个复杂形式的; p(main
+     function)。 C 程序是怎么运行的呢？首先由操作系统加载你的程序，
+     然后运行一个名为 main 的函数。这个函数完全结束的时候，它会返回一个 tp 的返回值，另外，该函数需要两个参数，一个是参数个数，它的类型为 int，还有一个参数是数组，它用来保存所有输入的参数，它是一个字符串(char ⋆)数组。是不是很难理解？别担心，我们很快就会讲到它们。
+     </dd><dt class="description">
+ex5.c:5 </dt><dd class="description">开始任何一个函数体的时候，你需要使用 <span class="obeylines-h"><span class="verb">{</span></span> 来指出这是一个”块(block)”的开始。在 Python 中你只需要写一个 <span class="obeylines-h"><span class="verb">:</span></span>并且缩进即可。在其他的一些编程语言中也许你需要用 begin 或者 do 来表示一个块的开始。
+     </dd><dt class="description">
+ex5.c:6 </dt><dd class="description">一个变量的声明和赋值可以在同一时间完成。你可以使用 <span class="obeylines-h"><span class="verb">type name = value;</span></span>这个语法来创建一个变量。C 语言的表达式(除了逻辑条件)以 <span class="obeylines-h"><span class="verb">’;’</span></span>(semicolon) 字符来结尾。
+     </dd><dt class="description">
+ex5.c:8 </dt><dd class="description">另一种形式的注释，它和 Python 和 Ruby 的注释一样，从 <span class="obeylines-h"><span class="verb">//</span></span>开始，到一行的结尾结束。
+     </dd><dt class="description">
+ex5.c:9 </dt><dd class="description">又一次调用你的老朋友，printf 函数。像很多其他语言一样，函数调用的语法是 <span class="obeylines-h"><span class="verb">name(arg1, arg2);</span></span>，也可以没有参数，或者有任意数量的参数。稍后我们会看到，printf 函数是一个比较怪异的函数，因为它的参数数量是可变的。
+     </dd><dt class="description">
+ex5.c:11 </dt><dd class="description">函数的返回语句，它将会给操作系统返回一个程序退出的值，可能你还不熟悉 UNIX 软件怎样使用返回值，同样，我们一会就会看到。
+     </dd><dt class="description">
+ex5.c:12 </dt><dd class="description">最终，我们用一个右花括号(<span class="obeylines-h"><span class="verb">}</span></span>)结束 main 函数。这也是程序的结尾。</dd></dl><!--l. 57--><p class="indent">    在这段分析里有很多的信息，所以请逐行学习并且确保你至少对接下来要做的事情有一点把握。你可能不会知道所有的东西，但是你可以在继续前进之前大概猜测到。
+<!--l. 59--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">6.3    </span> <a id="x11-370006.3"></a>加分习题</h3>
+<!--l. 61--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x11-37002x1">针对每一行，写下那些你不理解的符号，看看你是否能猜到他们是什么意思。在纸上画一个表格把你的猜测记下来，等会可以回来检查一下你是否猜对了。
+     </li>
+     <li class="enumerate" id="x11-37004x2">回到之前练习题中的代码并做类似的解析，看看你是否理解了这些代码。
+     写下你自己不知道和不能解释的东西。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych7.html">next</a>] [<a href="learn-c-the-hard-waych5.html">prev</a>] [<a href="learn-c-the-hard-waych5.html#taillearn-c-the-hard-waych5.html">prev-tail</a>] [<a href="learn-c-the-hard-waych6.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych6.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych6.html"></a>   
+</p></body></html>

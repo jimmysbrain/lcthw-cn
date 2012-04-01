@@ -1,0 +1,66 @@
+<html><head><title>Exercise 11: While 循环和布尔表达式</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych13.html">next</a>] [<a href="learn-c-the-hard-waych11.html">prev</a>] [<a href="learn-c-the-hard-waych11.html#taillearn-c-the-hard-waych11.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych12.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych12.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 12</span><br><a id="x17-5900012"></a>Exercise 11: While 循环和布尔表达式</h2>
+<!--l. 3--><p class="noindent">你已经体验会过了 C 语言的循环，但你可能对布尔表达式 <span class="obeylines-h"><span class="verb">i </span>的理解还不清晰。在我们看到 while   是如何工作之前，让我先解释一些东西。
+<!--l. 6--><p class="indent">    在 C 语言中根本就没有“布尔（boolean）”这种类型，取而代之的是数字零为
+“false(假)”，其他非 0 数都为“true（真）”。在最后一个练习中表达式 <span class="obeylines-h"><span class="verb">i </span>实际上只返回 1 或 0，而不是像 Python 中那样返回 True 或 False。这是又一个 C 语言更能展示计算机工作原理的例子，因为对于计算机来说表示真假的值都只是整数而已。
+<!--l. 11--><p class="indent">    现在你需要实现上一个习题一样的程序，不过你要使用 while   来解决。接下来会让你比较两者，看看它们之间的关系是什么。
+                                                                  
+
+                                                                  
+<!--l. 14--></p><p class="indent">    <a id="x17-59001r31"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 31: </span><span class="content">                                                                                                            ex11.c</span></div><!--tex4ht:label?: x17-59001r31 -->
+<div class="fancyvrb" id="fancyvrb12"><a id="x17-59003r1"></a>1  <span id="textcolor596">#</span><span id="textcolor597">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x17-59005r2"></a>2  <br class="fancyvrb"><a id="x17-59007r3"></a>3  <span id="textcolor598">int</span> <span id="textcolor599">main</span>(<span id="textcolor600">int</span> argc, <span id="textcolor601">char</span> ⋆argv[])<br class="fancyvrb"><a id="x17-59009r4"></a>4  {
+<br class="fancyvrb"><a id="x17-59011r5"></a>5      <span id="textcolor602">// go through each string in argv</span><br class="fancyvrb"><a id="x17-59013r6"></a>6  <br class="fancyvrb"><a id="x17-59015r7"></a>7      <span id="textcolor603">int</span> i = <span id="textcolor604">0</span>;<br class="fancyvrb"><a id="x17-59017r8"></a>8      <span id="textcolor605">while</span>(i <a id="x17-59019r9"></a>9          printf(<span class="colorbox" id="colorbox606"><span id="textcolor607">"</span></span><span class="colorbox" id="colorbox608"><span id="textcolor609">arg %d: %s</span></span><span class="colorbox" id="colorbox610"><span id="textcolor611">\n</span></span><span class="colorbox" id="colorbox612"><span id="textcolor613">"</span></span>, i, argv[i]);<br class="fancyvrb"><a id="x17-59021r10"></a>10          i++;<br class="fancyvrb"><a id="x17-59023r11"></a>11      }<br class="fancyvrb"><a id="x17-59025r12"></a>12  
+<br class="fancyvrb"><a id="x17-59027r13"></a>13      <span id="textcolor614">// let’s make our own array of strings</span><br class="fancyvrb"><a id="x17-59029r14"></a>14      <span id="textcolor615">char</span> ⋆states[] = {
+<br class="fancyvrb"><a id="x17-59031r15"></a>15          <span class="colorbox" id="colorbox616"><span id="textcolor617">"</span></span><span class="colorbox" id="colorbox618"><span id="textcolor619">California</span></span><span class="colorbox" id="colorbox620"><span id="textcolor621">"</span></span>, <span class="colorbox" id="colorbox622"><span id="textcolor623">"</span></span><span class="colorbox" id="colorbox624"><span id="textcolor625">Oregon</span></span><span class="colorbox" id="colorbox626"><span id="textcolor627">"</span></span>,<br class="fancyvrb"><a id="x17-59033r16"></a>16          <span class="colorbox" id="colorbox628"><span id="textcolor629">"</span></span><span class="colorbox" id="colorbox630"><span id="textcolor631">Washington</span></span><span class="colorbox" id="colorbox632"><span id="textcolor633">"</span></span>, <span class="colorbox" id="colorbox634"><span id="textcolor635">"</span></span><span class="colorbox" id="colorbox636"><span id="textcolor637">Texas</span></span><span class="colorbox" id="colorbox638"><span id="textcolor639">"</span></span>
+<br class="fancyvrb"><a id="x17-59035r17"></a>17      };<br class="fancyvrb"><a id="x17-59037r18"></a>18  <br class="fancyvrb"><a id="x17-59039r19"></a>19      <span id="textcolor640">int</span> num_states = <span id="textcolor641">4</span>;<br class="fancyvrb"><a id="x17-59041r20"></a>20      i = <span id="textcolor642">0</span>;  <span id="textcolor643">// watch for this</span>
+<br class="fancyvrb"><a id="x17-59043r21"></a>21      <span id="textcolor644">while</span>(i <a id="x17-59045r22"></a>22          printf(<span class="colorbox" id="colorbox645"><span id="textcolor646">"</span></span><span class="colorbox" id="colorbox647"><span id="textcolor648">state %d: %s</span></span><span class="colorbox" id="colorbox649"><span id="textcolor650">\n</span></span><span class="colorbox" id="colorbox651"><span id="textcolor652">"</span></span>, i, states[i]);
+<br class="fancyvrb"><a id="x17-59047r23"></a>23          i++;<br class="fancyvrb"><a id="x17-59049r24"></a>24      }<br class="fancyvrb"><a id="x17-59051r25"></a>25  <br class="fancyvrb"><a id="x17-59053r26"></a>26      <span id="textcolor653">return</span> <span id="textcolor654">0</span>;<br class="fancyvrb"><a id="x17-59055r27"></a>27  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 47--><p class="indent">    从下面你可以看出 while   更简单一些：
+    </p><div class="fancyvrb" id="fancyvrb13"><a id="x17-59057r1"></a>      while(TEST) {<br class="fancyvrb"><a id="x17-59059r2"></a>          CODE;<br class="fancyvrb"><a id="x17-59061r3"></a>      }</div>
+<!--l. 55--><p class="indent">    它只是简单地在 TEST 为 true(1) 时运行 CODE 而已。这就是说，如果我们要事项 for   那样的功能，那就得自己初始化并递增 i。
+    </p><h3 class="sectionHead"><span class="titlemark">12.1    </span> <a id="x17-6000012.1"></a>你应该看到的结果</h3>
+<!--l. 60--><p class="noindent">输出和上一习题基本一样，所以我只是变动了一下运行方式，这样你就看到了不同的运行结果.
+                                                                  
+
+                                                                  
+<!--l. 62--></p><p class="indent">    <a id="x17-60001r32"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 32: </span><span class="content">                                                                                                      ex11 的输出</span></div><!--tex4ht:label?: x17-60001r32 -->
+<!--l. 63-->
+<div class="lstlisting" id="listing-22"><span class="label"><a id="x17-60002r1"></a>1</span>$ make ex11 <br><span class="label"><a id="x17-60003r2"></a>2</span>cc -Wall -g    ex11.c   -o ex11 <br><span class="label"><a id="x17-60004r3"></a>3</span>$ ./ex11 <br><span class="label"><a id="x17-60005r4"></a>4</span>arg 0: ./ex11 <br><span class="label"><a id="x17-60006r5"></a>5</span>state 0: California <br><span class="label"><a id="x17-60007r6"></a>6</span>state 1: Oregon <br><span class="label"><a id="x17-60008r7"></a>7</span>state 2: Washington <br><span class="label"><a id="x17-60009r8"></a>8</span>state 3: Texas <br><span class="label"><a id="x17-60010r9"></a>9</span>$ <br><span class="label"><a id="x17-60011r10"></a>10</span>$ ./ex11 test it <br><span class="label"><a id="x17-60012r11"></a>11</span>arg 0: ./ex11 <br><span class="label"><a id="x17-60013r12"></a>12</span>arg 1: test <br><span class="label"><a id="x17-60014r13"></a>13</span>arg 2: it <br><span class="label"><a id="x17-60015r14"></a>14</span>state 0: California <br><span class="label"><a id="x17-60016r15"></a>15</span>state 1: Oregon <br><span class="label"><a id="x17-60017r16"></a>16</span>state 2: Washington <br><span class="label"><a id="x17-60018r17"></a>17</span>state 3: Texas <br><span class="label"><a id="x17-60019r18"></a>18</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">12.2    </span> <a id="x17-6100012.2"></a>让程序出错</h3>
+<!--l. 88--><p class="noindent">在你自己写代码时，你应该多用 for   结构，少用 while   。因为 for   更难出错。这里有几种常见的错误:
+<!--l. 91--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x17-61002x1">忘了初始化一开始的 <span class="obeylines-h"><span class="verb">int i;</span></span>，造成循环错误.
+     </li>
+     <li class="enumerate" id="x17-61004x2">忘了初始化第二次循环里的 i 于是循环里的值和第一次循环时一样。现在你的第二次循环可能运行也可能运行不了。
+     </li>
+     <li class="enumerate" id="x17-61006x3">忘了在循环的结尾执行 <span class="obeylines-h"><span class="verb">i++</span></span>自增，造成了“死循环”，这在编程史的前一二十年里可谓是最恐怖的问题之一。</li></ol><!--l. 99--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">12.3    </span> <a id="x17-6200012.3"></a>加分习题</h3>
+<!--l. 101--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x17-62002x1">使用 <span class="obeylines-h"><span class="verb">i--</span></span> 让循环从 <span class="obeylines-h"><span class="verb">argc</span></span> 循环计数递减到 0。你可能需要做一些计算让数组的索引正常工作。
+     </li>
+     <li class="enumerate" id="x17-62004x2">使用 while 循环把 argv 中的值拷贝到 states 中。
+     </li>
+     <li class="enumerate" id="x17-62006x3">让这个拷贝循环永远不会失败，例如 argv 中元素太多时，就不把它们都拷贝到 states 中。
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x17-62008x4">深入研究一下你是否真的拷贝了这些字符串。不过答案可能会使你感到惊讶与迷惑。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych13.html">next</a>] [<a href="learn-c-the-hard-waych11.html">prev</a>] [<a href="learn-c-the-hard-waych11.html#taillearn-c-the-hard-waych11.html">prev-tail</a>] [<a href="learn-c-the-hard-waych12.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych12.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych12.html"></a>   
+</p></span></p></span></p></body></html>

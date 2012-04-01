@@ -1,0 +1,131 @@
+<html><head><title>习题4: 介绍Valgrind</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych6.html">next</a>] [<a href="learn-c-the-hard-waych4.html">prev</a>] [<a href="learn-c-the-hard-waych4.html#taillearn-c-the-hard-waych4.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych5.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych5.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 5</span><br><a id="x10-290005"></a>习题4: 介绍Valgrind</h2>
+<!--l. 3--><p class="noindent">是时候学习另外一个工具 Valgrind 了，它将伴随你学习 C 语言的整个过程。我现在介绍 Valgrind 给你，因为从现在起，在“让程序出错”这个小节里，每个练习你都将用到它。Valgrind 运行你的程序，然后报告你犯下的所有致命错误。它是一个很棒的自由软件，我经常在我写 C 代码的时候用到它。
+<!--l. 5--></p><p class="indent">    还记得在上一个习题里，我让你修改你的代码移除了 printf 函数的参数吗？它打印出了一些不寻常的结果，但我没有告诉你为什么它会打印出这些结果。在这个习题里，我们将用 Valgrind 来探个究竟。
+                                                                  
+
+                                                                  
+<!--l. 7--></p><p class="indent">    <a id="x10-29001r3"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Note 3: </span><span class="content">                                                                                 为什么要介绍这些工具？
+</span></div><!--tex4ht:label?: x10-29001r3 -->
+     <div class="quote">
+     <!--l. 8--><p class="indent"> 只经过几章，我们就学习了本书所需要的所有工具，而只学写了一点点代码。这是因为这本书的大部分读者不熟悉编译语言，当然也不知道自动化处理和有用的工具。让你马上接触 make
+     和 Valgrind，我就能用他们更快的教会你 C 语言并帮助你找到你在程序中犯的错误。
+     <!--l. 10--></p><p class="indent"> 在这章练习后，一段时间内，我们将不会介绍其他任何工具，大部分将是代码和语法。但我们还将会学习一些工具，用来查看程序如何运行和帮我们理解一些常见错误和问题。
+      </p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">5.1    </span> <a id="x10-300005.1"></a>安装Valgrind</h3>
+<!--l. 16--><p class="noindent">你能通过操作系统的包管理器来安装 Valgrind，但我要你学习如何从源代码安装程序。它包括以下几个步骤：
+<!--l. 18--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x10-30002x1">下载源代码包。
+     </li>
+     <li class="enumerate" id="x10-30004x2">解压文件到你的电脑。
+     </li>
+     <li class="enumerate" id="x10-30006x3">运行./configure 设置配置。
+     </li>
+     <li class="enumerate" id="x10-30008x4">运行 make 创建程序, 就像你以前做过的那样。
+     </li>
+     <li class="enumerate" id="x10-30010x5">运行 sudo make install 把程序安装到你的电脑。</li></ol><!--l. 26--><p class="indent">    下面是我流程的一个脚本，我要你试着用同样的方法做一遍。
+                                                                  
+
+                                                                  
+<!--l. 28--></p><p class="indent">    <a id="x10-30011r15"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 15: </span><span class="content">                                                                                                            ex4.sh</span></div><!--tex4ht:label?: x10-30011r15 -->
+<div class="fancyvrb" id="fancyvrb3"><a id="x10-30013r1"></a>1  <span id="textcolor39"># 1) Download it (use wget if you don’t have curl)</span>
+<br class="fancyvrb"><a id="x10-30015r2"></a>2  curl -O http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2
+<br class="fancyvrb"><a id="x10-30017r3"></a>3  <br class="fancyvrb"><a id="x10-30019r4"></a>4  <span id="textcolor40"># use md5sum to make sure it matches the one on the site</span>
+<br class="fancyvrb"><a id="x10-30021r5"></a>5  md5sum valgrind-3.6.1.tar.bz2<br class="fancyvrb"><a id="x10-30023r6"></a>6  <br class="fancyvrb"><a id="x10-30025r7"></a>7  <span id="textcolor41"># 2) Unpack it.</span><br class="fancyvrb"><a id="x10-30027r8"></a>8  tar -xjvf valgrind-3.6.1.tar.bz2
+<br class="fancyvrb"><a id="x10-30029r9"></a>9  <br class="fancyvrb"><a id="x10-30031r10"></a>10  <span id="textcolor42"># cd into the newly created directory</span><br class="fancyvrb"><a id="x10-30033r11"></a>11  <span id="textcolor43">cd </span>valgrind-3.6.1<br class="fancyvrb"><a id="x10-30035r12"></a>12  <br class="fancyvrb"><a id="x10-30037r13"></a>13  <span id="textcolor44"># 3) configure it</span>
+<br class="fancyvrb"><a id="x10-30039r14"></a>14  ./configure<br class="fancyvrb"><a id="x10-30041r15"></a>15  <br class="fancyvrb"><a id="x10-30043r16"></a>16  <span id="textcolor45"># 4) make it</span><br class="fancyvrb"><a id="x10-30045r17"></a>17  make<br class="fancyvrb"><a id="x10-30047r18"></a>18  <br class="fancyvrb"><a id="x10-30049r19"></a>19  <span id="textcolor46"># 5) install it (need root)</span><br class="fancyvrb"><a id="x10-30051r20"></a>20  sudo make install</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 54--><p class="indent">    照着上面的做，不过如果你用了更新的 Valgrind 版本，就记得更新脚本里的版本号。如果它 build 失败，那么查出为什么出错。
+    </p><h3 class="sectionHead"><span class="titlemark">5.2    </span> <a id="x10-310005.2"></a>使用Valgrind</h3>
+<!--l. 58--><p class="noindent">使用 Valgrind 很简单, 你只要运行 <span class="obeylines-h"><span class="verb">valgrind theprogram</span></span> 它就会运行你的程序，
+然后打印出你程序运行时的错误。在这个习题里，我们将让程序出错，然后我们修正这个程序。
+<!--l. 60--></p><p class="indent">    首先，我们把 ex3.c 的代码拿来用，换个名字叫 ex4.c，当然，代码会故意弄错，为了练习，你需要重新输入一遍。
+                                                                  
+
+                                                                  
+<!--l. 62--></p><p class="indent">    <a id="x10-31001r16"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 16: </span><span class="content">                                                                                                              ex4.c</span></div><!--tex4ht:label?: x10-31001r16 -->
+<div class="fancyvrb" id="fancyvrb4"><a id="x10-31003r1"></a>1  <span id="textcolor47">#</span><span id="textcolor48">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x10-31005r2"></a>2  <br class="fancyvrb"><a id="x10-31007r3"></a>3  <span id="textcolor49">/⋆ Warning: This program is wrong on purpose. ⋆/</span><br class="fancyvrb"><a id="x10-31009r4"></a>4  <br class="fancyvrb"><a id="x10-31011r5"></a>5  <span id="textcolor50">int</span> <span id="textcolor51">main</span>()
+<br class="fancyvrb"><a id="x10-31013r6"></a>6  {<br class="fancyvrb"><a id="x10-31015r7"></a>7      <span id="textcolor52">int</span> age = <span id="textcolor53">10</span>;<br class="fancyvrb"><a id="x10-31017r8"></a>8      <span id="textcolor54">int</span> height;<br class="fancyvrb"><a id="x10-31019r9"></a>9  <br class="fancyvrb"><a id="x10-31021r10"></a>10      printf(<span class="colorbox" id="colorbox55"><span id="textcolor56">"</span></span><span class="colorbox" id="colorbox57"><span id="textcolor58">I am %d years old.</span></span><span class="colorbox" id="colorbox59"><span id="textcolor60">\n</span></span><span class="colorbox" id="colorbox61"><span id="textcolor62">"</span></span>);
+<br class="fancyvrb"><a id="x10-31023r11"></a>11      printf(<span class="colorbox" id="colorbox63"><span id="textcolor64">"</span></span><span class="colorbox" id="colorbox65"><span id="textcolor66">I am %d inches tall.</span></span><span class="colorbox" id="colorbox67"><span id="textcolor68">\n</span></span><span class="colorbox" id="colorbox69"><span id="textcolor70">"</span></span>, height);<br class="fancyvrb"><a id="x10-31025r12"></a>12  <br class="fancyvrb"><a id="x10-31027r13"></a>13      <span id="textcolor71">return</span> <span id="textcolor72">0</span>;<br class="fancyvrb"><a id="x10-31029r14"></a>14  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 82--><p class="indent">    你可以看到，除了我在上面犯了两个经典错误之外，其余都是一样的。
+     </p><ol class="enumerate1"><li class="enumerate" id="x10-31031x1">我没有初始化 height 变量.
+     </li>
+     <li class="enumerate" id="x10-31033x2">我忘记给头一个 printf 函数加上 age 变量。</li></ol><h3 class="sectionHead"><span class="titlemark">5.3    </span> <a id="x10-320005.3"></a>你应该看到的结果</h3>
+<!--l. 91--><p class="noindent">现在我们像平常一样创建它，然后用 Valgrind 运行它，而不是像以前那样直接运行程序（看 Source: “Build 并用 Valgrind 运行 ex4.c”）：
+                                                                  
+
+                                                                  
+<!--l. 93--></p><p class="indent">    <a id="x10-32001r17"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 17: </span><span class="content">                                                                                 Build 并用 Valgrind 运行 ex4.c</span></div><!--tex4ht:label?: x10-32001r17 -->
+<!--l. 94-->
+<div class="lstlisting" id="listing-14"><span class="label"><a id="x10-32002r1"></a>1</span>$ make ex4 <br><span class="label"><a id="x10-32003r2"></a>2</span>cc -Wall -g    ex4.c   -o ex4 <br><span class="label"><a id="x10-32004r3"></a>3</span>ex4.c: In function ’main’: <br><span class="label"><a id="x10-32005r4"></a>4</span>ex4.c:10: warning: too few arguments for format <br><span class="label"><a id="x10-32006r5"></a>5</span>ex4.c:7: warning: unused variable ’age’ <br><span class="label"><a id="x10-32007r6"></a>6</span>ex4.c:11: warning: ’height’ is used uninitialized in this function <br><span class="label"><a id="x10-32008r7"></a>7</span>$ valgrind ./ex4 <br><span class="label"><a id="x10-32009r8"></a>8</span>==3082== Memcheck, a memory error detector <br><span class="label"><a id="x10-32010r9"></a>9</span>==3082== Copyright (C) 2002-2010, and GNU GPL’d, by Julian Seward et al. <br><span class="label"><a id="x10-32011r10"></a>10</span>==3082== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info <br><span class="label"><a id="x10-32012r11"></a>11</span>==3082== Command: ./ex4 <br><span class="label"><a id="x10-32013r12"></a>12</span>==3082== <br><span class="label"><a id="x10-32014r13"></a>13</span>I am -16775432 years old. <br><span class="label"><a id="x10-32015r14"></a>14</span>==3082== Use of uninitialised value of size 8 <br><span class="label"><a id="x10-32016r15"></a>15</span>==3082==    at 0x4E730EB: _itoa_word (_itoa.c:195) <br><span class="label"><a id="x10-32017r16"></a>16</span>==3082==    by 0x4E743D8: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32018r17"></a>17</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32019r18"></a>18</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32020r19"></a>19</span>==3082== <br><span class="label"><a id="x10-32021r20"></a>20</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32022r21"></a>21</span>==3082==    at 0x4E730F5: _itoa_word (_itoa.c:195) <br><span class="label"><a id="x10-32023r22"></a>22</span>==3082==    by 0x4E743D8: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32024r23"></a>23</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32025r24"></a>24</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32026r25"></a>25</span>==3082== <br><span class="label"><a id="x10-32027r26"></a>26</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32028r27"></a>27</span>==3082==    at 0x4E7633B: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32029r28"></a>28</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32030r29"></a>29</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32031r30"></a>30</span>==3082== <br><span class="label"><a id="x10-32032r31"></a>31</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32033r32"></a>32</span>==3082==    at 0x4E744C6: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32034r33"></a>33</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32035r34"></a>34</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32036r35"></a>35</span>==3082== <br><span class="label"><a id="x10-32037r36"></a>36</span>I am 0 inches tall. <br><span class="label"><a id="x10-32038r37"></a>37</span>==3082== <br><span class="label"><a id="x10-32039r38"></a>38</span>==3082== HEAP SUMMARY: <br><span class="label"><a id="x10-32040r39"></a>39</span>==3082==     in use at exit: 0 bytes in 0 blocks <br><span class="label"><a id="x10-32041r40"></a>40</span>==3082==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated <br><span class="label"><a id="x10-32042r41"></a>41</span>==3082== <br><span class="label"><a id="x10-32043r42"></a>42</span>==3082== All heap blocks were freed -- no leaks are possible <br><span class="label"><a id="x10-32044r43"></a>43</span>==3082== <br><span class="label"><a id="x10-32045r44"></a>44</span>==3082== For counts of detected and suppressed errors, rerun with: -v <br><span class="label"><a id="x10-32046r45"></a>45</span>==3082== Use --track-origins=yes to see where uninitialised values come from <br><span class="label"><a id="x10-32047r46"></a>46</span>==3082== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 4 from 4) <br><span class="label"><a id="x10-32048r47"></a>47</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 147--><p class="indent">    输出很长，因为 Valgrind 会精确告知你程序每一个错误的所在。你要逐行从头到尾的读一遍（最左边的是行号，这样你可以对照查看）:
+     </p><dl class="description"><dt class="description">
+1 </dt><dd class="description">你像平常一样用 <span class="obeylines-h"><span class="verb">make ex4</span></span> build 程序。请确认你的 cc 指令编译时用了同样的参数，没有 <span class="obeylines-h"><span class="verb">-g</span></span> 选项，Valgrind 的输出将不带行号。
+     </dd><dt class="description">
+2-6 </dt><dd class="description">可以注意到编译器也对你发出了警告，它提醒你”too few arguments for
+     format”. 那是你忘了加 age 变量。
+     </dd><dt class="description">
+7 </dt><dd class="description">用 <span class="obeylines-h"><span class="verb">valgrind ./ex4</span></span> 运行你的程序。
+     </dd><dt class="description">
+8 </dt><dd class="description">然后 Valgrind 就抓狂了，丢了一堆错误出来:
+         <dl class="description"><dt class="description">
+     14-18 </dt><dd class="description">在 <span class="obeylines-h"><span class="verb">main (ex4.c:11)</span></span> 这一行(读作“文件 ex4.c 的第 11 行，main
+         函数里面) 你看到了“Use of uninitialised value of size 8”，你从错误中找到这条，然后在它下面就能看到所谓的“栈追踪(stack trace)”。
+         你看到的(ex4.c:11)这行是栈的最底下一层，如果你看不出哪里有问题那就继续往栈的上一层看，这回你要检查代码的 printf.c:35 这个位置。通常最底下的一行是最重要的（在这里是第 18 行）。
+         </dd><dt class="description">
+     20-24 </dt><dd class="description">这个接下来的错误依然是 main 函数 ex4.c:11 这行的错误 Valgrind
+         恨死这行了。这个错误是说某个 if 语句或者 while 循环是基于这个未被初始化的变量运行的，这次是 height 这个变量。
+         </dd><dt class="description">
+     25-35 </dt><dd class="description">剩下的错误基本是一样的，因为这个变量被重复用到了。</dd></dl></dd><dt class="description">
+37-46 </dt><dd class="description">最后，程序退出然后 Valgrind 做了个概要，向你展示你的程序有多糟糕。
+     </dd></dl><!--l. 168--><p class="indent">    要学的东西真不少，不过你要用下面的方法来应对：
+                                                                  
+
+                                                                  
+     </p><ol class="enumerate1"><li class="enumerate" id="x10-32053x1">每次运行你的 C 程序，都在 Valgrind 下重跑一遍检查一下。
+     </li>
+     <li class="enumerate" id="x10-32055x2">针对你看到的每一个错误，都到 source:line 所指的位置检查并修正它们。
+     你可能需要上网搜索错误信息的意义。
+     </li>
+     <li class="enumerate" id="x10-32057x3">如果你的程序被 Valgrind “认证通过”了，那这个程序应该就不错了，而且你也许还从中学到了关于怎样写代码的一些知识。</li></ol><!--l. 178--><p class="indent">    在这个习题里，我没指望你能立马就熟练运用 Valgrind，只是让你装好它并学习如何快速上手，这样我们就能在以后的习题里用上它。
+    </p><h3 class="sectionHead"><span class="titlemark">5.4    </span> <a id="x10-330005.4"></a>加分习题</h3>
+<!--l. 182--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x10-33002x1">根据 Valgrind 和编译器的提示，修正错误。
+     </li>
+     <li class="enumerate" id="x10-33004x2">在网上研读 Valgrind。
+     </li>
+     <li class="enumerate" id="x10-33006x3">下载其他软件的源码，自己 build 一下。尝试一些你已经用过但还从没自己动手 build 过的软件。
+     </li>
+     <li class="enumerate" id="x10-33008x4">看看 Valgrind 的源码的路径组织架构，读一下它的 Makefile ，别担心，
+     我也觉得这东西一团糟。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych6.html">next</a>] [<a href="learn-c-the-hard-waych4.html">prev</a>] [<a href="learn-c-the-hard-waych4.html#taillearn-c-the-hard-waych4.html">prev-tail</a>] [<a href="learn-c-the-hard-waych5.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych5.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych5.html"></a>   
+</p></body></html>

@@ -1,0 +1,167 @@
+<html><head><title>Exercise 15: 指针啊指针，恐怖的指针</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych17.html">next</a>] [<a href="learn-c-the-hard-waych15.html">prev</a>] [<a href="learn-c-the-hard-waych15.html#taillearn-c-the-hard-waych15.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych16.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych16.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 16</span><br><a id="x21-7500016"></a>Exercise 15: 指针啊指针，恐怖的指针</h2>
+<!--l. 3--><p class="noindent">指针是 C 语言中闻名遐迩而又神秘莫测的东西。我将教给你们一些处理指针所用的词汇，从而揭开指针的神秘面纱。事实上指针并不复杂，只是常常被以各种方式滥用，
+导致它显得十分难用。如果你尽量避免那些愚蠢的使用方法，指针实际上是相当容易的。
+<!--l. 7--></p><p class="indent">    为了便于讨论，我写了一个简单的小程序，能够用三种不同的方式打印一组人员年龄: <span class="footnote-mark"><a href="#fn1x17" id="fn1x17-bk"><sup class="textsuperscript">1</sup></a></span><a id="x21-75001f1"></a>
+                                                                  
+
+                                                                  
+<!--l. 11--></p><p class="indent">    <a id="x21-75002r39"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 39: </span><span class="content">                                                                                                            ex15.c</span></div><!--tex4ht:label?: x21-75002r39 -->
+<div class="fancyvrb" id="fancyvrb18"><a id="x21-75004r1"></a>1  <span id="textcolor893">#</span><span id="textcolor894">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x21-75006r2"></a>2  <br class="fancyvrb"><a id="x21-75008r3"></a>3  <span id="textcolor895">int</span> <span id="textcolor896">main</span>(<span id="textcolor897">int</span> argc, <span id="textcolor898">char</span> ⋆argv[])<br class="fancyvrb"><a id="x21-75010r4"></a>4  {
+<br class="fancyvrb"><a id="x21-75012r5"></a>5      <span id="textcolor899">// create two arrays we care about</span><br class="fancyvrb"><a id="x21-75014r6"></a>6      <span id="textcolor900">int</span> ages[] = {<span id="textcolor901">23</span>, <span id="textcolor902">43</span>, <span id="textcolor903">12</span>, <span id="textcolor904">89</span>, <span id="textcolor905">2</span>};
+<br class="fancyvrb"><a id="x21-75016r7"></a>7      <span id="textcolor906">char</span> ⋆names[] = {<br class="fancyvrb"><a id="x21-75018r8"></a>8          <span class="colorbox" id="colorbox907"><span id="textcolor908">"</span></span><span class="colorbox" id="colorbox909"><span id="textcolor910">Alan</span></span><span class="colorbox" id="colorbox911"><span id="textcolor912">"</span></span>, <span class="colorbox" id="colorbox913"><span id="textcolor914">"</span></span><span class="colorbox" id="colorbox915"><span id="textcolor916">Frank</span></span><span class="colorbox" id="colorbox917"><span id="textcolor918">"</span></span>,<br class="fancyvrb"><a id="x21-75020r9"></a>9          <span class="colorbox" id="colorbox919"><span id="textcolor920">"</span></span><span class="colorbox" id="colorbox921"><span id="textcolor922">Mary</span></span><span class="colorbox" id="colorbox923"><span id="textcolor924">"</span></span>, <span class="colorbox" id="colorbox925"><span id="textcolor926">"</span></span><span class="colorbox" id="colorbox927"><span id="textcolor928">John</span></span><span class="colorbox" id="colorbox929"><span id="textcolor930">"</span></span>, <span class="colorbox" id="colorbox931"><span id="textcolor932">"</span></span><span class="colorbox" id="colorbox933"><span id="textcolor934">Lisa</span></span><span class="colorbox" id="colorbox935"><span id="textcolor936">"</span></span><br class="fancyvrb"><a id="x21-75022r10"></a>10      };
+<br class="fancyvrb"><a id="x21-75024r11"></a>11      <span id="textcolor937">// safely get the size of ages</span><br class="fancyvrb"><a id="x21-75026r12"></a>12      <span id="textcolor938">int</span> count = <span id="textcolor939">sizeof</span>(ages) / <span id="textcolor940">sizeof</span>(<span id="textcolor941">int</span>);
+<br class="fancyvrb"><a id="x21-75028r13"></a>13      <span id="textcolor942">int</span> i = <span id="textcolor943">0</span>;<br class="fancyvrb"><a id="x21-75030r14"></a>14  <br class="fancyvrb"><a id="x21-75032r15"></a>15      <span id="textcolor944">// first way using indexing</span>
+<br class="fancyvrb"><a id="x21-75034r16"></a>16      <span id="textcolor945">for</span>(i = <span id="textcolor946">0</span>; i <a id="x21-75036r17"></a>17          printf(<span class="colorbox" id="colorbox947"><span id="textcolor948">"</span></span><span class="colorbox" id="colorbox949"><span id="textcolor950">%s has %d years alive.</span></span><span class="colorbox" id="colorbox951"><span id="textcolor952">\n</span></span><span class="colorbox" id="colorbox953"><span id="textcolor954">"</span></span>,
+<br class="fancyvrb"><a id="x21-75038r18"></a>18                  names[i], ages[i]);<br class="fancyvrb"><a id="x21-75040r19"></a>19      }<br class="fancyvrb"><a id="x21-75042r20"></a>20  <br class="fancyvrb"><a id="x21-75044r21"></a>21      printf(<span class="colorbox" id="colorbox955"><span id="textcolor956">"</span></span><span class="colorbox" id="colorbox957"><span id="textcolor958">---</span></span><span class="colorbox" id="colorbox959"><span id="textcolor960">\n</span></span><span class="colorbox" id="colorbox961"><span id="textcolor962">"</span></span>);<br class="fancyvrb"><a id="x21-75046r22"></a>22  
+<br class="fancyvrb"><a id="x21-75048r23"></a>23      <span id="textcolor963">// setup the pointers to the start of the arrays</span><br class="fancyvrb"><a id="x21-75050r24"></a>24      <span id="textcolor964">int</span> ⋆cur_age = ages;
+<br class="fancyvrb"><a id="x21-75052r25"></a>25      <span id="textcolor965">char</span> ⋆⋆cur_name = names;<br class="fancyvrb"><a id="x21-75054r26"></a>26  <br class="fancyvrb"><a id="x21-75056r27"></a>27      <span id="textcolor966">// second way using pointers</span>
+<br class="fancyvrb"><a id="x21-75058r28"></a>28      <span id="textcolor967">for</span>(i = <span id="textcolor968">0</span>; i <a id="x21-75060r29"></a>29          printf(<span class="colorbox" id="colorbox969"><span id="textcolor970">"</span></span><span class="colorbox" id="colorbox971"><span id="textcolor972">%s is %d years old.</span></span><span class="colorbox" id="colorbox973"><span id="textcolor974">\n</span></span><span class="colorbox" id="colorbox975"><span id="textcolor976">"</span></span>,
+<br class="fancyvrb"><a id="x21-75062r30"></a>30                  ⋆(cur_name+i), ⋆(cur_age+i));<br class="fancyvrb"><a id="x21-75064r31"></a>31      }<br class="fancyvrb"><a id="x21-75066r32"></a>32  
+<br class="fancyvrb"><a id="x21-75068r33"></a>33      printf(<span class="colorbox" id="colorbox977"><span id="textcolor978">"</span></span><span class="colorbox" id="colorbox979"><span id="textcolor980">---</span></span><span class="colorbox" id="colorbox981"><span id="textcolor982">\n</span></span><span class="colorbox" id="colorbox983"><span id="textcolor984">"</span></span>);<br class="fancyvrb"><a id="x21-75070r34"></a>34  <br class="fancyvrb"><a id="x21-75072r35"></a>35      <span id="textcolor985">// third way, pointers are just arrays</span>
+<br class="fancyvrb"><a id="x21-75074r36"></a>36      <span id="textcolor986">for</span>(i = <span id="textcolor987">0</span>; i <a id="x21-75076r37"></a>37          printf(<span class="colorbox" id="colorbox988"><span id="textcolor989">"</span></span><span class="colorbox" id="colorbox990"><span id="textcolor991">%s is %d years old again.</span></span><span class="colorbox" id="colorbox992"><span id="textcolor993">\n</span></span><span class="colorbox" id="colorbox994"><span id="textcolor995">"</span></span>,
+<br class="fancyvrb"><a id="x21-75078r38"></a>38                  cur_name[i], cur_age[i]);<br class="fancyvrb"><a id="x21-75080r39"></a>39      }<br class="fancyvrb"><a id="x21-75082r40"></a>40  <br class="fancyvrb"><a id="x21-75084r41"></a>41      printf(<span class="colorbox" id="colorbox996"><span id="textcolor997">"</span></span><span class="colorbox" id="colorbox998"><span id="textcolor999">---</span></span><span class="colorbox" id="colorbox1000"><span id="textcolor1001">\n</span></span><span class="colorbox" id="colorbox1002"><span id="textcolor1003">"</span></span>);
+<br class="fancyvrb"><a id="x21-75086r42"></a>42  <br class="fancyvrb"><a id="x21-75088r43"></a>43      <span id="textcolor1004">// fourth way with pointers in a stupid complex way</span>
+<br class="fancyvrb"><a id="x21-75090r44"></a>44      <span id="textcolor1005">for</span>(cur_name = names, cur_age = ages;<br class="fancyvrb"><a id="x21-75092r45"></a>45              (cur_age - ages) <a id="x21-75094r46"></a>46              cur_name++, cur_age++)<br class="fancyvrb"><a id="x21-75096r47"></a>47      {<br class="fancyvrb"><a id="x21-75098r48"></a>48          printf(<span class="colorbox" id="colorbox1006"><span id="textcolor1007">"</span></span><span class="colorbox" id="colorbox1008"><span id="textcolor1009">%s lived %d years so far.</span></span><span class="colorbox" id="colorbox1010"><span id="textcolor1011">\n</span></span><span class="colorbox" id="colorbox1012"><span id="textcolor1013">"</span></span>,
+<br class="fancyvrb"><a id="x21-75100r49"></a>49                  ⋆cur_name, ⋆cur_age);<br class="fancyvrb"><a id="x21-75102r50"></a>50      }<br class="fancyvrb"><a id="x21-75104r51"></a>51  <br class="fancyvrb"><a id="x21-75106r52"></a>52      <span id="textcolor1014">return</span> <span id="textcolor1015">0</span>;<br class="fancyvrb"><a id="x21-75108r53"></a>53  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 69--><p class="indent">    在解释指针的工作原理之前，我们先来逐行分析这个程序，了解它的工作过程。
+在你阅读这些详细描述的同时，试着在纸上写下答案，留待和我之后的解释相比较，
+看看是否相同。
+     </p><dl class="description"><dt class="description">
+ex15.c:6-10 </dt><dd class="description">创建两个数组, ages 用以存储一些 int 数据，而数组 names 则存储一些字符串。
+     </dd><dt class="description">
+ex15.c:12-13 </dt><dd class="description">稍候 for   要用到的一些变量。
+     </dd><dt class="description">
+ex15.c:16-19 </dt><dd class="description">你懂的，循环访问两个数组并打印出每人的年龄。此处使用 i 作为数组的索引。
+     </dd><dt class="description">
+ex15.c:24 </dt><dd class="description">创建指针，指向 ages。注意 <span class="obeylines-h"><span class="verb">int ⋆</span></span>的作用是创建“指向整数类的指针”。这点和“指向字符类的指针” <span class="obeylines-h"><span class="verb">char ⋆</span></span>相似，而字符串就是一个字符的数组。发现相似之处了嘛？
+     </dd><dt class="description">
+ex15.c:25 </dt><dd class="description">创建一个指针，指向 names。 <span class="obeylines-h"><span class="verb">char ⋆</span></span>已经是一个“指向字符类的指针”，也就是一个字符串。而 names 是二维的，所以你需要的两级指针，
+     也就是“（字符指针）的指针” <span class="obeylines-h"><span class="verb">char ⋆⋆</span></span>。请推敲研究此处，尝试解释给自己听。
+     </dd><dt class="description">
+ex15.c:28-31 </dt><dd class="description">依次访问 ages 和 names，但这次使用指针加上 i  的偏移量.
+     写为 <span class="obeylines-h"><span class="verb">⋆(cur_name+i)</span></span>和 <span class="obeylines-h"><span class="verb">name[i]</span></span> 是等价的，你可以将它读成“(指针 cur_name 加 i)的值”。
+     </dd><dt class="description">
+ex15.c:35-39 </dt><dd class="description">这显示了 C 语言如何奇妙的将指针和数组当作同一种事物来处理，
+     仍然用数组的语法来访问数组，只要换上指针的名称就可以了。C 语言自然能分辨。
+     </dd><dt class="description">
+ex15.c:44-50 </dt><dd class="description">像前两个一样，又一个让人抓狂的循环，只是它用了不同的指针算法：
+         <dl class="description"><dt class="description">
+     ex15.c:44 </dt><dd class="description">通过将 cur_name 和 cur_age 设置到 names 和 ages 数组的起点来初始化 for   。
+         </dd><dt class="description">
+     ex15.c:45 </dt><dd class="description">然后 for-loop 的测试部分比较了指针 cur_age 到起点 ages
+         的距离。为何这样可行呢？
+         </dd><dt class="description">
+     ex15.c:46 </dt><dd class="description">接下来 for-loop 的增进部分同时增进了 cur_name
+         和 cur_age，以便二者指向数组 name 和 age 的下一个元素。
+         </dd><dt class="description">
+     ex15.c:48-49 </dt><dd class="description">指针 cur_name 和 cur_age 现在数组中正在操作的元素，
+         我们只用 <span class="obeylines-h"><span class="verb">⋆cur_name</span></span> 和 <span class="obeylines-h"><span class="verb">⋆cur_age</span></span> 就可以将他们打印出来，也就是
+        “任何 cur_name 指向位置的值”。</dd></dl></dd></dl><!--l. 107--><p class="indent">    这段程序看似简单，却包含大量信息，它的目的是使你在看我解释之前，自己尝试理解指针。在你写下自己想法之前，请不要继续阅读
+    </p><h3 class="sectionHead"><span class="titlemark">16.1    </span> <a id="x21-7600016.1"></a>你应该看到的结果</h3>
+<!--l. 112--><p class="noindent">运行程序之后，请你尝试根据每行打印结果追溯源代码。必要时，更改 printf 以确保你得到正确的行号。
+                                                                  
+
+                                                                  
+<!--l. 115--></p><p class="indent">    <a id="x21-76001r40"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 40: </span><span class="content">                                                                                                          ex15 输出</span></div><!--tex4ht:label?: x21-76001r40 -->
+<!--l. 116-->
+<div class="lstlisting" id="listing-26"><span class="label"><a id="x21-76002r1"></a>1</span>$ make ex15 <br><span class="label"><a id="x21-76003r2"></a>2</span>cc -Wall -g    ex15.c   -o ex15 <br><span class="label"><a id="x21-76004r3"></a>3</span>$ ./ex15 <br><span class="label"><a id="x21-76005r4"></a>4</span>Alan has 23 years alive. <br><span class="label"><a id="x21-76006r5"></a>5</span>Frank has 43 years alive. <br><span class="label"><a id="x21-76007r6"></a>6</span>Mary has 12 years alive. <br><span class="label"><a id="x21-76008r7"></a>7</span>John has 89 years alive. <br><span class="label"><a id="x21-76009r8"></a>8</span>Lisa has 2 years alive. <br><span class="label"><a id="x21-76010r9"></a>9</span>--- <br><span class="label"><a id="x21-76011r10"></a>10</span>Alan is 23 years old. <br><span class="label"><a id="x21-76012r11"></a>11</span>Frank is 43 years old. <br><span class="label"><a id="x21-76013r12"></a>12</span>Mary is 12 years old. <br><span class="label"><a id="x21-76014r13"></a>13</span>John is 89 years old. <br><span class="label"><a id="x21-76015r14"></a>14</span>Lisa is 2 years old. <br><span class="label"><a id="x21-76016r15"></a>15</span>--- <br><span class="label"><a id="x21-76017r16"></a>16</span>Alan is 23 years old again. <br><span class="label"><a id="x21-76018r17"></a>17</span>Frank is 43 years old again. <br><span class="label"><a id="x21-76019r18"></a>18</span>Mary is 12 years old again. <br><span class="label"><a id="x21-76020r19"></a>19</span>John is 89 years old again. <br><span class="label"><a id="x21-76021r20"></a>20</span>Lisa is 2 years old again. <br><span class="label"><a id="x21-76022r21"></a>21</span>--- <br><span class="label"><a id="x21-76023r22"></a>22</span>Alan lived 23 years so far. <br><span class="label"><a id="x21-76024r23"></a>23</span>Frank lived 43 years so far. <br><span class="label"><a id="x21-76025r24"></a>24</span>Mary lived 12 years so far. <br><span class="label"><a id="x21-76026r25"></a>25</span>John lived 89 years so far. <br><span class="label"><a id="x21-76027r26"></a>26</span>Lisa lived 2 years so far. <br><span class="label"><a id="x21-76028r27"></a>27</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">16.2    </span> <a id="x21-7700016.2"></a>解释指针</h3>
+<!--l. 151--><p class="noindent">当你输入诸如 <span class="obeylines-h"><span class="verb">ages[i]</span></span>的东西时，其实是在数组 ages 中“检索”, 借助 i 中存储的数字实现所需功能。当 i 被设为 0 时，相当于输入 <span class="obeylines-h"><span class="verb">ages[0]</span></span>。因为数字 i 表示我们在 <span class="obeylines-h"><span class="verb">age[0]</span></span>需要访问的位置，所以一直被称作“索引”。它也可以称作“地址”，比如说“我想要知道数组 ages 中地址 i 的整数是多少？”
+<!--l. 157--></p><p class="indent">    如果 i 是一个索引，那么 ages 又是什么呢？对于 C 语言来说 ages 是电脑内存中，所有整数的起始位置。它也是一个地址，C 编译器将会用它替换任何带有 ages 中第一个整数地址的 ages。另一种思考 ages 的方法是，
+它是“ages 中第一个整数的地址”。诀窍在于 ages 是整个电脑里的内存地址。不像 i 只是 ages 的内部地址。ages 的数组名就是电脑里的实际地址。
+<!--l. 163--></p><p class="indent">    至此我们得到一种认识：C 语言将整个电脑视为一个巨大的字节数组。显然这不是很管用，但是接下来 C 在这个巨大的字节数组之上加上了类型和这些类型大小这类概念。从前面的练习中你已经见过这是如何运行的，现在你可以开始了解 C 是如何对数组进行以下操作的：
+<!--l. 168--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x21-77002x1">在你的电脑上创建一块内存区域。
+     </li>
+     <li class="enumerate" id="x21-77004x2">将该内存块起始初“指向”ages 名称。
+     </li>
+     <li class="enumerate" id="x21-77006x3">通过基础地址 ages“检索”该内存块并获取 i 个字节以外的元素。
+     </li>
+     <li class="enumerate" id="x21-77008x4">将 ages+i 处的地址转化为大小合适的有效 t ，以便索引正常工作并返回你所需求的：索引 i 处的整型值。</li></ol><!--l. 176--><p class="indent">    如果你能取得基础地址，比如 ages，再“加”上另一个地址比如 i 以产生新的地址，那么你是否能得到一个始终指向此地址的某种东西呢？正式如此，你所得到的这种东西，就叫做“指针”。这就是指针 cur_age 和 cur_name 所做的事情。
+它们是指向你电脑内存里 ages 和 names 地址的变量。范例程序将它们移来移去，通过相关计算获得内存存储数值。在其中一例，它们只是将 i 加到 cur_age，这就相当于 <span class="obeylines-h"><span class="verb">array[i]</span></span>。在最后一个 for   里，两个指针没有 i 的帮忙也能自行移动。这个循环中，指针被看作是数组和整数偏移量的整合。
+<!--l. 185--></p><p class="indent">    指针仅仅是指向电脑内存的一个地址，明确类型之后你就可以得到大小正确的数据。这有点像 ages 与 i 合二为一的数据类型。C 语言知道指针指向何处，知道所指数据类型，该类型数据大小以及如何为你获取它们。正如 i 一样，你可以让它们自增、
+自减，或者做加、减运算。也可以像 ages 一样，你通过它们得到数值，输入新值，
+进行所有数组操作。
+<!--l. 191--></p><p class="indent">    指针的目的，在于当数组不能完全胜任的时候，手动检索一块内存区域。只要是不使用数组的情况，你大可放心使用指针。然后又些时候你不得不操作原始内存区域，这才是指针的任务。指针为你操作内存提供了原始、直接的连接方式。
+<!--l. 195--></p><p class="indent">    本节最后一件要知道的事是，你既可以使用数组操作语法，也可以使用指针操作语法来编写程序。你可以用指针指向某个东西，然后用数组语法接入它，也可以利用指针算数来操作数组。在以上的范例程序中，我演示了这一点，它也是 C 语言的基本特征：指针和数组（基本上）是同一回事。
+<!--l. 200--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">16.3    </span> <a id="x21-7800016.3"></a>指针使用练习</h3>
+<!--l. 202--><p class="noindent">在 C 语言中有四种主要的指针处理方法：
+<!--l. 204--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x21-78002x1">向系统请求一块内存作为指针工作区域。这包括字符串和你还没见过的 structs。
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x21-78004x2">利用指针向函数传递一大块内存（比如字符串和数组），这样你就不必传递整个数据。
+     </li>
+     <li class="enumerate" id="x21-78006x3">掌握函数地址以便于动态回调。
+     </li>
+     <li class="enumerate" id="x21-78008x4">内存区域的复杂扫描，比如从网络套接字中将字节转换成数据结构或者解析文件。</li></ol><!--l. 211--><p class="indent">    对于几乎其他所有你能看到的指针使用方法，应该都是作为数组。在 C 语言编程的初期，由于编译器对数组的优化还很糟糕，人们便使用指针来加速程序的运行。而现今，不同的数组与指针语法被翻译成相同的机器码，并被同样的优化，所以指针并不是必须的。相反，在能使用数组的情况下应该尽量使用，而只在必须使用指针进行性能优化的时候才使用指针。
+<!--l. 217--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">16.4    </span> <a id="x21-7900016.4"></a>指针词典</h3>
+<!--l. 219--><p class="noindent">现在我要教给你一个小小的指针词典，用来读写指针。任何遇到复杂指针声明的时候就来参考它，然后一点点的解决问题。(或者如果代码本身不太好就直接放弃使用):
+     </p><dl class="description"><dt class="description">
+type *ptr </dt><dd class="description">“一个叫做 ptr 的 type 型指针”
+     </dd><dt class="description">
+*ptr </dt><dd class="description">“ptr 所指向地址对应的值”
+     </dd><dt class="description">
+*(ptr + i) </dt><dd class="description">“ptr 所指地址加 i 的位置的值”
+     </dd><dt class="description">
+                                                                  
+
+                                                                  
+&amp;thing </dt><dd class="description">“thing 的地址”
+     </dd><dt class="description">
+type *ptr = &amp;thing </dt><dd class="description">“将名为 ptr 的 type 型指针设置到 thing 的地址”
+     </dd><dt class="description">
+ptr++ </dt><dd class="description">“增进 ptr 的指向位置”</dd></dl><!--l. 231--><p class="indent">    我们将用这本简单的词典解决往后书中遇到的所有指针问题。
+<!--l. 233--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">16.5    </span> <a id="x21-8000016.5"></a>如何让程序出错</h3>
+<!--l. 235--><p class="noindent">你只需将指针指向错误的地方就能让这个程序出错。
+<!--l. 237--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x21-80002x1">尝试将 cur_age 指向 names。你需要用 C 语言中的指针映射(cast)来强制执行，研究一下具体需要怎样做。
+     </li>
+     <li class="enumerate" id="x21-80004x2">尝试让最后一个 for   中，用各种方法让算术出错。
+     </li>
+     <li class="enumerate" id="x21-80006x3">尝试重写这些循环，从结尾向开头访问数组。这比看上去要困难。</li></ol><!--l. 244--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">16.6    </span> <a id="x21-8100016.6"></a>加分习题</h3>
+<!--l. 246--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x21-81002x1">将程序中所有数组重写为指针。
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x21-81004x2">将程序中所有指针重写为数组。
+     </li>
+     <li class="enumerate" id="x21-81006x3">回顾以往使用数组的程序，尝试使用指针替代。
+     </li>
+     <li class="enumerate" id="x21-81008x4">只用指针处理命令行参数，方法与本例中处理 names 相似。
+     </li>
+     <li class="enumerate" id="x21-81010x5">尝试指针方法获取各种东西的地址与值。
+     </li>
+     <li class="enumerate" id="x21-81012x6">在结尾加入另一个 for   ，打印指针被调用时地址。使用 printf 打印时将会用到 <span class="obeylines-h"><span class="verb">%p</span></span> 格式。
+     </li>
+     <li class="enumerate" id="x21-81014x7">重写程序，每种打印方式使用一个函数。尝试将指针传递给函数以便它们获得数据。记住你可以声明一个函数接受指针，但只能按数组的方式使用它。
+     </li>
+     <li class="enumerate" id="x21-81016x8">将 for  改为 while   ，看看对于不同种类的指针使用，哪种循环效果更好。</li></ol><div class="footnotes"><!--l. 9--><p class="indent">  <span class="footnote-mark"><a href="#fn1x17-bk" id="fn1x17"><sup class="textsuperscript">1</sup></a></span>记住，学习本书时你要输入这些程序，也许一时不能理解，但请尝试在我解释以前自己弄明白。                                         </p></div>
+<!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych17.html">next</a>] [<a href="learn-c-the-hard-waych15.html">prev</a>] [<a href="learn-c-the-hard-waych15.html#taillearn-c-the-hard-waych15.html">prev-tail</a>] [<a href="learn-c-the-hard-waych16.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych16.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych16.html"></a>   
+</p></body></html>

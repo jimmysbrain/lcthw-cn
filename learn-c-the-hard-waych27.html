@@ -1,0 +1,137 @@
+<html><head><title>Exercise 24: 输入, 输出, 文件</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 2--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych28.html">next</a>] [<a href="learn-c-the-hard-waych26.html">prev</a>] [<a href="learn-c-the-hard-waych26.html#taillearn-c-the-hard-waych26.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych27.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych27.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 27</span><br><a id="x32-14500027"></a>Exercise 24: 输入, 输出, 文件</h2>
+<!--l. 4--><p class="noindent">你已经可以用 printf 来打印了, 这非常好。但是你肯定不满足于此。在这一节，你将会用 fscanf 和 fgets 来构建一个结构体以存贮某个人的信息。简单介绍过如何读取数据之后，你将会看到一个 c 语言所拥有的处理 IO 的完整函数列表。你应该已经见过而且用过其中的一部分，所以本节会帮助你回想起很多东西。
+                                                                  
+
+                                                                  
+<!--l. 9--></p><p class="indent">    <a id="x32-145001r63"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 63: </span><span class="content">                                                                                                            ex24.c</span></div><!--tex4ht:label?: x32-145001r63 -->
+<div class="fancyvrb" id="fancyvrb34"><a id="x32-145003r1"></a>1  <span id="textcolor2678">#</span><span id="textcolor2679">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x32-145005r2"></a>2  <span id="textcolor2680">#</span><span id="textcolor2681">include "dbg.h"</span><br class="fancyvrb"><a id="x32-145007r3"></a>3  <br class="fancyvrb"><a id="x32-145009r4"></a>4  <span id="textcolor2682">#</span><span id="textcolor2683">define MAX_DATA 100</span><br class="fancyvrb"><a id="x32-145011r5"></a>5  
+<br class="fancyvrb"><a id="x32-145013r6"></a>6  <span id="textcolor2684">typedef</span> <span id="textcolor2685">enum</span> EyeColor {<br class="fancyvrb"><a id="x32-145015r7"></a>7      BLUE_EYES, GREEN_EYES, BROWN_EYES,
+<br class="fancyvrb"><a id="x32-145017r8"></a>8      BLACK_EYES, OTHER_EYES<br class="fancyvrb"><a id="x32-145019r9"></a>9  } EyeColor;<br class="fancyvrb"><a id="x32-145021r10"></a>10  <br class="fancyvrb"><a id="x32-145023r11"></a>11  <span id="textcolor2686">const</span> <span id="textcolor2687">char</span> ⋆EYE_COLOR_NAMES[] = {
+<br class="fancyvrb"><a id="x32-145025r12"></a>12      <span class="colorbox" id="colorbox2688"><span id="textcolor2689">"</span></span><span class="colorbox" id="colorbox2690"><span id="textcolor2691">Blue</span></span><span class="colorbox" id="colorbox2692"><span id="textcolor2693">"</span></span>, <span class="colorbox" id="colorbox2694"><span id="textcolor2695">"</span></span><span class="colorbox" id="colorbox2696"><span id="textcolor2697">Green</span></span><span class="colorbox" id="colorbox2698"><span id="textcolor2699">"</span></span>, <span class="colorbox" id="colorbox2700"><span id="textcolor2701">"</span></span><span class="colorbox" id="colorbox2702"><span id="textcolor2703">Brown</span></span><span class="colorbox" id="colorbox2704"><span id="textcolor2705">"</span></span>, <span class="colorbox" id="colorbox2706"><span id="textcolor2707">"</span></span><span class="colorbox" id="colorbox2708"><span id="textcolor2709">Black</span></span><span class="colorbox" id="colorbox2710"><span id="textcolor2711">"</span></span>, <span class="colorbox" id="colorbox2712"><span id="textcolor2713">"</span></span><span class="colorbox" id="colorbox2714"><span id="textcolor2715">Other</span></span><span class="colorbox" id="colorbox2716"><span id="textcolor2717">"</span></span><br class="fancyvrb"><a id="x32-145027r13"></a>13  };<br class="fancyvrb"><a id="x32-145029r14"></a>14  <br class="fancyvrb"><a id="x32-145031r15"></a>15  <span id="textcolor2718">typedef</span> <span id="textcolor2719">struct</span> Person {
+<br class="fancyvrb"><a id="x32-145033r16"></a>16      <span id="textcolor2720">int</span> age;<br class="fancyvrb"><a id="x32-145035r17"></a>17      <span id="textcolor2721">char</span> first_name[MAX_DATA];<br class="fancyvrb"><a id="x32-145037r18"></a>18      <span id="textcolor2722">char</span> last_name[MAX_DATA];
+<br class="fancyvrb"><a id="x32-145039r19"></a>19      EyeColor eyes;<br class="fancyvrb"><a id="x32-145041r20"></a>20      <span id="textcolor2723">float</span> income;<br class="fancyvrb"><a id="x32-145043r21"></a>21  } Person;<br class="fancyvrb"><a id="x32-145045r22"></a>22  <br class="fancyvrb"><a id="x32-145047r23"></a>23  
+<br class="fancyvrb"><a id="x32-145049r24"></a>24  <span id="textcolor2724">int</span> <span id="textcolor2725">main</span>(<span id="textcolor2726">int</span> argc, <span id="textcolor2727">char</span> ⋆argv[])<br class="fancyvrb"><a id="x32-145051r25"></a>25  {<br class="fancyvrb"><a id="x32-145053r26"></a>26      Person you = {.age = <span id="textcolor2728">0</span>};
+<br class="fancyvrb"><a id="x32-145055r27"></a>27      <span id="textcolor2729">int</span> i = <span id="textcolor2730">0</span>;<br class="fancyvrb"><a id="x32-145057r28"></a>28      <span id="textcolor2731">char</span> ⋆in = <span id="textcolor2732">NULL</span>;<br class="fancyvrb"><a id="x32-145059r29"></a>29  <br class="fancyvrb"><a id="x32-145061r30"></a>30      printf(<span class="colorbox" id="colorbox2733"><span id="textcolor2734">"</span></span><span class="colorbox" id="colorbox2735"><span id="textcolor2736">What’s your First Name? </span></span><span class="colorbox" id="colorbox2737"><span id="textcolor2738">"</span></span>);
+<br class="fancyvrb"><a id="x32-145063r31"></a>31      in = fgets(you.first_name, MAX_DATA-<span id="textcolor2739">1</span>, stdin);
+<br class="fancyvrb"><a id="x32-145065r32"></a>32      check(in != <span id="textcolor2740">NULL</span>, <span class="colorbox" id="colorbox2741"><span id="textcolor2742">"</span></span><span class="colorbox" id="colorbox2743"><span id="textcolor2744">Failed to read first name.</span></span><span class="colorbox" id="colorbox2745"><span id="textcolor2746">"</span></span>);
+<br class="fancyvrb"><a id="x32-145067r33"></a>33  <br class="fancyvrb"><a id="x32-145069r34"></a>34      printf(<span class="colorbox" id="colorbox2747"><span id="textcolor2748">"</span></span><span class="colorbox" id="colorbox2749"><span id="textcolor2750">What’s your Last Name? </span></span><span class="colorbox" id="colorbox2751"><span id="textcolor2752">"</span></span>);
+<br class="fancyvrb"><a id="x32-145071r35"></a>35      in = fgets(you.last_name, MAX_DATA-<span id="textcolor2753">1</span>, stdin);
+<br class="fancyvrb"><a id="x32-145073r36"></a>36      check(in != <span id="textcolor2754">NULL</span>, <span class="colorbox" id="colorbox2755"><span id="textcolor2756">"</span></span><span class="colorbox" id="colorbox2757"><span id="textcolor2758">Failed to read last name.</span></span><span class="colorbox" id="colorbox2759"><span id="textcolor2760">"</span></span>);<br class="fancyvrb"><a id="x32-145075r37"></a>37  
+<br class="fancyvrb"><a id="x32-145077r38"></a>38      printf(<span class="colorbox" id="colorbox2761"><span id="textcolor2762">"</span></span><span class="colorbox" id="colorbox2763"><span id="textcolor2764">How old are you? </span></span><span class="colorbox" id="colorbox2765"><span id="textcolor2766">"</span></span>);<br class="fancyvrb"><a id="x32-145079r39"></a>39      <span id="textcolor2767">int</span> rc = fscanf(stdin, <span class="colorbox" id="colorbox2768"><span id="textcolor2769">"</span></span><span class="colorbox" id="colorbox2770"><span id="textcolor2771">%d</span></span><span class="colorbox" id="colorbox2772"><span id="textcolor2773">"</span></span>, &amp;you.age);
+<br class="fancyvrb"><a id="x32-145081r40"></a>40      check(rc &gt; <span id="textcolor2774">0</span>, <span class="colorbox" id="colorbox2775"><span id="textcolor2776">"</span></span><span class="colorbox" id="colorbox2777"><span id="textcolor2778">You have to enter a number.</span></span><span class="colorbox" id="colorbox2779"><span id="textcolor2780">"</span></span>);<br class="fancyvrb"><a id="x32-145083r41"></a>41  
+<br class="fancyvrb"><a id="x32-145085r42"></a>42      printf(<span class="colorbox" id="colorbox2781"><span id="textcolor2782">"</span></span><span class="colorbox" id="colorbox2783"><span id="textcolor2784">What color are your eyes:</span></span><span class="colorbox" id="colorbox2785"><span id="textcolor2786">\n</span></span><span class="colorbox" id="colorbox2787"><span id="textcolor2788">"</span></span>);<br class="fancyvrb"><a id="x32-145087r43"></a>43      <span id="textcolor2789">for</span>(i = <span id="textcolor2790">0</span>; i <a id="x32-145089r44"></a>44          printf(<span class="colorbox" id="colorbox2791"><span id="textcolor2792">"</span></span><span class="colorbox" id="colorbox2793"><span id="textcolor2794">%d) %s</span></span><span class="colorbox" id="colorbox2795"><span id="textcolor2796">\n</span></span><span class="colorbox" id="colorbox2797"><span id="textcolor2798">"</span></span>, i+<span id="textcolor2799">1</span>, EYE_COLOR_NAMES[i]);<br class="fancyvrb"><a id="x32-145091r45"></a>45      }
+<br class="fancyvrb"><a id="x32-145093r46"></a>46      printf(<span class="colorbox" id="colorbox2800"><span id="textcolor2801">"</span></span><span class="colorbox" id="colorbox2802"><span id="textcolor2803">&gt; </span></span><span class="colorbox" id="colorbox2804"><span id="textcolor2805">"</span></span>);<br class="fancyvrb"><a id="x32-145095r47"></a>47  <br class="fancyvrb"><a id="x32-145097r48"></a>48      <span id="textcolor2806">int</span> eyes = -<span id="textcolor2807">1</span>;<br class="fancyvrb"><a id="x32-145099r49"></a>49      rc = fscanf(stdin, <span class="colorbox" id="colorbox2808"><span id="textcolor2809">"</span></span><span class="colorbox" id="colorbox2810"><span id="textcolor2811">%d</span></span><span class="colorbox" id="colorbox2812"><span id="textcolor2813">"</span></span>, &amp;eyes);
+<br class="fancyvrb"><a id="x32-145101r50"></a>50      check(rc &gt; <span id="textcolor2814">0</span>, <span class="colorbox" id="colorbox2815"><span id="textcolor2816">"</span></span><span class="colorbox" id="colorbox2817"><span id="textcolor2818">You have to enter a number.</span></span><span class="colorbox" id="colorbox2819"><span id="textcolor2820">"</span></span>);<br class="fancyvrb"><a id="x32-145103r51"></a>51  <br class="fancyvrb"><a id="x32-145105r52"></a>52      you.eyes = eyes - <span id="textcolor2821">1</span>;
+<br class="fancyvrb"><a id="x32-145107r53"></a>53      check(you.eyes = <span id="textcolor2822">0</span>, <span class="colorbox" id="colorbox2823"><span id="textcolor2824">"</span></span><span class="colorbox" id="colorbox2825"><span id="textcolor2826">Do it right, that’s not an option.</span></span><span class="colorbox" id="colorbox2827"><span id="textcolor2828">"</span></span>);
+<br class="fancyvrb"><a id="x32-145109r54"></a>54  <br class="fancyvrb"><a id="x32-145111r55"></a>55      printf(<span class="colorbox" id="colorbox2829"><span id="textcolor2830">"</span></span><span class="colorbox" id="colorbox2831"><span id="textcolor2832">How much do you make an hour? </span></span><span class="colorbox" id="colorbox2833"><span id="textcolor2834">"</span></span>);
+<br class="fancyvrb"><a id="x32-145113r56"></a>56      rc = fscanf(stdin, <span class="colorbox" id="colorbox2835"><span id="textcolor2836">"</span></span><span class="colorbox" id="colorbox2837"><span id="textcolor2838">%f</span></span><span class="colorbox" id="colorbox2839"><span id="textcolor2840">"</span></span>, &amp;you.income);
+<br class="fancyvrb"><a id="x32-145115r57"></a>57      check(rc &gt; <span id="textcolor2841">0</span>, <span class="colorbox" id="colorbox2842"><span id="textcolor2843">"</span></span><span class="colorbox" id="colorbox2844"><span id="textcolor2845">Enter a floating point number.</span></span><span class="colorbox" id="colorbox2846"><span id="textcolor2847">"</span></span>);<br class="fancyvrb"><a id="x32-145117r58"></a>58  
+<br class="fancyvrb"><a id="x32-145119r59"></a>59      printf(<span class="colorbox" id="colorbox2848"><span id="textcolor2849">"</span></span><span class="colorbox" id="colorbox2850"><span id="textcolor2851">----- RESULTS -----</span></span><span class="colorbox" id="colorbox2852"><span id="textcolor2853">\n</span></span><span class="colorbox" id="colorbox2854"><span id="textcolor2855">"</span></span>);<br class="fancyvrb"><a id="x32-145121r60"></a>60  <br class="fancyvrb"><a id="x32-145123r61"></a>61      printf(<span class="colorbox" id="colorbox2856"><span id="textcolor2857">"</span></span><span class="colorbox" id="colorbox2858"><span id="textcolor2859">First Name: %s</span></span><span class="colorbox" id="colorbox2860"><span id="textcolor2861">"</span></span>, you.first_name);
+<br class="fancyvrb"><a id="x32-145125r62"></a>62      printf(<span class="colorbox" id="colorbox2862"><span id="textcolor2863">"</span></span><span class="colorbox" id="colorbox2864"><span id="textcolor2865">Last Name: %s</span></span><span class="colorbox" id="colorbox2866"><span id="textcolor2867">"</span></span>, you.last_name);<br class="fancyvrb"><a id="x32-145127r63"></a>63      printf(<span class="colorbox" id="colorbox2868"><span id="textcolor2869">"</span></span><span class="colorbox" id="colorbox2870"><span id="textcolor2871">Age: %d</span></span><span class="colorbox" id="colorbox2872"><span id="textcolor2873">\n</span></span><span class="colorbox" id="colorbox2874"><span id="textcolor2875">"</span></span>, you.age);
+<br class="fancyvrb"><a id="x32-145129r64"></a>64      printf(<span class="colorbox" id="colorbox2876"><span id="textcolor2877">"</span></span><span class="colorbox" id="colorbox2878"><span id="textcolor2879">Eyes: %s</span></span><span class="colorbox" id="colorbox2880"><span id="textcolor2881">\n</span></span><span class="colorbox" id="colorbox2882"><span id="textcolor2883">"</span></span>, EYE_COLOR_NAMES[you.eyes]);
+<br class="fancyvrb"><a id="x32-145131r65"></a>65      printf(<span class="colorbox" id="colorbox2884"><span id="textcolor2885">"</span></span><span class="colorbox" id="colorbox2886"><span id="textcolor2887">Income: %f</span></span><span class="colorbox" id="colorbox2888"><span id="textcolor2889">\n</span></span><span class="colorbox" id="colorbox2890"><span id="textcolor2891">"</span></span>, you.income);<br class="fancyvrb"><a id="x32-145133r66"></a>66  <br class="fancyvrb"><a id="x32-145135r67"></a>67      <span id="textcolor2892">return</span> <span id="textcolor2893">0</span>;<br class="fancyvrb"><a id="x32-145137r68"></a>68  <span id="textcolor2894">error:</span><br class="fancyvrb"><a id="x32-145139r69"></a>69  <br class="fancyvrb"><a id="x32-145141r70"></a>70      <span id="textcolor2895">return</span> -<span id="textcolor2896">1</span>;<br class="fancyvrb"><a id="x32-145143r71"></a>71  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 86--><p class="indent">    这个程序表面看似简单，其实不然。这里面用到了函数 fscanf，它是用来做文件扫描的。scanf 相关的一系列函数与 printf 相关的一系列函数起的作用正相反。
+printf 按着指定格式输出数据, scanf 按着指定格式读取数据（或者扫描输入数据）。
+<!--l. 90--></p><p class="indent">    文件的开头什么也没有，函数 main 做了如下一些事情：
+     </p><dl class="description"><dt class="description">
+ex24.c:24-28 </dt><dd class="description">创建一些必须的变量。
+     </dd><dt class="description">
+ex24.c:30-32 </dt><dd class="description">用 fgets 获取姓名中的名字,  从输入获取一个字符串(这里是从 stdin 获取字符串) 输入名字的时候不要太长，防止存储名字的缓冲区不够长导致内存溢出。
+     </dd><dt class="description">
+ex24.c:34-36 </dt><dd class="description">依然用 fgets 来获取 you.last_name。
+     </dd><dt class="description">
+ex24.c:38-39 </dt><dd class="description">用 fscanf 从 stdin 获取一个整数，并且将这个整数存储在变量 you.age. 可以看到用 printf 打印整数的时候使用了同样的格式表示符。为了让 fscanf 可以把输入的值存储在某个指针变量指定的位置上，
+     你必须把 address 的地址取出来作为指针变量的值。这个例子生动的展示了如何把一串数据的内存地址作为输出参数。
+     </dd><dt class="description">
+ex24.c:41-45 </dt><dd class="description">通过遍历枚举 EyeColor 的全部数值，输出眼睛的颜色所具有的所有可能性。
+     </dd><dt class="description">
+ex24.c:47-50 </dt><dd class="description">继续 fscanf，给 you.eyes 赋值，同时确保这个数值是有真实有效的。这很重要，因为有的人会输入一个不在 EYE_COLOR_NAMES 数组范围之内的数字，导致一个段错误。
+     </dd><dt class="description">
+ex24.c:52-53 </dt><dd class="description">知道你挣了多少 float 收入知道你的到了多少收入 you.income。
+                                                                  
+
+                                                                  
+     </dd><dt class="description">
+ex24.c:55-61 </dt><dd class="description">打印所有的东西来确认一下程序运行无误。注意我们用 EYE_COLOR_NAMES 来打印真正的 EyeColor 的内容。</dd></dl><h3 class="sectionHead"><span class="titlemark">27.1    </span> <a id="x32-14600027.1"></a>你将看到</h3>
+<!--l. 111--><p class="noindent">当运行这个程序的时候，会看到你的输入被正确的处理。可以试试给一些奇怪的输入来检查一下代码是不是能够很好的保护自己而不是出现奇怪问题。
+                                                                  
+
+                                                                  
+<!--l. 114--></p><p class="indent">    <a id="x32-146001r64"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 64: </span><span class="content">                                                                                                               ex24
+output</span></div><!--tex4ht:label?: x32-146001r64 -->
+<!--l. 115-->
+<div class="lstlisting" id="listing-41"><span class="label"><a id="x32-146002r1"></a>1</span>$ make ex24 <br><span class="label"><a id="x32-146003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex24.c   -o ex24 <br><span class="label"><a id="x32-146004r3"></a>3</span>$ ./ex24 <br><span class="label"><a id="x32-146005r4"></a>4</span>What’s your First Name? Zed <br><span class="label"><a id="x32-146006r5"></a>5</span>What’s your Last Name? Shaw <br><span class="label"><a id="x32-146007r6"></a>6</span>How old are you? 37 <br><span class="label"><a id="x32-146008r7"></a>7</span>What color are your eyes: <br><span class="label"><a id="x32-146009r8"></a>8</span>1) Blue <br><span class="label"><a id="x32-146010r9"></a>9</span>2) Green <br><span class="label"><a id="x32-146011r10"></a>10</span>3) Brown <br><span class="label"><a id="x32-146012r11"></a>11</span>4) Black <br><span class="label"><a id="x32-146013r12"></a>12</span>5) Other <br><span class="label"><a id="x32-146014r13"></a>13</span>&gt; 1 <br><span class="label"><a id="x32-146015r14"></a>14</span>How much do you make an hour? 1.2345 <br><span class="label"><a id="x32-146016r15"></a>15</span>----- RESULTS ----- <br><span class="label"><a id="x32-146017r16"></a>16</span>First Name: Zed <br><span class="label"><a id="x32-146018r17"></a>17</span>Last Name: Shaw <br><span class="label"><a id="x32-146019r18"></a>18</span>Age: 37 <br><span class="label"><a id="x32-146020r19"></a>19</span>Eyes: Blue <br><span class="label"><a id="x32-146021r20"></a>20</span>Income: 1.234500
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">27.2    </span> <a id="x32-14700027.2"></a>如何中断它</h3>
+<!--l. 143--><p class="noindent">到目前为止一切顺利，其实这个练习的主要目的是看 scanf 是怎么被输入搞垮的。.
+处理简单数字转换的时候还凑活，一旦处理字符串的时候就完全的垮掉了，因为很难在读取动作完成以前告诉 scanf 输入缓冲区有多大。函数 gets (不是 fgets, the non-f version) 也有同样的问题。这类函数完全无法知道输入的缓冲区有多大, 过大的缓冲区会搞垮程序。把那行代码从用 fgets 替换成 <span class="obeylines-h"><span class="verb">fscanf(stdin, "%50s", you.first_name)</span></span>然后再运行一次程序就能看到仅靠 fscanf 和字符串就能搞垮我们的程序。
+<!--l. 150--></p><p class="indent">    注意到程序似乎读取了太多内容而且好像你敲的回车似乎没工作了么？程序似乎没有按着你的期望方式工作，而且似乎还不如奇怪的由 scanf 引起的问题,仅仅是用 fgets 就可以。
+<!--l. 153--></p><p class="indent">    下一步，把 fgets 替换成 gets, 然后这样运行 valgrind ：
+<span class="obeylines-h"><span class="verb">valgrind ./ex24 </span>，这将把一些随机生成的垃圾丢给程序。这称作 Fuzzing 程序，这是一种有效的发现输入处理逻辑 bug 的方法。目前这种情况，是从/dev/urandom 获得随机数并且喂给程序处理，然后看着它崩溃掉。在某些操作系统上，你可能需要多试几次，或者把 MAX_DATA 的定义改的小一点来让程序崩溃。
+<!--l. 155--><p class="indent">    gets 确实非常差劲，以至于某些操作系统平台会在 program 运行 gets 的时候发出警告。你应该离这个函数越远越好，如果非要加个期限，我希望是一万年。最后，
+继续给 you.eyes 赋值并且把确保输入在合理范围内的代码删掉。然后输入一些有问题的数字比如－1, 或者 1000。在 Valgrind 里面再来一遍看看会发生什么。
+<!--l. 158--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">27.3    </span> <a id="x32-14800027.3"></a>I/O 函数</h3>
+<!--l. 160--><p class="noindent">你应该为如下的函数列表创建索引卡，在上面写上函数名字，作用，以及类似变种。
+<!--l. 162--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x32-148002x1">fscanf
+     </li>
+     <li class="enumerate" id="x32-148004x2">fgets
+     </li>
+     <li class="enumerate" id="x32-148006x3">fopen
+     </li>
+     <li class="enumerate" id="x32-148008x4">freopen
+     </li>
+     <li class="enumerate" id="x32-148010x5">fdopen
+     </li>
+     <li class="enumerate" id="x32-148012x6">fclose
+     </li>
+     <li class="enumerate" id="x32-148014x7">fcloseall
+     </li>
+     <li class="enumerate" id="x32-148016x8">fgetpos
+     </li>
+     <li class="enumerate" id="x32-148018x9">fseek
+     </li>
+     <li class="enumerate" id="x32-148020x10">ftell
+     </li>
+     <li class="enumerate" id="x32-148022x11">rewind
+     </li>
+     <li class="enumerate" id="x32-148024x12">fprintf
+     </li>
+     <li class="enumerate" id="x32-148026x13">fwrite
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x32-148028x14">fread</li></ol><!--l. 179--><p class="indent">    仔细浏览一遍这些函数，记住他们的区别和作用。比如有 fscanf 的卡片上，同样会有 scanf，sscanf，vscanf，卡片背面会有函数作用的说明。最后，可以用 man 读取卡片的相关信息。例如 <span class="obeylines-h"><span class="verb">man fscanf</span></span> 就可以得到 fscanf 的帮助信息。
+<!--l. 182--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">27.4    </span> <a id="x32-14900027.4"></a>额外小作业</h3>
+<!--l. 184--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x32-149002x1">不用 fscanf 完全重写一遍代码。你将会用到诸如 atoi 的函数来把输入的字符串转换成数字。
+     </li>
+     <li class="enumerate" id="x32-149004x2">把 fscanf 改成只用 scanf 看看有什么不同。
+     </li>
+     <li class="enumerate" id="x32-149006x3">把代码改成输入的名字会被回车以及任何空格截断的形式。
+     </li>
+     <li class="enumerate" id="x32-149008x4">Use scanf to write a function that reads a character at a time and files
+     in the names but doesn’t go past the end. Make this function generic so
+     it can take a size for the string, and make sure you end the string with
+     <span class="obeylines-h"><span class="verb">’\0’</span></span> no matter what.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych28.html">next</a>] [<a href="learn-c-the-hard-waych26.html">prev</a>] [<a href="learn-c-the-hard-waych26.html#taillearn-c-the-hard-waych26.html">prev-tail</a>] [<a href="learn-c-the-hard-waych27.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych27.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych27.html"></a>   
+</p></span></p></body></html>

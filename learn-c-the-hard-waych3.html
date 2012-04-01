@@ -1,0 +1,135 @@
+<html><head><title>习题2: ”Make”是你的Python了</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych4.html">next</a>] [<a href="learn-c-the-hard-waych2.html">prev</a>] [<a href="learn-c-the-hard-waych2.html#taillearn-c-the-hard-waych2.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych3.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych3.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 3</span><br><a id="x8-190003"></a>习题2: ”Make”是你的Python了</h2>
+<!--l. 3--><p class="noindent">在 <a href="http://learnpythonthehardway.org">Python</a> 中你只用键入 <span class="obeylines-h"><span class="verb">python</span></span> 和你希望运行的代码文件就能城启动脚本。
+Python 解释器(interpreter)会直接运行他们，并实时载入任何其他你可能需要的库(libraries)。C 相对来说是只完全不同的怪兽，在 C 中你需要编译(compile) 源文件并将它们拼凑成一个可以自己运行的二进制程序。这个过程若要手动完成的话那就是个悲剧。在上个习题中，你是通过直接运行 make 来实现的。
+<!--l. 5--></p><p class="indent">    在本章习题是一节 GUN make 的快速入门课，当然你也会在往后的 C 语言学习过程中继续学习如何使用它。在这本书剩下的章节中，Make 将担任你的”Python 解释器”。它将帮助你 build 代码、测试代码、完成各种准备工作，以及为你做所有 Python
+程序通常能做的事。
+<!--l. 7--></p><p class="indent">    当然 make 和 python 还是有区别的，后面我还会向你展示更加智能化的 Makefile
+魔法——生成程序时你将不需要指定每一条愚蠢的细节。这些内容不会出现在本章中，
+不过等你用了一段时间婴儿级别的 make 之后，大师级别的 make 就会闪亮登场了。
+    </p><h3 class="sectionHead"><span class="titlemark">3.1    </span> <a id="x8-200003.1"></a>使用Make</h3>
+<!--l. 12--><p class="noindent">有些程序 make 已经知道如何 build 了，使用 make 的第一阶段就是去 build 这样的程序。Make 已经拥有了数十年积累的丰富相关知识，用以将一些文件 build 出各种其他文件。在上一个练习里你已经使用了像这样的命令：
+                                                                  
+
+                                                                  
+<!--l. 14--></p><p class="indent">    <a id="x8-20001r7"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 7: </span><span class="content">                                                                               Build ex1，使用 -Wall 参数</span></div><!--tex4ht:label?: x8-20001r7 -->
+<!--l. 15-->
+<div class="lstlisting" id="listing-7"><span class="label"><a id="x8-20002r1"></a>1</span>$ make ex1 <br><span class="label"><a id="x8-20003r2"></a>2</span># or this one too <br><span class="label"><a id="x8-20004r3"></a>3</span>$ CFLAGS="-Wall" make ex1
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 22--><p class="indent">    在第一个命令里你在告诉 make，“我希望创建一个叫做 ex1 的文件”，然后 make
+就执行了以下任务：
+     </p><ol class="enumerate1"><li class="enumerate" id="x8-20006x1">ex1 这个文件是不是已经存在了？
+     </li>
+     <li class="enumerate" id="x8-20008x2">否。好吧，那么是否有另外一个文件以 ex1 开头呢?
+     </li>
+     <li class="enumerate" id="x8-20010x3">是，它叫 ex1.c。那么，我知道如何 build .c 的文件吗?
+     </li>
+     <li class="enumerate" id="x8-20012x4">是，我将运行 <span class="obeylines-h"><span class="verb">cc ex1.c   -o ex1</span></span> 来 build 它们。
+     </li>
+     <li class="enumerate" id="x8-20014x5">我将通过使用 cc 从 ex1.c 中 build ex1.</li></ol><!--l. 32--><p class="indent">    第二个命令是将修饰参数传递给 make 的一种方式。如果你不熟悉 Unix shell 是如何工作的，简单的解释就是你可以创建这些“环境变量(environment variable)”，而你的程序会在运行中获取这些变量。取决于你使用的 shell，有时你可以通过运行 <span class="obeylines-h"><span class="verb">export CFLAGS="-Wall"</span></span>这样的命令来创建环境变量。你也可以直接将它们放在你想要运行的命令之前，这样的话，变量将只在当前命令中生效。
+<!--l. 34--></p><p class="indent">    在这个例子中我使用了 <span class="obeylines-h"><span class="verb">CFLAGS="-Wall" make ex1</span></span>，结果就是 shell 将命令行选项 <span class="obeylines-h"><span class="verb">-Wall</span></span> 加到 make 会运行的 <span class="obeylines-h"><span class="verb">cc</span></span> 这个命令中。该命令行选项将让编译器(compiler)
+cc 报告所有警告信息。（由于命运的纠结，其实它不能报告出所有可能的警告信息。）
+<!--l. 36--></p><p class="indent">    事实上单单使用 make 你就已经可以做很多事情了，但还是让我们来看一看怎样写一个 Makefile，这会帮你更好的理解它。请创建一个文件并输入以下内容：
+                                                                  
+
+                                                                  
+<!--l. 38--></p><p class="indent">    <a id="x8-20015r8"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 8: </span><span class="content">                                                                                                        一个简单的 Makefile</span></div><!--tex4ht:label?: x8-20015r8 -->
+<!--l. 39-->
+<div class="lstlisting" id="listing-8"><span class="label"><a id="x8-20016r1"></a>1</span>CFLAGS=-Wall -g <br><span class="label"><a id="x8-20017r2"></a>2</span> <br><span class="label"><a id="x8-20018r3"></a>3</span>clean: <br><span class="label"><a id="x8-20019r4"></a>4</span>        rm -f ex1
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 49--><p class="indent">    把它命名为 Makefile 并保存到当前目录中。make 这个命令会自动假设当前目录存在一个叫做 Makefile 的文件，并且会直接运行它。同时，警告: 确保你只输入了制表符（TAB），而非制表符和空格的混合。
+<!--l. 51--></p><p class="indent">    这个 Makefile 将给你展现一些 make 的新玩意儿。首先我们在里边设定好 CFLAGS，这样我们就无需在别处再次设定了，同样，我们还添加了 <span class="obeylines-h"><span class="verb">-g</span></span> 这个实现调试功能的参数。然后我们使用了 clean 这一小节，它的作用是为你的小项目清理文件。
+<!--l. 53--></p><p class="indent">    先确保它在与文件 ex1.c 在相同路径下, 然后运行以下命令：
+                                                                  
+
+                                                                  
+<!--l. 55--></p><p class="indent">    <a id="x8-20023r9"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 9: </span><span class="content">                                                                                                        运行简单的 Makefile</span></div><!--tex4ht:label?: x8-20023r9 -->
+<!--l. 56-->
+<div class="lstlisting" id="listing-9"><span class="label"><a id="x8-20024r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-20025r2"></a>2</span>$ make ex1
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">3.2    </span> <a id="x8-210003.2"></a>你应该看到的结果</h3>
+<!--l. 65--><p class="noindent">如果一切正常你将可以看到：
+                                                                  
+
+                                                                  
+<!--l. 67--></p><p class="indent">    <a id="x8-21001r10"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 10: </span><span class="content">                                                                                   使用 Makefile 做完整的 build</span></div><!--tex4ht:label?: x8-21001r10 -->
+<!--l. 68-->
+<div class="lstlisting" id="listing-10"><span class="label"><a id="x8-21002r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-21003r2"></a>2</span>rm -f ex1 <br><span class="label"><a id="x8-21004r3"></a>3</span>$ make ex1 <br><span class="label"><a id="x8-21005r4"></a>4</span>cc -Wall -g    ex1.c   -o ex1 <br><span class="label"><a id="x8-21006r5"></a>5</span>ex1.c: In function ’main’: <br><span class="label"><a id="x8-21007r6"></a>6</span>ex1.c:3: warning: implicit declaration of function ’puts’ <br><span class="label"><a id="x8-21008r7"></a>7</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 80--><p class="indent">    这里你可以看到我通过运行 <span class="obeylines-h"><span class="verb">make clean</span></span> 来实现我们的目标 clean。现在再来看看 Makefile，你会发现我在文件中写入了想要 make 去帮我运行的 shell 命令。在这里你可以想放多少命令就放多少命令，所以它还是个不错的自动化工具。
+                                                                  
+
+                                                                  
+<!--l. 82--></p><p class="indent">    <a id="x8-21011r2"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Note 2: </span><span class="content">                                                                                           你修正 ex1.c 了吗？
+</span></div><!--tex4ht:label?: x8-21011r2 -->
+     <div class="quote">
+     <!--l. 83--><p class="indent"> 如果你为 ex1.c 添加了 <span class="obeylines-h"><span class="verb">#include <stdio.h></stdio.h></span></span>，那么你的输出应该不会有关于 puts 的警告信息（虽然它显示为警告信息 warning，
+     其实说它是个错误信息 error 更合适）。我得到了警告是因为我并没有修复它。</p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 86--><p class="indent">    同时还需要注意的是，尽管我们没有在 Makefile 中提到 ex1，make 依然知道如何去 build 它并使用了我们的特殊设定。
+    </p><h3 class="sectionHead"><span class="titlemark">3.3    </span> <a id="x8-220003.3"></a>让程序出错</h3>
+<!--l. 91--><p class="noindent">以上这些应该已经够你起步了，但我们还是将这个 make 文件用某种方式打乱一下，
+这样你可以进一步了解到底发生了什么。请选择 <span class="obeylines-h"><span class="verb">rm -f ex1</span></span> 这一行并取消缩进(将整行左移)，你将得到：
+                                                                  
+
+                                                                  
+<!--l. 93--></p><p class="indent">    <a id="x8-22001r11"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 11: </span><span class="content">                                                                                                 运行 make 出错</span></div><!--tex4ht:label?: x8-22001r11 -->
+<!--l. 94-->
+<div class="lstlisting" id="listing-11"><span class="label"><a id="x8-22002r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-22003r2"></a>2</span>Makefile:4: ⋆⋆⋆ missing separator.  Stop.
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 100--><p class="indent">    一定要记得缩进，如果你看到了类似的奇怪错误，那就要检查一下你在是不是统一使用了制表符。要知道有些类型的 make 的是非常挑剔的。
+    </p><h3 class="sectionHead"><span class="titlemark">3.4    </span> <a id="x8-230003.4"></a>加分习题</h3>
+<!--l. 105--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x8-23002x1">创建一个 <span class="obeylines-h"><span class="verb">all: ex1</span></span> 的目标，然后仅通过命令 <span class="obeylines-h"><span class="verb">make</span></span> 来 build 它。
+     </li>
+     <li class="enumerate" id="x8-23004x2">阅读 <span class="obeylines-h"><span class="verb">man make</span></span> 来获取更多的使用说明。
+     </li>
+     <li class="enumerate" id="x8-23006x3">阅读 <span class="obeylines-h"><span class="verb">man cc</span></span>，找出更多关于 <span class="obeylines-h"><span class="verb">-Wall</span></span> 和 <span class="obeylines-h"><span class="verb">-g</span></span> 这两个 flag 功能的说明.
+     </li>
+     <li class="enumerate" id="x8-23008x4">上网研究一下 Makefile，看看还能不能改进你写的 makefile。
+     </li>
+     <li class="enumerate" id="x8-23010x5">在其他 C 语言项目中找一个 Makefile 并尝试了解一下它的功能。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych4.html">next</a>] [<a href="learn-c-the-hard-waych2.html">prev</a>] [<a href="learn-c-the-hard-waych2.html#taillearn-c-the-hard-waych2.html">prev-tail</a>] [<a href="learn-c-the-hard-waych3.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych3.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych3.html"></a>   
+</p></body></html>

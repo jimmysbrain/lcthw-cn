@@ -1,0 +1,90 @@
+<html><head><title>Exercise 3: 格式化打印输出</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych5.html">next</a>] [<a href="learn-c-the-hard-waych3.html">prev</a>] [<a href="learn-c-the-hard-waych3.html#taillearn-c-the-hard-waych3.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych4.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych4.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 4</span><br><a id="x9-240004"></a>Exercise 3: 格式化打印输出</h2>
+<!--l. 3--><p class="noindent">请保留 Makefile 文件，因为它可以帮你找到错误，而且将来我们要把更多任务自动化时，我们还会往里面添加内容。
+<!--l. 5--></p><p class="indent">    许多编程语言使用 C 风格的格式化输出, 让我们来试一下吧:
+                                                                  
+
+                                                                  
+<!--l. 7--></p><p class="indent">    <a id="x9-24001r12"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 12: </span><span class="content">                                                                                                              ex3.c</span></div><!--tex4ht:label?: x9-24001r12 -->
+<div class="fancyvrb" id="fancyvrb2"><a id="x9-24003r1"></a>1  <span id="textcolor13">#</span><span id="textcolor14">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x9-24005r2"></a>2  <br class="fancyvrb"><a id="x9-24007r3"></a>3  <span id="textcolor15">int</span> <span id="textcolor16">main</span>()<br class="fancyvrb"><a id="x9-24009r4"></a>4  {<br class="fancyvrb"><a id="x9-24011r5"></a>5      <span id="textcolor17">int</span> age = <span id="textcolor18">10</span>;
+<br class="fancyvrb"><a id="x9-24013r6"></a>6      <span id="textcolor19">int</span> height = <span id="textcolor20">72</span>;<br class="fancyvrb"><a id="x9-24015r7"></a>7  <br class="fancyvrb"><a id="x9-24017r8"></a>8      printf(<span class="colorbox" id="colorbox21"><span id="textcolor22">"</span></span><span class="colorbox" id="colorbox23"><span id="textcolor24">I am %d years old.</span></span><span class="colorbox" id="colorbox25"><span id="textcolor26">\n</span></span><span class="colorbox" id="colorbox27"><span id="textcolor28">"</span></span>, age);
+<br class="fancyvrb"><a id="x9-24019r9"></a>9      printf(<span class="colorbox" id="colorbox29"><span id="textcolor30">"</span></span><span class="colorbox" id="colorbox31"><span id="textcolor32">I am %d inches tall.</span></span><span class="colorbox" id="colorbox33"><span id="textcolor34">\n</span></span><span class="colorbox" id="colorbox35"><span id="textcolor36">"</span></span>, height);<br class="fancyvrb"><a id="x9-24021r10"></a>10  <br class="fancyvrb"><a id="x9-24023r11"></a>11      <span id="textcolor37">return</span> <span id="textcolor38">0</span>;<br class="fancyvrb"><a id="x9-24025r12"></a>12  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 25--><p class="indent">    完成之后运行 make ex3 去 build 并运行它. 确保你解决了所有警告信息。
+<!--l. 28--></p><p class="indent">    这些练习里只有很少的代码，下面就来详解一下：
+     </p><ol class="enumerate1"><li class="enumerate" id="x9-24027x1">首先引入另一个叫做 stdio.h 的“头文件（header file）”。这样做就是告诉编译器你要使用”标准输入输出函数(standard  Input/Output
+     functions)”。printf 就是这些函数之一。
+     </li>
+     <li class="enumerate" id="x9-24029x2">接着你用一个叫做 age 的变量并且给它赋值为 10。
+     </li>
+     <li class="enumerate" id="x9-24031x3">下一步你给变量 height 赋值为 72。
+     </li>
+     <li class="enumerate" id="x9-24033x4">然后你用 printf 函数打印了这个星球上个子最高的 10 岁小孩的年龄和身高。
+     </li>
+     <li class="enumerate" id="x9-24035x5">在 printf 函数中你会注意到你传进了一个字符串，这个字符串和别的语言中的格式化字符串很像。
+     </li>
+     <li class="enumerate" id="x9-24037x6">在这个格式化字符串的后面，你放置了一些变量，这些变量是用以“取代”printf 中格式化字符串的。</li></ol><!--l. 39--><p class="indent">    这么做的结果就是你把几个变量交给 printf，然后它构造出一个新的字符串并且在终端中打印这个新的字符串。
+    </p><h3 class="sectionHead"><span class="titlemark">4.1    </span> <a id="x9-250004.1"></a>你应该看到的结果</h3>
+<!--l. 43--><p class="noindent">当你做完了整个 build，你会看到类似如下的结果：
+                                                                  
+
+                                                                  
+<!--l. 45--></p><p class="indent">    <a id="x9-25001r13"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 13: </span><span class="content">                                                                                                    Build 并运行 ex3.c</span></div><!--tex4ht:label?: x9-25001r13 -->
+<!--l. 46-->
+<div class="lstlisting" id="listing-12"><span class="label"><a id="x9-25002r1"></a>1</span>$ make ex3 <br><span class="label"><a id="x9-25003r2"></a>2</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-25004r3"></a>3</span>$ ./ex3 <br><span class="label"><a id="x9-25005r4"></a>4</span>I am 10 years old. <br><span class="label"><a id="x9-25006r5"></a>5</span>I am 72 inches tall. <br><span class="label"><a id="x9-25007r6"></a>6</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 57--><p class="indent">    很快我就不会再告诉你让你运行 make、查看 build 信息这些事情了，所以请确保你现在能把这些东西弄对，确保没有差错。
+    </p><h3 class="sectionHead"><span class="titlemark">4.2    </span> <a id="x9-260004.2"></a>使用外部资源做研究</h3>
+<!--l. 61--><p class="noindent">在每个练习的加分习题部分，我也许会让你亲自去查找一些信息并弄明白它们。要成为一名自食其力的程序员，这一点是很重要的。如果你老是自己不尝试解决就跑去别人那问问题，你就永远也学不会如何独立的解决问题。这就导致你永远树立不了技术方面的信心，而且你总需要有人在身旁才能做自己的工作。
+<!--l. 63--></p><p class="indent">    打破这种习惯的方法就是强制你自己先回答自己的问题，然后确认你是对的。寻找答案的方法可以是试验着让东西出错，用你认为可能的答案去做实验，以及自己学习专研。
+<!--l. 65--></p><p class="indent">    这个练习中我希望你能自己上网，找出所有 printf 的转义符和修饰符。转义符是 <span class="obeylines-h"><span class="verb">\n</span></span> 和 <span class="obeylines-h"><span class="verb">\t</span></span> 这类的，它们可以（分别）让你打印出一个空行和制表符. 修饰符是 <span class="obeylines-h"><span class="verb">%s</span></span>
+和 <span class="obeylines-h"><span class="verb">%d</span></span> 这类的，它们可以让你打印出一个字符串和一个整形数。找出所有可能的符号，
+学习它们的用法，以及你可以控制它们实现什么样的“精度”和显示宽度。
+<!--l. 68--></p><p class="indent">    从现在起，这样的任务就会出现在你的加分习题中，这些练习是你应该做的。
+<!--l. 70--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">4.3    </span> <a id="x9-270004.3"></a>让程序出错</h3>
+<!--l. 72--><p class="noindent">试试以下这些方法来让你的程序出错，也许这些方法会让程序崩溃，不过也不一定：
+<!--l. 74--></p><p class="indent">
+                                                                  
+
+                                                                  
+     </p><ol class="enumerate1"><li class="enumerate" id="x9-27002x1">在第一次调用 printf 时，删掉 age 变量然后重新编译。应该会收到几条警告信息。
+     </li>
+     <li class="enumerate" id="x9-27004x2">运行这个程序的话，你的程序可能会报错，或者输出一个相当不合理的年龄值。
+     </li>
+     <li class="enumerate" id="x9-27006x3">将 printf 改回原样，但不要给 age 变量赋值，取而代之的是将这行改为 int age;然后重新 build 并运行.</li></ol><!--l. 81--><p class="indent">    <a id="x9-27007r14"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 14: </span><span class="content">                                                                                                     让 ex3.c 出错</span></div><!--tex4ht:label?: x9-27007r14 -->
+<!--l. 82-->
+<div class="lstlisting" id="listing-13"><span class="label"><a id="x9-27008r1"></a>1</span># edit ex3.c to break printf <br><span class="label"><a id="x9-27009r2"></a>2</span>$ make ex3 <br><span class="label"><a id="x9-27010r3"></a>3</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-27011r4"></a>4</span>ex3.c: In function ’main’: <br><span class="label"><a id="x9-27012r5"></a>5</span>ex3.c:8: warning: too few arguments for format <br><span class="label"><a id="x9-27013r6"></a>6</span>ex3.c:5: warning: unused variable ’age’ <br><span class="label"><a id="x9-27014r7"></a>7</span>$ ./ex3 <br><span class="label"><a id="x9-27015r8"></a>8</span>I am -919092456 years old. <br><span class="label"><a id="x9-27016r9"></a>9</span>I am 72 inches tall. <br><span class="label"><a id="x9-27017r10"></a>10</span># edit ex3.c again to fix printf, but don’t init age <br><span class="label"><a id="x9-27018r11"></a>11</span>$ make ex3 <br><span class="label"><a id="x9-27019r12"></a>12</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-27020r13"></a>13</span>ex3.c: In function ’main’: <br><span class="label"><a id="x9-27021r14"></a>14</span>ex3.c:8: warning: ’age’ is used uninitialized in this function <br><span class="label"><a id="x9-27022r15"></a>15</span>$ ./ex3 <br><span class="label"><a id="x9-27023r16"></a>16</span>I am 0 years old. <br><span class="label"><a id="x9-27024r17"></a>17</span>I am 72 inches tall. <br><span class="label"><a id="x9-27025r18"></a>18</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">4.4    </span> <a id="x9-280004.4"></a>加分习题</h3>
+<!--l. 108--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x9-28002x1">尽你所能的用别的方法去修改 ex3.c 让它出错。
+     </li>
+     <li class="enumerate" id="x9-28004x2">运行 <span class="obeylines-h"><span class="verb">man 3 printf</span></span> 然后阅读其他带’%’ 的修饰符，如果你在别的语言中使用过字符串修饰符，这会看起来很熟悉(其他语言中的字符串修饰符就是从 printf 来的).
+     </li>
+     <li class="enumerate" id="x9-28006x3">把 ex3 加入到你的 Makefile 的 all 列表，使用这个 Makefile  运行 <span class="obeylines-h"><span class="verb">make clean all</span></span> 来重新 build 你做过的所有习题。
+     </li>
+     <li class="enumerate" id="x9-28008x4">把 ex3 这个文件也加到 Makefile 的 clean 列表中。现在使用 <span class="obeylines-h"><span class="verb">make clean</span></span> 将会把它也删除掉。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych5.html">next</a>] [<a href="learn-c-the-hard-waych3.html">prev</a>] [<a href="learn-c-the-hard-waych3.html#taillearn-c-the-hard-waych3.html">prev-tail</a>] [<a href="learn-c-the-hard-waych4.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych4.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych4.html"></a>   
+</p></body></html>

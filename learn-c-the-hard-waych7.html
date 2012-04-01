@@ -1,0 +1,97 @@
+<html><head><title>习题6: 变量类型</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych8.html">next</a>] [<a href="learn-c-the-hard-waych6.html">prev</a>] [<a href="learn-c-the-hard-waych6.html#taillearn-c-the-hard-waych6.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych7.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych7.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 7</span><br><a id="x12-380007"></a>习题6: 变量类型</h2>
+<!--l. 3--><p class="noindent">现在你应该对 C 语言的结构有了大概的了解，那么接下来我们再做些十分简单的事情，
+即输出不同类型的变量：
+                                                                  
+
+                                                                  
+<!--l. 5--></p><p class="indent">    <a id="x12-38001r20"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 20: </span><span class="content">                                                                                                              ex6.c</span></div><!--tex4ht:label?: x12-38001r20 -->
+<div class="fancyvrb" id="fancyvrb6"><a id="x12-38003r1"></a>1  <span id="textcolor93">#</span><span id="textcolor94">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x12-38005r2"></a>2  <br class="fancyvrb"><a id="x12-38007r3"></a>3  <span id="textcolor95">int</span> <span id="textcolor96">main</span>(<span id="textcolor97">int</span> argc, <span id="textcolor98">char</span> ⋆argv[])<br class="fancyvrb"><a id="x12-38009r4"></a>4  {<br class="fancyvrb"><a id="x12-38011r5"></a>5      <span id="textcolor99">int</span> distance = <span id="textcolor100">100</span>;
+<br class="fancyvrb"><a id="x12-38013r6"></a>6      <span id="textcolor101">float</span> power = <span id="textcolor102">2.345f</span>;<br class="fancyvrb"><a id="x12-38015r7"></a>7      <span id="textcolor103">double</span> super_power = <span id="textcolor104">56789.4532</span>;
+<br class="fancyvrb"><a id="x12-38017r8"></a>8      <span id="textcolor105">char</span> initial = <span class="colorbox" id="colorbox106"><span id="textcolor107">’A’</span></span>;<br class="fancyvrb"><a id="x12-38019r9"></a>9      <span id="textcolor108">char</span> first_name[] = <span class="colorbox" id="colorbox109"><span id="textcolor110">"</span></span><span class="colorbox" id="colorbox111"><span id="textcolor112">Zed</span></span><span class="colorbox" id="colorbox113"><span id="textcolor114">"</span></span>;
+<br class="fancyvrb"><a id="x12-38021r10"></a>10      <span id="textcolor115">char</span> last_name[] = <span class="colorbox" id="colorbox116"><span id="textcolor117">"</span></span><span class="colorbox" id="colorbox118"><span id="textcolor119">Shaw</span></span><span class="colorbox" id="colorbox120"><span id="textcolor121">"</span></span>;<br class="fancyvrb"><a id="x12-38023r11"></a>11  <br class="fancyvrb"><a id="x12-38025r12"></a>12      printf(<span class="colorbox" id="colorbox122"><span id="textcolor123">"</span></span><span class="colorbox" id="colorbox124"><span id="textcolor125">You are %d miles away.</span></span><span class="colorbox" id="colorbox126"><span id="textcolor127">\n</span></span><span class="colorbox" id="colorbox128"><span id="textcolor129">"</span></span>, distance);
+<br class="fancyvrb"><a id="x12-38027r13"></a>13      printf(<span class="colorbox" id="colorbox130"><span id="textcolor131">"</span></span><span class="colorbox" id="colorbox132"><span id="textcolor133">You have %f levels of power.</span></span><span class="colorbox" id="colorbox134"><span id="textcolor135">\n</span></span><span class="colorbox" id="colorbox136"><span id="textcolor137">"</span></span>, power);
+<br class="fancyvrb"><a id="x12-38029r14"></a>14      printf(<span class="colorbox" id="colorbox138"><span id="textcolor139">"</span></span><span class="colorbox" id="colorbox140"><span id="textcolor141">You have %f awesome super powers.</span></span><span class="colorbox" id="colorbox142"><span id="textcolor143">\n</span></span><span class="colorbox" id="colorbox144"><span id="textcolor145">"</span></span>, super_power);
+<br class="fancyvrb"><a id="x12-38031r15"></a>15      printf(<span class="colorbox" id="colorbox146"><span id="textcolor147">"</span></span><span class="colorbox" id="colorbox148"><span id="textcolor149">I have an initial %c.</span></span><span class="colorbox" id="colorbox150"><span id="textcolor151">\n</span></span><span class="colorbox" id="colorbox152"><span id="textcolor153">"</span></span>, initial);
+<br class="fancyvrb"><a id="x12-38033r16"></a>16      printf(<span class="colorbox" id="colorbox154"><span id="textcolor155">"</span></span><span class="colorbox" id="colorbox156"><span id="textcolor157">I have a first name %s.</span></span><span class="colorbox" id="colorbox158"><span id="textcolor159">\n</span></span><span class="colorbox" id="colorbox160"><span id="textcolor161">"</span></span>, first_name);
+<br class="fancyvrb"><a id="x12-38035r17"></a>17      printf(<span class="colorbox" id="colorbox162"><span id="textcolor163">"</span></span><span class="colorbox" id="colorbox164"><span id="textcolor165">I have a last name %s.</span></span><span class="colorbox" id="colorbox166"><span id="textcolor167">\n</span></span><span class="colorbox" id="colorbox168"><span id="textcolor169">"</span></span>, last_name);
+<br class="fancyvrb"><a id="x12-38037r18"></a>18      printf(<span class="colorbox" id="colorbox170"><span id="textcolor171">"</span></span><span class="colorbox" id="colorbox172"><span id="textcolor173">My whole name is %s %c. %s.</span></span><span class="colorbox" id="colorbox174"><span id="textcolor175">\n</span></span><span class="colorbox" id="colorbox176"><span id="textcolor177">"</span></span>,
+<br class="fancyvrb"><a id="x12-38039r19"></a>19              first_name, initial, last_name);<br class="fancyvrb"><a id="x12-38041r20"></a>20  <br class="fancyvrb"><a id="x12-38043r21"></a>21      <span id="textcolor178">return</span> <span id="textcolor179">0</span>;<br class="fancyvrb"><a id="x12-38045r22"></a>22  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 33--><p class="indent">    在这个程序中我们将：1. 声明不同类型的变量，并且 2. 使用不同的字符串格式(string format) printf 来打印输出它们。
+    </p><h3 class="sectionHead"><span class="titlemark">7.1    </span> <a id="x12-390007.1"></a>你应该看到的结果</h3>
+<!--l. 40--><p class="noindent">你的输出应该和我的一样，你也许也会发现这些 C 的字符串格式与 Python 和其他语言的字符串格式是多么的相似。其实它们已经存在很长时间了。
+                                                                  
+
+                                                                  
+<!--l. 42--></p><p class="indent">    <a id="x12-39001r21"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 21: </span><span class="content">                                                                                                        ex6 的输出</span></div><!--tex4ht:label?: x12-39001r21 -->
+<!--l. 43-->
+<div class="lstlisting" id="listing-16"><span class="label"><a id="x12-39002r1"></a>1</span>$ make ex6 <br><span class="label"><a id="x12-39003r2"></a>2</span>cc -Wall -g    ex6.c   -o ex6 <br><span class="label"><a id="x12-39004r3"></a>3</span>$ ./ex6 <br><span class="label"><a id="x12-39005r4"></a>4</span>You are 100 miles away. <br><span class="label"><a id="x12-39006r5"></a>5</span>You have 2.345000 levels of power. <br><span class="label"><a id="x12-39007r6"></a>6</span>You have 56789.453200 awesome super powers. <br><span class="label"><a id="x12-39008r7"></a>7</span>I have an initial A. <br><span class="label"><a id="x12-39009r8"></a>8</span>I have a first name Zed. <br><span class="label"><a id="x12-39010r9"></a>9</span>I have a last name Shaw. <br><span class="label"><a id="x12-39011r10"></a>10</span>My whole name is Zed A. Shaw. <br><span class="label"><a id="x12-39012r11"></a>11</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 59--><p class="indent">    你将看到一系列的“类型（types）”, 它们将告诉 C 编译器哪些变量应该被提出来，并格式化字符串以匹配不同类型。以下是它们匹配过程的细节：
+     </p><dl class="description"><dt class="description">
+整数型(Integer) </dt><dd class="description">使用 int 声明整数，用 <span class="obeylines-h"><span class="verb">%d</span></span> 打印输出。
+     </dd><dt class="description">
+浮点型(float) </dt><dd class="description">根据大小决定使用单精度浮点型(float)  或双精度浮点型(double) 声明浮点数(双精度型更大些)，用 <span class="obeylines-h"><span class="verb">%f</span></span> 打印输出。
+     </dd><dt class="description">
+字符型(char) </dt><dd class="description">使用 char 声明字符型，写法是用单引号 <span class="obeylines-h"><span class="verb">’</span></span>包围字符，用 <span class="obeylines-h"><span class="verb">%c</span></span> 打印输出。
+     </dd><dt class="description">
+字符串(string) </dt><dd class="description">使用 <span class="obeylines-h"><span class="verb">char name[]</span></span> 声明字符串型，写法是用双引号 <span class="obeylines-h"><span class="verb">"</span></span> 包围字符，用 <span class="obeylines-h"><span class="verb">%s</span></span> 打印输出。</dd></dl><!--l. 68--><p class="indent">    这里需要注意的是 C 语言非常注意区分单双引号。单引号是为字符 char 所准备的，而双引号则是为一堆字符，既字符串型，char[]所准备的。
+                                                                  
+
+                                                                  
+<!--l. 70--></p><p class="indent">    <a id="x12-39015r4"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Note 4: </span><span class="content">                                                                                         C 数据类型的英文缩写</span></div><!--tex4ht:label?: x12-39015r4 -->
+     <div class="quote">
+     <!--l. 71--><p class="indent"> 当我们谈论到 C 数据类型时，在英语中我将直接使用 char[] 来表示，而不会使用完整字符名 SOMENAME[]. 但事实上作为 C 代码这是不对的，缩写仅仅是书中一种表达数据类型的简便方式。</p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">7.2    </span> <a id="x12-400007.2"></a>让程序出错</h3>
+<!--l. 76--><p class="noindent">你可以通过给 printf 赋错误的值来搅坏这个程序。用那条打印我的名字的指令来打个比方，如果在参数中，把变量 initial 放在变量 first_name 的前面，bug 就来了。
+真这样运行的话，编译器会对你发飙，你没准会看到个“段故障（Segmentation
+fault）”，就像下面这样：
+                                                                  
+
+                                                                  
+<!--l. 79--></p><p class="indent">    <a id="x12-40001r22"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 22: </span><span class="content">                                                                                                ex6 的爆炸现场</span></div><!--tex4ht:label?: x12-40001r22 -->
+<!--l. 80-->
+<div class="lstlisting" id="listing-17"><span class="label"><a id="x12-40002r1"></a>1</span>$ make ex6 <br><span class="label"><a id="x12-40003r2"></a>2</span>cc -Wall -g    ex6.c   -o ex6 <br><span class="label"><a id="x12-40004r3"></a>3</span>ex6.c: In function ’main’: <br><span class="label"><a id="x12-40005r4"></a>4</span>ex6.c:19: warning: format ’%s’ expects type ’char ⋆’, but argument 2 has type ’int’ <br><span class="label"><a id="x12-40006r5"></a>5</span>ex6.c:19: warning: format ’%c’ expects type ’int’, but argument 3 has type ’char ⋆’ <br><span class="label"><a id="x12-40007r6"></a>6</span>$ ./ex6 <br><span class="label"><a id="x12-40008r7"></a>7</span>You are 100 miles away. <br><span class="label"><a id="x12-40009r8"></a>8</span>You have 2.345000 levels of power. <br><span class="label"><a id="x12-40010r9"></a>9</span>You have 56789.453125 awesome super powers. <br><span class="label"><a id="x12-40011r10"></a>10</span>I have an initial A. <br><span class="label"><a id="x12-40012r11"></a>11</span>I have a first name Zed. <br><span class="label"><a id="x12-40013r12"></a>12</span>I have a last name Shaw. <br><span class="label"><a id="x12-40014r13"></a>13</span>Segmentation fault <br><span class="label"><a id="x12-40015r14"></a>14</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 99--><p class="indent">    在 Valgrind 下再次运行，看看关于“Invalid read of size 1”的内容会告诉你些什么。
+    </p><h3 class="sectionHead"><span class="titlemark">7.3    </span> <a id="x12-410007.3"></a>加分习题</h3>
+<!--l. 104--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x12-41002x1">除了改变 printf 以外，再想想有没有别的办法可以弄坏这个代码，并找出修复它的方法。
+     </li>
+     <li class="enumerate" id="x12-41004x2">上网搜索”printf formats” ，找出并尝试一些稀有格式。
+     </li>
+     <li class="enumerate" id="x12-41006x3">探索一下有多少种方式可以写出数字。尝试以下几个，并找到更多：
+     octal, hexadecimal。
+     </li>
+     <li class="enumerate" id="x12-41008x4">尝试打印输出一个空字符串 <span class="obeylines-h"><span class="verb">""</span></span>.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych8.html">next</a>] [<a href="learn-c-the-hard-waych6.html">prev</a>] [<a href="learn-c-the-hard-waych6.html#taillearn-c-the-hard-waych6.html">prev-tail</a>] [<a href="learn-c-the-hard-waych7.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych7.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych7.html"></a>   
+</p></body></html>

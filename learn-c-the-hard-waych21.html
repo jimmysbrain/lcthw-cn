@@ -1,0 +1,323 @@
+<html><head><title>Exercise 20: Zed’s Awesome Debug Macros</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych22.html">next</a>] [<a href="learn-c-the-hard-waych20.html">prev</a>] [<a href="learn-c-the-hard-waych20.html#taillearn-c-the-hard-waych20.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych21.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych21.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 21</span><br><a id="x26-10500021"></a>Exercise 20: Zed’s Awesome Debug Macros</h2>
+<!--l. 3--><p class="noindent">There is a constant problem in C that you have been dancing around but which I am
+going to solve in this exercise using a set of macros I developed. You can thank me
+later when you realize how insanely awesome these macros are. Right now you
+won’t realize how awesome they are, so you’ll just have to use them and then you
+can walk up to me one day and say, ”Zed, those Debug Macros were the bomb. I owe
+you my first born child because you saved me a decade of heartache and
+prevented me from killing myself more than once. Thank you good sir, here’s a
+million dollars and the original Snakehead Telecaster prototype signed by Leo
+Fender.”
+<!--l. 13--></p><p class="indent">    Yes, they are that awesome.
+    </p><h3 class="sectionHead"><span class="titlemark">21.1    </span> <a id="x26-10600021.1"></a>The C Error Handling Problem</h3>
+<!--l. 17--><p class="noindent">In almost every programming language handling errors is a difficult activity. There’s
+entire programming languages that try as hard as they can to avoid even the concept
+of an error. Other languages invent complex control structures like exceptions to
+pass error conditions around. The problem exists mostly because programmers
+assume errors don’t happen and this optimism infects the type of languages they use
+and create.
+<!--l. 24--></p><p class="indent">    C tackles the problem by returning error codes and setting a global errno value
+that you check. This makes for complex code that simply exists to check if something
+you did had an error. As you write more and more C code you’ll write code with the
+pattern:
+<!--l. 29--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x26-106002x1">Call a function.
+     </li>
+     <li class="enumerate" id="x26-106004x2">If the return value is an error (must look that up each time too).
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x26-106006x3">Then cleanup all the resource created so far.
+     </li>
+     <li class="enumerate" id="x26-106008x4">and print out an error message that hopefully helps.</li></ol><!--l. 36--><p class="indent">    This means for every function call (and yes, every function) you are potentially
+writing 3-4 more lines just to make sure it worked. That doesn’t include the problem
+of cleaning up all of the junk you’ve built to that point. If you have 10 different
+structures, 3 files, and a database connection, when you get an error then you would
+have 14 more lines.
+<!--l. 43--></p><p class="indent">    In the past this wasn’t a problem because C programs did what you’ve been
+doing when there’s an error: die. No point in bothering with cleanup when the OS
+will do it for you. Today though many C programs need to run for weeks, months, or
+years and handle errors from many different sources gracefully. You can’t just
+have your webserver die at the slightest touch, and you definitely can’t
+have a library you’ve written nuke a the program its used in. That’s just
+rude.
+<!--l. 51--></p><p class="indent">    Other languages solve this problem with exceptions, but those have problems in
+C (and in other languages too). In C you only have one return value, but exceptions
+are an entire stack based return system with arbitrary values. Trying to marshal
+exceptions up the stack in C is difficult, and no other libraries will understand
+it.
+<!--l. 57--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">21.2    </span> <a id="x26-10700021.2"></a>The Debug Macros</h3>
+<!--l. 59--><p class="noindent">The solution I’ve been using for years is a small set of ”debug macros” that
+implement a basic debugging and error handling system for C. This system is easy to
+understand, works with every library, and makes C code more solid and
+clearer.
+<!--l. 64--></p><p class="indent">    It does this by adopting the convention that whenever there’s an error, your
+                                                                  
+
+                                                                  
+function will jump to an ”error:” part of the function that knows how to cleanup
+everything and return an error code. You use a macro called check to check return
+codes, print an error message, and then jump to the cleanup section. You
+combine that with a set of logging functions for printing out useful debug
+messages.
+<!--l. 71--></p><p class="indent">    I’ll now show you the entire contents of the most awesome set of brilliance
+you’ve ever seen:
+                                                                  
+
+                                                                  
+<!--l. 74--></p><p class="indent">    <a id="x26-107001r55"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 55: </span><span class="content">                                                                                                             dbg.h</span></div><!--tex4ht:label?: x26-107001r55 -->
+<div class="fancyvrb" id="fancyvrb28"><a id="x26-107003r1"></a>1  <span id="textcolor2058">#</span><span id="textcolor2059">ifndef __dbg_h__</span><br class="fancyvrb"><a id="x26-107005r2"></a>2  <span id="textcolor2060">#</span><span id="textcolor2061">define __dbg_h__</span><br class="fancyvrb"><a id="x26-107007r3"></a>3  <br class="fancyvrb"><a id="x26-107009r4"></a>4  <span id="textcolor2062">#</span><span id="textcolor2063">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x26-107011r5"></a>5  <span id="textcolor2064">#</span><span id="textcolor2065">include <errno.h></errno.h></span>
+<br class="fancyvrb"><a id="x26-107013r6"></a>6  <span id="textcolor2066">#</span><span id="textcolor2067">include <string.h></string.h></span><br class="fancyvrb"><a id="x26-107015r7"></a>7  <br class="fancyvrb"><a id="x26-107017r8"></a>8  <span id="textcolor2068">#</span><span id="textcolor2069">ifdef NDEBUG</span><br class="fancyvrb"><a id="x26-107019r9"></a>9  <span id="textcolor2070">#</span><span id="textcolor2071">define debug(M, ...)</span><br class="fancyvrb"><a id="x26-107021r10"></a>10  <span id="textcolor2072">#</span><span id="textcolor2073">else</span>
+<br class="fancyvrb"><a id="x26-107023r11"></a>11  <span id="textcolor2074">#</span><span id="textcolor2075">define debug(M, ...) fprintf(stderr, "DEBUG %s:%d: " M "\n", __FILE__, __LINE__, ##__VA_ARGS__)</span>
+<br class="fancyvrb"><a id="x26-107025r12"></a>12  <span id="textcolor2076">#</span><span id="textcolor2077">endif</span><br class="fancyvrb"><a id="x26-107027r13"></a>13  <br class="fancyvrb"><a id="x26-107029r14"></a>14  <span id="textcolor2078">#</span><span id="textcolor2079">define clean_errno() (errno == 0 ? "None" : strerror(errno))</span><br class="fancyvrb"><a id="x26-107031r15"></a>15  
+<br class="fancyvrb"><a id="x26-107033r16"></a>16  <span id="textcolor2080">#</span><span id="textcolor2081">define log_err(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)</span>
+<br class="fancyvrb"><a id="x26-107035r17"></a>17  
+<br class="fancyvrb"><a id="x26-107037r18"></a>18  <span id="textcolor2082">#</span><span id="textcolor2083">define log_warn(M, ...) fprintf(stderr, "[WARN] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)</span>
+<br class="fancyvrb"><a id="x26-107039r19"></a>19  
+<br class="fancyvrb"><a id="x26-107041r20"></a>20  <span id="textcolor2084">#</span><span id="textcolor2085">define log_info(M, ...) fprintf(stderr, "[INFO] (%s:%d) " M "\n", __FILE__, __LINE__, ##__VA_ARGS__)</span>
+<br class="fancyvrb"><a id="x26-107043r21"></a>21  <br class="fancyvrb"><a id="x26-107045r22"></a>22  <span id="textcolor2086">#</span><span id="textcolor2087">define check(A, M, ...) if(!(A)) { log_err(M, ##__VA_ARGS__); errno=0; goto error; }</span>
+<br class="fancyvrb"><a id="x26-107047r23"></a>23  <br class="fancyvrb"><a id="x26-107049r24"></a>24  <span id="textcolor2088">#</span><span id="textcolor2089">define sentinel(M, ...)  { log_err(M, ##__VA_ARGS__); errno=0; goto error; }</span>
+<br class="fancyvrb"><a id="x26-107051r25"></a>25  <br class="fancyvrb"><a id="x26-107053r26"></a>26  <span id="textcolor2090">#</span><span id="textcolor2091">define check_mem(A) check((A), "Out of memory.")</span><br class="fancyvrb"><a id="x26-107055r27"></a>27  
+<br class="fancyvrb"><a id="x26-107057r28"></a>28  <span id="textcolor2092">#</span><span id="textcolor2093">define check_debug(A, M, ...) if(!(A)) { debug(M, ##__VA_ARGS__); errno=0; goto error; }</span>
+<br class="fancyvrb"><a id="x26-107059r29"></a>29  <br class="fancyvrb"><a id="x26-107061r30"></a>30  <span id="textcolor2094">#</span><span id="textcolor2095">endif</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 110--><p class="indent">    Yes, that’s it, and here’s what every line does:
+     </p><dl class="description"><dt class="description">
+dbg.h:1-2 </dt><dd class="description">The  usual  defense  against  accidentally  including  the  file  twice,
+     which you saw in the last exercise.
+     </dd><dt class="description">
+dbg.h:4-6 </dt><dd class="description">Includes for the functions that these macros need.
+     </dd><dt class="description">
+dbg.h:8 </dt><dd class="description">The start of a #ifdef which lets you recompile your program so that
+     all the debug log messages are removed.
+     </dd><dt class="description">
+dbg.h:9 </dt><dd class="description">If you compile with NDEBUG defined, then ”no debug” messages will
+     remain. You can see in this case the #define debug() is just replaced
+     with nothing (the right side is empty).
+     </dd><dt class="description">
+dbg.h:10 </dt><dd class="description">The matching #else for the above #ifdef.
+     </dd><dt class="description">
+dbg.h:11 </dt><dd class="description">The   alternative   #define debug that   translates   any   use   of
+     <span class="obeylines-h"><span class="verb">debug("format", arg1, arg2)</span></span> into  an  fprintf call  to  stderr.
+     Many  C  programmers  don’t  know,  but  you  can  create  macros  that
+     actually   work   like   printf and   take   variable   arguments.   Some   C
+     compilers (actually cpp) don’t support this, but the ones that matter do.
+     The magic here is the use of <span class="obeylines-h"><span class="verb">##__VA_ARGS__</span></span> which says ”put whatever
+     they had for extra arguments (...) here”. Also notice the use of __FILE__
+     and __LINE__ to get the current file:line for the debug message. Very
+     helpful.
+     </dd><dt class="description">
+dbg.h:12 </dt><dd class="description">The end of the #ifdef.
+     </dd><dt class="description">
+dbg.h:14 </dt><dd class="description">The  clean_errno macro  that’s  used  in  the  others  to  get  a  safe
+     readable  version  of  errno.  That  strange  syntax  in  the  middle  is  a
+                                                                  
+
+                                                                  
+     ”ternary operator” and you’ll learn what it does later.
+     </dd><dt class="description">
+dbg.h:16-20 </dt><dd class="description">The  log_err,  log_warn,  and  log_info,  macros  for  logging
+     messages meant for the end user. Works like debug but can’t be compiled
+     out.
+     </dd><dt class="description">
+dbg.h:22 </dt><dd class="description">The best macro ever, check will make sure the condition A is true,
+     and if not logs the error M (with variable arguments for log_err), then
+     jumps to the function’s error: for cleanup.
+     </dd><dt class="description">
+dbg.h:24 </dt><dd class="description">The  2nd  best  macro  ever,  sentinel is  placed  in  any  part  of  a
+     function  that  shouldn’t  run,  and  if  it  does  prints  an  error  message
+     then jumps to the error: label. You put this in if-statements and
+     switch-statements to  catch  conditions  that  shouldn’t  happen,  like
+     the default:.
+     </dd><dt class="description">
+dbg.h:26 </dt><dd class="description">A short-hand macro check_mem that makes sure a pointer is valid,
+     and if it isn’t reports it as an error with ”Out of memory.”
+     </dd><dt class="description">
+dbg.h:28 </dt><dd class="description">An alternative macro check_debug that still checks and handles an
+     error, but if the error is common then you don’t want to bother reporting
+     it. In this one it will use debug instead of log_err to report the message,
+     so when you define NDEBUG the check still happens, the error jump goes
+     off, but the message isn’t printed.</dd></dl><h3 class="sectionHead"><span class="titlemark">21.3    </span> <a id="x26-10800021.3"></a>Using dbg.h</h3>
+<!--l. 159--><p class="noindent">Here’s an example of using all of dbg.h in a small program. This doesn’t actually do
+anything but demonstrate how to use each macro, but we’ll be using these macros in
+all of the programs we write from now on, so be sure to understand how to use
+them.
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!--l. 164--></p><p class="indent">    <a id="x26-108001r56"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 56: </span><span class="content">                                                                                                            ex20.c</span></div><!--tex4ht:label?: x26-108001r56 -->
+<div class="fancyvrb" id="fancyvrb29"><a id="x26-108003r1"></a>1  <span id="textcolor2096">#</span><span id="textcolor2097">include "dbg.h"</span><br class="fancyvrb"><a id="x26-108005r2"></a>2  <span id="textcolor2098">#</span><span id="textcolor2099">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x26-108007r3"></a>3  <span id="textcolor2100">#</span><span id="textcolor2101">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x26-108009r4"></a>4  <br class="fancyvrb"><a id="x26-108011r5"></a>5  <br class="fancyvrb"><a id="x26-108013r6"></a>6  <span id="textcolor2102">void</span> <span id="textcolor2103">test_debug</span>()
+<br class="fancyvrb"><a id="x26-108015r7"></a>7  {<br class="fancyvrb"><a id="x26-108017r8"></a>8      <span id="textcolor2104">// notice you don’t need the \n</span><br class="fancyvrb"><a id="x26-108019r9"></a>9      debug(<span class="colorbox" id="colorbox2105"><span id="textcolor2106">"</span></span><span class="colorbox" id="colorbox2107"><span id="textcolor2108">I have Brown Hair.</span></span><span class="colorbox" id="colorbox2109"><span id="textcolor2110">"</span></span>);<br class="fancyvrb"><a id="x26-108021r10"></a>10  
+<br class="fancyvrb"><a id="x26-108023r11"></a>11      <span id="textcolor2111">// passing in arguments like printf</span><br class="fancyvrb"><a id="x26-108025r12"></a>12      debug(<span class="colorbox" id="colorbox2112"><span id="textcolor2113">"</span></span><span class="colorbox" id="colorbox2114"><span id="textcolor2115">I am %d years old.</span></span><span class="colorbox" id="colorbox2116"><span id="textcolor2117">"</span></span>, <span id="textcolor2118">37</span>);
+<br class="fancyvrb"><a id="x26-108027r13"></a>13  }<br class="fancyvrb"><a id="x26-108029r14"></a>14  <br class="fancyvrb"><a id="x26-108031r15"></a>15  <span id="textcolor2119">void</span> <span id="textcolor2120">test_log_err</span>()<br class="fancyvrb"><a id="x26-108033r16"></a>16  {<br class="fancyvrb"><a id="x26-108035r17"></a>17      log_err(<span class="colorbox" id="colorbox2121"><span id="textcolor2122">"</span></span><span class="colorbox" id="colorbox2123"><span id="textcolor2124">I believe everything is broken.</span></span><span class="colorbox" id="colorbox2125"><span id="textcolor2126">"</span></span>);
+<br class="fancyvrb"><a id="x26-108037r18"></a>18      log_err(<span class="colorbox" id="colorbox2127"><span id="textcolor2128">"</span></span><span class="colorbox" id="colorbox2129"><span id="textcolor2130">There are %d problems in %s.</span></span><span class="colorbox" id="colorbox2131"><span id="textcolor2132">"</span></span>, <span id="textcolor2133">0</span>, <span class="colorbox" id="colorbox2134"><span id="textcolor2135">"</span></span><span class="colorbox" id="colorbox2136"><span id="textcolor2137">space</span></span><span class="colorbox" id="colorbox2138"><span id="textcolor2139">"</span></span>);<br class="fancyvrb"><a id="x26-108039r19"></a>19  }<br class="fancyvrb"><a id="x26-108041r20"></a>20  
+<br class="fancyvrb"><a id="x26-108043r21"></a>21  <span id="textcolor2140">void</span> <span id="textcolor2141">test_log_warn</span>()<br class="fancyvrb"><a id="x26-108045r22"></a>22  {<br class="fancyvrb"><a id="x26-108047r23"></a>23      log_warn(<span class="colorbox" id="colorbox2142"><span id="textcolor2143">"</span></span><span class="colorbox" id="colorbox2144"><span id="textcolor2145">You can safely ignore this.</span></span><span class="colorbox" id="colorbox2146"><span id="textcolor2147">"</span></span>);
+<br class="fancyvrb"><a id="x26-108049r24"></a>24      log_warn(<span class="colorbox" id="colorbox2148"><span id="textcolor2149">"</span></span><span class="colorbox" id="colorbox2150"><span id="textcolor2151">Maybe consider looking at: %s.</span></span><span class="colorbox" id="colorbox2152"><span id="textcolor2153">"</span></span>, <span class="colorbox" id="colorbox2154"><span id="textcolor2155">"</span></span><span class="colorbox" id="colorbox2156"><span id="textcolor2157">/etc/passwd</span></span><span class="colorbox" id="colorbox2158"><span id="textcolor2159">"</span></span>);<br class="fancyvrb"><a id="x26-108051r25"></a>25  }<br class="fancyvrb"><a id="x26-108053r26"></a>26  
+<br class="fancyvrb"><a id="x26-108055r27"></a>27  <span id="textcolor2160">void</span> <span id="textcolor2161">test_log_info</span>()<br class="fancyvrb"><a id="x26-108057r28"></a>28  {<br class="fancyvrb"><a id="x26-108059r29"></a>29      log_info(<span class="colorbox" id="colorbox2162"><span id="textcolor2163">"</span></span><span class="colorbox" id="colorbox2164"><span id="textcolor2165">Well I did something mundane.</span></span><span class="colorbox" id="colorbox2166"><span id="textcolor2167">"</span></span>);
+<br class="fancyvrb"><a id="x26-108061r30"></a>30      log_info(<span class="colorbox" id="colorbox2168"><span id="textcolor2169">"</span></span><span class="colorbox" id="colorbox2170"><span id="textcolor2171">It happened %f times today.</span></span><span class="colorbox" id="colorbox2172"><span id="textcolor2173">"</span></span>, <span id="textcolor2174">1.3f</span>);<br class="fancyvrb"><a id="x26-108063r31"></a>31  }<br class="fancyvrb"><a id="x26-108065r32"></a>32  
+<br class="fancyvrb"><a id="x26-108067r33"></a>33  <span id="textcolor2175">int</span> <span id="textcolor2176">test_check</span>(<span id="textcolor2177">char</span> ⋆file_name)<br class="fancyvrb"><a id="x26-108069r34"></a>34  {<br class="fancyvrb"><a id="x26-108071r35"></a>35      <span id="textcolor2178">FILE</span> ⋆input = <span id="textcolor2179">NULL</span>;
+<br class="fancyvrb"><a id="x26-108073r36"></a>36      <span id="textcolor2180">char</span> ⋆block = <span id="textcolor2181">NULL</span>;<br class="fancyvrb"><a id="x26-108075r37"></a>37  <br class="fancyvrb"><a id="x26-108077r38"></a>38      block = malloc(<span id="textcolor2182">100</span>);
+<br class="fancyvrb"><a id="x26-108079r39"></a>39      check_mem(block); <span id="textcolor2183">// should work</span><br class="fancyvrb"><a id="x26-108081r40"></a>40  <br class="fancyvrb"><a id="x26-108083r41"></a>41      input = fopen(file_name,<span class="colorbox" id="colorbox2184"><span id="textcolor2185">"</span></span><span class="colorbox" id="colorbox2186"><span id="textcolor2187">r</span></span><span class="colorbox" id="colorbox2188"><span id="textcolor2189">"</span></span>);
+<br class="fancyvrb"><a id="x26-108085r42"></a>42      check(input, <span class="colorbox" id="colorbox2190"><span id="textcolor2191">"</span></span><span class="colorbox" id="colorbox2192"><span id="textcolor2193">Failed to open %s.</span></span><span class="colorbox" id="colorbox2194"><span id="textcolor2195">"</span></span>, file_name);<br class="fancyvrb"><a id="x26-108087r43"></a>43  <br class="fancyvrb"><a id="x26-108089r44"></a>44      free(block);
+<br class="fancyvrb"><a id="x26-108091r45"></a>45      fclose(input);<br class="fancyvrb"><a id="x26-108093r46"></a>46      <span id="textcolor2196">return</span> <span id="textcolor2197">0</span>;<br class="fancyvrb"><a id="x26-108095r47"></a>47  <br class="fancyvrb"><a id="x26-108097r48"></a>48  <span id="textcolor2198">error:</span><br class="fancyvrb"><a id="x26-108099r49"></a>49      <span id="textcolor2199">if</span>(block) free(block);
+<br class="fancyvrb"><a id="x26-108101r50"></a>50      <span id="textcolor2200">if</span>(input) fclose(input);<br class="fancyvrb"><a id="x26-108103r51"></a>51      <span id="textcolor2201">return</span> -<span id="textcolor2202">1</span>;<br class="fancyvrb"><a id="x26-108105r52"></a>52  }<br class="fancyvrb"><a id="x26-108107r53"></a>53  <br class="fancyvrb"><a id="x26-108109r54"></a>54  <span id="textcolor2203">int</span> <span id="textcolor2204">test_sentinel</span>(<span id="textcolor2205">int</span> code)
+<br class="fancyvrb"><a id="x26-108111r55"></a>55  {<br class="fancyvrb"><a id="x26-108113r56"></a>56      <span id="textcolor2206">char</span> ⋆temp = malloc(<span id="textcolor2207">100</span>);<br class="fancyvrb"><a id="x26-108115r57"></a>57      check_mem(temp);<br class="fancyvrb"><a id="x26-108117r58"></a>58  <br class="fancyvrb"><a id="x26-108119r59"></a>59      <span id="textcolor2208">switch</span>(code) {
+<br class="fancyvrb"><a id="x26-108121r60"></a>60          <span id="textcolor2209">case</span> <span id="textcolor2210">1</span>:<br class="fancyvrb"><a id="x26-108123r61"></a>61              log_info(<span class="colorbox" id="colorbox2211"><span id="textcolor2212">"</span></span><span class="colorbox" id="colorbox2213"><span id="textcolor2214">It worked.</span></span><span class="colorbox" id="colorbox2215"><span id="textcolor2216">"</span></span>);<br class="fancyvrb"><a id="x26-108125r62"></a>62              <span id="textcolor2217">break</span>;
+<br class="fancyvrb"><a id="x26-108127r63"></a>63          <span id="textcolor2218">default:</span><br class="fancyvrb"><a id="x26-108129r64"></a>64              sentinel(<span class="colorbox" id="colorbox2219"><span id="textcolor2220">"</span></span><span class="colorbox" id="colorbox2221"><span id="textcolor2222">I shouldn’t run.</span></span><span class="colorbox" id="colorbox2223"><span id="textcolor2224">"</span></span>);<br class="fancyvrb"><a id="x26-108131r65"></a>65      }<br class="fancyvrb"><a id="x26-108133r66"></a>66  
+<br class="fancyvrb"><a id="x26-108135r67"></a>67      free(temp);<br class="fancyvrb"><a id="x26-108137r68"></a>68      <span id="textcolor2225">return</span> <span id="textcolor2226">0</span>;<br class="fancyvrb"><a id="x26-108139r69"></a>69  <br class="fancyvrb"><a id="x26-108141r70"></a>70  <span id="textcolor2227">error:</span><br class="fancyvrb"><a id="x26-108143r71"></a>71      <span id="textcolor2228">if</span>(temp) free(temp);<br class="fancyvrb"><a id="x26-108145r72"></a>72      <span id="textcolor2229">return</span> -<span id="textcolor2230">1</span>;
+<br class="fancyvrb"><a id="x26-108147r73"></a>73  }<br class="fancyvrb"><a id="x26-108149r74"></a>74  <br class="fancyvrb"><a id="x26-108151r75"></a>75  <span id="textcolor2231">int</span> <span id="textcolor2232">test_check_mem</span>()<br class="fancyvrb"><a id="x26-108153r76"></a>76  {<br class="fancyvrb"><a id="x26-108155r77"></a>77      <span id="textcolor2233">char</span> ⋆test = <span id="textcolor2234">NULL</span>;<br class="fancyvrb"><a id="x26-108157r78"></a>78      check_mem(test);<br class="fancyvrb"><a id="x26-108159r79"></a>79  
+<br class="fancyvrb"><a id="x26-108161r80"></a>80      free(test);<br class="fancyvrb"><a id="x26-108163r81"></a>81      <span id="textcolor2235">return</span> <span id="textcolor2236">1</span>;<br class="fancyvrb"><a id="x26-108165r82"></a>82  <br class="fancyvrb"><a id="x26-108167r83"></a>83  <span id="textcolor2237">error:</span><br class="fancyvrb"><a id="x26-108169r84"></a>84      <span id="textcolor2238">return</span> -<span id="textcolor2239">1</span>;<br class="fancyvrb"><a id="x26-108171r85"></a>85  }<br class="fancyvrb"><a id="x26-108173r86"></a>86  <br class="fancyvrb"><a id="x26-108175r87"></a>87  <span id="textcolor2240">int</span> <span id="textcolor2241">test_check_debug</span>()
+<br class="fancyvrb"><a id="x26-108177r88"></a>88  {<br class="fancyvrb"><a id="x26-108179r89"></a>89      <span id="textcolor2242">int</span> i = <span id="textcolor2243">0</span>;<br class="fancyvrb"><a id="x26-108181r90"></a>90      check_debug(i != <span id="textcolor2244">0</span>, <span class="colorbox" id="colorbox2245"><span id="textcolor2246">"</span></span><span class="colorbox" id="colorbox2247"><span id="textcolor2248">Oops, I was 0.</span></span><span class="colorbox" id="colorbox2249"><span id="textcolor2250">"</span></span>);<br class="fancyvrb"><a id="x26-108183r91"></a>91  
+<br class="fancyvrb"><a id="x26-108185r92"></a>92      <span id="textcolor2251">return</span> <span id="textcolor2252">0</span>;<br class="fancyvrb"><a id="x26-108187r93"></a>93  <span id="textcolor2253">error:</span><br class="fancyvrb"><a id="x26-108189r94"></a>94      <span id="textcolor2254">return</span> -<span id="textcolor2255">1</span>;<br class="fancyvrb"><a id="x26-108191r95"></a>95  }<br class="fancyvrb"><a id="x26-108193r96"></a>96  <br class="fancyvrb"><a id="x26-108195r97"></a>97  <span id="textcolor2256">int</span> <span id="textcolor2257">main</span>(<span id="textcolor2258">int</span> argc, <span id="textcolor2259">char</span> ⋆argv[])
+<br class="fancyvrb"><a id="x26-108197r98"></a>98  {<br class="fancyvrb"><a id="x26-108199r99"></a>99      check(argc == <span id="textcolor2260">2</span>, <span class="colorbox" id="colorbox2261"><span id="textcolor2262">"</span></span><span class="colorbox" id="colorbox2263"><span id="textcolor2264">Need an argument.</span></span><span class="colorbox" id="colorbox2265"><span id="textcolor2266">"</span></span>);<br class="fancyvrb"><a id="x26-108201r100"></a>100  <br class="fancyvrb"><a id="x26-108203r101"></a>101      test_debug();
+<br class="fancyvrb"><a id="x26-108205r102"></a>102      test_log_err();<br class="fancyvrb"><a id="x26-108207r103"></a>103      test_log_warn();<br class="fancyvrb"><a id="x26-108209r104"></a>104      test_log_info();<br class="fancyvrb"><a id="x26-108211r105"></a>105  
+<br class="fancyvrb"><a id="x26-108213r106"></a>106      check(test_check(<span class="colorbox" id="colorbox2267"><span id="textcolor2268">"</span></span><span class="colorbox" id="colorbox2269"><span id="textcolor2270">ex20.c</span></span><span class="colorbox" id="colorbox2271"><span id="textcolor2272">"</span></span>) == <span id="textcolor2273">0</span>, <span class="colorbox" id="colorbox2274"><span id="textcolor2275">"</span></span><span class="colorbox" id="colorbox2276"><span id="textcolor2277">failed with ex20.c</span></span><span class="colorbox" id="colorbox2278"><span id="textcolor2279">"</span></span>);
+<br class="fancyvrb"><a id="x26-108215r107"></a>107      check(test_check(argv[<span id="textcolor2280">1</span>]) == -<span id="textcolor2281">1</span>, <span class="colorbox" id="colorbox2282"><span id="textcolor2283">"</span></span><span class="colorbox" id="colorbox2284"><span id="textcolor2285">failed with argv</span></span><span class="colorbox" id="colorbox2286"><span id="textcolor2287">"</span></span>);
+<br class="fancyvrb"><a id="x26-108217r108"></a>108      check(test_sentinel(<span id="textcolor2288">1</span>) == <span id="textcolor2289">0</span>, <span class="colorbox" id="colorbox2290"><span id="textcolor2291">"</span></span><span class="colorbox" id="colorbox2292"><span id="textcolor2293">test_sentinel failed.</span></span><span class="colorbox" id="colorbox2294"><span id="textcolor2295">"</span></span>);
+<br class="fancyvrb"><a id="x26-108219r109"></a>109      check(test_sentinel(<span id="textcolor2296">100</span>) == -<span id="textcolor2297">1</span>, <span class="colorbox" id="colorbox2298"><span id="textcolor2299">"</span></span><span class="colorbox" id="colorbox2300"><span id="textcolor2301">test_sentinel failed.</span></span><span class="colorbox" id="colorbox2302"><span id="textcolor2303">"</span></span>);
+<br class="fancyvrb"><a id="x26-108221r110"></a>110      check(test_check_mem() == -<span id="textcolor2304">1</span>, <span class="colorbox" id="colorbox2305"><span id="textcolor2306">"</span></span><span class="colorbox" id="colorbox2307"><span id="textcolor2308">test_check_mem failed.</span></span><span class="colorbox" id="colorbox2309"><span id="textcolor2310">"</span></span>);
+<br class="fancyvrb"><a id="x26-108223r111"></a>111      check(test_check_debug() == -<span id="textcolor2311">1</span>, <span class="colorbox" id="colorbox2312"><span id="textcolor2313">"</span></span><span class="colorbox" id="colorbox2314"><span id="textcolor2315">test_check_debug failed.</span></span><span class="colorbox" id="colorbox2316"><span id="textcolor2317">"</span></span>);<br class="fancyvrb"><a id="x26-108225r112"></a>112  
+<br class="fancyvrb"><a id="x26-108227r113"></a>113      <span id="textcolor2318">return</span> <span id="textcolor2319">0</span>;<br class="fancyvrb"><a id="x26-108229r114"></a>114  <br class="fancyvrb"><a id="x26-108231r115"></a>115  <span id="textcolor2320">error:</span><br class="fancyvrb"><a id="x26-108233r116"></a>116      <span id="textcolor2321">return</span> <span id="textcolor2322">1</span>;<br class="fancyvrb"><a id="x26-108235r117"></a>117  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 287--><p class="indent">    Pay attention to how check is used, and how when it is false it will jump to
+the error: label to do a cleanup. The way to read those lines is, ”check that A is
+true and if not say M and jump out.”
+    </p><h3 class="sectionHead"><span class="titlemark">21.4    </span> <a id="x26-10900021.4"></a>What You Should See</h3>
+<!--l. 294--><p class="noindent">When you run this, give it some bogus first parameter and you should see
+this:
+                                                                  
+
+                                                                  
+<!--l. 297--></p><p class="indent">    <a id="x26-109001r57"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 57: </span><span class="content">                                                                                                               ex20
+output</span></div><!--tex4ht:label?: x26-109001r57 -->
+<!--l. 298-->
+<div class="lstlisting" id="listing-34"><span class="label"><a id="x26-109002r1"></a>1</span>$ make ex20 <br><span class="label"><a id="x26-109003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex20.c   -o ex20 <br><span class="label"><a id="x26-109004r3"></a>3</span>$ ./ex20 test <br><span class="label"><a id="x26-109005r4"></a>4</span>[ERROR] (ex20.c:16: errno: None) I believe everything is broken. <br><span class="label"><a id="x26-109006r5"></a>5</span>[ERROR] (ex20.c:17: errno: None) There are 0 problems in space. <br><span class="label"><a id="x26-109007r6"></a>6</span>[WARN] (ex20.c:22: errno: None) You can safely ignore this. <br><span class="label"><a id="x26-109008r7"></a>7</span>[WARN] (ex20.c:23: errno: None) Maybe consider looking at: /etc/passwd. <br><span class="label"><a id="x26-109009r8"></a>8</span>[INFO] (ex20.c:28) Well I did something mundane. <br><span class="label"><a id="x26-109010r9"></a>9</span>[INFO] (ex20.c:29) It happened 1.300000 times today. <br><span class="label"><a id="x26-109011r10"></a>10</span>[ERROR] (ex20.c:38: errno: No such file or directory) Failed to open test. <br><span class="label"><a id="x26-109012r11"></a>11</span>[INFO] (ex20.c:57) It worked. <br><span class="label"><a id="x26-109013r12"></a>12</span>[ERROR] (ex20.c:60: errno: None) I shouldn’t run. <br><span class="label"><a id="x26-109014r13"></a>13</span>[ERROR] (ex20.c:74: errno: None) Out of memory.
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 317--><p class="indent">    See how it reports the exact line number where the check failed? That’s
+going to save you hours of debugging later. See also how it prints the error
+message for you when errno is set? Again, that will save you hours of
+debugging.
+    </p><h3 class="sectionHead"><span class="titlemark">21.5    </span> <a id="x26-11000021.5"></a>How The CPP Expands Macros</h3>
+<!--l. 324--><p class="noindent">It’s now time for you to get a small introduction to the CPP so that you know how
+these macros actually work. To do this, I’m going to break down the most complex
+macro from dbg.h and have you run cpp so you can see what it’s actually
+doing.
+<!--l. 329--></p><p class="indent">    Imagine I have a function called dosomething() that return the typical 0 for
+success and -1 for an error. Every time I call dosomething I have to check for this
+error code, so I’d write code like this:
+    <!--l. 333-->
+</p><div class="lstlisting" id="listing-35"><span class="label"><a id="x26-110001r1"></a>1</span>int rc = dosomething(); <br><span class="label"><a id="x26-110002r2"></a>2</span>if(rc != 0) { <br><span class="label"><a id="x26-110003r3"></a>3</span>    fprintf(stderr, "There was an error: %s\n", strerror()); <br><span class="label"><a id="x26-110004r4"></a>4</span>    goto error; <br><span class="label"><a id="x26-110005r5"></a>5</span>}
+    </div>
+<!--l. 341--><p class="indent">    What I want to use the CPP for is to encapsulate this if-statement I have to
+use all the time into a more readable and memorable line of code. I want what
+you’ve been doing in dbg.h with the check macro:
+    <!--l. 345-->
+</p><div class="lstlisting" id="listing-36"><span class="label"><a id="x26-110006r1"></a>1</span>int rc = dosomething(); <br><span class="label"><a id="x26-110007r2"></a>2</span>check(rc == 0, "There was an error.");
+    </div>
+<!--l. 350--><p class="indent">    This is much clearer and explains exactly what’s going on: check that the
+function worked, and if not report an error. To do this, we need some special CPP
+                                                                  
+
+                                                                  
+”tricks” that make the CPP useful as a code generation tool. Take a look at the check
+and log_err macros again:
+    <!--l. 355-->
+</p><div class="lstlisting" id="listing-37"><span class="label"><a id="x26-110008r1"></a>1</span>#define log_err(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__) <br><span class="label"><a id="x26-110009r2"></a>2</span>#define check(A, M, ...) if(!(A)) { log_err(M, ##__VA_ARGS__); errno=0; goto error; }
+    </div>
+<!--l. 360--><p class="indent">    The first macro, log_err is simpler and simply replace itself with a call to
+fprintf to stderr. The only tricky part of this macro is the use of <span class="obeylines-h"><span class="verb">...</span></span> in the
+definition <span class="obeylines-h"><span class="verb">log_err(M, ...)</span></span>. What this does is let you pass variable arguments to
+the macro, so you can pass in the arguments that should go to fprintf. How do
+they get injected into the fprintf call? Look at the end to the <span class="obeylines-h"><span class="verb">##__VA_ARGS__</span></span>
+and that’s telling the CPP to take the args entered where the <span class="obeylines-h"><span class="verb">...</span></span> is, and
+inject them at that part of the fprintf call. You can then do things like
+this:
+<!--l. 370--></p><p class="indent">    <span class="obeylines-h"><span class="verb">log_err("Age: %d, name: %s", age, name);</span></span>
+<!--l. 372--></p><p class="indent">    The arguments <span class="obeylines-h"><span class="verb">age, name</span></span> are the <span class="obeylines-h"><span class="verb">...</span></span> part of the definition, and those get
+injected into the fprintf output to become:
+    <!--l. 375-->
+</p><div class="lstlisting" id="listing-38"><span class="label"><a id="x26-110010r1"></a>1</span>fprintf(stderr, "[ERROR] (%s:%d: errno: %s) Age %d: name %d\n", <br><span class="label"><a id="x26-110011r2"></a>2</span>    __FILE__, __LINE__, clean_errno(), age, name);
+    </div>
+<!--l. 380--><p class="indent">    See the <span class="obeylines-h"><span class="verb">age, name</span></span> at the end? That’s how <span class="obeylines-h"><span class="verb">...</span></span> and <span class="obeylines-h"><span class="verb">##__VA_ARGS__</span></span> work
+together, and it will work in macros that call other variable argument macros. Look
+at the check macro now and see it calls log_err, but check is also using the <span class="obeylines-h"><span class="verb">...</span></span>
+and <span class="obeylines-h"><span class="verb">##__VA_ARGS__</span></span> to do the call. That’s how you can pass full printf style
+format strings to check, which go to log_err, and then make both work like
+printf.
+<!--l. 388--></p><p class="indent">    Next thing to study is how check crafts the if-statement for the error
+checking. If we strip out the log_err usage we see this:
+                                                                  
+
+                                                                  
+<!--l. 391--></p><p class="indent">    <span class="obeylines-h"><span class="verb">if(!(A)) { errno=0; goto error; }</span></span>
+<!--l. 393--></p><p class="indent">    Which means, if A is false, then clear errno and goto the error label. That has
+check macro being replaced with the if-statment so if we manually
+expanded out the macro <span class="obeylines-h"><span class="verb">check(rc == 0, "There was an error.")</span></span> we’d
+get:
+    <!--l. 398-->
+</p><div class="lstlisting" id="listing-39"><span class="label"><a id="x26-110012r1"></a>1</span>if(!(rc == 0) { <br><span class="label"><a id="x26-110013r2"></a>2</span>    log_err("There was an error."); <br><span class="label"><a id="x26-110014r3"></a>3</span>    errno=0; <br><span class="label"><a id="x26-110015r4"></a>4</span>    goto error; <br><span class="label"><a id="x26-110016r5"></a>5</span>}
+    </div>
+<!--l. 406--><p class="indent">    What you should be getting from this trip through these two macros is that the
+CPP replaces macros with the expanded version of their definition, but that it will do
+this recursively, expanding all the macros in macros. The CPP then is just a recursive
+templating system, as I mentioned before. Its power comes from its ability to
+generate whole blocks of parameterized code thus becoming a handy code
+generation tool.
+<!--l. 413--></p><p class="indent">    That leaves one question: Why not just use a function like die? The
+reason is you want file:line numbers and the goto operation for an error
+handling exit. If you did this inside a function, you wouldn’t get a line number
+for where the error actually happened, and the goto would be much more
+complicated.
+<!--l. 419--></p><p class="indent">    Another reason is you still have to write the raw if-statement, which looks
+like all the other if-statements in your code, so it’s not as clear that this one is an
+error check. By wrapping the if-statement in a macro called check
+you make it clear that this is just error checking, and not part of the main
+flow.
+<!--l. 425--></p><p class="indent">    Finally, CPP has the ability to conditionally compile portions of code, so you can
+have code that’s only present when you build a developer or debug version of the
+program. You can see this already in the dbg.h file where the debug macro has a
+body only if it’s asked for by the compiler. Without this ability, you’d need a wasted
+if-statement that checks for ”debug mode”, and then still wastes CPU doing that
+check for no value.
+                                                                  
+
+                                                                  
+<!--l. 434--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">21.6    </span> <a id="x26-11100021.6"></a>Extra Credit</h3>
+<!--l. 436--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x26-111002x1">Put <span class="obeylines-h"><span class="verb">#define NDEBUG</span></span> at the top of the file and check that all the debug
+     messages go away.
+     </li>
+     <li class="enumerate" id="x26-111004x2">Undo  that  line,  and  add  <span class="obeylines-h"><span class="verb">-DNDEBUG</span></span> to  CFLAGS at  the  top  of  the
+     Makefile then recompile to see the same thing.
+     </li>
+     <li class="enumerate" id="x26-111006x3">Modify the logging so that it include the function name as well as the
+     file:line.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych22.html">next</a>] [<a href="learn-c-the-hard-waych20.html">prev</a>] [<a href="learn-c-the-hard-waych20.html#taillearn-c-the-hard-waych20.html">prev-tail</a>] [<a href="learn-c-the-hard-waych21.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych21.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych21.html"></a>   
+</p></body></html>

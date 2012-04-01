@@ -1,0 +1,107 @@
+<html><head><title>习题8: 数组和大小</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych10.html">next</a>] [<a href="learn-c-the-hard-waych8.html">prev</a>] [<a href="learn-c-the-hard-waych8.html#taillearn-c-the-hard-waych8.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych9.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych9.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 9</span><br><a id="x14-460009"></a>习题8: 数组和大小</h2>
+<!--l. 3--><p class="noindent">上一个习题中你做了些数学运算，不过你在运算中使用了 <span class="obeylines-h"><span class="verb">’\0’</span></span> (null) 字符。如果你学过其他的语言，这对你来说就会有些奇怪，因为其他的语言会将字符串(string)和字节数组(byte array)当作不同的怪兽来对待，然而 C 语言则将字符串直接当字节数组对待，而只有那些实现打印功能的 C 函数才知道它们是不同的。
+<!--l. 5--></p><p class="indent">    明白 C 语言将字符串和字节数组等同对待是很重要的，而在解释这一点之前，有几个概念一定要讲清楚：sizeof 和数组。以下是我们即将探讨的代码：
+                                                                  
+
+                                                                  
+<!--l. 7--></p><p class="indent">    <a id="x14-46001r25"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 25: </span><span class="content">                                                                                                              ex8.c</span></div><!--tex4ht:label?: x14-46001r25 -->
+<div class="fancyvrb" id="fancyvrb8"><a id="x14-46003r1"></a>1  <span id="textcolor244">#</span><span id="textcolor245">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x14-46005r2"></a>2  <br class="fancyvrb"><a id="x14-46007r3"></a>3  <span id="textcolor246">int</span> <span id="textcolor247">main</span>(<span id="textcolor248">int</span> argc, <span id="textcolor249">char</span> ⋆argv[])<br class="fancyvrb"><a id="x14-46009r4"></a>4  {
+<br class="fancyvrb"><a id="x14-46011r5"></a>5      <span id="textcolor250">int</span> areas[] = {<span id="textcolor251">10</span>, <span id="textcolor252">12</span>, <span id="textcolor253">13</span>, <span id="textcolor254">14</span>, <span id="textcolor255">20</span>};<br class="fancyvrb"><a id="x14-46013r6"></a>6      <span id="textcolor256">char</span> name[] = <span class="colorbox" id="colorbox257"><span id="textcolor258">"</span></span><span class="colorbox" id="colorbox259"><span id="textcolor260">Zed</span></span><span class="colorbox" id="colorbox261"><span id="textcolor262">"</span></span>;
+<br class="fancyvrb"><a id="x14-46015r7"></a>7      <span id="textcolor263">char</span> full_name[] = {<br class="fancyvrb"><a id="x14-46017r8"></a>8          <span class="colorbox" id="colorbox264"><span id="textcolor265">’Z’</span></span>, <span class="colorbox" id="colorbox266"><span id="textcolor267">’e’</span></span>, <span class="colorbox" id="colorbox268"><span id="textcolor269">’d’</span></span>,
+<br class="fancyvrb"><a id="x14-46019r9"></a>9           <span class="colorbox" id="colorbox270"><span id="textcolor271">’ ’</span></span>, <span class="colorbox" id="colorbox272"><span id="textcolor273">’A’</span></span>, <span class="colorbox" id="colorbox274"><span id="textcolor275">’.’</span></span>, <span class="colorbox" id="colorbox276"><span id="textcolor277">’ ’</span></span>,<br class="fancyvrb"><a id="x14-46021r10"></a>10           <span class="colorbox" id="colorbox278"><span id="textcolor279">’S’</span></span>, <span class="colorbox" id="colorbox280"><span id="textcolor281">’h’</span></span>, <span class="colorbox" id="colorbox282"><span id="textcolor283">’a’</span></span>, <span class="colorbox" id="colorbox284"><span id="textcolor285">’w’</span></span>, <span class="colorbox" id="colorbox286"><span id="textcolor287">’\0’</span></span>
+<br class="fancyvrb"><a id="x14-46023r11"></a>11      };<br class="fancyvrb"><a id="x14-46025r12"></a>12  <br class="fancyvrb"><a id="x14-46027r13"></a>13      <span id="textcolor288">// WARNING: On some systems you may have to change the</span>
+<br class="fancyvrb"><a id="x14-46029r14"></a>14      <span id="textcolor289">// %ld in this code to a %u since it will use unsigned ints</span>
+<br class="fancyvrb"><a id="x14-46031r15"></a>15      printf(<span class="colorbox" id="colorbox290"><span id="textcolor291">"</span></span><span class="colorbox" id="colorbox292"><span id="textcolor293">The size of an int: %ld</span></span><span class="colorbox" id="colorbox294"><span id="textcolor295">\n</span></span><span class="colorbox" id="colorbox296"><span id="textcolor297">"</span></span>, <span id="textcolor298">sizeof</span>(<span id="textcolor299">int</span>));
+<br class="fancyvrb"><a id="x14-46033r16"></a>16      printf(<span class="colorbox" id="colorbox300"><span id="textcolor301">"</span></span><span class="colorbox" id="colorbox302"><span id="textcolor303">The size of areas (int[]): %ld</span></span><span class="colorbox" id="colorbox304"><span id="textcolor305">\n</span></span><span class="colorbox" id="colorbox306"><span id="textcolor307">"</span></span>,<br class="fancyvrb"><a id="x14-46035r17"></a>17              <span id="textcolor308">sizeof</span>(areas));
+<br class="fancyvrb"><a id="x14-46037r18"></a>18      printf(<span class="colorbox" id="colorbox309"><span id="textcolor310">"</span></span><span class="colorbox" id="colorbox311"><span id="textcolor312">The number of ints in areas: %ld</span></span><span class="colorbox" id="colorbox313"><span id="textcolor314">\n</span></span><span class="colorbox" id="colorbox315"><span id="textcolor316">"</span></span>,
+<br class="fancyvrb"><a id="x14-46039r19"></a>19              <span id="textcolor317">sizeof</span>(areas) / <span id="textcolor318">sizeof</span>(<span id="textcolor319">int</span>));
+<br class="fancyvrb"><a id="x14-46041r20"></a>20      printf(<span class="colorbox" id="colorbox320"><span id="textcolor321">"</span></span><span class="colorbox" id="colorbox322"><span id="textcolor323">The first area is %d, the 2nd %d.</span></span><span class="colorbox" id="colorbox324"><span id="textcolor325">\n</span></span><span class="colorbox" id="colorbox326"><span id="textcolor327">"</span></span>,<br class="fancyvrb"><a id="x14-46043r21"></a>21              areas[<span id="textcolor328">0</span>], areas[<span id="textcolor329">1</span>]);
+<br class="fancyvrb"><a id="x14-46045r22"></a>22  <br class="fancyvrb"><a id="x14-46047r23"></a>23      printf(<span class="colorbox" id="colorbox330"><span id="textcolor331">"</span></span><span class="colorbox" id="colorbox332"><span id="textcolor333">The size of a char: %ld</span></span><span class="colorbox" id="colorbox334"><span id="textcolor335">\n</span></span><span class="colorbox" id="colorbox336"><span id="textcolor337">"</span></span>, <span id="textcolor338">sizeof</span>(<span id="textcolor339">char</span>));
+<br class="fancyvrb"><a id="x14-46049r24"></a>24      printf(<span class="colorbox" id="colorbox340"><span id="textcolor341">"</span></span><span class="colorbox" id="colorbox342"><span id="textcolor343">The size of name (char[]): %ld</span></span><span class="colorbox" id="colorbox344"><span id="textcolor345">\n</span></span><span class="colorbox" id="colorbox346"><span id="textcolor347">"</span></span>,<br class="fancyvrb"><a id="x14-46051r25"></a>25              <span id="textcolor348">sizeof</span>(name));
+<br class="fancyvrb"><a id="x14-46053r26"></a>26      printf(<span class="colorbox" id="colorbox349"><span id="textcolor350">"</span></span><span class="colorbox" id="colorbox351"><span id="textcolor352">The number of chars: %ld</span></span><span class="colorbox" id="colorbox353"><span id="textcolor354">\n</span></span><span class="colorbox" id="colorbox355"><span id="textcolor356">"</span></span>,<br class="fancyvrb"><a id="x14-46055r27"></a>27              <span id="textcolor357">sizeof</span>(name) / <span id="textcolor358">sizeof</span>(<span id="textcolor359">char</span>));
+<br class="fancyvrb"><a id="x14-46057r28"></a>28  <br class="fancyvrb"><a id="x14-46059r29"></a>29      printf(<span class="colorbox" id="colorbox360"><span id="textcolor361">"</span></span><span class="colorbox" id="colorbox362"><span id="textcolor363">The size of full_name (char[]): %ld</span></span><span class="colorbox" id="colorbox364"><span id="textcolor365">\n</span></span><span class="colorbox" id="colorbox366"><span id="textcolor367">"</span></span>,
+<br class="fancyvrb"><a id="x14-46061r30"></a>30              <span id="textcolor368">sizeof</span>(full_name));<br class="fancyvrb"><a id="x14-46063r31"></a>31      printf(<span class="colorbox" id="colorbox369"><span id="textcolor370">"</span></span><span class="colorbox" id="colorbox371"><span id="textcolor372">The number of chars: %ld</span></span><span class="colorbox" id="colorbox373"><span id="textcolor374">\n</span></span><span class="colorbox" id="colorbox375"><span id="textcolor376">"</span></span>,
+<br class="fancyvrb"><a id="x14-46065r32"></a>32              <span id="textcolor377">sizeof</span>(full_name) / <span id="textcolor378">sizeof</span>(<span id="textcolor379">char</span>));<br class="fancyvrb"><a id="x14-46067r33"></a>33  
+<br class="fancyvrb"><a id="x14-46069r34"></a>34      printf(<span class="colorbox" id="colorbox380"><span id="textcolor381">"</span></span><span class="colorbox" id="colorbox382"><span id="textcolor383">name=</span></span><span class="colorbox" id="colorbox384"><span id="textcolor385">\"</span></span><span class="colorbox" id="colorbox386"><span id="textcolor387">%s</span></span><span class="colorbox" id="colorbox388"><span id="textcolor389">\"</span></span><span class="colorbox" id="colorbox390"><span id="textcolor391"> and full_name=</span></span><span class="colorbox" id="colorbox392"><span id="textcolor393">\"</span></span><span class="colorbox" id="colorbox394"><span id="textcolor395">%s</span></span><span class="colorbox" id="colorbox396"><span id="textcolor397">\"</span></span><span class="colorbox" id="colorbox398"><span id="textcolor399">\n</span></span><span class="colorbox" id="colorbox400"><span id="textcolor401">"</span></span>,
+<br class="fancyvrb"><a id="x14-46071r35"></a>35              name, full_name);<br class="fancyvrb"><a id="x14-46073r36"></a>36  <br class="fancyvrb"><a id="x14-46075r37"></a>37      <span id="textcolor402">return</span> <span id="textcolor403">0</span>;<br class="fancyvrb"><a id="x14-46077r38"></a>38  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 51--><p class="indent">    在这段代码中我们创建了一些包含不同数据类型的数组。由于数组是 C 语言工作原理的核心，我们可以用很多种不同的方法来创建数组。这里将就用 <span class="obeylines-h"><span class="verb">type name[] = {initializer};</span></span>这种格式了，往后我们还会碰到更多的方式。这个语法的意思就是：“我需要一个初始化为..类型的数组”，当 C 接收到这个指令时，将会：
+     </p><ol class="enumerate1"><li class="enumerate" id="x14-46079x1">检查数据类型，这里我们看到的是 int。
+     </li>
+     <li class="enumerate" id="x14-46081x2">检查 <span class="obeylines-h"><span class="verb">[]</span></span>，发现长度值没有给出。
+     </li>
+     <li class="enumerate" id="x14-46083x3">检查初始值：发现 <span class="obeylines-h"><span class="verb">{10, 12, 13, 14, 20}</span></span>，于是知道了你要将这 5 个整数放入数组。
+     </li>
+     <li class="enumerate" id="x14-46085x4">在本机创建出一篇内存区域，用以顺次保存这五个整数。
+     </li>
+     <li class="enumerate" id="x14-46087x5">把上面创建的内存位置赋给 areas 这个名字。</li></ol><!--l. 62--><p class="indent">    也就是说，areas 这一行的作用就是创建了容纳这 5 个整数的数组。而到了 <span class="obeylines-h"><span class="verb">char name[] = "Zed";</span></span>这一行，它实现的事情也是一样的，只不过它创建了另一个有三个字符的数组并赋值到 name。我们创建出来的最终数组是 full_name，但逐字符的拼写方式却很恼人。对于 C 语言来说，name 和 full_name 都是创建字符数组的方式。
+<!--l. 64--></p><p class="indent">    接下来我们将使用一个叫做 sizeof 的关键字来询问东西的大小(以 bytes 为单位)。
+C 语言就是一门关于内存大小，内存位置，以及如何处理内存区块的语言。更简单一点说，C 语言提供了 sizeof，就是为了让你在用到某样东西之前，可以问到这个东西的大小。
+<!--l. 66--></p><p class="indent">    这里可能会让人有些头晕，所以我们先运行下面这段代码再来解释。
+    </p><h3 class="sectionHead"><span class="titlemark">9.1    </span> <a id="x14-470009.1"></a>你应该看到的结果</h3>
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+<!--l. 70--><p class="indent">    <a id="x14-47001r26"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 26: </span><span class="content">                                                                                                        ex8 的输出</span></div><!--tex4ht:label?: x14-47001r26 -->
+<!--l. 71-->
+<div class="lstlisting" id="listing-19"><span class="label"><a id="x14-47002r1"></a>1</span>$ make ex8 <br><span class="label"><a id="x14-47003r2"></a>2</span>cc -Wall -g    ex8.c   -o ex8 <br><span class="label"><a id="x14-47004r3"></a>3</span>$ ./ex8 <br><span class="label"><a id="x14-47005r4"></a>4</span>The size of an int: 4 <br><span class="label"><a id="x14-47006r5"></a>5</span>The size of areas (int[]): 20 <br><span class="label"><a id="x14-47007r6"></a>6</span>The number of ints in areas: 5 <br><span class="label"><a id="x14-47008r7"></a>7</span>The first area is 10, the 2nd 12. <br><span class="label"><a id="x14-47009r8"></a>8</span>The size of a char: 1 <br><span class="label"><a id="x14-47010r9"></a>9</span>The size of name (char[]): 4 <br><span class="label"><a id="x14-47011r10"></a>10</span>The number of chars: 4 <br><span class="label"><a id="x14-47012r11"></a>11</span>The size of full_name (char[]): 12 <br><span class="label"><a id="x14-47013r12"></a>12</span>The number of chars: 12 <br><span class="label"><a id="x14-47014r13"></a>13</span>name="Zed" and full_name="Zed A. Shaw" <br><span class="label"><a id="x14-47015r14"></a>14</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 90--><p class="noindent">现在你看到了不同的 printf 指令的输出，也大致看到了 C 是如何工作的了。由于你的电脑的整型大小可能不一样，你的输出有可能跟我的会完全不同，我就拿输出来讲讲吧：
+     </p><dl class="description"><dt class="description">
+5 </dt><dd class="description">我的电脑认为 int 的大小是 4 个字节. 电脑系统有 32-bit 和 64-bit 之分，所以你的电脑可能会使用一个不同的整形大小。。
+     </dd><dt class="description">
+6 </dt><dd class="description">数组 areas 里有 5 个整数，我的电脑就合情合理地用了 20 个字节来存储它。
+     </dd><dt class="description">
+7 </dt><dd class="description">如果用 areas 的大小除以 int 的大小，我们将得到元素数 5。再看看代码，
+     这正是初始值中的设定。
+     </dd><dt class="description">
+8 </dt><dd class="description">我们访问了数组，得到了 <span class="obeylines-h"><span class="verb">areas[0]</span></span> 和 <span class="obeylines-h"><span class="verb">areas[1]</span></span>，这意味着 C
+     和 Python/Ruby 一样，数组的索引也是从 0 开始的。
+     </dd><dt class="description">
+9-11 </dt><dd class="description">一样的方法去访问 name 这个数组，有没有发现数组的大小有些奇怪？
+     ”Zed” 是三个字符，可它的长度怎么是 4 个字节呢？这第 4 个字符是哪来的呢？
+     </dd><dt class="description">
+12-13 </dt><dd class="description">一样的方法去读取 full_name，我们看到这次的值是正确的。
+     </dd><dt class="description">
+13 </dt><dd class="description">最后我们打印输出 name 和 full_name 以证明对于 printf 来说，他们都是字符串。</dd></dl><!--l. 102--><p class="indent">    请确保弄懂这些代码，并且明白这些输出结果跟输入代码的对应关系。之后我们将在这个基础上更多地探索数组和存储。
+    </p><h3 class="sectionHead"><span class="titlemark">9.2    </span> <a id="x14-480009.2"></a>让程序出错</h3>
+                                                                  
+
+                                                                  
+<!--l. 106--><p class="noindent">让这个程序出错很简单，试一试这些：
+<!--l. 108--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x14-48002x1">删除 full_name 尾部的 <span class="obeylines-h"><span class="verb">’\0’</span></span> 并重新运行程序。再在 Valgrind 下运行一次。现在将 full_name 的定义放到 main 的顶部，areas 的前面。
+     在 Valgrind 下运行几次，看看会不会得到新的错误信息。有时候你可能会幸运到一个错误都看不见。
+     </li>
+     <li class="enumerate" id="x14-48004x2">尝试打印输出 <span class="obeylines-h"><span class="verb">areas[10]</span></span>而非 <span class="obeylines-h"><span class="verb">areas[0]</span></span>，并看看 Valgrind 是怎样认为的。
+     </li>
+     <li class="enumerate" id="x14-48006x3">多做几个不同的尝试，在 name 和 full_name 上面也试一下。</li></ol><!--l. 114--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">9.3    </span> <a id="x14-490009.3"></a>加分习题</h3>
+<!--l. 116--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x14-49002x1">使用 <span class="obeylines-h"><span class="verb">areas[0] = 100;</span></span> 这样的语句，对数组 areas 中的元素进行赋值。
+     </li>
+     <li class="enumerate" id="x14-49004x2">尝试对 name 和 full_name 的元素进行赋值。
+     </li>
+     <li class="enumerate" id="x14-49006x3">尝试把 areas 中的一个元素设置成 name 中的一个字符.
+     </li>
+     <li class="enumerate" id="x14-49008x4">上网搜索一下，了解一下不同 CPU 整形大小差异。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych10.html">next</a>] [<a href="learn-c-the-hard-waych8.html">prev</a>] [<a href="learn-c-the-hard-waych8.html#taillearn-c-the-hard-waych8.html">prev-tail</a>] [<a href="learn-c-the-hard-waych9.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych9.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych9.html"></a>   
+</p></body></html>

@@ -1,0 +1,98 @@
+<html><head><title>习题10: 字符串数组，循环</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych12.html">next</a>] [<a href="learn-c-the-hard-waych10.html">prev</a>] [<a href="learn-c-the-hard-waych10.html#taillearn-c-the-hard-waych10.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych11.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych11.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 11</span><br><a id="x16-5400011"></a>习题10: 字符串数组，循环</h2>
+<!--l. 3--><p class="noindent">你可以用多种数据类型组成一个数组，要记得“字符串”和“字节数组”就是一个东西。下一步就是将字符串放到数组里。这里还会为你介绍第一个循环结构——for-loop（for 循环）——它会帮助你打印出这个新的数据结构。
+<!--l. 7--></p><p class="indent">    有个有趣的地方是，其实已经有个字符串数组在你的程序中躲藏了一段时间了，
+那就是在 main 函数参数里的 char ⋆argv[]。下面一段代码会打印出你通过命令行传递的所有参数：
+                                                                  
+
+                                                                  
+<!--l. 11--></p><p class="indent">    <a id="x16-54001r29"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 29: </span><span class="content">                                                                                                            ex10.c</span></div><!--tex4ht:label?: x16-54001r29 -->
+<div class="fancyvrb" id="fancyvrb10"><a id="x16-54003r1"></a>1  <span id="textcolor536">#</span><span id="textcolor537">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x16-54005r2"></a>2  <br class="fancyvrb"><a id="x16-54007r3"></a>3  <span id="textcolor538">int</span> <span id="textcolor539">main</span>(<span id="textcolor540">int</span> argc, <span id="textcolor541">char</span> ⋆argv[])<br class="fancyvrb"><a id="x16-54009r4"></a>4  {<br class="fancyvrb"><a id="x16-54011r5"></a>5      <span id="textcolor542">int</span> i = <span id="textcolor543">0</span>;
+<br class="fancyvrb"><a id="x16-54013r6"></a>6  <br class="fancyvrb"><a id="x16-54015r7"></a>7      <span id="textcolor544">// go through each string in argv</span><br class="fancyvrb"><a id="x16-54017r8"></a>8      <span id="textcolor545">// why am I skipping argv[0]?</span>
+<br class="fancyvrb"><a id="x16-54019r9"></a>9      <span id="textcolor546">for</span>(i = <span id="textcolor547">1</span>; i <a id="x16-54021r10"></a>10          printf(<span class="colorbox" id="colorbox548"><span id="textcolor549">"</span></span><span class="colorbox" id="colorbox550"><span id="textcolor551">arg %d: %s</span></span><span class="colorbox" id="colorbox552"><span id="textcolor553">\n</span></span><span class="colorbox" id="colorbox554"><span id="textcolor555">"</span></span>, i, argv[i]);
+<br class="fancyvrb"><a id="x16-54023r11"></a>11      }<br class="fancyvrb"><a id="x16-54025r12"></a>12  <br class="fancyvrb"><a id="x16-54027r13"></a>13      <span id="textcolor556">// let’s make our own array of strings</span><br class="fancyvrb"><a id="x16-54029r14"></a>14      <span id="textcolor557">char</span> ⋆states[] = {
+<br class="fancyvrb"><a id="x16-54031r15"></a>15          <span class="colorbox" id="colorbox558"><span id="textcolor559">"</span></span><span class="colorbox" id="colorbox560"><span id="textcolor561">California</span></span><span class="colorbox" id="colorbox562"><span id="textcolor563">"</span></span>, <span class="colorbox" id="colorbox564"><span id="textcolor565">"</span></span><span class="colorbox" id="colorbox566"><span id="textcolor567">Oregon</span></span><span class="colorbox" id="colorbox568"><span id="textcolor569">"</span></span>,<br class="fancyvrb"><a id="x16-54033r16"></a>16          <span class="colorbox" id="colorbox570"><span id="textcolor571">"</span></span><span class="colorbox" id="colorbox572"><span id="textcolor573">Washington</span></span><span class="colorbox" id="colorbox574"><span id="textcolor575">"</span></span>, <span class="colorbox" id="colorbox576"><span id="textcolor577">"</span></span><span class="colorbox" id="colorbox578"><span id="textcolor579">Texas</span></span><span class="colorbox" id="colorbox580"><span id="textcolor581">"</span></span><br class="fancyvrb"><a id="x16-54035r17"></a>17      };
+<br class="fancyvrb"><a id="x16-54037r18"></a>18      <span id="textcolor582">int</span> num_states = <span id="textcolor583">4</span>;<br class="fancyvrb"><a id="x16-54039r19"></a>19  <br class="fancyvrb"><a id="x16-54041r20"></a>20      <span id="textcolor584">for</span>(i = <span id="textcolor585">0</span>; i <a id="x16-54043r21"></a>21          printf(<span class="colorbox" id="colorbox586"><span id="textcolor587">"</span></span><span class="colorbox" id="colorbox588"><span id="textcolor589">state %d: %s</span></span><span class="colorbox" id="colorbox590"><span id="textcolor591">\n</span></span><span class="colorbox" id="colorbox592"><span id="textcolor593">"</span></span>, i, states[i]);<br class="fancyvrb"><a id="x16-54045r22"></a>22      }<br class="fancyvrb"><a id="x16-54047r23"></a>23  <br class="fancyvrb"><a id="x16-54049r24"></a>24      <span id="textcolor594">return</span> <span id="textcolor595">0</span>;<br class="fancyvrb"><a id="x16-54051r25"></a>25  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 42--><p class="indent">    for-loop 的格式是这样的：
+    </p><div class="fancyvrb" id="fancyvrb11"><a id="x16-54053r1"></a>      for(INITIALIZER; TEST; INCREMENTER) {<br class="fancyvrb"><a id="x16-54055r2"></a>          CODE;<br class="fancyvrb"><a id="x16-54057r3"></a>      }</div>
+<!--l. 50--><p class="indent">    接下来讲讲 for-loop 的工作原理：
+     </p><ol class="enumerate1"><li class="enumerate" id="x16-54059x1">INITIALIZER 是完成循环前的准备工作的代码，在本例中就是 <span class="obeylines-h"><span class="verb">i = 0</span></span> 这句。
+     </li>
+     <li class="enumerate" id="x16-54061x2">接下来运行的是 TEST 这个布尔表达式的检查动作，如果它的值是 false
+     (0)，那么接下来就什么都不做了。
+     </li>
+     <li class="enumerate" id="x16-54063x3">运行代码 CODE，完成它要做的事情。
+     </li>
+     <li class="enumerate" id="x16-54065x4">CODE 运行之后，INCREMENTER 部分就会被运行，通常都是将某个变量递增，比如本例中的 <span class="obeylines-h"><span class="verb">i++</span></span>。
+     </li>
+     <li class="enumerate" id="x16-54067x5">然后代码会从第 2 步开始重新运行，直到 TEST 的值成为 false (0) 为止。</li></ol><!--l. 63--><p class="indent">    这个 for-loop 将使用 argc 和 argv 这两个变量来对命令行参数做如下处理：
+     </p><ol class="enumerate1"><li class="enumerate" id="x16-54069x1">操作系统将每一条命令行参数当做字符串传递到数组 argv 中，程序的名称(./ex10)的位置是 0，其它的参数向后依次排列。
+     </li>
+     <li class="enumerate" id="x16-54071x2">操作系统还将 argc 设为 argv 中参数的个数，这样你处理它的时候就不必担心超过最后一个参数了。
+     </li>
+     <li class="enumerate" id="x16-54073x3">for-loop 做了预备工作，设定 <span class="obeylines-h"><span class="verb">i = 1</span></span> 。
+     </li>
+     <li class="enumerate" id="x16-54075x4">之后它通过 <span class="obeylines-h"><span class="verb">i </span>这句判断 i 是否小于 argc。一开始 0 
+     <li class="enumerate" id="x16-54077x5">然后它接着运行代码，打印出 i ，然后使用 i 作为 argv 数组内部的索引。
+     </li>
+     <li class="enumerate" id="x16-54079x6">接着递增器将通过语法 <span class="obeylines-h"><span class="verb">i++</span></span>运行。这算是 <span class="obeylines-h"><span class="verb">i = i + 1</span></span> 的简写方式。
+     </li>
+     <li class="enumerate" id="x16-54081x7">然后它就会重复上述代码，直到 <span class="obeylines-h"><span class="verb">i </span>的值成为 false （0），然后循环就结束了，余下的程序将继续运行。</span></li></span></li></ol><h3 class="sectionHead"><span class="titlemark">11.1    </span> <a id="x16-5500011.1"></a>你应该看到的结果</h3>
+<!--l. 82--><p class="noindent">跟这个程序打交道你需要用两种方式运行它。第一种是传递一些命令行参数从而赋值给 argc 和 argv。第二种是运行时不传递任何参数，这样的话由于 <span class="obeylines-h"><span class="verb">i </span>一开始就是 false，for-loop 将不会运行。
+                                                                  
+
+                                                                  
+<!--l. 85--><p class="indent">    <a id="x16-55001r30"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<div class="caption"><span class="id">Source 30: </span><span class="content">                                                                                                      ex10 的输出</span></div><!--tex4ht:label?: x16-55001r30 -->
+<!--l. 86-->
+<div class="lstlisting" id="listing-21"><span class="label"><a id="x16-55002r1"></a>1</span>$ make ex10 <br><span class="label"><a id="x16-55003r2"></a>2</span>cc -Wall -g    ex10.c   -o ex10 <br><span class="label"><a id="x16-55004r3"></a>3</span>$ ./ex10 i am a bunch of arguments <br><span class="label"><a id="x16-55005r4"></a>4</span>arg 1: i <br><span class="label"><a id="x16-55006r5"></a>5</span>arg 2: am <br><span class="label"><a id="x16-55007r6"></a>6</span>arg 3: a <br><span class="label"><a id="x16-55008r7"></a>7</span>arg 4: bunch <br><span class="label"><a id="x16-55009r8"></a>8</span>arg 5: of <br><span class="label"><a id="x16-55010r9"></a>9</span>arg 6: arguments <br><span class="label"><a id="x16-55011r10"></a>10</span>state 0: California <br><span class="label"><a id="x16-55012r11"></a>11</span>state 1: Oregon <br><span class="label"><a id="x16-55013r12"></a>12</span>state 2: Washington <br><span class="label"><a id="x16-55014r13"></a>13</span>state 3: Texas <br><span class="label"><a id="x16-55015r14"></a>14</span>$ <br><span class="label"><a id="x16-55016r15"></a>15</span>$ ./ex10 <br><span class="label"><a id="x16-55017r16"></a>16</span>state 0: California <br><span class="label"><a id="x16-55018r17"></a>17</span>state 1: Oregon <br><span class="label"><a id="x16-55019r18"></a>18</span>state 2: Washington <br><span class="label"><a id="x16-55020r19"></a>19</span>state 3: Texas <br><span class="label"><a id="x16-55021r20"></a>20</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h4 class="subsectionHead"><span class="titlemark">11.1.1    </span> <a id="x16-5600011.1.1"></a>理解字符串数组</h4>
+<!--l. 113--><p class="noindent">从习题中你应该已经知道了 C 语言中“字符串数组”是怎样构造出来的了——通过结合 <span class="obeylines-h"><span class="verb">char ⋆str = "blah"</span></span>和 <span class="obeylines-h"><span class="verb">char str[] = {’b’,’l’,’a’,’h’}</span></span>来构建一个二维数组。第 14 行的 <span class="obeylines-h"><span class="verb">char ⋆states[] = {...}</span></span>就是这个二维组合的动作，
+其中一维是以字符串为元素，另一维度则是以构成字符串的字符作为元素。
+<!--l. 118--></p><p class="indent">    头晕了吧？很多人都没有想过多重维度的概念，所以你应该试着在纸上构建出这个字符串数组：
+<!--l. 120--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x16-56002x1">在这张纸上做一个矩形网格，最左列填入每一个 string(字符串) 的索引值。
+     </li>
+     <li class="enumerate" id="x16-56004x2">最上面一行填入每一个 character(字符) 的索引值。
+     </li>
+     <li class="enumerate" id="x16-56006x3">然后将字符串填入表格中间的空位，每个字符占一格。
+     </li>
+     <li class="enumerate" id="x16-56008x4">做好这个表格后，用它来手动追踪一遍代码。</li></ol><!--l. 127--><p class="indent">    另一个弄明白的方法是通过使用你更熟悉的语言(比如 Python 或者 Ruby) 建造一个相同的结构。
+<!--l. 129--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">11.2    </span> <a id="x16-5700011.2"></a>让程序出错</h3>
+<!--l. 131--><p class="noindent">
+                                                                  
+
+                                                                  
+     </p><ol class="enumerate1"><li class="enumerate" id="x16-57002x1">选一个你喜欢的别种语言，用它来运行这个程序，但是要给它尽可能多的命令行参数。看看你能不能通过给出太多的形参把这程序给搞崩了。
+     </li>
+     <li class="enumerate" id="x16-57004x2">将 i 初始化为 0 看看会发生什么。你需要同时调整 argc 吗？还是说它可以直接运行？为什么这里可以用基于 0 的索引方式呢？
+     </li>
+     <li class="enumerate" id="x16-57006x3">把 num_states 设置得更高导致错误，看看会发生什么。</li></ol><!--l. 138--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">11.3    </span> <a id="x16-5800011.3"></a>加分习题</h3>
+<!--l. 140--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x16-58002x1">弄明白什么样的代码你可以放到 for-loop 中。
+     </li>
+     <li class="enumerate" id="x16-58004x2">查找一下应该如何在 for-loop 中使用字符 <span class="obeylines-h"><span class="verb">’,’</span></span> (comma) 分隔多条命令。
+     </li>
+     <li class="enumerate" id="x16-58006x3">阅读以下什么是 NULL，并尝试将数组 states 的元素之一设为 NULL，看看它会打印输出什么。
+     </li>
+     <li class="enumerate" id="x16-58008x4">试试你可不可以在打印输出之前将数组 states 的元素赋值到数组 argv
+     中，然后再反过来试一下。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych12.html">next</a>] [<a href="learn-c-the-hard-waych10.html">prev</a>] [<a href="learn-c-the-hard-waych10.html#taillearn-c-the-hard-waych10.html">prev-tail</a>] [<a href="learn-c-the-hard-waych11.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych11.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych11.html"></a>   
+</p></span></p></body></html>

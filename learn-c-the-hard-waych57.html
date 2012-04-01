@@ -1,0 +1,382 @@
+<html><head><title>Deconstructing "K&amp;R C"</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa3.html">prev</a>] [<a href="learn-c-the-hard-waypa3.html#taillearn-c-the-hard-waypa3.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych57.html">tail</a>] [<a href="learn-c-the-hard-waypa3.html#learn-c-the-hard-waych57.html">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 57</span><br><a id="x64-29300057"></a>Deconstructing "K&amp;R C"</h2>
+<!--l. 3--><p class="noindent">When I was a kid I read this awesome book called ”The C Programming Language”
+by the language’s creators, Brian Kernighan and Dennis Ritchie. This book taught
+me and many people of my generation, and a generation before, how to write C
+code. You talk to anyone, whether they know C or not, and they’ll say, ”You can’t
+beat "K&amp;R C" . It’s the best C book.” It is an established piece of programmer lore
+that is not soon to die.
+<!--l. 10--></p><p class="indent">    I myself believed that until I started writing this book. You see, "K&amp;R C" is
+actually riddled with bugs and bad style. Its age is no excuse. These were bugs when
+they wrote the first printing, and the 42nd printing. I hadn’t actually realized just
+how bad most of the code was in this book and recommended it to many people.
+After reading through it for just an hour I decided that it needs to be taken down
+from its pedestal and relegated to history rather than vaunted as state of the
+art.
+<!--l. 18--></p><p class="indent">    I believe it is time to lay this book to rest, but I want to use it as an exercise for
+you in finding hacks, attacks, defects, and bugs by going through "K&amp;R C" to break
+all the code. That’s right, you are going to destroy this sacred cow for me, and you’re
+going to have no problem doing it. When you are done doing this, you will have a
+finely honed eye for defect. You will also have an informed opinion of the book’s
+actual quality, and will be able to make your own decisions on how to use the
+knowledge it contains.
+<!--l. 26--></p><p class="indent">    In this chapter we will use all the knowledge you’ve gained from this book, and
+                                                                  
+
+                                                                  
+spend it reviewing the code in "K&amp;R C" . What we will do is take many pieces of
+code from the book, find all the bugs in it, and write a unit test that exercises the bugs.
+We’ll then run this test under Valgrind to get statistics and data, and then we’ll fix
+the bugs with a redesign.
+<!--l. 32--></p><p class="indent">    This will obviously be a long chapter so I’m going to only do a handful of these
+and then I’m going have you do the rest. I’ll provide a guide that is each page,
+with the code on it, and hints to the bugs that it has. Your job is to then tear
+that piece of code apart and try to think like an attacker trying to break the
+code.
+                                                                  
+
+                                                                  
+<!--l. 38--></p><p class="indent">    <a id="x64-293001r11"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Note 11: </span><span class="content">                                                                                             Warning For The
+Fanboys</span></div><!--tex4ht:label?: x64-293001r11 -->
+     <div class="quote">
+     <!--l. 39--><p class="indent">   As you read this, if you feel that I am being disrespectful to the
+     authors, then that’s not my intent. I respect the authors more than
+     anything you know and owe them a debt of gratitude for writing
+     their book. My criticisms here are both for educational purposes of
+     teaching people modern C code, and to destroy the belief in their
+     work as a item of worship that cannot be questioned.
+     <!--l. 46--></p><p class="indent">   However, if when you read this you have feelings of me insulting
+     you then just stop reading. You will gain nothing from this chapter
+     but personal grief because you’ve attached your identity to "K&amp;R
+     C" and my criticisms will only be taken personally. </p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">57.1    </span> <a id="x64-29400057.1"></a>An Overall Critique Of Correctness</h3>
+<!--l. 54--><p class="noindent">The primary problem "K&amp;R C" has is its view of ”correctness” comes from the first
+system it was used on: Unix. In the world of Unix software programs have a
+particular set of properties:
+<!--l. 58--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-294002x1">Programs are started and then exit, making resource allocation easier.
+     </li>
+     <li class="enumerate" id="x64-294004x2">Most functions are only called by other parts of the same program in set
+     ways.
+     </li>
+     <li class="enumerate" id="x64-294006x3">The inputs to the program are limited to ”expert” restricted users.</li></ol><!--l. 64--><p class="indent">    In the context of this 1970’s computing style, "K&amp;R C" is actually correct. As
+long as only trusted people run complete cohesive programs that exit and clean up
+all their resources then their code is fine.
+<!--l. 68--></p><p class="indent">    Where "K&amp;R C" runs into problems is when the functions or code snippets are
+taken out of the book and used in other programs. Once you take many of these code
+snippets and try use them in some other program they fall apart. They then
+have blatant buffer overflows, bugs, and problems that a beginner will trip
+over.
+<!--l. 73--></p><p class="indent">    Another problem is that software these days doesn’t exit right away, but instead
+it stays running for long periods of time because they’re servers, desktop
+applications and mobile applications. The old style of ”leaving the cleanup
+to the OS” doesn’t work in the modern world the way it did back in the
+day.
+<!--l. 78--></p><p class="indent">    The final problem though is that no software lives in a vacuum anymore.
+Software is now frequently attacked by people over network connections in an
+                                                                  
+
+                                                                  
+attempt to gain special privilege or simple street cred. The idea that ”nobody will
+ever do that” is dead, and actually that’s probably the first thing somebody will
+do.
+<!--l. 83--></p><p class="indent">    The best way to summarize the problem of "K&amp;R C" ”correctness” is with an
+example from English. Imagine if you have the pair of sentences, ”Jack and Jill went
+up the hill. He fell down.” Well, from context clues you know that ”He” means Jack.
+However, if you have that sentence on its own it’s not clear who ”He” is. Now, if you
+put that sentence at the end of another sentence you can get an unclear pronoun
+reference: ”Jack and Frank went up the hill. He fell down.” Which ”He” are we
+talking about in that sentence?
+<!--l. 91--></p><p class="indent">    This is how the code in "K&amp;R C" works. As long as that code is not used in
+other programs without serious analysis of the entire software then it works. The
+second you take many of the functions out and try to use them in other systems they
+fall apart. And, what’s the point of a book full of code you can’t actually use in your
+own programs?
+<!--l. 98--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">57.1.1    </span> <a id="x64-29500057.1.1"></a>A First Demonstration Defect</h4>
+<!--l. 100--><p class="noindent">The following copy function is found in the very first chapter and is an example of
+copying two strings. Here’s a new source file to demonstrate the defects in this
+function.
+                                                                  
+
+                                                                  
+<!--l. 104--></p><p class="indent">    <a id="x64-295001r77"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 77: </span><span class="content">                                                                                             exercise-1.9-1.c</span></div><!--tex4ht:label?: x64-295001r77 -->
+<div class="fancyvrb" id="fancyvrb45"><a id="x64-295003r1"></a>1  <span id="textcolor4392">#</span><span id="textcolor4393">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x64-295005r2"></a>2  <span id="textcolor4394">#</span><span id="textcolor4395">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x64-295007r3"></a>3  <span id="textcolor4396">#</span><span id="textcolor4397">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x64-295009r4"></a>4  
+<br class="fancyvrb"><a id="x64-295011r5"></a>5  <span id="textcolor4398">#</span><span id="textcolor4399">define MAXLINE 10 </span><span id="textcolor4400">// in the book this is 1000</span><br class="fancyvrb"><a id="x64-295013r6"></a>6  <br class="fancyvrb"><a id="x64-295015r7"></a>7  <span id="textcolor4401">void</span> <span id="textcolor4402">copy</span>(<span id="textcolor4403">char</span> to[], <span id="textcolor4404">char</span> from[])
+<br class="fancyvrb"><a id="x64-295017r8"></a>8  {<br class="fancyvrb"><a id="x64-295019r9"></a>9      <span id="textcolor4405">int</span> i;<br class="fancyvrb"><a id="x64-295021r10"></a>10  <br class="fancyvrb"><a id="x64-295023r11"></a>11      i = <span id="textcolor4406">0</span>;<br class="fancyvrb"><a id="x64-295025r12"></a>12      <span id="textcolor4407">while</span>((to[i] = from[i]) != <span class="colorbox" id="colorbox4408"><span id="textcolor4409">’\0’</span></span>)
+<br class="fancyvrb"><a id="x64-295027r13"></a>13          ++i;<br class="fancyvrb"><a id="x64-295029r14"></a>14  }<br class="fancyvrb"><a id="x64-295031r15"></a>15  <br class="fancyvrb"><a id="x64-295033r16"></a>16  <span id="textcolor4410">int</span> <span id="textcolor4411">main</span>(<span id="textcolor4412">int</span> argc, <span id="textcolor4413">char</span> ⋆argv[])<br class="fancyvrb"><a id="x64-295035r17"></a>17  {
+<br class="fancyvrb"><a id="x64-295037r18"></a>18      <span id="textcolor4414">int</span> i;<br class="fancyvrb"><a id="x64-295039r19"></a>19  <br class="fancyvrb"><a id="x64-295041r20"></a>20      <span id="textcolor4415">// use heap memory as many modern systems do</span>
+<br class="fancyvrb"><a id="x64-295043r21"></a>21      <span id="textcolor4416">char</span> ⋆line = malloc(MAXLINE);<br class="fancyvrb"><a id="x64-295045r22"></a>22      <span id="textcolor4417">char</span> ⋆longest = malloc(MAXLINE);
+<br class="fancyvrb"><a id="x64-295047r23"></a>23  <br class="fancyvrb"><a id="x64-295049r24"></a>24      assert(line != <span id="textcolor4418">NULL</span> &amp;&amp; longest != <span id="textcolor4419">NULL</span> &amp;&amp; <span class="colorbox" id="colorbox4420"><span id="textcolor4421">"</span></span><span class="colorbox" id="colorbox4422"><span id="textcolor4423">memory error</span></span><span class="colorbox" id="colorbox4424"><span id="textcolor4425">"</span></span>);<br class="fancyvrb"><a id="x64-295051r25"></a>25  
+<br class="fancyvrb"><a id="x64-295053r26"></a>26      <span id="textcolor4426">// initialize it but make a classic "off by one" error</span>
+<br class="fancyvrb"><a id="x64-295055r27"></a>27      <span id="textcolor4427">for</span>(i = <span id="textcolor4428">0</span>; i <a id="x64-295057r28"></a>28          line[i] = <span class="colorbox" id="colorbox4429"><span id="textcolor4430">’a’</span></span>;
+<br class="fancyvrb"><a id="x64-295059r29"></a>29      }<br class="fancyvrb"><a id="x64-295061r30"></a>30  <br class="fancyvrb"><a id="x64-295063r31"></a>31      <span id="textcolor4431">// cause the defect</span><br class="fancyvrb"><a id="x64-295065r32"></a>32      copy(longest, line);<br class="fancyvrb"><a id="x64-295067r33"></a>33  
+<br class="fancyvrb"><a id="x64-295069r34"></a>34      free(line);<br class="fancyvrb"><a id="x64-295071r35"></a>35      free(longest);<br class="fancyvrb"><a id="x64-295073r36"></a>36  <br class="fancyvrb"><a id="x64-295075r37"></a>37      <span id="textcolor4432">return</span> <span id="textcolor4433">0</span>;<br class="fancyvrb"><a id="x64-295077r38"></a>38  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 148--><p class="indent">    In the above example, I’m doing something that is fairly common: switching
+from using stack allocation to heap allocation with malloc. What happens is,
+typically malloc returns memory from the heap, and so the bytes after it are not
+initialized. Then you see me use a loop to accidentally initialize it wrong. This is a
+common defect, and one of the reasons we avoided classic style C strings in this
+book. You could also have this bug in programs that read from files, sockets, or other
+external resources. It is a very common bug, probably the most common in the
+world.
+<!--l. 157--></p><p class="indent">    Before the switch to heap memory, this program probably ran just fine because
+the stack allocated memory will probably have a <span class="obeylines-h"><span class="verb">’\0’</span></span> character at the end on
+accident. In fact, it would appear to run fine almost always since it just runs and exits
+quickly.
+<!--l. 162--></p><p class="indent">    What’s the effect of running this new program with copy used wrong?
+                                                                  
+
+                                                                  
+<!--l. 164--></p><p class="indent">    <a id="x64-295078r78"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 78: </span><span class="content">                                                                              exercise-1.9-1.c Valgrind
+Failures</span></div><!--tex4ht:label?: x64-295078r78 -->
+<!--l. 165-->
+<div class="lstlisting" id="listing-46"><span class="label"><a id="x64-295079r1"></a>1</span>$ make 1.9-1 <br><span class="label"><a id="x64-295080r2"></a>2</span>cc     1.9-1.c   -o 1.9-1 <br><span class="label"><a id="x64-295081r3"></a>3</span>$ ./1.9-1 <br><span class="label"><a id="x64-295082r4"></a>4</span>$ <br><span class="label"><a id="x64-295083r5"></a>5</span>$ valgrind ./1.9-1 <br><span class="label"><a id="x64-295084r6"></a>6</span>==2162== Memcheck, a memory error detector <br><span class="label"><a id="x64-295085r7"></a>7</span>==2162== Copyright (C) 2002-2010, and GNU GPL’d, by Julian Seward et al. <br><span class="label"><a id="x64-295086r8"></a>8</span>==2162== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info <br><span class="label"><a id="x64-295087r9"></a>9</span>==2162== Command: ./1.9-1 <br><span class="label"><a id="x64-295088r10"></a>10</span>==2162== <br><span class="label"><a id="x64-295089r11"></a>11</span>==2162== Invalid read of size 1 <br><span class="label"><a id="x64-295090r12"></a>12</span>==2162==    at 0x4005C0: copy (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295091r13"></a>13</span>==2162==    by 0x400651: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295092r14"></a>14</span>==2162==  Address 0x51b104a is 0 bytes after a block of size 10 alloc’d <br><span class="label"><a id="x64-295093r15"></a>15</span>==2162==    at 0x4C2815C: malloc (vg_replace_malloc.c:236) <br><span class="label"><a id="x64-295094r16"></a>16</span>==2162==    by 0x4005E6: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295095r17"></a>17</span>==2162== <br><span class="label"><a id="x64-295096r18"></a>18</span>==2162== Invalid write of size 1 <br><span class="label"><a id="x64-295097r19"></a>19</span>==2162==    at 0x4005C3: copy (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295098r20"></a>20</span>==2162==    by 0x400651: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295099r21"></a>21</span>==2162==  Address 0x51b109a is 0 bytes after a block of size 10 alloc’d <br><span class="label"><a id="x64-295100r22"></a>22</span>==2162==    at 0x4C2815C: malloc (vg_replace_malloc.c:236) <br><span class="label"><a id="x64-295101r23"></a>23</span>==2162==    by 0x4005F4: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295102r24"></a>24</span>==2162== <br><span class="label"><a id="x64-295103r25"></a>25</span>==2162== Invalid read of size 1 <br><span class="label"><a id="x64-295104r26"></a>26</span>==2162==    at 0x4005C5: copy (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295105r27"></a>27</span>==2162==    by 0x400651: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295106r28"></a>28</span>==2162==  Address 0x51b109a is 0 bytes after a block of size 10 alloc’d <br><span class="label"><a id="x64-295107r29"></a>29</span>==2162==    at 0x4C2815C: malloc (vg_replace_malloc.c:236) <br><span class="label"><a id="x64-295108r30"></a>30</span>==2162==    by 0x4005F4: main (in /home/zedshaw/projects/books/learn-c-the-hard-way/code/krc/1.9-1) <br><span class="label"><a id="x64-295109r31"></a>31</span>==2162== <br><span class="label"><a id="x64-295110r32"></a>32</span>==2162== <br><span class="label"><a id="x64-295111r33"></a>33</span>==2162== HEAP SUMMARY: <br><span class="label"><a id="x64-295112r34"></a>34</span>==2162==     in use at exit: 0 bytes in 0 blocks <br><span class="label"><a id="x64-295113r35"></a>35</span>==2162==   total heap usage: 2 allocs, 2 frees, 20 bytes allocated <br><span class="label"><a id="x64-295114r36"></a>36</span>==2162== <br><span class="label"><a id="x64-295115r37"></a>37</span>==2162== All heap blocks were freed -- no leaks are possible <br><span class="label"><a id="x64-295116r38"></a>38</span>==2162== <br><span class="label"><a id="x64-295117r39"></a>39</span>==2162== For counts of detected and suppressed errors, rerun with: -v <br><span class="label"><a id="x64-295118r40"></a>40</span>==2162== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 4 from 4) <br><span class="label"><a id="x64-295119r41"></a>41</span>$
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 211--><p class="indent">    As you’ve already learned, Valgrind will show you all of your sins in full color.
+In this case, a perfectly harmless seeming program has a ton of ”Invalid
+read of size 1”. If you kept running it you’d find other errors pop up at
+random.
+<!--l. 216--></p><p class="indent">    Now, in the context of the entire program in the original "K&amp;R C" example, this
+function will work correctly. However, the second this function is called with
+longest and line uninitialized, initialized wrong, without a trailing <span class="obeylines-h"><span class="verb">’\0’</span></span>
+character, then you’ll hit difficult to debug errors.
+<!--l. 222--></p><p class="indent">    This is the failing of the book. While the code works in the book, it does not
+work in many other situations leading to difficult to spot defects, and those are the
+worst kind of defects for a beginner (or expert). Instead of code that only works in
+this delicate balance, we will strive to create code that has a higher probability of
+working in any situation.
+    </p><h4 class="subsectionHead"><span class="titlemark">57.1.2    </span> <a id="x64-29600057.1.2"></a>Why copy() Fails</h4>
+<!--l. 230--><p class="noindent">Many people have looked at this copy function and thought that it is not defective.
+They claim that, as long as it’s used correctly, it is correct. One person even went so
+far as to say, ”It’s not defective, it’s just unsafe.” Odd, since I’m sure this person
+wouldn’t get into a car if the manufacturer said, ”Our car is not defective, it’s just
+unsafe.”
+<!--l. 236--></p><p class="indent">    However, there is a way to formally prove that this function is defective by
+enumerating the possible inputs and then seeing if any of them cause the while loop
+to never terminate.
+<!--l. 240--></p><p class="indent">    What we’ll do is have two strings, A and B, and figure out what copy() does
+with them:
+<!--l. 243--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-296002x1"><span class="obeylines-h"><span class="verb">A = {’a’,’b’,’\0’}; B = {’a’, ’b’, ’\0’};  copy(A,B);</span></span>
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x64-296004x2"><span class="obeylines-h"><span class="verb">A = {’a’,’b’}; B = {’a’, ’b’, ’\0’};  copy(A,B);</span></span>
+     </li>
+     <li class="enumerate" id="x64-296006x3"><span class="obeylines-h"><span class="verb">A = {’a’,’b’,’\0’}; B = {’a’, ’b’};  copy(A,B);</span></span>
+     </li>
+     <li class="enumerate" id="x64-296008x4"><span class="obeylines-h"><span class="verb">A = {’a’,’b’}; B = {’a’, ’b’};  copy(A,B);</span></span></li></ol><!--l. 250--><p class="indent">    This is all the basic permutations of strings that can be passed to the
+function based on whether they are terminated with a <span class="obeylines-h"><span class="verb">’\0’</span></span> or not. To be
+complete I’m covering all possible permutations, even if they seem irrelevant.
+You may think there’s no need to include permutations on A, but as you’ll
+see in the analysis, not including A fails to find buffer overflows that are
+possible.
+<!--l. 256--></p><p class="indent">    We can then go through each case and determine if the while loop in copy()
+terminates:
+<!--l. 258--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-296010x1">while-loop finds <span class="obeylines-h"><span class="verb">’\0’</span></span> in B, copy fits in A, terminates.
+     </li>
+     <li class="enumerate" id="x64-296012x2">while-loop finds <span class="obeylines-h"><span class="verb">’\0’</span></span> in B, overflows A, terminates.
+     </li>
+     <li class="enumerate" id="x64-296014x3">while-loop does not find <span class="obeylines-h"><span class="verb">’\0’</span></span> in B, overflows A, does not terminate.
+     </li>
+     <li class="enumerate" id="x64-296016x4">while-loop does not find <span class="obeylines-h"><span class="verb">’\0’</span></span> in B, overflows A, does not terminate.</li></ol><!--l. 265--><p class="indent">    This provides a formal proof that the function is defective because there are
+possible inputs that causes the while-loop to run forever or overflow the target. If
+you were to try and use this function safely, you would need to follow all paths to its
+usage, and confirm that the data is correct along every path. That gives every path to
+this function a 50% to 75% chance it will fail with just the inputs above. You
+could find some more permutations of failure but these are the most basic
+ones.
+                                                                  
+
+                                                                  
+<!--l. 273--></p><p class="indent">    Let’s now compare this to a copy function that knows the lengths of all the
+inputs to see what it’s probability of failure is:
+<!--l. 276--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-296018x1"><span class="obeylines-h"><span class="verb">A = {’a’,’b’,’\0’}; B = {’a’, ’b’, ’\0’};  safercopy(2, A, 2, B);</span></span>
+     </li>
+     <li class="enumerate" id="x64-296020x2"><span class="obeylines-h"><span class="verb">A = {’a’,’b’}; B = {’a’, ’b’, ’\0’};  safercopy(2, A, 2, B);</span></span>
+     </li>
+     <li class="enumerate" id="x64-296022x3"><span class="obeylines-h"><span class="verb">A = {’a’,’b’,’\0’}; B = {’a’, ’b’};  safercopy(2, A, 2, B);</span></span>
+     </li>
+     <li class="enumerate" id="x64-296024x4"><span class="obeylines-h"><span class="verb">A = {’a’,’b’}; B = {’a’, ’b’};  safercopy(2, A, 2, B);</span></span></li></ol><!--l. 283--><p class="indent">    Also assume that the safercopy() function uses a for-loop that does not test for a
+<span class="obeylines-h"><span class="verb">’\0’</span></span> only, but instead uses the given lengths to determine the amount to copy. With
+that we can then do the same analysis:
+<!--l. 287--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-296026x1">for-loop processes 2 characters of A, terminates.
+     </li>
+     <li class="enumerate" id="x64-296028x2">for-loop processes 2 characters of A, terminates.
+     </li>
+     <li class="enumerate" id="x64-296030x3">for-loop processes 2 characters of A, terminates.
+     </li>
+     <li class="enumerate" id="x64-296032x4">for-loop processes 2 characters of A, terminates.</li></ol><!--l. 294--><p class="indent">    In every case the for-loop variant with string length given as arguments will
+terminate no matter what. To really test the for-loop variant we’d need to add some
+permutations for differing lengths of strings A and B, but in every case the for-loop
+will always stop because it will only go through a fixed previously known finite
+number of characters.
+<!--l. 300--></p><p class="indent">    That means the for-loop will never loop forever, and as long as it handles all
+                                                                  
+
+                                                                  
+the possible differing lengths of A and B, never overflow either side. The
+only way to break safercopy() is to lie about the lengths of the strings, but
+even then it will still always terminate. The worst possible scenario for the
+safercopy() function is that you are given an erroneous length for one of the
+strings and that string does not have a <span class="obeylines-h"><span class="verb">’\0’</span></span> properly, so the function buffer
+overflows.
+<!--l. 307--></p><p class="indent">    This shows exactly why the copy() function is defective, because it does not
+terminate cleanly for most possible inputs, and is only reliable for one of the
+conditions: B terminated and A the right size. It also shows why a for-loop variant
+with a given fixed length for each input is superior.
+<!--l. 312--></p><p class="indent">    Finally, the significance of this is that I’ve effectively done a formal proof (well,
+mostly formal) that shows what you should be doing to analyze code. Each function
+has to stand on its own and not have any defects such as while-loops that do not
+terminate. In the above discussion I’ve shown that the original "K&amp;R C"
+is defective, and fatally so since there is no way to fix it given the inputs.
+There’s no way from just a pointer to ask if a string is properly formed since
+the only way to test that is to scan it, and scanning it runs into this same
+problem.
+<!--l. 320--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">57.1.3    </span> <a id="x64-29700057.1.3"></a>But, That’s Not A C String</h4>
+<!--l. 322--><p class="noindent">Some folks then defend this function (despite the proof above) by claiming that the
+strings in the proof aren’t C strings. They want to apply an artful dodge that says
+”the function is not defective because you aren’t giving it the right inputs”, but I’m
+saying the function is defective because most of the possible inputs cause it to crash
+the software.
+<!--l. 328--></p><p class="indent">    The problem with this mindset is there’s no way to confirm that a C string is
+valid. Imagine you wanted to write a little <span class="obeylines-h"><span class="verb">assert_good_string</span></span> function that
+checks if a C string is correctly terminated before using it. This function needs to go
+to the end of the string and see if there’s a <span class="obeylines-h"><span class="verb">’\0’</span></span> terminator. How does it do this?
+This function would also have to scan the target function to confirm that it ended in
+                                                                  
+
+                                                                  
+<span class="obeylines-h"><span class="verb">’\0’</span></span>, which means it has the same problem as copy() because the input may not be
+terminated.
+<!--l. 336--></p><p class="indent">    This may seem silly, but people actually do this with strlen(). They take an input
+and think that they just have to run strlen() on the input to confirm that it’s the right
+length, but strlen() itself has the same fatal flaw because it has to scan and if the
+string isn’t terminated it will also overflow.
+<!--l. 341--></p><p class="indent">    This means any attempt to fix the problem using just C strings also has this
+problem. The only way to solve it is to include the length of every string and use that
+to scan it.
+<!--l. 345--></p><p class="indent">    If you can’t validate a C string in your function, then your only choice is to do
+full code reviews manually. This introduces human error and no matter what you do
+the error will happen.
+<!--l. 350--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">57.1.4    </span> <a id="x64-29800057.1.4"></a>Just Don’t Do That</h4>
+<!--l. 352--><p class="noindent">Another argument in favor of this copy() function is when the proponents of "K&amp;R
+C" state that you are ”just supposed to not use bad strings”. Despite the mountains
+of empirical evidence that this is impossible in C code, they are basically correct and
+that’s what I’m teaching in this exercise. But, instead of saying ”just don’t do that by
+checking all possible inputs”, I’m advocating ”just don’t do that by not using this
+kind of function”. I’ll explain further.
+<!--l. 360--></p><p class="indent">    In order to confirm that all inputs to this function are valid I have to go through
+a code review process that involves this:
+<!--l. 363--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x64-298002x1">Find all the places the copy() function is called.
+     </li>
+     <li class="enumerate" id="x64-298004x2">Trace backwards from that call point to where the inputs are created.
+                                                                  
+
+                                                                  
+     </li>
+     <li class="enumerate" id="x64-298006x3">Confirm that the data is created correctly.
+     </li>
+     <li class="enumerate" id="x64-298008x4">Follow the path from the creation point of the data to where it’s used and
+     confirm that no line of code alters the data.
+     </li>
+     <li class="enumerate" id="x64-298010x5">Repeat  this  for  all  paths  and  all  branches,  including  all  loops  and
+     if-statements involving the data.</li></ol><!--l. 373--><p class="indent">    In my experience this is only possible in small programs like the little ones that
+"K&amp;R C" has. In real software the number of possible branches you’d need to check
+is much too high for most people to validate, especially in a team environment
+where individuals have varying degrees of capability. A way to quantify this
+difficulty is that each branch in the code leading to a function like copy() has a
+50-70% chance of causing the defect.
+<!--l. 380--></p><p class="indent">    However, if you can use a different function and avoid all of these checks then
+doesn’t that mean the copy() function is defective by comparison? These people are
+right, the solution is to ”just not do that” by just not using the copy() function. You
+can change the function to one that includes the sizes of the two strings and the
+problem is solved. If that’s the case then the people who think ”just don’t do that”
+have just proved that the function is defective, because the simpler way to ”not do
+that” is to use a better function.
+<!--l. 388--></p><p class="indent">    If you think copy() is valid as long as you avoid the errors I outline, and if
+safercopy() avoids the errors, then safercopy() is superior and copy() is defective by
+comparison.
+<!--l. 393--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">57.1.5    </span> <a id="x64-29900057.1.5"></a>Stylistic Issues</h4>
+<!--l. 395--><p class="noindent">A more minor critique of the book is that the style is not only old, but just error
+prone and annoyingly ”clever”. Take the code you just saw again and look at the
+while-loop in copy. There’s no reason to write this loop this way, as the compiler
+                                                                  
+
+                                                                  
+can just as easily work with a for-loop and without the clever triple-equality trick.
+The original code also has a while-loop without braces, but an if-statement with
+braces, which leads to even more confusion:
+                                                                  
+
+                                                                  
+<!--l. 403--></p><p class="indent">    <a id="x64-299001r79"></a></p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+ <div class="caption"><span class="id">Source 79: </span><span class="content">                                                                                     Braces Are Free, Use
+Them</span></div><!--tex4ht:label?: x64-299001r79 -->
+<div class="fancyvrb" id="fancyvrb46"><a id="x64-299003r1"></a>1  <span id="textcolor4434">/⋆ bad use of while loop with compound if-statement ⋆/</span>
+<br class="fancyvrb"><a id="x64-299005r2"></a>2  <span id="textcolor4435">while</span> ((len = getline(line, MAXLINE)) &gt; <span id="textcolor4436">0</span>)<br class="fancyvrb"><a id="x64-299007r3"></a>3      <span id="textcolor4437">if</span> (len &gt; max) {
+<br class="fancyvrb"><a id="x64-299009r4"></a>4          max = len;<br class="fancyvrb"><a id="x64-299011r5"></a>5          copy(longest, line);<br class="fancyvrb"><a id="x64-299013r6"></a>6      }
+<br class="fancyvrb"><a id="x64-299015r7"></a>7  <span id="textcolor4438">if</span> (max &gt; <span id="textcolor4439">0</span>) <span id="textcolor4440">/⋆ there was a line ⋆/</span><br class="fancyvrb"><a id="x64-299017r8"></a>8      printf(<span class="colorbox" id="colorbox4441"><span id="textcolor4442">"</span></span><span class="colorbox" id="colorbox4443"><span id="textcolor4444">%s</span></span><span class="colorbox" id="colorbox4445"><span id="textcolor4446">"</span></span>, longest);</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 417--><p class="indent">    This code is incredibly error prone because you can’t easily tell where the pair of
+if-statements and the while-loop are paired. A quick glance makes it seem like
+this while-loop will loop both if-statements, but it doesn’t. In modern C
+code you would instead just use braces all the time and avoid the confusion
+completely.
+<!--l. 423--></p><p class="indent">    While the book could be forgiven for this because of its age, it has been
+republished in this form 42 times, and it was updated for the ANSI standard. At
+some point in its history you’d think the authors or some publisher ghostwriter
+could have been bothered to update the book’s style. However, this is the problem
+with sacred cows. Once they become idols of worship people are reluctant to
+question them or modify them.
+<!--l. 430--></p><p class="indent">    In the rest of this chapter though we will be modernizing the code in "K&amp;R C"
+to fit the style you’ve been learning throughout this book. It will be more verbose,
+but it will be clearer and less error prone because of this slight increase in
+verbosity.
+    </p><h3 class="sectionHead"><span class="titlemark">57.2    </span> <a id="x64-30000057.2"></a>Chapter 1 Examples</h3>
+<!--l. 438--><p class="noindent">Now we begin...
+                                                                  
+
+                                                                  
+                                                                  
+
+                                                                  
+    <!--l. 85--></p><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa3.html">prev</a>] [<a href="learn-c-the-hard-waypa3.html#taillearn-c-the-hard-waypa3.html">prev-tail</a>] [<a href="learn-c-the-hard-waych57.html">front</a>] [<a href="learn-c-the-hard-waypa3.html#learn-c-the-hard-waych57.html">up</a>] </p></div>
+<!--l. 85--><p class="indent">    <a id="taillearn-c-the-hard-waych57.html"></a>   
+</p></body></html>
