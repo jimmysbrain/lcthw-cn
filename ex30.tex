@@ -6,13 +6,98 @@ loading and testing pieces of C code.  In this chapter we'll create a very small
 little testing "framework" and get your skeleton directory building an example
 test case.
 
-\section{What You Should See}
+The frameworks I'm going to use, and which you'll include in your \file{c-skeleton}
+skeleton is called "minunit" which started with code from a tiny snippet
+of code by \href{http://www.jera.com/techinfo/jtns/jtn002.html}{Jera Design}.  I then
+evolved it further, to be this:
 
+\begin{code}{tests/minunit.h}
+<< d['code/c-skeleton/tests/minunit.h|pyg|l'] >>
+\end{code}
 
-\section{How To Break It}
+There's mostly nothing left of the original, as now I'm using the \file{dbg.h} 
+macros and I've created a large macro at the end for the boilerplate test
+runner.  Even with this tiny amount of code we'll create a fully functioning
+unit test system you can use in your C code once it's combined with a 
+shell script to run the tests.
 
+\subsection{Wiring Up The Test Framework}
+
+To continue this exercise, you should have your \file{src/libex29.c} working
+and that you completed the Exercise 29 extra credit where you got the 
+\file{ex29.c} loader program to properly run.  In Exercise 29 I had
+an extra credit to make it work like a unit test, but I'm going to start
+over and show you how to do that with \file{minunit.h}.
+
+The first thing to do is create a simple empty unit test name \file{tests/libex29\_tests.c} with this in it:
+
+\begin{code}{tests/libex29\_tests.c.h}
+<< d['code/ex30.c|pyg|l'] >>
+\end{code}
+
+This code is demonstrating the \ident{RUN\_TESTS} macro in \file{tests/minunit.h}
+and how to use the other test runner macros.  I have the actual test functions
+stubbed out so that you can see how to structure a unit test.  I'll break
+this file down first:
+
+\begin{description}
+\item[libex29\_tests.c:1] Include the \file{minunit.h} framework.
+\item[libex29\_tests.c:3-7] A first test.  Tests are structured so they take no
+    arguments and return a \ident{char *} which is \ident{NULL} on \emph{success}.
+    This is important because the other macros will be used to return an error
+    message to the test runner.
+\item[libex29\_tests.c:9-25] More tests that are the same as the first one.
+\item[libex29\_tests.c:27] The runner function that will control all the other
+    tests.  It has the same form as any other test case, but it gets configured
+    with some additional gear.
+\item[libex29\_tests.c:28] Sets up some common stuff for a test with \ident{mu\_suite\_start}.
+\item[libex29\_tests.c:30] This is how you say what test to run, using the \ident{mu\_run\_test} macro.
+\item[libex29\_tests.c:35] After you say what tests to run, you then return \ident{NULL} just like a normal test function.
+\item[libex29\_tests.c:38] Finally, you just use the big \ident{RUN\_TESTS} macro
+    to wire up the \ident{main} method with all the goodies and tell it to run
+    the \ident{all\_tests} starter.
+\end{description}
+
+That's all there is to running a test, now you should try getting just this to run
+within the project skeleton.  Here's what it looks like when I do it:
+
+\begin{code}{First run of libex29\_tests}
+<< d['code/ex30.sh-session|pyg|l'] >>
+\end{code}
+
+I first did a \verb|make clean| and then I ran the build, which remade the template
+\file{libYOUR\_LIBRARY.a} and \file{libYOUR\_LIBRARY.so} files.  Remember that you
+had to do this in the extra credit for Exercise 29, but just in case you didn't figure
+it out, here's the diff for the \file{Makefile} I'm using now:
+
+\begin{code}{Makefile changes for .so builds}
+<< d['code/ex30.Makefile.diff|pyg|l'] >>
+\end{code}
+
+With those changes you should be now building everything and you can finally
+fill in the remaining unit test functions:
+
+\begin{code}{Final version of tests/libex29\_tests.c}
+<< d['code/c-skeleton/tests/libex29\_tests.c|pyg|l'] >>
+\end{code}
+
+Hopefully by now you can figure out what's going on, since there's nothing
+new in this except for the \ident{check\_function} function.  This is a common
+pattern where I see that I'll be doing a chunk of code repeatedly, and then
+simply automate it either by creating a function or a macro for it.  In this
+case I'm going to run functions in the \file{.so} I load so I just made
+a little function to do it.
 
 \section{Extra Credit}
 
+\begin{enumerate}
+\item This works but it's probably a bit messy.  Clean the \file{c-skeleton} 
+    directory up so that it has all these files, but remove any of the code
+    related to Exercise 29.  You should be able to copy this directory
+    over and kickstart new projects without much editing.
+\item Study the \file{runtests.sh} and go read about \program{bash} syntax
+    so you know what it does.  Think you could write a C version of this
+    script?
+\end{enumerate}
 
 
