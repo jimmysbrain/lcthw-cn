@@ -1,6 +1,6 @@
 \chapter{习题 26: 第一个真正的程序}
 
-到这里正好是本书的一半，你也该参加一次期中考核了。这次考核我要求你把我专为本书
+到这里正好是本书的一半，你也该参加一次期中考试了。这次考核我要求你把我专为本书
 写的一个叫 \program{devpkg} 的程序重写一遍，然后你要用一些关键方法改进代码，
 最重要的方法就是为它写一些单元测试。
 
@@ -245,98 +245,80 @@ Unix 下多运行几条命令也不是啥丢人的事情。
 
 \subsubsection{挑战 2: 分析 Shell\_exec}
 
-Challenge for these files (in addition to a full code review just like you
-did in Challenge 1) is to fully analyze \func{Shell\_exec} and break down
-exactly how it works.  You should be able to understand each line, how
-the two \ident{for-loops} work, and how arguments are being replaced.
+在这里除了和挑战 1 里一样的完整代码审查以外，你还要完整地分析 \func{Shell\_exec} 函数，
+详细了解它的工作原理。你需要弄懂每一行，包括两个 \ident{for-loop} 的原理，以及参数是怎样
+被替换的。
 
-Once you have it analyzed, add a field to \ident{struct Shell} that gives
-the number of variable \ident{args} that must be replaced.  Update all the
-commands to have the right count of args, and then have an error check that
-confirms these args have been replaced and error exit.
+分析完以后，在 \ident{struct Shell} 中添加一栏用以表示需要替换的 \ident{args} 变量的
+个数。更新所有的命令，修正它们的参数个数，然后添加错误检查功能，以确认参数被正确替换。
 
-\subsection{The Command Functions}
+\subsection{命令函数}
 
-Now you get to make the actual commands that do the work.  These commands
-will use functions from APR, \file{db.h} and \file{shell.h} to do the 
-real work of downloading and building software you want it to build.
-This is the most complex set of files, so do them carefully.  As before, you
-start by making the \file{commands.h} file, then implementing its functions
-in the \file{commands.c} file.
+现在你要做的是让命令切实生效。这些命令将用到 APR、\file{db.h}、\file{shell.h} 中的函数
+来实现诸如下载以及 build 此类真正的功能。这些文件中的内容及其复杂，所以做这部分时要很小心。
+和之前一样，你要先完成 \file{commands.h} 文件，然后在 \file{commands.c} 中实现前面
+定义的函数。
 
 \begin{code}{commands.h}
 << d['code/ex26/commands.h|pyg|l'] >>
 \end{code}
 
-There's not much in \file{commands.h} that you haven't seen already.  You
-should see that there's some defines for strings that are used everywhere.
-The real interesting code is in \file{commands.c}.
+\file{commands.h} 里边没有什么新东西。你可以看到里边定义了一些各处都会用到的字符串，真正
+有意思的是接下来的 \file{commands.c}。
 
 \begin{code}{commands.c}
 << d['code/ex26/commands.c|pyg|l'] >>
 \end{code}
 
-After you have this entered in and compiling, you can analyze it.  If you've
-don the challenges until now, you should see how the \file{shell.c} functions
-are being used to run shells and how the arguments are being replaced.  If
-not then go back and make sure you \emph{truly} understand how \func{Shell\_exec}
-actually works.
-
-\subsubsection{Challenge 3: Critique My Design}
-
-As before, do a complete review of this code and make sure it's exactly
-the same.  Then go through each function and make sure you know how it 
-works and what it's doing.  You also should trace how each function calls
-the other functions you've written in this file and other files.  Finally,
-confirm that you understand all the functions you're calling from APR here.
-
-Once you have the file correct and analyzed, go back through and assume
-I'm an idiot.  Then, criticize the design I have to see how you can improve
-it if you can.  Don't \emph{actually} change the code, just create a little
-\file{notes.txt} file and write down your thoughts and what you might change.
+输入完成并编译成功以后，你就可以对它进行分析了。如果你完成了前面的挑战，那你应该看出
+\file{shell.c} 中的函数是如何被用以运行 shell，以及参数是如何被替换的。如果你看不明白，
+那你需要回到前面，知道\emph{真正}弄懂 \func{Shell\_exec} 的工作原理为止。
 
 
-\subsection{The \file{devpkg} Main Function}
+\subsubsection{挑战 3: 评判我的设计}
 
-The last and most important file, but probably the simplest, is \file{devpkg.c}
-where the \func{main} function lives.  There's no \file{.h} file for this, since
-this one includes all the others.  Instead this just creates the executable
-\program{devpkg} when combined with the other \file{.o} files from our 
-\file{Makefile}.  Enter in the code for this file, and make sure it's 
-correct.
+和之前一样，做一次完整的代码审核，确认你写的和书里的完全一致。然后详细阅读每一个函数，弄
+明白它们的功能。试着去追踪每一个函数是怎样去调用你写在当前文件或者其它代码文件中的函数的。
+最后，确认你弄懂了你从 APR 调用的所有的函数。
+
+确认文件内容正确，而且分析完成以后，回头重新审查一遍。这一次你就把我当成一个白痴，你可以批评
+我的设计方案，并且提出能够改善的地方。不要\emph{真}去修改代码，创建一个 \file{notes.txt} 
+并写下你觉得可以改进的东西即可。
+
+
+\subsection{\file{devpkg} 的主函数}
+
+最后也是最重要的代码文件是 \file{devpkg.c}，不过这可能也是最简单的代码文件了。它就是
+ \func{main} 函数所在的地方。这里我们不需要 \file{.h} 文件，因为它已经包含了所有的
+ 头文件。当它和 \file{Makefile} 中包含的 \file{.o} 文件搭配编译的时候，我们就会编译出
+ 可执行文件 \program{devpkg}。输入该文件的代码并确认没有写错。
+ 
 
 \begin{code}{devpkg.c}
 << d['code/ex26/devpkg.c|pyg|l'] >>
 \end{code}
 
-\subsubsection{Challenge 4: The README And Test Files}
+\subsubsection{挑战 4: README 和测试文件}
 
-The challenge for this file is to understand how the arguments are
-being processed, what the arguments are, and then create the \file{README}
-file with instructions on how to use it.  As you write the README, also
-write a simple \file{test.sh} that runs \program{./devpkg} to check that
-each command is actually working against real live code.  Use the \verb|set -e|
-at the top of your script so that it aborts on the first error.
+对于这个代码文件的挑战是弄懂参数是什么意思，以及它们是怎样被处理的。然后你需要创建一个
+README 文件来说明该程序的用法。在你写 README 的同时再写一个简单的 \file{test.sh}，
+让它去运行 \program{./devpkg} 以检查所有的命令是否都有效。在你的脚本最上方使用
+\verb|set -e|，这样脚本就会在第一次发生错误的时候就停止执行。
 
-Finally, run the program under valgrind and make sure it's all working
-before moving on to the mid-term exam.
+最后，在 valgrind 下面运行程序，并确认一切工作正常。这也是期中考试前的最后一件事情。
 
-\section{The Mid-Term Exam}
+\section{期中考试}
 
-Your final challenge is the mid-term exam and it involves three things:
+你的最后一项挑战就是期中考试了，你要完成三件事情：
 
 \begin{enumerate}
-\item Compare your code to my code available online and starting with 100\%, 
-    remove 1\% for each line you got wrong.
-\item Take your notes.txt on how you would improve the code and functionality
-    of \program{devpkg} and implement your improvements.
-\item Write an alternative version of \program{devpkg} using your other 
-    favorite language or the one you think can do this the best.  Compare
-    the two, then improve your \emph{C} version of \program{devpkg} based on what
-    you've learned.
+\item 将你的代码和我放在网上的代码比较，以 100 分为基数，每一处写错的地方扣掉 1 分。
+\item 将你记在 notes.txt 中的代码或者功能方面可以改进的地方通过修改程序去一一实现。
+\item 用你喜欢或者熟悉的另外一门语言写个新版本的 \program{devpkg}，和 C 语言版的比较，
+    然后通过你学到的东西去改进 \emph{C} 语言版的 \program{devpkg}。
 \end{enumerate}
 
-To compare your code with mine, do the following:
+通过下面的方法比较你的代码和我的代码:
 
 \begin{lstlisting}
 cd ..  # get one directory above your current one
@@ -344,13 +326,9 @@ git clone git://gitorious.org/devpkg/devpkg.git devpkgzed
 diff -r devpkg devpkgzed
 \end{lstlisting}
 
-This will clone my version of \program{devpkg} into a directory
-\program{devpkgzed} and then use the tool \program{diff} to compare
-what you've done to what I did.  The files you're working with in
-this book come directly from this project, so if you get different
-lines then that's an error.
+上面的命令实现的是将我写的的版本克隆（clone）到本地 \program{devpkgzed} 文件夹下，
+然后使用 \program{diff} 将其和你写的版本进行比较。本书中的代码直接来自于你刚克隆的
+这个项目，所以如果哪行和你的不一样，那就说明出错了。
 
-Keep in mind that there's no real pass or fail on this exercise, just
-a way for you to challenge yourself to be as exact and meticulous as
-possible.
+这次期中考试并没有及格不及格的说法，这样的练习方式是为了让你挑战自己，让自己尽可能做到精确细致。
 
