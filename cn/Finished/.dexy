@@ -15,6 +15,11 @@
             "linenos": "true"
         }
     },
+    "*.sh-session|pyg|l": {
+        "pygments": {
+            "linenos": "true"
+        }
+    },
     "*.sh|pyg|l": {
         "pygments": {
             "linenos": "true"
@@ -22,9 +27,17 @@
     },
     "*.conf": {},
     "*Makefile": {},
+    "Makefile": {},
     "*.out": {},
     "*.css|jinja" : {  },
     "*.cfg|jinja" : {  },
     "*.sty" : { },
-    "*.js" : {}
+    "*.js" : {},
+    "*.diff|pyg|l" : {},
+
+    "styles.html|jinja": {},
+    "tabs.html|jinja": {},
+    "footer.html|jinja": {"inputs": ["ga.html", "comments.html", "course.html", "related.html"]},
+    "*.sed|jinja": {},
+    "$variables": { "PROJECT_NAME": "learn-c-the-hard-way", "TITLE": "Learn C The Hard Way"}
 }
