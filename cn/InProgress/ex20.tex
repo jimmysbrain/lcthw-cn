@@ -1,0 +1,279 @@
+\chapter{习题 20: Zed 的强悍的 debug 宏命令}
+
+There is a constant problem in C that you have been dancing around but which I
+am going to solve in this exercise using a set of macros I developed.  You can
+thank me later when you realize how insanely awesome these macros are.  Right
+now you won't realize how awesome they are, so you'll just have to use them and
+then you can walk up to me one day and say, "Zed, those Debug Macros were the
+bomb. I owe you my first born child because you saved me a decade of heartache
+and prevented me from killing myself more than once. Thank you good sir, here's
+a million dollars and the original Snakehead Telecaster prototype signed by Leo
+Fender."
+
+Yes, they are that awesome.
+
+\section{The C Error Handling Problem}
+
+In almost every programming language handling errors is a difficult activity.
+There's entire programming languages that try as hard as they can to avoid even
+the concept of an error.  Other languages invent complex control structures
+like exceptions to pass error conditions around.  The problem exists mostly
+because programmers assume errors don't happen and this optimism infects the
+type of languages they use and create.
+
+C tackles the problem by returning error codes and setting a global
+\ident{errno} value that you check.  This makes for complex code that
+simply exists to check if something you did had an error.  As you 
+write more and more C code you'll write code with the pattern:
+
+\begin{enumerate}
+\item Call a function.
+\item If the return value is an error (must look that up each time too).
+\item Then cleanup all the resource created so far.
+\item and print out an error message that hopefully helps.
+\end{enumerate}
+
+This means for every function call (and yes, \emph{every} function)
+you are potentially writing 3-4 more lines just to make sure it worked.
+That doesn't include the problem of cleaning up all of the junk you've
+built to that point.  If you have 10 different structures, 3 files, and
+a database connection, when you get an error then you
+would have 14 more lines.
+
+In the past this wasn't a problem because C programs did what you've
+been doing when there's an error: die.  No point in bothering with cleanup
+when the OS will do it for you.  Today though many C programs need to run
+for weeks, months, or years and handle errors from many different sources
+gracefully.  You can't just have your webserver die at the slightest 
+touch, and you definitely can't have a library you've written nuke a
+the program its used in.  That's just rude.
+
+Other languages solve this problem with exceptions, but those have problems
+in C (and in other languages too).  In C you only have one return value,
+but exceptions are an entire stack based return system with arbitrary
+values.  Trying to marshal exceptions up the stack in C is difficult, and
+no other libraries will understand it.
+
+\section{The Debug Macros}
+
+The solution I've been using for years is a small set of "debug macros"
+that implement a basic debugging and error handling system for C.  This
+system is easy to understand, works with every library, and makes C code
+more solid and clearer.
+
+It does this by adopting the convention that whenever there's an error, your
+function will jump to an "error:" part of the function that knows how to
+cleanup everything and return an error code.  You use a macro called
+\func{check} to check return codes, print an error message, and then
+jump to the cleanup section.  You combine that with a set of logging
+functions for printing out useful debug messages.
+
+I'll now show you the entire contents of the most awesome set of brilliance
+you've ever seen:
+
+\begin{code}{dbg.h}
+<< d['code/dbg.h|pyg|l'] >>
+\end{code}
+
+Yes, that's it, and here's what every line does:
+
+\begin{description}
+\item[dbg.h:1-2] The usual defense against accidentally including the file
+    twice, which you saw in the last exercise.
+\item[dbg.h:4-6] Includes for the functions that these macros need.
+\item[dbg.h:8] The start of a \ident{\#ifdef} which lets you recompile your
+    program so that all the debug log messages are removed.
+\item[dbg.h:9] If you compile with \ident{NDEBUG} defined, then "no debug" messages
+    will remain.  You can see in this case the \ident{\#define debug()} is just
+    replaced with nothing (the right side is empty).
+\item[dbg.h:10] The matching \ident{\#else} for the above \ident{\#ifdef}.
+\item[dbg.h:11] The alternative \ident{\#define debug} that translates any use
+    of \verb|debug("format", arg1, arg2)| into an \func{fprintf} call 
+    to \ident{stderr}.  Many C programmers don't know, but you can create
+    macros that actually work like \func{printf} and take variable arguments.
+    Some C compilers (actually cpp) don't support this, but the ones that matter do.
+    The magic here is the use of \verb|##__VA_ARGS__| which says 
+    "put whatever they had for extra arguments (...) here".  Also notice 
+    the use of \ident{\_\_FILE\_\_} and \ident{\_\_LINE\_\_} to get the
+    current file:line for the debug message.  \emph{Very} helpful.
+\item[dbg.h:12] The end of the \ident{\#ifdef}.
+\item[dbg.h:14] The \func{clean\_errno} macro that's used in the others to get a
+    safe readable version of \ident{errno}.  That strange syntax in the
+    middle is a "ternary operator" and you'll learn what it does later.
+\item[dbg.h:16-20] The \func{log\_err}, \func{log\_warn}, and \func{log\_info},
+    macros for logging messages meant for the end user.  Works
+    like \func{debug} but can't be compiled out.
+\item[dbg.h:22] The best macro ever, \func{check} will make sure the condition
+    \ident{A} is true, and if not logs the error \ident{M} (with variable
+    arguments for \func{log\_err}), then jumps to the function's \ident{error:}
+    for cleanup.
+\item[dbg.h:24] The 2nd best macro ever, \func{sentinel} is placed in any part of a
+    function that shouldn't run, and if it does prints an error message then
+    jumps to the \ident{error:} label.  You put this in \ident{if-statements}
+    and \ident{switch-statements} to catch conditions that shouldn't happen,
+    like the \ident{default:}.
+\item[dbg.h:26] A short-hand macro \func{check\_mem} that makes sure a pointer is 
+    valid, and if it isn't reports it as an error with "Out of memory."
+
+\item[dbg.h:28] An alternative macro \func{check\_debug} that still checks and
+    handles an error, but if the error is common then you don't want to bother
+    reporting it.  In this one it will use \func{debug} instead of \func{log\_err}
+    to report the message, so when you define \ident{NDEBUG} the check still
+    happens, the error jump goes off, but the message isn't printed.
+\end{description}
+
+\section{Using dbg.h}
+
+Here's an example of using all of \file{dbg.h} in a small program.
+This doesn't actually do anything but demonstrate how to use each
+macro, but we'll be using these macros in all of the programs we
+write from now on, so be sure to understand how to use them.
+
+\begin{code}{ex20.c}
+<< d['code/ex20.c|pyg|l'] >>
+\end{code}
+
+Pay attention to how \func{check} is used, and how when it is
+\ident{false} it will jump to the \ident{error:} label to do a cleanup.
+The way to read those lines is, "check that A is true and if not say M
+and jump out."
+
+\section{What You Should See}
+
+When you run this, give it some bogus first parameter and you should see
+this:
+
+\begin{code}{ex20 output}
+\begin{lstlisting}
+<< d['code/ex20.out'] >>
+\end{lstlisting}
+\end{code}
+
+See how it reports the exact line number where the \func{check} failed?
+That's going to save you hours of debugging later.  See also how it 
+prints the error message for you when \ident{errno} is set? Again,
+that will save you hours of debugging.
+
+\section{How The CPP Expands Macros}
+
+It's now time for you to get a small introduction to the CPP so that you
+know how these macros actually work.  To do this, I'm going to break down
+the most complex macro from \file{dbg.h} and have you run \program{cpp} so
+you can see what it's actually doing.
+
+Imagine I have a function called \func{dosomething()} that return the typical
+0 for success and -1 for an error.  Every time I call \func{dosomething} I have
+to check for this error code, so I'd write code like this:
+
+\begin{lstlisting}
+int rc = dosomething();
+if(rc != 0) {
+    fprintf(stderr, "There was an error: %s\n", strerror());
+    goto error;
+}
+\end{lstlisting}
+
+What I want to use the CPP for is to encapsulate this \ident{if-statement} I have
+to use all the time into a more readable and memorable line of code.  I want
+what you've been doing in \file{dbg.h} with the \func{check} macro:
+
+\begin{lstlisting}
+int rc = dosomething();
+check(rc == 0, "There was an error.");
+\end{lstlisting}
+
+This is \emph{much} clearer and explains exactly what's going on: check that the 
+function worked, and if not report an error.  To do this, we need some special
+CPP "tricks" that make the CPP useful as a code generation tool.  Take a look
+at the \func{check} and \func{log\_err} macros again:
+
+\begin{lstlisting}
+#define log_err(M, ...) fprintf(stderr, "[ERROR] (%s:%d: errno: %s) " M "\n", __FILE__, __LINE__, clean_errno(), ##__VA_ARGS__)
+#define check(A, M, ...) if(!(A)) { log_err(M, ##__VA_ARGS__); errno=0; goto error; }
+\end{lstlisting}
+
+The first macro, \func{log\_err} is simpler and simply replace itself with a
+call to \func{fprintf} to \ident{stderr}.  The only tricky part of this macro
+is the use of \verb|...| in the definition \verb|log_err(M, ...)|.  What this
+does is let you pass variable arguments to the macro, so you can pass in the
+arguments that should go to \func{fprintf}.  How do they get injected into the
+\func{fprintf} call?  Look at the end to the \verb|##__VA_ARGS__| and
+that's telling the CPP to take the args entered where the \verb|...| is, and
+inject them at that part of the \func{fprintf} call.  You can then do things
+like this:
+
+\verb|log_err("Age: %d, name: %s", age, name);|
+
+The arguments \verb|age, name| are the \verb|...| part of the definition, and those
+get injected into the fprintf output to become:
+
+\begin{lstlisting}
+fprintf(stderr, "[ERROR] (%s:%d: errno: %s) Age %d: name %d\n",
+    __FILE__, __LINE__, clean_errno(), age, name);
+\end{lstlisting}
+
+See the \verb|age, name| at the end? That's how \verb|...| and
+\verb|##__VA_ARGS__| work together, and it will work in macros that call other
+variable argument macros.  Look at the \func{check} macro now and see it calls
+\func{log\_err}, but \func{check} is \emph{also} using the \verb|...| and
+\verb|##__VA_ARGS__| to do the call.  That's how you can pass full
+\func{printf} style format strings to \func{check}, which go to
+\func{log\_err}, and then make both work like \func{printf}.
+
+Next thing to study is how \func{check} crafts the \ident{if-statement} for the
+error checking.  If we strip out the \func{log\_err} usage we see this:
+
+\verb|if(!(A)) { errno=0; goto error; }|
+
+Which means, if \ident{A} is false, then clear errno and goto the error label.
+That has \func{check} macro being replaced with the \ident{if-statment} so if
+we manually expanded out the macro \verb|check(rc == 0, "There was an error.")|
+we'd get:
+
+\begin{lstlisting}
+if(!(rc == 0) {
+    log_err("There was an error.");
+    errno=0;
+    goto error;
+}
+\end{lstlisting}
+
+What you should be getting from this trip through these two macros is that
+the CPP replaces macros with the expanded version of their definition, but
+that it will do this \emph{recursively}, expanding all the macros in macros.
+The CPP then is just a recursive templating system, as I mentioned before.
+Its power comes from its ability to generate whole blocks of parameterized
+code thus becoming a handy code generation tool.
+
+That leaves one question:  Why not just use a function like \func{die}?
+The reason is you want file:line numbers and the \ident{goto} operation
+for an error handling exit.  If you did this inside a function, you wouldn't
+get a line number for where the error actually happened, and the goto would
+be much more complicated.
+
+Another reason is you still have to write the raw \ident{if-statement}, which
+looks like all the other \ident{if-statements} in your code, so it's not as
+clear that this one is an error check.  By wrapping the \ident{if-statement}
+in a macro called \ident{check} you make it clear that this is just error
+checking, and not part of the main flow.
+
+Finally, CPP has the ability to \emph{conditionally compile} portions
+of code, so you can have code that's only present when you build a developer
+or debug version of the program.  You can see this already in the 
+\file{dbg.h} file where the \func{debug} macro has a body only if 
+it's asked for by the compiler.  Without this ability, you'd need a 
+wasted \ident{if-statement} that checks for "debug mode", and then still
+wastes CPU doing that check for no value.
+
+
+\section{Extra Credit}
+
+\begin{enumerate}
+\item Put \verb|#define NDEBUG| at the top of the file and check that all
+    the debug messages go away.
+\item Undo that line, and add \verb|-DNDEBUG| to \ident{CFLAGS} at the
+    top of the \file{Makefile} then recompile to see the same thing.
+\item Modify the logging so that it include the function name as well
+    as the file:line.
+\end{enumerate}
+
