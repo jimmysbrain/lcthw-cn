@@ -34,6 +34,7 @@ Here's what each of these does:
 \item[build/] Where libraries and other build artifacts go. Also empty and the Makefile will create it if it's not there.
 \item[src/] Where the source code goes, usually \file{.c} and \file{.h} files.
 \item[tests/] Where automated tests go.
+\item[src/dbg.h] I copied the \file{dbg.h} from Exercise 20 into \file{src/} for later.
 \end{description}
 
 I'll now break down each of the compontents of this skeleton project
@@ -191,6 +192,15 @@ the \file{tests/} directory that make it actually work.
     test programs under Valgrind when it sees this \ident{VALGRIND} variable.
 \end{description}
 
+For the unit testing to work you'll need to create a little shell script
+that knows how to run the programs.  Go ahead and create this \file{tests/runtests.sh} script:
+
+
+\begin{code}{tests/runtests.sh}
+<< d['code/c-skeleton/tests/runtests.sh|pyg|l'] >>
+\end{code}
+
+I'll be using this later when I cover how unit tests work.
 
 \subsection{The Cleaner}
 
