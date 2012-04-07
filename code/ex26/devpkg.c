@@ -3,7 +3,6 @@
 #include <apr_getopt.h>
 #include <apr_strings.h>
 #include <apr_lib.h>
-#include <apr_strings.h>
 
 #include "dbg.h"
 #include "db.h"
