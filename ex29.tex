@@ -20,14 +20,14 @@ To start off there are two basic types of libraries:
 
 \begin{description}
 \item[static] You've made one of these when you used \program{ar} and \program{ranlib}
-    to creat the \file{libYOUR\_LIBRARY.a} in the last exercise.  This kind of library
+    to create the \file{libYOUR\_LIBRARY.a} in the last exercise.  This kind of library
     is nothing more than a container for a set of \file{.o} object files and their
     functions, and you can treat it like one big \file{.o} file when building 
     your programs.
 \item[dynamic] These typically end in \file{.so}, \file{.dll} or about 1 million other
     endings on OSX depending on the version and who happened to be working that day.
     Seriously though, OSX adds \file{.dylib}, \file{.bundle}, and \file{.framework} with not much distinction between the three. These files are built and then placed
-    in a common location.  When you run your program the OS dynamically loades these
+    in a common location.  When you run your program the OS dynamically loads these
     files and links them to your program on the fly.
 \end{description}
 

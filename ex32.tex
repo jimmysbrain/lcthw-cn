@@ -71,7 +71,7 @@ I'll build is the Double Linked List.
 
 \section{Double Linked Lists}
 
-The first data strucutre we'll add to \file{liblcthw} is a double linked list.
+The first data structure we'll add to \file{liblcthw} is a double linked list.
 This is the simplest data structure you can make, and it has useful properties
 for certain operations.  A linked list works by nodes having pointers to their
 next or previous element.  A "double linked list" contains pointers to both,
@@ -125,12 +125,12 @@ element of the list.
 
 Finally, take a look at \file{src/lcthw/list.h:37} where I define
 the \ident{LIST\_FOREACH} macro.  This is a common idiom where you
-makea a macro that generates iteration code so people can't mess
+make a macro that generates iteration code so people can't mess
 it up.  Getting this kind of processing right can be difficult with
 data structures, so writing macros helps people out.  You'll see
 how I use this when I talk about the implementation.
 
-\subsection{Implemention}
+\subsection{Implementation}
 
 Once you understand that, you mostly understand how a double linked list
 works.  It is nothing more than nodes with two pointers to the next and
@@ -172,7 +172,7 @@ the code.
     element and returns it.
 \item[list.c:List\_remove] Something that seems to always be difficult in 
     data structures is removing things, and this function is no different. It
-    has to handle quite a few conditions depending on if the elemnt
+    has to handle quite a few conditions depending on if the element
     being removed is at the front; the end; both front and end; or middle.
 \end{description}
 
