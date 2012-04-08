@@ -220,7 +220,7 @@ Instead of breaking this, I'm going to tell you how to improve the code:
 \item You can add asserts for preconditions that it isn't given a \ident{NULL}
     value for the \ident{List *list} parameters.
 \item You can add invariants that check the list's contents are always correct,
-    such as \ident{count} is never less-than 0, if \ident{count} is > 0 then \ident{first} isn't NULL.
+    such as \ident{count} is never \verb|< 0|, and if \verb|count > 0| then \ident{first} isn't NULL.
 \item You can add documentation to the header file in the form of comments before
     each struct, function, and macro that describes what it does.
 \end{enumerate}
