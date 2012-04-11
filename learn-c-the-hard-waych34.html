@@ -1,23 +1,244 @@
-<html><head><title>Exercise 31: Debugging Code</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych35.html">next</a>] [<a href="learn-c-the-hard-waych33.html">prev</a>] [<a href="learn-c-the-hard-waych33.html#taillearn-c-the-hard-waych33.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych34.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych34.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 34</span><br><a id="x40-20000034"></a>Exercise 31: Debugging Code</h2>
-<!--l. 3--><p class="noindent">This exercise will teach you strategies for debugging a problem in your code. We’ll
-cover logging, make some macros to help with logging, asserts, and finally using a
-debugger if you need to use one.
-    </p><h3 class="sectionHead"><span class="titlemark">34.1    </span> <a id="x40-20100034.1"></a>What You Should See</h3>
-<!--l. 11--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">34.2    </span> <a id="x40-20200034.2"></a>How To Break It</h3>
-<!--l. 14--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">34.3    </span> <a id="x40-20300034.3"></a>Extra Credit</h3>
+<html><head><title>Exercise 33: Linked List Algorithms</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 34</span><br><a id="x40-21800034"></a>Exercise 33: Linked List Algorithms</h2>
+<!--l. 3--><p class="noindent">I’m going to cover two algorithms you can do on a linked list that involve sorting.
+I’m going to warn you first that if you need to sort the data, then don’t use a linked
+list. These are horrible for sorting things, and there’s much better data structures you
+can use if that’s a requirement. I’m covering these two algorithms because they are
+slightly difficult to pull off with a linked list and get you thinking about
+manipulating them efficiently.
+<!--l. 10--></p><p class="indent">    In the interest of writing this book, I’m going to put the algorithms in
+two different files list_algos.h and list_algos.c then write a test in
+list_algos_test.c. For now just follow my structure, as it does keep things
+clean, but if you ever work on other libraries remember this isn’t a common
+structure.
+<!--l. 16--></p><p class="indent">    In this exercise I’m going to also give you an extra challenge and I want
+you to try not to cheat. I’m going to give you the unit test first, and I want
+you to type it in. Then I want you to try and implement the two algorithms
+based on their descriptions in Wikipedia before seeing if your code is like my
+code.
+    </p><h4 class="subsectionHead"><span class="titlemark">34.0.1    </span> <a id="x40-21900034.0.1"></a>Bubble And Merge Sort</h4>
+<!--l. 24--><p class="noindent">You know what’s awesome about the Internet? I can just link you to the <a href="http://en.wikipedia.org/wiki/Bubble_sort">Bubble Sort
+page</a> and <a href="http://en.wikipedia.org/wiki/Merge_sort">Merge Sort page</a> on Wikipedia and tell you to read that. Man, that saves
+me a boat load of typing. Now I can tell you how to actually implement each of these
+using the pseudo-code they have there. Here’s how you can tackle an algorithm like
+this:
+<!--l. 31--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x40-219002x1">Read the description and look at any visualizations it has.
+     </li>
+                                                                  
+
+                                                                  
+     <li class="enumerate" id="x40-219004x2">Either draw the algorithm on paper using boxes and lines, or actually
+     take  a  deck  of  numbered  cards  (like  Poker  Cards)  and  try  to  do  the
+     algorithm manually. This gives you a concrete demonstration of how the
+     algorithm works.
+     </li>
+     <li class="enumerate" id="x40-219006x3">Create  the  skeleton  functions  in  your  list_algos.c file  and  make  a
+     working list_algos.h file, then setup your test harness.
+     </li>
+     <li class="enumerate" id="x40-219008x4">Write your first failing test and get everything to compile.
+     </li>
+     <li class="enumerate" id="x40-219010x5">Go back to the Wikipedia page and copy-paste the pseudo-code (not the
+     C code!) into the guts of the first function you’re making.
+     </li>
+     <li class="enumerate" id="x40-219012x6">Translate this pseudo-code into good C code like I’ve taught you, using
+     your unit test to make sure it’s working.
+     </li>
+     <li class="enumerate" id="x40-219014x7">Fill out some more tests for edge cases like, empty lists, already sorted
+     lists, etc.
+     </li>
+     <li class="enumerate" id="x40-219016x8">Repeat for the next algorithm and test.</li></ol><!--l. 45--><p class="indent">    I just gave you the secret to figuring out most of the algorithms out there, that
+is until you get to some of the more insane ones. In this case you’re just
+doing the Bubble and Merge Sorts from Wikipedia, but those will be good
+starters.
+<!--l. 50--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">34.0.2    </span> <a id="x40-22000034.0.2"></a>The Unit Test</h4>
+<!--l. 52--><p class="noindent">Here is the unit test you should try to get passing:
                                                                   
 
                                                                   
                                                                   
 
                                                                   
+<!--l. 54--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych35.html">next</a>] [<a href="learn-c-the-hard-waych33.html">prev</a>] [<a href="learn-c-the-hard-waych33.html#taillearn-c-the-hard-waych33.html">prev-tail</a>] [<a href="learn-c-the-hard-waych34.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych34.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych34.html"></a>   
+<a id="x40-220001r97"></a>
+ <div class="caption"><span class="id">Source 97: </span><span class="content">                                                                                  tests/list_algos_tests.c</span></div><!--tex4ht:label?: x40-220001r97 -->
+<div class="fancyvrb" id="fancyvrb64"><a id="x40-220003r1"></a>1  <span id="textcolor5320">#</span><span id="textcolor5321">include "minunit.h"</span><br class="fancyvrb"><a id="x40-220005r2"></a>2  <span id="textcolor5322">#</span><span id="textcolor5323">include <lcthw><span id="textcolor5324">/</span><span id="textcolor5325">list_algos.h&gt;</span><br class="fancyvrb"><a id="x40-220007r3"></a>3  <span id="textcolor5326">#</span><span id="textcolor5327">include <assert.h></assert.h></span>
+<br class="fancyvrb"><a id="x40-220009r4"></a>4  <span id="textcolor5328">#</span><span id="textcolor5329">include <string.h></string.h></span><br class="fancyvrb"><a id="x40-220011r5"></a>5  <br class="fancyvrb"><a id="x40-220013r6"></a>6  <span id="textcolor5330">char</span> ⋆values[] = {<span class="colorbox" id="colorbox5331"><span id="textcolor5332">"</span></span><span class="colorbox" id="colorbox5333"><span id="textcolor5334">XXXX</span></span><span class="colorbox" id="colorbox5335"><span id="textcolor5336">"</span></span>, <span class="colorbox" id="colorbox5337"><span id="textcolor5338">"</span></span><span class="colorbox" id="colorbox5339"><span id="textcolor5340">1234</span></span><span class="colorbox" id="colorbox5341"><span id="textcolor5342">"</span></span>, <span class="colorbox" id="colorbox5343"><span id="textcolor5344">"</span></span><span class="colorbox" id="colorbox5345"><span id="textcolor5346">abcd</span></span><span class="colorbox" id="colorbox5347"><span id="textcolor5348">"</span></span>, <span class="colorbox" id="colorbox5349"><span id="textcolor5350">"</span></span><span class="colorbox" id="colorbox5351"><span id="textcolor5352">xjvef</span></span><span class="colorbox" id="colorbox5353"><span id="textcolor5354">"</span></span>, <span class="colorbox" id="colorbox5355"><span id="textcolor5356">"</span></span><span class="colorbox" id="colorbox5357"><span id="textcolor5358">NDSS</span></span><span class="colorbox" id="colorbox5359"><span id="textcolor5360">"</span></span>};
+<br class="fancyvrb"><a id="x40-220015r7"></a>7  <span id="textcolor5361">#</span><span id="textcolor5362">define NUM_VALUES 5</span><br class="fancyvrb"><a id="x40-220017r8"></a>8  <br class="fancyvrb"><a id="x40-220019r9"></a>9  List ⋆<span id="textcolor5363">create_words</span>()<br class="fancyvrb"><a id="x40-220021r10"></a>10  {<br class="fancyvrb"><a id="x40-220023r11"></a>11      <span id="textcolor5364">int</span> i = <span id="textcolor5365">0</span>;
+<br class="fancyvrb"><a id="x40-220025r12"></a>12      List ⋆words = List_create();<br class="fancyvrb"><a id="x40-220027r13"></a>13  <br class="fancyvrb"><a id="x40-220029r14"></a>14      <span id="textcolor5366">for</span>(i = <span id="textcolor5367">0</span>; i <a id="x40-220031r15"></a>15          List_push(words, values[i]);<br class="fancyvrb"><a id="x40-220033r16"></a>16      }<br class="fancyvrb"><a id="x40-220035r17"></a>17  <br class="fancyvrb"><a id="x40-220037r18"></a>18      <span id="textcolor5368">return</span> words;<br class="fancyvrb"><a id="x40-220039r19"></a>19  }<br class="fancyvrb"><a id="x40-220041r20"></a>20  
+<br class="fancyvrb"><a id="x40-220043r21"></a>21  <span id="textcolor5369">int</span> <span id="textcolor5370">is_sorted</span>(List ⋆words)<br class="fancyvrb"><a id="x40-220045r22"></a>22  {<br class="fancyvrb"><a id="x40-220047r23"></a>23      LIST_FOREACH(words, first, next, cur) {
+<br class="fancyvrb"><a id="x40-220049r24"></a>24          <span id="textcolor5371">if</span>(cur-&gt;next &amp;&amp; strcmp(cur-&gt;value, cur-&gt;next-&gt;value) &gt; <span id="textcolor5372">0</span>) {
+<br class="fancyvrb"><a id="x40-220051r25"></a>25              debug(<span class="colorbox" id="colorbox5373"><span id="textcolor5374">"</span></span><span class="colorbox" id="colorbox5375"><span id="textcolor5376">%s %s</span></span><span class="colorbox" id="colorbox5377"><span id="textcolor5378">"</span></span>, (<span id="textcolor5379">char</span> ⋆)cur-&gt;value, (<span id="textcolor5380">char</span> ⋆)cur-&gt;next-&gt;value);
+<br class="fancyvrb"><a id="x40-220053r26"></a>26              <span id="textcolor5381">return</span> <span id="textcolor5382">0</span>;<br class="fancyvrb"><a id="x40-220055r27"></a>27          }<br class="fancyvrb"><a id="x40-220057r28"></a>28      }<br class="fancyvrb"><a id="x40-220059r29"></a>29  <br class="fancyvrb"><a id="x40-220061r30"></a>30      <span id="textcolor5383">return</span> <span id="textcolor5384">1</span>;<br class="fancyvrb"><a id="x40-220063r31"></a>31  }<br class="fancyvrb"><a id="x40-220065r32"></a>32  
+<br class="fancyvrb"><a id="x40-220067r33"></a>33  <span id="textcolor5385">char</span> ⋆<span id="textcolor5386">test_bubble_sort</span>()<br class="fancyvrb"><a id="x40-220069r34"></a>34  {<br class="fancyvrb"><a id="x40-220071r35"></a>35      List ⋆words = create_words();
+<br class="fancyvrb"><a id="x40-220073r36"></a>36  <br class="fancyvrb"><a id="x40-220075r37"></a>37      <span id="textcolor5387">// should work on a list that needs sorting</span>
+<br class="fancyvrb"><a id="x40-220077r38"></a>38      <span id="textcolor5388">int</span> rc = List_bubble_sort(words, (List_compare)strcmp);
+<br class="fancyvrb"><a id="x40-220079r39"></a>39      mu_assert(rc == <span id="textcolor5389">0</span>, <span class="colorbox" id="colorbox5390"><span id="textcolor5391">"</span></span><span class="colorbox" id="colorbox5392"><span id="textcolor5393">Bubble sort failed.</span></span><span class="colorbox" id="colorbox5394"><span id="textcolor5395">"</span></span>);
+<br class="fancyvrb"><a id="x40-220081r40"></a>40      mu_assert(is_sorted(words), <span class="colorbox" id="colorbox5396"><span id="textcolor5397">"</span></span><span class="colorbox" id="colorbox5398"><span id="textcolor5399">Words are not sorted after bubble sort.</span></span><span class="colorbox" id="colorbox5400"><span id="textcolor5401">"</span></span>);
+<br class="fancyvrb"><a id="x40-220083r41"></a>41  <br class="fancyvrb"><a id="x40-220085r42"></a>42      <span id="textcolor5402">// should work on an already sorted list</span>
+<br class="fancyvrb"><a id="x40-220087r43"></a>43      rc = List_bubble_sort(words, (List_compare)strcmp);
+<br class="fancyvrb"><a id="x40-220089r44"></a>44      mu_assert(rc == <span id="textcolor5403">0</span>, <span class="colorbox" id="colorbox5404"><span id="textcolor5405">"</span></span><span class="colorbox" id="colorbox5406"><span id="textcolor5407">Bubble sort of already sorted failed.</span></span><span class="colorbox" id="colorbox5408"><span id="textcolor5409">"</span></span>);
+<br class="fancyvrb"><a id="x40-220091r45"></a>45      mu_assert(is_sorted(words), <span class="colorbox" id="colorbox5410"><span id="textcolor5411">"</span></span><span class="colorbox" id="colorbox5412"><span id="textcolor5413">Words should be sort if already bubble sorted.</span></span><span class="colorbox" id="colorbox5414"><span id="textcolor5415">"</span></span>);
+<br class="fancyvrb"><a id="x40-220093r46"></a>46  <br class="fancyvrb"><a id="x40-220095r47"></a>47      List_destroy(words);<br class="fancyvrb"><a id="x40-220097r48"></a>48  <br class="fancyvrb"><a id="x40-220099r49"></a>49      <span id="textcolor5416">// should work on an empty list</span>
+<br class="fancyvrb"><a id="x40-220101r50"></a>50      words = List_create(words);<br class="fancyvrb"><a id="x40-220103r51"></a>51      rc = List_bubble_sort(words, (List_compare)strcmp);
+<br class="fancyvrb"><a id="x40-220105r52"></a>52      mu_assert(rc == <span id="textcolor5417">0</span>, <span class="colorbox" id="colorbox5418"><span id="textcolor5419">"</span></span><span class="colorbox" id="colorbox5420"><span id="textcolor5421">Bubble sort failed on empty list.</span></span><span class="colorbox" id="colorbox5422"><span id="textcolor5423">"</span></span>);
+<br class="fancyvrb"><a id="x40-220107r53"></a>53      mu_assert(is_sorted(words), <span class="colorbox" id="colorbox5424"><span id="textcolor5425">"</span></span><span class="colorbox" id="colorbox5426"><span id="textcolor5427">Words should be sorted if empty.</span></span><span class="colorbox" id="colorbox5428"><span id="textcolor5429">"</span></span>);<br class="fancyvrb"><a id="x40-220109r54"></a>54  
+<br class="fancyvrb"><a id="x40-220111r55"></a>55      List_destroy(words);<br class="fancyvrb"><a id="x40-220113r56"></a>56  <br class="fancyvrb"><a id="x40-220115r57"></a>57      <span id="textcolor5430">return</span> <span id="textcolor5431">NULL</span>;<br class="fancyvrb"><a id="x40-220117r58"></a>58  }<br class="fancyvrb"><a id="x40-220119r59"></a>59  <br class="fancyvrb"><a id="x40-220121r60"></a>60  <span id="textcolor5432">char</span> ⋆<span id="textcolor5433">test_merge_sort</span>()<br class="fancyvrb"><a id="x40-220123r61"></a>61  {
+<br class="fancyvrb"><a id="x40-220125r62"></a>62      List ⋆words = create_words();<br class="fancyvrb"><a id="x40-220127r63"></a>63  <br class="fancyvrb"><a id="x40-220129r64"></a>64      <span id="textcolor5434">// should work on a list that needs sorting</span>
+<br class="fancyvrb"><a id="x40-220131r65"></a>65      List ⋆res = List_merge_sort(words, (List_compare)strcmp);
+<br class="fancyvrb"><a id="x40-220133r66"></a>66      mu_assert(is_sorted(res), <span class="colorbox" id="colorbox5435"><span id="textcolor5436">"</span></span><span class="colorbox" id="colorbox5437"><span id="textcolor5438">Words are not sorted after merge sort.</span></span><span class="colorbox" id="colorbox5439"><span id="textcolor5440">"</span></span>);
+<br class="fancyvrb"><a id="x40-220135r67"></a>67  <br class="fancyvrb"><a id="x40-220137r68"></a>68      List ⋆res2 = List_merge_sort(res, (List_compare)strcmp);
+<br class="fancyvrb"><a id="x40-220139r69"></a>69      mu_assert(is_sorted(res), <span class="colorbox" id="colorbox5441"><span id="textcolor5442">"</span></span><span class="colorbox" id="colorbox5443"><span id="textcolor5444">Should still be sorted after merge sort.</span></span><span class="colorbox" id="colorbox5445"><span id="textcolor5446">"</span></span>);
+<br class="fancyvrb"><a id="x40-220141r70"></a>70      List_destroy(res2);<br class="fancyvrb"><a id="x40-220143r71"></a>71      List_destroy(res);<br class="fancyvrb"><a id="x40-220145r72"></a>72  <br class="fancyvrb"><a id="x40-220147r73"></a>73      List_destroy(words);
+<br class="fancyvrb"><a id="x40-220149r74"></a>74      <span id="textcolor5447">return</span> <span id="textcolor5448">NULL</span>;<br class="fancyvrb"><a id="x40-220151r75"></a>75  }<br class="fancyvrb"><a id="x40-220153r76"></a>76  <br class="fancyvrb"><a id="x40-220155r77"></a>77  <br class="fancyvrb"><a id="x40-220157r78"></a>78  <span id="textcolor5449">char</span> ⋆<span id="textcolor5450">all_tests</span>()<br class="fancyvrb"><a id="x40-220159r79"></a>79  {<br class="fancyvrb"><a id="x40-220161r80"></a>80      mu_suite_start();<br class="fancyvrb"><a id="x40-220163r81"></a>81  
+<br class="fancyvrb"><a id="x40-220165r82"></a>82      mu_run_test(test_bubble_sort);<br class="fancyvrb"><a id="x40-220167r83"></a>83      mu_run_test(test_merge_sort);
+<br class="fancyvrb"><a id="x40-220169r84"></a>84  <br class="fancyvrb"><a id="x40-220171r85"></a>85      <span id="textcolor5451">return</span> <span id="textcolor5452">NULL</span>;<br class="fancyvrb"><a id="x40-220173r86"></a>86  }<br class="fancyvrb"><a id="x40-220175r87"></a>87  <br class="fancyvrb"><a id="x40-220177r88"></a>88  RUN_TESTS(all_tests);</lcthw></span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 148--><p class="indent">    I suggest that you start with the bubble sort and get that working, then move on
+to the merge sort. What I would do is lay out the function prototypes and skeletons
+that get all three files compiling, but not passing the test. Then just fill in the
+implementation until it starts working.
+    </p><h4 class="subsectionHead"><span class="titlemark">34.0.3    </span> <a id="x40-22100034.0.3"></a>The Implementation</h4>
+<!--l. 154--><p class="noindent">Are you cheating? In future exercises I will do exercises where I just give you a unit
+test and tell you to implement it, so it’ll be good practice for you to not look at this
+code until you get your own working. Here’s the code for the list_algos.c and
+list_algos.h:
+                                                                  
+
+                                                                  
+<!--l. 159--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x40-221001r98"></a>
+ <div class="caption"><span class="id">Source 98: </span><span class="content">                                                                                    src/lcthw/list_algos.h</span></div><!--tex4ht:label?: x40-221001r98 -->
+<div class="fancyvrb" id="fancyvrb65"><a id="x40-221003r1"></a>1  <span id="textcolor5453">#</span><span id="textcolor5454">ifndef lcthw_List_algos_h</span><br class="fancyvrb"><a id="x40-221005r2"></a>2  <span id="textcolor5455">#</span><span id="textcolor5456">define lcthw_List_algos_h</span><br class="fancyvrb"><a id="x40-221007r3"></a>3  
+<br class="fancyvrb"><a id="x40-221009r4"></a>4  <span id="textcolor5457">#</span><span id="textcolor5458">include <lcthw><span id="textcolor5459">/</span><span id="textcolor5460">list.h&gt;</span><br class="fancyvrb"><a id="x40-221011r5"></a>5  <br class="fancyvrb"><a id="x40-221013r6"></a>6  <span id="textcolor5461">typedef</span> <span id="textcolor5462">int</span> (⋆List_compare)(<span id="textcolor5463">void</span> ⋆a, <span id="textcolor5464">void</span> ⋆b);
+<br class="fancyvrb"><a id="x40-221015r7"></a>7  <br class="fancyvrb"><a id="x40-221017r8"></a>8  <span id="textcolor5465">int</span> List_bubble_sort(List ⋆list, List_compare cmp);<br class="fancyvrb"><a id="x40-221019r9"></a>9  
+<br class="fancyvrb"><a id="x40-221021r10"></a>10  List ⋆List_merge_sort(List ⋆list, List_compare cmp);<br class="fancyvrb"><a id="x40-221023r11"></a>11  <br class="fancyvrb"><a id="x40-221025r12"></a>12  <span id="textcolor5466">#</span><span id="textcolor5467">endif</span></lcthw></span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 177--><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x40-221026r99"></a>
+<div class="caption"><span class="id">Source 99: </span><span class="content">                                                                                    src/lcthw/list_algos.c</span></div><!--tex4ht:label?: x40-221026r99 -->
+<div class="fancyvrb" id="fancyvrb66"><a id="x40-221028r1"></a>1  <span id="textcolor5468">#</span><span id="textcolor5469">include <lcthw><span id="textcolor5470">/</span><span id="textcolor5471">list_algos.h&gt;</span><br class="fancyvrb"><a id="x40-221030r2"></a>2  <span id="textcolor5472">#</span><span id="textcolor5473">include <lcthw><span id="textcolor5474">/</span><span id="textcolor5475">dbg.h&gt;</span><br class="fancyvrb"><a id="x40-221032r3"></a>3  
+<br class="fancyvrb"><a id="x40-221034r4"></a>4  <span id="textcolor5476">inline</span> <span id="textcolor5477">void</span> <span id="textcolor5478">ListNode_swap</span>(ListNode ⋆a, ListNode ⋆b)<br class="fancyvrb"><a id="x40-221036r5"></a>5  {
+<br class="fancyvrb"><a id="x40-221038r6"></a>6      <span id="textcolor5479">void</span> ⋆temp = a-&gt;value;<br class="fancyvrb"><a id="x40-221040r7"></a>7      a-&gt;value = b-&gt;value;<br class="fancyvrb"><a id="x40-221042r8"></a>8      b-&gt;value = temp;
+<br class="fancyvrb"><a id="x40-221044r9"></a>9  }<br class="fancyvrb"><a id="x40-221046r10"></a>10  <br class="fancyvrb"><a id="x40-221048r11"></a>11  <span id="textcolor5480">int</span> <span id="textcolor5481">List_bubble_sort</span>(List ⋆list, List_compare cmp)<br class="fancyvrb"><a id="x40-221050r12"></a>12  {
+<br class="fancyvrb"><a id="x40-221052r13"></a>13      <span id="textcolor5482">int</span> sorted = <span id="textcolor5483">1</span>;<br class="fancyvrb"><a id="x40-221054r14"></a>14  <br class="fancyvrb"><a id="x40-221056r15"></a>15      <span id="textcolor5484">if</span>(List_count(list) 1</lcthw></span>) {
+<br class="fancyvrb"><a id="x40-221058r16"></a>16          <span id="textcolor5486">return</span> <span id="textcolor5487">0</span>;  <span id="textcolor5488">// already sorted</span><br class="fancyvrb"><a id="x40-221060r17"></a>17      }<br class="fancyvrb"><a id="x40-221062r18"></a>18  <br class="fancyvrb"><a id="x40-221064r19"></a>19      <span id="textcolor5489">do</span> {<br class="fancyvrb"><a id="x40-221066r20"></a>20          sorted = <span id="textcolor5490">1</span>;
+<br class="fancyvrb"><a id="x40-221068r21"></a>21          LIST_FOREACH(list, first, next, cur) {<br class="fancyvrb"><a id="x40-221070r22"></a>22              <span id="textcolor5491">if</span>(cur-&gt;next) {
+<br class="fancyvrb"><a id="x40-221072r23"></a>23                  <span id="textcolor5492">if</span>(cmp(cur-&gt;value, cur-&gt;next-&gt;value) &gt; <span id="textcolor5493">0</span>) {
+<br class="fancyvrb"><a id="x40-221074r24"></a>24                      ListNode_swap(cur, cur-&gt;next);<br class="fancyvrb"><a id="x40-221076r25"></a>25                      sorted = <span id="textcolor5494">0</span>;
+<br class="fancyvrb"><a id="x40-221078r26"></a>26                  }<br class="fancyvrb"><a id="x40-221080r27"></a>27              }<br class="fancyvrb"><a id="x40-221082r28"></a>28          }<br class="fancyvrb"><a id="x40-221084r29"></a>29      } <span id="textcolor5495">while</span>(!sorted);<br class="fancyvrb"><a id="x40-221086r30"></a>30  <br class="fancyvrb"><a id="x40-221088r31"></a>31      <span id="textcolor5496">return</span> <span id="textcolor5497">0</span>;
+<br class="fancyvrb"><a id="x40-221090r32"></a>32  }<br class="fancyvrb"><a id="x40-221092r33"></a>33  <br class="fancyvrb"><a id="x40-221094r34"></a>34  <span id="textcolor5498">inline</span> List ⋆<span id="textcolor5499">List_merge</span>(List ⋆left, List ⋆right, List_compare cmp)
+<br class="fancyvrb"><a id="x40-221096r35"></a>35  {<br class="fancyvrb"><a id="x40-221098r36"></a>36      List ⋆result = List_create();<br class="fancyvrb"><a id="x40-221100r37"></a>37      <span id="textcolor5500">void</span> ⋆val = <span id="textcolor5501">NULL</span>;<br class="fancyvrb"><a id="x40-221102r38"></a>38  
+<br class="fancyvrb"><a id="x40-221104r39"></a>39      <span id="textcolor5502">while</span>(List_count(left) &gt; <span id="textcolor5503">0</span> || List_count(right) &gt; <span id="textcolor5504">0</span>) {
+<br class="fancyvrb"><a id="x40-221106r40"></a>40          <span id="textcolor5505">if</span>(List_count(left) &gt; <span id="textcolor5506">0</span> &amp;&amp; List_count(right) &gt; <span id="textcolor5507">0</span>) {
+<br class="fancyvrb"><a id="x40-221108r41"></a>41              <span id="textcolor5508">if</span>(cmp(List_first(left), List_first(right)) 0</lcthw></span>) {
+<br class="fancyvrb"><a id="x40-221110r42"></a>42                  val = List_unshift(left);<br class="fancyvrb"><a id="x40-221112r43"></a>43              } <span id="textcolor5510">else</span> {
+<br class="fancyvrb"><a id="x40-221114r44"></a>44                  val = List_unshift(right);<br class="fancyvrb"><a id="x40-221116r45"></a>45              }<br class="fancyvrb"><a id="x40-221118r46"></a>46  
+<br class="fancyvrb"><a id="x40-221120r47"></a>47              List_push(result, val);<br class="fancyvrb"><a id="x40-221122r48"></a>48          } <span id="textcolor5511">else</span> <span id="textcolor5512">if</span>(List_count(left) &gt; <span id="textcolor5513">0</span>) {
+<br class="fancyvrb"><a id="x40-221124r49"></a>49              val = List_unshift(left);<br class="fancyvrb"><a id="x40-221126r50"></a>50              List_push(result, val);
+<br class="fancyvrb"><a id="x40-221128r51"></a>51          } <span id="textcolor5514">else</span> <span id="textcolor5515">if</span>(List_count(right) &gt; <span id="textcolor5516">0</span>) {<br class="fancyvrb"><a id="x40-221130r52"></a>52              val = List_unshift(right);
+<br class="fancyvrb"><a id="x40-221132r53"></a>53              List_push(result, val);<br class="fancyvrb"><a id="x40-221134r54"></a>54          }<br class="fancyvrb"><a id="x40-221136r55"></a>55      }<br class="fancyvrb"><a id="x40-221138r56"></a>56  <br class="fancyvrb"><a id="x40-221140r57"></a>57      <span id="textcolor5517">return</span> result;
+<br class="fancyvrb"><a id="x40-221142r58"></a>58  }<br class="fancyvrb"><a id="x40-221144r59"></a>59  <br class="fancyvrb"><a id="x40-221146r60"></a>60  List ⋆<span id="textcolor5518">List_merge_sort</span>(List ⋆list, List_compare cmp)<br class="fancyvrb"><a id="x40-221148r61"></a>61  {
+<br class="fancyvrb"><a id="x40-221150r62"></a>62      <span id="textcolor5519">if</span>(List_count(list) 1) {<br class="fancyvrb"><a id="x40-221152r63"></a>63          <span id="textcolor5521">return</span> list;<br class="fancyvrb"><a id="x40-221154r64"></a>64      }<br class="fancyvrb"><a id="x40-221156r65"></a>65  
+<br class="fancyvrb"><a id="x40-221158r66"></a>66      List ⋆left = List_create();<br class="fancyvrb"><a id="x40-221160r67"></a>67      List ⋆right = List_create();
+<br class="fancyvrb"><a id="x40-221162r68"></a>68      <span id="textcolor5522">int</span> middle = List_count(list) / <span id="textcolor5523">2</span>;<br class="fancyvrb"><a id="x40-221164r69"></a>69  <br class="fancyvrb"><a id="x40-221166r70"></a>70      LIST_FOREACH(list, first, next, cur) {
+<br class="fancyvrb"><a id="x40-221168r71"></a>71          <span id="textcolor5524">if</span>(middle &gt; <span id="textcolor5525">0</span>) {<br class="fancyvrb"><a id="x40-221170r72"></a>72              List_push(left, cur-&gt;value);
+<br class="fancyvrb"><a id="x40-221172r73"></a>73          } <span id="textcolor5526">else</span> {<br class="fancyvrb"><a id="x40-221174r74"></a>74              List_push(right, cur-&gt;value);<br class="fancyvrb"><a id="x40-221176r75"></a>75          }<br class="fancyvrb"><a id="x40-221178r76"></a>76  
+<br class="fancyvrb"><a id="x40-221180r77"></a>77          middle--;<br class="fancyvrb"><a id="x40-221182r78"></a>78      }<br class="fancyvrb"><a id="x40-221184r79"></a>79  <br class="fancyvrb"><a id="x40-221186r80"></a>80      List ⋆sort_left = List_merge_sort(left, cmp);
+<br class="fancyvrb"><a id="x40-221188r81"></a>81      List ⋆sort_right = List_merge_sort(right, cmp);
+<br class="fancyvrb"><a id="x40-221190r82"></a>82  <br class="fancyvrb"><a id="x40-221192r83"></a>83      <span id="textcolor5527">if</span>(sort_left != left) List_destroy(left);
+<br class="fancyvrb"><a id="x40-221194r84"></a>84      <span id="textcolor5528">if</span>(sort_right != right) List_destroy(right);<br class="fancyvrb"><a id="x40-221196r85"></a>85  
+<br class="fancyvrb"><a id="x40-221198r86"></a>86      <span id="textcolor5529">return</span> List_merge(sort_left, sort_right, cmp);<br class="fancyvrb"><a id="x40-221200r87"></a>87  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 270--><p class="indent">    The bubble sort isn’t too bad to figure out, although it is really slow. The merge
+sort is much more complicated, and honestly I could probably spend a bit more time
+optimizing this code if I wanted to sacrifice clarity.
+    </p><h3 class="sectionHead"><span class="titlemark">34.1    </span> <a id="x40-22200034.1"></a>What You Should See</h3>
+<!--l. 276--><p class="noindent">If everything works then you should get something like this:
+                                                                  
+
+                                                                  
+<!--l. 278--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x40-222001r100"></a>
+ <div class="caption"><span class="id">Source 100: </span><span class="content">                                                                                                            Ex33
+Session</span></div><!--tex4ht:label?: x40-222001r100 -->
+<div class="fancyvrb" id="fancyvrb67"><a id="x40-222003r1"></a>1  <span id="textcolor5530">$</span> make clean all
+<br class="fancyvrb"><a id="x40-222005r2"></a>2  <span id="textcolor5531">rm -rf build src/lcthw/list.o src/lcthw/list_algos.o tests/list_algos_tests tests/list_tests</span>
+<br class="fancyvrb"><a id="x40-222007r3"></a>3  <span id="textcolor5532">rm -f tests/tests.log </span><br class="fancyvrb"><a id="x40-222009r4"></a>4  <span id="textcolor5533">find . -name "⋆.gc⋆" -exec rm {} \;</span>
+<br class="fancyvrb"><a id="x40-222011r5"></a>5  <span id="textcolor5534">rm -rf ‘find . -name "⋆.dSYM" -print‘</span>
+<br class="fancyvrb"><a id="x40-222013r6"></a>6  <span id="textcolor5535">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  -fPIC   -c -o src/lcthw/list.o src/lcthw/list.c</span>
+<br class="fancyvrb"><a id="x40-222015r7"></a>7  <span id="textcolor5536">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  -fPIC   -c -o src/lcthw/list_algos.o src/lcthw/list_algos.c</span>
+<br class="fancyvrb"><a id="x40-222017r8"></a>8  <span id="textcolor5537">ar rcs build/liblcthw.a src/lcthw/list.o src/lcthw/list_algos.o</span><br class="fancyvrb"><a id="x40-222019r9"></a>9  <span id="textcolor5538">ranlib build/liblcthw.a</span>
+<br class="fancyvrb"><a id="x40-222021r10"></a>10  <span id="textcolor5539">cc -shared -o build/liblcthw.so src/lcthw/list.o src/lcthw/list_algos.o</span>
+<br class="fancyvrb"><a id="x40-222023r11"></a>11  <span id="textcolor5540">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  build/liblcthw.a    tests/list_algos_tests.c   -o tests/list_algos_tests</span>
+<br class="fancyvrb"><a id="x40-222025r12"></a>12  <span id="textcolor5541">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  build/liblcthw.a    tests/list_tests.c   -o tests/list_tests</span>
+<br class="fancyvrb"><a id="x40-222027r13"></a>13  <span id="textcolor5542">sh ./tests/runtests.sh</span><br class="fancyvrb"><a id="x40-222029r14"></a>14  <span id="textcolor5543">Running unit tests:</span><br class="fancyvrb"><a id="x40-222031r15"></a>15  <span id="textcolor5544">----</span><br class="fancyvrb"><a id="x40-222033r16"></a>16  <span id="textcolor5545">RUNNING: ./tests/list_algos_tests</span>
+<br class="fancyvrb"><a id="x40-222035r17"></a>17  <span id="textcolor5546">ALL TESTS PASSED</span><br class="fancyvrb"><a id="x40-222037r18"></a>18  <span id="textcolor5547">Tests run: 2</span><br class="fancyvrb"><a id="x40-222039r19"></a>19  <span id="textcolor5548">tests/list_algos_tests PASS</span><br class="fancyvrb"><a id="x40-222041r20"></a>20  <span id="textcolor5549">----</span>
+<br class="fancyvrb"><a id="x40-222043r21"></a>21  <span id="textcolor5550">RUNNING: ./tests/list_tests</span><br class="fancyvrb"><a id="x40-222045r22"></a>22  <span id="textcolor5551">ALL TESTS PASSED</span><br class="fancyvrb"><a id="x40-222047r23"></a>23  <span id="textcolor5552">Tests run: 6</span><br class="fancyvrb"><a id="x40-222049r24"></a>24  <span id="textcolor5553">tests/list_tests PASS</span><br class="fancyvrb"><a id="x40-222051r25"></a>25  <span id="textcolor5554">$</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 309--><p class="indent">    After this exercise I’m not going to show you this output unless it’s necessary to
+show you how it works. From now on you should know that I ran the tests and they
+all passed and everything compiled.
+    </p><h3 class="sectionHead"><span class="titlemark">34.2    </span> <a id="x40-22300034.2"></a>How To Improve It</h3>
+<!--l. 315--><p class="noindent">Going back to the description of the algorithms, there’s several ways to improve
+these implementations, and there’s a few obvious ones:
+<!--l. 318--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x40-223002x1">The merge sort does a crazy amount of copying and creating lists, find
+     ways to reduce this.
+     </li>
+     <li class="enumerate" id="x40-223004x2">The  bubble  sort  Wikipedia  description  mentions  a  few  optimizations,
+     implement them.
+     </li>
+     <li class="enumerate" id="x40-223006x3">Can  you  use  the  List_split and  List_join (if  you  implemented
+     them) to improve merge sort?
+     </li>
+     <li class="enumerate" id="x40-223008x4">Go  through  all  the  defensive  programming  checks  and  improve  the
+     robustness of this implementation, protecting against bad NULL pointers,
+     and create an optional debug level invariant that does what is_sorted
+     does after a sort.</li></ol><!--l. 328--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">34.3    </span> <a id="x40-22400034.3"></a>Extra Credit</h3>
+                                                                  
+
+                                                                  
+<!--l. 330--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x40-224002x1">Create a unit test that compares the performance of the two algorithms.
+     You’ll want to look at <span class="obeylines-h"><span class="verb">man 3 time</span></span> for a basic timer function, and you’ll
+     want to run enough iterations to at least have a few seconds of samples.
+     </li>
+     <li class="enumerate" id="x40-224004x2">Play with the amount of data in the lists that need to be sorted and see if
+     that changes your timing.
+     </li>
+     <li class="enumerate" id="x40-224006x3">Find a way to simulate filling different sized random lists and measuring
+     how  long  they  take,  then  graph  it  and  see  how  it  compares  to  the
+     description of the algorithm.
+     </li>
+     <li class="enumerate" id="x40-224008x4">Try to explain why sorting linked lists is a really bad idea.
+     </li>
+     <li class="enumerate" id="x40-224010x5">Implement a List_insert_sorted that will take a given value, and
+     using the List_compare, insert the element at the right position so that
+     the list is always sorted. How does using this method compare to sorting
+     a list after you’ve built it?</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

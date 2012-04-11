@@ -1,9 +1,156 @@
-<html><head><title>Exercise 24: Input, Output, Files</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych27.html">next</a>] [<a href="learn-c-the-hard-waych25.html">prev</a>] [<a href="learn-c-the-hard-waych25.html#taillearn-c-the-hard-waych25.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych26.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych26.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 26</span><br><a id="x31-14400026"></a>Exercise 24: Input, Output, Files</h2>
+<html><head><title>Exercise 25: Variable Argument Functions</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 26</span><br><a id="x31-14400026"></a>Exercise 25: Variable Argument Functions</h2>
+<!--l. 3--><p class="noindent">In C you can create your own versions of functions like printf and scanf by
+creating a ”variable argument function”. These functions use the header stdarg.h
+and with them you can create nicer interfaces to your library. They are handy for
+certain types of ”builder” functions, formatting functions, and anything that takes
+variable arguments.
+<!--l. 9--></p><p class="indent">    Understanding ”vararg functions” is not essential to creating C programs. I
+think I’ve used it maybe a 20 times in my code in the years I’ve been programming.
+However, knowing how a vararg function works will help you debug the ones you
+use and gives you more understanding of the computer.
                                                                   
 
                                                                   
-    <!--l. 2--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych27.html">next</a>] [<a href="learn-c-the-hard-waych25.html">prev</a>] [<a href="learn-c-the-hard-waych25.html#taillearn-c-the-hard-waych25.html">prev-tail</a>] [<a href="learn-c-the-hard-waych26.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych26.html">up</a>] </p></div>
-<!--l. 2--><p class="indent">    <a id="taillearn-c-the-hard-waych26.html"></a>  
+<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x31-144001r65"></a>
+ <div class="caption"><span class="id">Source 65: </span><span class="content">                                                                                                            ex25.c</span></div><!--tex4ht:label?: x31-144001r65 -->
+<div class="fancyvrb" id="fancyvrb35"><a id="x31-144003r1"></a>1  <span id="textcolor2895">/⋆⋆ WARNING: This code is fresh and potentially isn’t correct yet. ⋆/</span><br class="fancyvrb"><a id="x31-144005r2"></a>2  
+<br class="fancyvrb"><a id="x31-144007r3"></a>3  <span id="textcolor2896">#</span><span id="textcolor2897">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x31-144009r4"></a>4  <span id="textcolor2898">#</span><span id="textcolor2899">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x31-144011r5"></a>5  <span id="textcolor2900">#</span><span id="textcolor2901">include <stdarg.h></stdarg.h></span><br class="fancyvrb"><a id="x31-144013r6"></a>6  <span id="textcolor2902">#</span><span id="textcolor2903">include "dbg.h"</span>
+<br class="fancyvrb"><a id="x31-144015r7"></a>7  <br class="fancyvrb"><a id="x31-144017r8"></a>8  <span id="textcolor2904">#</span><span id="textcolor2905">define MAX_DATA 100</span><br class="fancyvrb"><a id="x31-144019r9"></a>9  <br class="fancyvrb"><a id="x31-144021r10"></a>10  <span id="textcolor2906">int</span> <span id="textcolor2907">read_string</span>(<span id="textcolor2908">char</span> ⋆⋆out_string, <span id="textcolor2909">int</span> max_buffer)
+<br class="fancyvrb"><a id="x31-144023r11"></a>11  {<br class="fancyvrb"><a id="x31-144025r12"></a>12      ⋆out_string = calloc(<span id="textcolor2910">1</span>, max_buffer + <span id="textcolor2911">1</span>);<br class="fancyvrb"><a id="x31-144027r13"></a>13      check_mem(⋆out_string);
+<br class="fancyvrb"><a id="x31-144029r14"></a>14  <br class="fancyvrb"><a id="x31-144031r15"></a>15      <span id="textcolor2912">char</span> ⋆result = fgets(⋆out_string, max_buffer, stdin);
+<br class="fancyvrb"><a id="x31-144033r16"></a>16      check(result != <span id="textcolor2913">NULL</span>, <span class="colorbox" id="colorbox2914"><span id="textcolor2915">"</span></span><span class="colorbox" id="colorbox2916"><span id="textcolor2917">Input error.</span></span><span class="colorbox" id="colorbox2918"><span id="textcolor2919">"</span></span>);<br class="fancyvrb"><a id="x31-144035r17"></a>17  <br class="fancyvrb"><a id="x31-144037r18"></a>18      <span id="textcolor2920">return</span> <span id="textcolor2921">0</span>;<br class="fancyvrb"><a id="x31-144039r19"></a>19  <br class="fancyvrb"><a id="x31-144041r20"></a>20  <span id="textcolor2922">error:</span>
+<br class="fancyvrb"><a id="x31-144043r21"></a>21      <span id="textcolor2923">if</span>(⋆out_string) free(⋆out_string);<br class="fancyvrb"><a id="x31-144045r22"></a>22      ⋆out_string = <span id="textcolor2924">NULL</span>;
+<br class="fancyvrb"><a id="x31-144047r23"></a>23      <span id="textcolor2925">return</span> -<span id="textcolor2926">1</span>;<br class="fancyvrb"><a id="x31-144049r24"></a>24  }<br class="fancyvrb"><a id="x31-144051r25"></a>25  <br class="fancyvrb"><a id="x31-144053r26"></a>26  <span id="textcolor2927">int</span> <span id="textcolor2928">read_int</span>(<span id="textcolor2929">int</span> ⋆out_int)<br class="fancyvrb"><a id="x31-144055r27"></a>27  {
+<br class="fancyvrb"><a id="x31-144057r28"></a>28      <span id="textcolor2930">char</span> ⋆input = <span id="textcolor2931">NULL</span>;<br class="fancyvrb"><a id="x31-144059r29"></a>29      <span id="textcolor2932">int</span> rc = read_string(&amp;input, MAX_DATA);
+<br class="fancyvrb"><a id="x31-144061r30"></a>30      check(rc == <span id="textcolor2933">0</span>, <span class="colorbox" id="colorbox2934"><span id="textcolor2935">"</span></span><span class="colorbox" id="colorbox2936"><span id="textcolor2937">Failed to read number.</span></span><span class="colorbox" id="colorbox2938"><span id="textcolor2939">"</span></span>);<br class="fancyvrb"><a id="x31-144063r31"></a>31  <br class="fancyvrb"><a id="x31-144065r32"></a>32      ⋆out_int = atoi(input);<br class="fancyvrb"><a id="x31-144067r33"></a>33  
+<br class="fancyvrb"><a id="x31-144069r34"></a>34      free(input);<br class="fancyvrb"><a id="x31-144071r35"></a>35      <span id="textcolor2940">return</span> <span id="textcolor2941">0</span>;<br class="fancyvrb"><a id="x31-144073r36"></a>36  <br class="fancyvrb"><a id="x31-144075r37"></a>37  <span id="textcolor2942">error:</span><br class="fancyvrb"><a id="x31-144077r38"></a>38      <span id="textcolor2943">if</span>(input) free(input);<br class="fancyvrb"><a id="x31-144079r39"></a>39      <span id="textcolor2944">return</span> -<span id="textcolor2945">1</span>;
+<br class="fancyvrb"><a id="x31-144081r40"></a>40  }<br class="fancyvrb"><a id="x31-144083r41"></a>41  <br class="fancyvrb"><a id="x31-144085r42"></a>42  <span id="textcolor2946">int</span> <span id="textcolor2947">read_scan</span>(<span id="textcolor2948">const</span> <span id="textcolor2949">char</span> ⋆fmt, ...)<br class="fancyvrb"><a id="x31-144087r43"></a>43  {<br class="fancyvrb"><a id="x31-144089r44"></a>44      <span id="textcolor2950">int</span> i = <span id="textcolor2951">0</span>;<br class="fancyvrb"><a id="x31-144091r45"></a>45      <span id="textcolor2952">int</span> rc = <span id="textcolor2953">0</span>;
+<br class="fancyvrb"><a id="x31-144093r46"></a>46      <span id="textcolor2954">int</span> ⋆out_int = <span id="textcolor2955">NULL</span>;<br class="fancyvrb"><a id="x31-144095r47"></a>47      <span id="textcolor2956">char</span> ⋆out_char = <span id="textcolor2957">NULL</span>;<br class="fancyvrb"><a id="x31-144097r48"></a>48      <span id="textcolor2958">char</span> ⋆⋆out_string = <span id="textcolor2959">NULL</span>;
+<br class="fancyvrb"><a id="x31-144099r49"></a>49      <span id="textcolor2960">int</span> max_buffer = <span id="textcolor2961">0</span>;<br class="fancyvrb"><a id="x31-144101r50"></a>50  <br class="fancyvrb"><a id="x31-144103r51"></a>51      <span id="textcolor2962">va_list</span> argp;<br class="fancyvrb"><a id="x31-144105r52"></a>52      va_start(argp, fmt);
+<br class="fancyvrb"><a id="x31-144107r53"></a>53  <br class="fancyvrb"><a id="x31-144109r54"></a>54      <span id="textcolor2963">for</span>(i = <span id="textcolor2964">0</span>; fmt[i] != <span class="colorbox" id="colorbox2965"><span id="textcolor2966">’\0’</span></span>; i++) {<br class="fancyvrb"><a id="x31-144111r55"></a>55          <span id="textcolor2967">if</span>(fmt[i] == <span class="colorbox" id="colorbox2968"><span id="textcolor2969">’%’</span></span>) {
+<br class="fancyvrb"><a id="x31-144113r56"></a>56              i++;<br class="fancyvrb"><a id="x31-144115r57"></a>57              <span id="textcolor2970">switch</span>(fmt[i]) {<br class="fancyvrb"><a id="x31-144117r58"></a>58                  <span id="textcolor2971">case</span> <span class="colorbox" id="colorbox2972"><span id="textcolor2973">’\0’</span></span>:
+<br class="fancyvrb"><a id="x31-144119r59"></a>59                      sentinel(<span class="colorbox" id="colorbox2974"><span id="textcolor2975">"</span></span><span class="colorbox" id="colorbox2976"><span id="textcolor2977">Invalid format, you ended with %%.</span></span><span class="colorbox" id="colorbox2978"><span id="textcolor2979">"</span></span>);
+<br class="fancyvrb"><a id="x31-144121r60"></a>60                      <span id="textcolor2980">break</span>;<br class="fancyvrb"><a id="x31-144123r61"></a>61  <br class="fancyvrb"><a id="x31-144125r62"></a>62                  <span id="textcolor2981">case</span> <span class="colorbox" id="colorbox2982"><span id="textcolor2983">’d’</span></span>:
+<br class="fancyvrb"><a id="x31-144127r63"></a>63                      out_int = va_arg(argp, <span id="textcolor2984">int</span> ⋆);
+<br class="fancyvrb"><a id="x31-144129r64"></a>64                      rc = read_int(out_int);
+<br class="fancyvrb"><a id="x31-144131r65"></a>65                      check(rc == <span id="textcolor2985">0</span>, <span class="colorbox" id="colorbox2986"><span id="textcolor2987">"</span></span><span class="colorbox" id="colorbox2988"><span id="textcolor2989">Failed to read int.</span></span><span class="colorbox" id="colorbox2990"><span id="textcolor2991">"</span></span>);<br class="fancyvrb"><a id="x31-144133r66"></a>66                      <span id="textcolor2992">break</span>;
+<br class="fancyvrb"><a id="x31-144135r67"></a>67  <br class="fancyvrb"><a id="x31-144137r68"></a>68                  <span id="textcolor2993">case</span> <span class="colorbox" id="colorbox2994"><span id="textcolor2995">’c’</span></span>:<br class="fancyvrb"><a id="x31-144139r69"></a>69                      out_char = va_arg(argp, <span id="textcolor2996">char</span> ⋆);
+<br class="fancyvrb"><a id="x31-144141r70"></a>70                      ⋆out_char = fgetc(stdin);<br class="fancyvrb"><a id="x31-144143r71"></a>71                      <span id="textcolor2997">break</span>;<br class="fancyvrb"><a id="x31-144145r72"></a>72  
+<br class="fancyvrb"><a id="x31-144147r73"></a>73                  <span id="textcolor2998">case</span> <span class="colorbox" id="colorbox2999"><span id="textcolor3000">’s’</span></span>:<br class="fancyvrb"><a id="x31-144149r74"></a>74                      max_buffer = va_arg(argp, <span id="textcolor3001">int</span>);
+<br class="fancyvrb"><a id="x31-144151r75"></a>75                      out_string = va_arg(argp, <span id="textcolor3002">char</span> ⋆⋆);
+<br class="fancyvrb"><a id="x31-144153r76"></a>76                      rc = read_string(out_string, max_buffer);
+<br class="fancyvrb"><a id="x31-144155r77"></a>77                      check(rc == <span id="textcolor3003">0</span>, <span class="colorbox" id="colorbox3004"><span id="textcolor3005">"</span></span><span class="colorbox" id="colorbox3006"><span id="textcolor3007">Failed to read string.</span></span><span class="colorbox" id="colorbox3008"><span id="textcolor3009">"</span></span>);
+<br class="fancyvrb"><a id="x31-144157r78"></a>78                      <span id="textcolor3010">break</span>;<br class="fancyvrb"><a id="x31-144159r79"></a>79  <br class="fancyvrb"><a id="x31-144161r80"></a>80                  <span id="textcolor3011">default:</span>
+<br class="fancyvrb"><a id="x31-144163r81"></a>81                      sentinel(<span class="colorbox" id="colorbox3012"><span id="textcolor3013">"</span></span><span class="colorbox" id="colorbox3014"><span id="textcolor3015">Invalid format.</span></span><span class="colorbox" id="colorbox3016"><span id="textcolor3017">"</span></span>);<br class="fancyvrb"><a id="x31-144165r82"></a>82              }
+<br class="fancyvrb"><a id="x31-144167r83"></a>83          } <span id="textcolor3018">else</span> {<br class="fancyvrb"><a id="x31-144169r84"></a>84              fgetc(stdin);<br class="fancyvrb"><a id="x31-144171r85"></a>85          }<br class="fancyvrb"><a id="x31-144173r86"></a>86  
+<br class="fancyvrb"><a id="x31-144175r87"></a>87          check(!feof(stdin) &amp;&amp; !ferror(stdin), <span class="colorbox" id="colorbox3019"><span id="textcolor3020">"</span></span><span class="colorbox" id="colorbox3021"><span id="textcolor3022">Input error.</span></span><span class="colorbox" id="colorbox3023"><span id="textcolor3024">"</span></span>);<br class="fancyvrb"><a id="x31-144177r88"></a>88      }<br class="fancyvrb"><a id="x31-144179r89"></a>89  
+<br class="fancyvrb"><a id="x31-144181r90"></a>90      va_end(argp);<br class="fancyvrb"><a id="x31-144183r91"></a>91      <span id="textcolor3025">return</span> <span id="textcolor3026">0</span>;<br class="fancyvrb"><a id="x31-144185r92"></a>92  <br class="fancyvrb"><a id="x31-144187r93"></a>93  <span id="textcolor3027">error:</span><br class="fancyvrb"><a id="x31-144189r94"></a>94      va_end(argp);<br class="fancyvrb"><a id="x31-144191r95"></a>95      <span id="textcolor3028">return</span> -<span id="textcolor3029">1</span>;
+<br class="fancyvrb"><a id="x31-144193r96"></a>96  }<br class="fancyvrb"><a id="x31-144195r97"></a>97  <br class="fancyvrb"><a id="x31-144197r98"></a>98  <br class="fancyvrb"><a id="x31-144199r99"></a>99  <br class="fancyvrb"><a id="x31-144201r100"></a>100  <span id="textcolor3030">int</span> <span id="textcolor3031">main</span>(<span id="textcolor3032">int</span> argc, <span id="textcolor3033">char</span> ⋆argv[])<br class="fancyvrb"><a id="x31-144203r101"></a>101  {<br class="fancyvrb"><a id="x31-144205r102"></a>102      <span id="textcolor3034">char</span> ⋆first_name = <span id="textcolor3035">NULL</span>;
+<br class="fancyvrb"><a id="x31-144207r103"></a>103      <span id="textcolor3036">char</span> initial = <span class="colorbox" id="colorbox3037"><span id="textcolor3038">’ ’</span></span>;<br class="fancyvrb"><a id="x31-144209r104"></a>104      <span id="textcolor3039">char</span> ⋆last_name = <span id="textcolor3040">NULL</span>;
+<br class="fancyvrb"><a id="x31-144211r105"></a>105      <span id="textcolor3041">int</span> age = <span id="textcolor3042">0</span>;<br class="fancyvrb"><a id="x31-144213r106"></a>106  <br class="fancyvrb"><a id="x31-144215r107"></a>107      printf(<span class="colorbox" id="colorbox3043"><span id="textcolor3044">"</span></span><span class="colorbox" id="colorbox3045"><span id="textcolor3046">What’s your first name? </span></span><span class="colorbox" id="colorbox3047"><span id="textcolor3048">"</span></span>);
+<br class="fancyvrb"><a id="x31-144217r108"></a>108      <span id="textcolor3049">int</span> rc = read_scan(<span class="colorbox" id="colorbox3050"><span id="textcolor3051">"</span></span><span class="colorbox" id="colorbox3052"><span id="textcolor3053">%s</span></span><span class="colorbox" id="colorbox3054"><span id="textcolor3055">"</span></span>, MAX_DATA, &amp;first_name);
+                                                                  
+
+                                                                  
+<br class="fancyvrb"><a id="x31-144219r109"></a>109      check(rc == <span id="textcolor3056">0</span>, <span class="colorbox" id="colorbox3057"><span id="textcolor3058">"</span></span><span class="colorbox" id="colorbox3059"><span id="textcolor3060">Failed first name.</span></span><span class="colorbox" id="colorbox3061"><span id="textcolor3062">"</span></span>);<br class="fancyvrb"><a id="x31-144221r110"></a>110  <br class="fancyvrb"><a id="x31-144223r111"></a>111      printf(<span class="colorbox" id="colorbox3063"><span id="textcolor3064">"</span></span><span class="colorbox" id="colorbox3065"><span id="textcolor3066">What’s your initial? </span></span><span class="colorbox" id="colorbox3067"><span id="textcolor3068">"</span></span>);
+<br class="fancyvrb"><a id="x31-144225r112"></a>112      rc = read_scan(<span class="colorbox" id="colorbox3069"><span id="textcolor3070">"</span></span><span class="colorbox" id="colorbox3071"><span id="textcolor3072">%c</span></span><span class="colorbox" id="colorbox3073"><span id="textcolor3074">\n</span></span><span class="colorbox" id="colorbox3075"><span id="textcolor3076">"</span></span>, &amp;initial);<br class="fancyvrb"><a id="x31-144227r113"></a>113      check(rc == <span id="textcolor3077">0</span>, <span class="colorbox" id="colorbox3078"><span id="textcolor3079">"</span></span><span class="colorbox" id="colorbox3080"><span id="textcolor3081">Failed initial.</span></span><span class="colorbox" id="colorbox3082"><span id="textcolor3083">"</span></span>);<br class="fancyvrb"><a id="x31-144229r114"></a>114  
+<br class="fancyvrb"><a id="x31-144231r115"></a>115      printf(<span class="colorbox" id="colorbox3084"><span id="textcolor3085">"</span></span><span class="colorbox" id="colorbox3086"><span id="textcolor3087">What’s your last name? </span></span><span class="colorbox" id="colorbox3088"><span id="textcolor3089">"</span></span>);<br class="fancyvrb"><a id="x31-144233r116"></a>116      rc = read_scan(<span class="colorbox" id="colorbox3090"><span id="textcolor3091">"</span></span><span class="colorbox" id="colorbox3092"><span id="textcolor3093">%s</span></span><span class="colorbox" id="colorbox3094"><span id="textcolor3095">"</span></span>, MAX_DATA, &amp;last_name);
+<br class="fancyvrb"><a id="x31-144235r117"></a>117      check(rc == <span id="textcolor3096">0</span>, <span class="colorbox" id="colorbox3097"><span id="textcolor3098">"</span></span><span class="colorbox" id="colorbox3099"><span id="textcolor3100">Failed last name.</span></span><span class="colorbox" id="colorbox3101"><span id="textcolor3102">"</span></span>);<br class="fancyvrb"><a id="x31-144237r118"></a>118  <br class="fancyvrb"><a id="x31-144239r119"></a>119      printf(<span class="colorbox" id="colorbox3103"><span id="textcolor3104">"</span></span><span class="colorbox" id="colorbox3105"><span id="textcolor3106">How old are you? </span></span><span class="colorbox" id="colorbox3107"><span id="textcolor3108">"</span></span>);
+<br class="fancyvrb"><a id="x31-144241r120"></a>120      rc = read_scan(<span class="colorbox" id="colorbox3109"><span id="textcolor3110">"</span></span><span class="colorbox" id="colorbox3111"><span id="textcolor3112">%d</span></span><span class="colorbox" id="colorbox3113"><span id="textcolor3114">"</span></span>, &amp;age);<br class="fancyvrb"><a id="x31-144243r121"></a>121  <br class="fancyvrb"><a id="x31-144245r122"></a>122      printf(<span class="colorbox" id="colorbox3115"><span id="textcolor3116">"</span></span><span class="colorbox" id="colorbox3117"><span id="textcolor3118">---- RESULTS ----</span></span><span class="colorbox" id="colorbox3119"><span id="textcolor3120">\n</span></span><span class="colorbox" id="colorbox3121"><span id="textcolor3122">"</span></span>);
+<br class="fancyvrb"><a id="x31-144247r123"></a>123      printf(<span class="colorbox" id="colorbox3123"><span id="textcolor3124">"</span></span><span class="colorbox" id="colorbox3125"><span id="textcolor3126">First Name: %s</span></span><span class="colorbox" id="colorbox3127"><span id="textcolor3128">"</span></span>, first_name);<br class="fancyvrb"><a id="x31-144249r124"></a>124      printf(<span class="colorbox" id="colorbox3129"><span id="textcolor3130">"</span></span><span class="colorbox" id="colorbox3131"><span id="textcolor3132">Initial: ’%c’</span></span><span class="colorbox" id="colorbox3133"><span id="textcolor3134">\n</span></span><span class="colorbox" id="colorbox3135"><span id="textcolor3136">"</span></span>, initial);
+<br class="fancyvrb"><a id="x31-144251r125"></a>125      printf(<span class="colorbox" id="colorbox3137"><span id="textcolor3138">"</span></span><span class="colorbox" id="colorbox3139"><span id="textcolor3140">Last Name: %s</span></span><span class="colorbox" id="colorbox3141"><span id="textcolor3142">"</span></span>, last_name);<br class="fancyvrb"><a id="x31-144253r126"></a>126      printf(<span class="colorbox" id="colorbox3143"><span id="textcolor3144">"</span></span><span class="colorbox" id="colorbox3145"><span id="textcolor3146">Age: %d</span></span><span class="colorbox" id="colorbox3147"><span id="textcolor3148">\n</span></span><span class="colorbox" id="colorbox3149"><span id="textcolor3150">"</span></span>, age);<br class="fancyvrb"><a id="x31-144255r127"></a>127  
+<br class="fancyvrb"><a id="x31-144257r128"></a>128      free(first_name);<br class="fancyvrb"><a id="x31-144259r129"></a>129      free(last_name);<br class="fancyvrb"><a id="x31-144261r130"></a>130      <span id="textcolor3151">return</span> <span id="textcolor3152">0</span>;<br class="fancyvrb"><a id="x31-144263r131"></a>131  <span id="textcolor3153">error:</span><br class="fancyvrb"><a id="x31-144265r132"></a>132      <span id="textcolor3154">return</span> -<span id="textcolor3155">1</span>;<br class="fancyvrb"><a id="x31-144267r133"></a>133  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 153--><p class="indent">    This program is similar to the previous exercise, except I have written my own
+scanf style function that handles strings the way I want. The main function should
+be clear to you, as well as the two functions read_string and read_int since
+they do nothing new.
+<!--l. 158--></p><p class="indent">    The varargs function is called read_scan and it does the same thing that
+scanf is doing using the va_list data structure and it’s supporting macros and
+functions. Here’s how it works:
+     </p><ol class="enumerate1"><li class="enumerate" id="x31-144269x1">I  set  as  the  last  parameter  of  the  function  the  keyword  <span class="obeylines-h"><span class="verb">...</span></span> which
+     indicates to C that this function will take any number of arguments after
+     the fmt argument. I could put many other arguments before this, but I
+     can’t put anymore after this.
+     </li>
+     <li class="enumerate" id="x31-144271x2">After setting up some variables, I create a va_list variable and initialize
+     it with va_start. This configures the gear in stdarg.h that handles
+     variable arguments.
+     </li>
+     <li class="enumerate" id="x31-144273x3">I then use a for-loop to loop through the format string fmt and process
+     the same kind of formats that scanf has, but much simpler. I just have
+     integers, characters, and strings.
+     </li>
+     <li class="enumerate" id="x31-144275x4">When I hit a format, I use the switch-statement to figure out what to
+     do.
+     </li>
+     <li class="enumerate" id="x31-144277x5">Now,  to  get  a  variable  from  the  va_list argp I  use  the  macro
+     va_arg(argp, TYPE) where  TYPE  is  the  exact  type  of  what  I  will
+     assign this function parameter to. The downside to this design is you’re
+     flying blind, so if you don’t have enough parameters then oh well, you’ll
+     most likely crash.
+     </li>
+                                                                  
+
+                                                                  
+     <li class="enumerate" id="x31-144279x6">The  interesting  difference  from  scanf is  I’m  assuming  that  people
+     want  read_scan to  create  the  strings  it  reads  when  it  hits  a  's'
+     format sequence. When you give this sequence, the function takes two
+     parameters off the va_list argp stack: the max function size to read,
+     and  the  output  character  string  pointer.  Using  that  information  it  just
+     runs read_string to do the real work.
+     </li>
+     <li class="enumerate" id="x31-144281x7">This  makes  read_scan more  consistent  than  scanf since  you  always
+     give an address-of <span class="obeylines-h"><span class="verb">\&amp;</span></span> on variables to have them set appropriately.
+     </li>
+     <li class="enumerate" id="x31-144283x8">Finally, if it encounters a character that’s not in the format, it just reads
+     one char to skip it. It doesn’t care what that char is, just that it should skip
+     it.</li></ol><h3 class="sectionHead"><span class="titlemark">26.1    </span> <a id="x31-14500026.1"></a>What You Should See</h3>
+<!--l. 197--><p class="noindent">When you run this one it’s similar to the last one:
+                                                                  
+
+                                                                  
+<!--l. 199--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x31-145001r66"></a>
+ <div class="caption"><span class="id">Source 66: </span><span class="content">                                                                                                        ex25.out</span></div><!--tex4ht:label?: x31-145001r66 -->
+<!--l. 200-->
+<div class="lstlisting" id="listing-42"><span class="label"><a id="x31-145002r1"></a>1</span>$ make ex25 <br><span class="label"><a id="x31-145003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex25.c   -o ex25 <br><span class="label"><a id="x31-145004r3"></a>3</span>$ ./ex25 <br><span class="label"><a id="x31-145005r4"></a>4</span>What’s your first name? Zed <br><span class="label"><a id="x31-145006r5"></a>5</span>What’s your initial? A <br><span class="label"><a id="x31-145007r6"></a>6</span>What’s your last name? Shaw <br><span class="label"><a id="x31-145008r7"></a>7</span>How old are you? 37 <br><span class="label"><a id="x31-145009r8"></a>8</span>---- RESULTS ---- <br><span class="label"><a id="x31-145010r9"></a>9</span>First Name: Zed <br><span class="label"><a id="x31-145011r10"></a>10</span>Initial: ’A’ <br><span class="label"><a id="x31-145012r11"></a>11</span>Last Name: Shaw <br><span class="label"><a id="x31-145013r12"></a>12</span>Age: 37
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">26.2    </span> <a id="x31-14600026.2"></a>How To Break It</h3>
+<!--l. 219--><p class="noindent">This program should be more robust against buffer overflows, but it doesn’t handle
+the formatted input as well as scanf. To try breaking this, change the code that you
+forget to pass in the initial size for ’%s’ formats. Try also giving it more data than
+MAX_DATA, and then see how not using calloc in read_string changes how it
+works. Finally, there’s a problem that fgets eats the newlines, so try to fix that using
+fgetc but leave out the ’<br class="newline">0’ that ends the string.
+<!--l. 227--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">26.3    </span> <a id="x31-14700026.3"></a>Extra Credit</h3>
+<!--l. 229--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x31-147002x1">Make  double  and  triple  sure  that  you  know  what  each  of  the  out_
+     variables  are  doing.  Most  important  is  out_string and  how  it’s  a
+     pointer to a pointer, so getting when you’re setting the pointer vs. the
+     contents is important. Break down each of the
+     </li>
+     <li class="enumerate" id="x31-147004x2">Write  a  similar  function  to  printf that  uses  the  varargs  system  and
+     rewrite main to use it.
+     </li>
+     <li class="enumerate" id="x31-147006x3">As usual, read the man page on all of this so you know what it does on
+     your platform. Some platforms will use macros and others use functions,
+     and some have these do nothing. It all depends on the compiler and the
+     platform you use.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

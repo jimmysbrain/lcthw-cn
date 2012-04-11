@@ -1,81 +1,85 @@
-<html><head><title>习题1: 重拾编译器</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych3.html">next</a>] [<a href="learn-c-the-hard-waych1.html">prev</a>] [<a href="learn-c-the-hard-waych1.html#taillearn-c-the-hard-waych1.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych2.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych2.html">up</a>] </p></div>
+<html><head><title>习题1: 重拾编译器</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 2</span><br><a id="x7-150002"></a>习题1: 重拾编译器</h2>
 <!--l. 3--><p class="noindent">这是你用 C 语言写的第一个简单程序：
                                                                   
 
                                                                   
-<!--l. 5--></p><p class="indent">    <a id="x7-15001r3"></a></p><hr class="float"></hr><div class="float">
+<!--l. 5--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x7-15001r3"></a>
 <div class="caption"><span class="id">Source 3: </span><span class="content">                                                                                                                ex1.c</span></div><!--tex4ht:label?: x7-15001r3 -->
-<div class="fancyvrb" id="fancyvrb1"><a id="x7-15003r1"></a>1  <span id="textcolor1">#</span><span id="textcolor2">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x7-15005r2"></a>2  <br class="fancyvrb"><a id="x7-15007r3"></a>3  <span id="textcolor3">int</span> <span id="textcolor4">main</span>()<br class="fancyvrb"><a id="x7-15009r4"></a>4  {<br class="fancyvrb"><a id="x7-15011r5"></a>5      puts(<span class="colorbox" id="colorbox5"><span id="textcolor6">"</span></span><span class="colorbox" id="colorbox7"><span id="textcolor8">Hello world.</span></span><span class="colorbox" id="colorbox9"><span id="textcolor10">"</span></span>);<br class="fancyvrb"><a id="x7-15013r6"></a>6  <br class="fancyvrb"><a id="x7-15015r7"></a>7      <span id="textcolor11">return</span> <span id="textcolor12">0</span>;<br class="fancyvrb"><a id="x7-15017r8"></a>8  }</div>
+<div class="fancyvrb" id="fancyvrb1"><a id="x7-15003r1"></a>1  <span id="textcolor1">int</span> <span id="textcolor2">main</span>()<br class="fancyvrb"><a id="x7-15005r2"></a>2  {<br class="fancyvrb"><a id="x7-15007r3"></a>3      puts(<span class="colorbox" id="colorbox3"><span id="textcolor4">"</span></span><span class="colorbox" id="colorbox5"><span id="textcolor6">Hello world.</span></span><span class="colorbox" id="colorbox7"><span id="textcolor8">"</span></span>);<br class="fancyvrb"><a id="x7-15009r4"></a>4  <br class="fancyvrb"><a id="x7-15011r5"></a>5      <span id="textcolor9">return</span> <span id="textcolor10">0</span>;<br class="fancyvrb"><a id="x7-15013r6"></a>6  }</div>
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 19--><p class="indent">    把它保存为 ex1.c 然后输入：
+    </div><hr class="endfloat"></hr><!--l. 17--><p class="indent">    把它保存为 ex1.c 然后输入：
                                                                   
 
                                                                   
-<!--l. 21--></p><p class="indent">    <a id="x7-15018r4"></a></p><hr class="float"></hr><div class="float">
+<!--l. 19--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x7-15014r4"></a>
 <div class="caption"><span class="id">Source 4: </span><span class="content">                                                                                                               Build
-ex1</span></div><!--tex4ht:label?: x7-15018r4 -->
-<!--l. 22-->
-<div class="lstlisting" id="listing-3"><span class="label"><a id="x7-15019r1"></a>1</span>$ make ex1 <br><span class="label"><a id="x7-15020r2"></a>2</span>cc     ex1.c   -o ex1
+ex1</span></div><!--tex4ht:label?: x7-15014r4 -->
+<!--l. 20-->
+<div class="lstlisting" id="listing-3"><span class="label"><a id="x7-15015r1"></a>1</span>$ make ex1 <br><span class="label"><a id="x7-15016r2"></a>2</span>cc     ex1.c   -o ex1
 </div>
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 28--><p class="indent">    你的系统使用的命令有可能会不大一样，但最终应该都会编译出一个可运行文件叫 ex1
+    </div><hr class="endfloat"></hr><!--l. 26--><p class="indent">    你的系统使用的命令有可能会不大一样，但最终应该都会编译出一个可运行文件叫 ex1
     </p><h3 class="sectionHead"><span class="titlemark">2.1    </span> <a id="x7-160002.1"></a>你应该看到的结果</h3>
-<!--l. 32--><p class="noindent">你运行这个程序应该会看到以下输出。
+<!--l. 30--><p class="noindent">你运行这个程序应该会看到以下输出。
                                                                   
 
                                                                   
-<!--l. 34--></p><p class="indent">    <a id="x7-16001r5"></a></p><hr class="float"></hr><div class="float">
+<!--l. 32--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x7-16001r5"></a>
 <div class="caption"><span class="id">Source 5: </span><span class="content">                                                                                                                    运行 ex1</span></div><!--tex4ht:label?: x7-16001r5 -->
-<!--l. 35-->
+<!--l. 33-->
 <div class="lstlisting" id="listing-4"><span class="label"><a id="x7-16002r1"></a>1</span>$ ./ex1 <br><span class="label"><a id="x7-16003r2"></a>2</span>Hello world.
 </div>
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 41--><p class="indent">    如果输出不同，你需要回到前一步，找出问题所在并修正它。
+    </div><hr class="endfloat"></hr><!--l. 39--><p class="indent">    如果输出不同，你需要回到前一步，找出问题所在并修正它。
     </p><h3 class="sectionHead"><span class="titlemark">2.2    </span> <a id="x7-170002.2"></a>让程序出错</h3>
-<!--l. 45--><p class="noindent">在本书中，我为每段程序都准备了这样一个小章节，在这个小章节里，将让你对程序做一些非常规的事情，用一些怪异的方法运行程序或者改变代码，以此而造成程序出错或编译器报错。
-<!--l. 48--></p><p class="indent">    对于这个程序，打开编译器的所有警告项，重新编译它：
+<!--l. 43--><p class="noindent">在本书中，我为每段程序都准备了这样一个小章节，在这个小章节里，将让你对程序做一些非常规的事情，用一些怪异的方法运行程序或者改变代码，以此而造成程序出错或编译器报错。
+<!--l. 46--></p><p class="indent">    对于这个程序，打开编译器的所有警告项，重新编译它：
                                                                   
 
                                                                   
-<!--l. 50--></p><p class="indent">    <a id="x7-17001r6"></a></p><hr class="float"></hr><div class="float">
+<!--l. 48--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x7-17001r6"></a>
 <div class="caption"><span class="id">Source 6: </span><span class="content">                                                                               Build ex1，使用 -Wall 参数</span></div><!--tex4ht:label?: x7-17001r6 -->
-<!--l. 51-->
+<!--l. 49-->
 <div class="lstlisting" id="listing-5"><span class="label"><a id="x7-17002r1"></a>1</span>$ rm ex1 <br><span class="label"><a id="x7-17003r2"></a>2</span>$ CFLAGS="-Wall" make ex1 <br><span class="label"><a id="x7-17004r3"></a>3</span>cc -Wall    ex1.c   -o ex1 <br><span class="label"><a id="x7-17005r4"></a>4</span>ex1.c: In function ’main’: <br><span class="label"><a id="x7-17006r5"></a>5</span>ex1.c:3: warning: implicit declaration of function ’puts’ <br><span class="label"><a id="x7-17007r6"></a>6</span>$ ./ex1 <br><span class="label"><a id="x7-17008r7"></a>7</span>Hello world. <br><span class="label"><a id="x7-17009r8"></a>8</span>$
 </div>
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 64--><p class="indent">    现在你得到了一个警告说函数“puts”是隐式申明（implictly declared）的。C
+    </div><hr class="endfloat"></hr><!--l. 62--><p class="indent">    现在你得到了一个警告说函数“puts”是隐式申明（implictly declared）的。C
 编译器足够聪明，它可以够猜出你想要什么，但是你应该尽力消除所有的编译器警告。对于这个警告，你可以把以下几行加入到 ex1.c 的顶部，并重新编译：
-    <!--l. 68-->
+    <!--l. 66-->
 </p><div class="lstlisting" id="listing-6"><span class="label"><a id="x7-17010r1"></a>1</span>#include <stdio.h></stdio.h></div>
-<!--l. 72--><p class="indent">    现在，按前面的步骤再做一次，你会发现警告消失了。
+<!--l. 70--><p class="indent">    现在，按前面的步骤再做一次，你会发现警告消失了。
     </p><h3 class="sectionHead"><span class="titlemark">2.3    </span> <a id="x7-180002.3"></a>加分习题</h3>
-<!--l. 76--><p class="noindent">
+<!--l. 74--><p class="noindent">
      </p><ol class="enumerate1"><li class="enumerate" id="x7-18002x1">用你的文本编辑器打开 ex1 改变或者删除任意部分。试试运行它，看会发生什么。
      </li>
      <li class="enumerate" id="x7-18004x2">再多打印 5 行的文字或者比“hello world”复杂一些的句子。
      </li>
-     <li class="enumerate" id="x7-18006x3">运行 <span class="obeylines-h"><span class="verb">man 3 puts</span></span> 阅读一下关于这个函数的内容以及别的内容。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych3.html">next</a>] [<a href="learn-c-the-hard-waych1.html">prev</a>] [<a href="learn-c-the-hard-waych1.html#taillearn-c-the-hard-waych1.html">prev-tail</a>] [<a href="learn-c-the-hard-waych2.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych2.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych2.html"></a>   
+     <li class="enumerate" id="x7-18006x3">运行 <span class="obeylines-h"><span class="verb">man 3 puts</span></span> 阅读一下关于这个函数的内容以及别的内容。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

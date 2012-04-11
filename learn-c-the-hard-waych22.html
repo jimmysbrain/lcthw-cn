@@ -1,5 +1,5 @@
-<html><head><title>习题21: 高级数据类型与流程控制</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych23.html">next</a>] [<a href="learn-c-the-hard-waych21.html">prev</a>] [<a href="learn-c-the-hard-waych21.html#taillearn-c-the-hard-waych21.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych22.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych22.html">up</a>] </p></div>
+<html><head><title>习题21: 高级数据类型与流程控制</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 22</span><br><a id="x27-11200022"></a>习题21: 高级数据类型与流程控制</h2>
 <!--l. 3--><p class="noindent">这个习题将会是 C 语言中你可使用的数据类型以及流程控制结构的一个完备的缩影。
 它可以作为你补充与巩固知识的参考，而且不需要你写任何代码。我会通过制作一些学习卡来让你记忆这个信息，这让你可以夯实你脑海中的重要概念。
@@ -21,7 +21,7 @@
      <dl class="description"><dt class="description">
 unsigned </dt><dd class="description">使得某一类型不用表示负数，这样虽然不会有负数，但是会有一个较大的上界。
      </dd><dt class="description">
-signed </dt><dd class="description">有正数与负数，会将无符号的上界一分为二，转换成相同大小的负下界<span class="footnote-mark"><a href="#fn1x23" id="fn1x23-bk"><sup class="textsuperscript">1</sup></a></span><a id="x27-114001f1"></a>。
+signed </dt><dd class="description">有正数与负数，会将无符号的上界一分为二，转换成相同大小的负下界<span class="footnote-mark"><a id="fn1x23-bk"><sup class="textsuperscript">1</sup></a></span><a id="x27-114001f1"></a>。
      </dd><dt class="description">
 long </dt><dd class="description">会为这个类型使用一个较大的存储来存放更大的数值，通常是原来大小的两倍。
      </dd><dt class="description">
@@ -86,7 +86,7 @@ INTN_MIN </dt><dd class="description">比特数为 N 的符号整型的最小负
 UINTN_MAX </dt><dd class="description">比特数为 N 的无符号整型的最大正数值。因为是无符号的，所以最小值是 0，没有负数。</dd></dl><!--l. 85--><p class="indent">    头文件 stdint.h 中也有表示  size_t 类型大小的宏，这个类型是大小可以用来装指针的整型还有其他关于大小定义的方便的宏。编译器必须得有这些定义，这样才能允许有其他更大的类型。
 <!--l. 89--></p><p class="indent">    这是 stdint.h 中的一个列表：
      </p><dl class="description"><dt class="description">
-int_leastN_t </dt><dd class="description">能存储至少 N 比特的整型<span class="footnote-mark"><a href="#fn2x23" id="fn2x23-bk"><sup class="textsuperscript">2</sup></a></span><a id="x27-117001f2"></a>。
+int_leastN_t </dt><dd class="description">能存储至少 N 比特的整型<span class="footnote-mark"><a id="fn2x23-bk"><sup class="textsuperscript">2</sup></a></span><a id="x27-117001f2"></a>。
      </dd><dt class="description">
 uint_leastN_t </dt><dd class="description">能存储至少 N 比特的无符号整型。
      </dd><dt class="description">
@@ -96,7 +96,7 @@ INT_LEASTN_MIN </dt><dd class="description">至少能存储 N 比特的整型对
      </dd><dt class="description">
 UINT_LEASTN_MAX </dt><dd class="description">至少能存储 N 比特的无符号整型对应的最小值。。
      </dd><dt class="description">
-int_fastN_t </dt><dd class="description">同 int_leastN_t 接近，但是要求的是“最快速”的至少 N 比特的整型<span class="footnote-mark"><a href="#fn3x23" id="fn3x23-bk"><sup class="textsuperscript">3</sup></a></span><a id="x27-117002f3"></a>。
+int_fastN_t </dt><dd class="description">同 int_leastN_t 接近，但是要求的是“最快速”的至少 N 比特的整型<span class="footnote-mark"><a id="fn3x23-bk"><sup class="textsuperscript">3</sup></a></span><a id="x27-117002f3"></a>。
      </dd><dt class="description">
                                                                   
 
@@ -282,9 +282,9 @@ goto </dt><dd class="description">跳到代码中，你放置了 <span class="ob
      </li>
      <li class="enumerate" id="x27-126006x3">可以利用记忆卡片每天花费 15 分钟来加强记忆，夯实基础。
      </li>
-     <li class="enumerate" id="x27-126008x4">写一个程序打印出各种类型的例子来确认你的研究结果是正确的。</li></ol><div class="footnotes"><!--l. 23--><p class="noindent"><span class="footnote-mark"><a href="#fn1x23-bk" id="fn1x23"><sup class="textsuperscript">1</sup></a></span>译者注：unsigned 与 signed 可以用来修饰 char 和任意整型
-<!--l. 92--></p><p class="noindent"><span class="footnote-mark"><a href="#fn2x23-bk" id="fn2x23"><sup class="textsuperscript">2</sup></a></span>译者注：字长最小整型，即规定的最小长度为 N 比特的整型。
-<!--l. 97--></p><p class="noindent"><span class="footnote-mark"><a href="#fn3x23-bk" id="fn3x23"><sup class="textsuperscript">3</sup></a></span>译者注：字长最小快速整型，理论上来说，CPU 处理和其字长（word）长度相同的整型会比较快。                                                             </p></div><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych23.html">next</a>]
-[<a href="learn-c-the-hard-waych21.html">prev</a>] [<a href="learn-c-the-hard-waych21.html#taillearn-c-the-hard-waych21.html">prev-tail</a>] [<a href="learn-c-the-hard-waych22.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych22.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych22.html"></a>    
+     <li class="enumerate" id="x27-126008x4">写一个程序打印出各种类型的例子来确认你的研究结果是正确的。</li></ol><div class="footnotes"><!--l. 23--><p class="noindent"><span class="footnote-mark"><a id="fn1x23"><sup class="textsuperscript">1</sup></a></span>译者注：unsigned 与 signed 可以用来修饰 char 和任意整型
+<!--l. 92--></p><p class="noindent"><span class="footnote-mark"><a id="fn2x23"><sup class="textsuperscript">2</sup></a></span>译者注：字长最小整型，即规定的最小长度为 N 比特的整型。
+<!--l. 97--></p><p class="noindent"><span class="footnote-mark"><a id="fn3x23"><sup class="textsuperscript">3</sup></a></span>译者注：字长最小快速整型，理论上来说，CPU 处理和其字长（word）长度相同的整型会比较快。                                                             </p></div><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>]
+[<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>    
 </p></body></html>

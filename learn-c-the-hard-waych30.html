@@ -1,203 +1,194 @@
-<html><head><title>习题27: 创造性与防御性编程</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych31.html">next</a>] [<a href="learn-c-the-hard-waypa2.html">prev</a>] [<a href="learn-c-the-hard-waypa2.html#taillearn-c-the-hard-waypa2.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych30.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych30.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 30</span><br><a id="x36-17300030"></a>习题27: 创造性与防御性编程</h2>
-<!--l. 3--><p class="noindent">You have now learned most of the basics of C programming and are ready to start
-becoming a serious programmer. This is where you go from beginner to expert, both
-with C and hopefully with core computer science concepts. I will be teaching you
-a few of the core data structures and algorithms that every programmer
-                                                                  
-
-                                                                  
-should know, and then a few very interesting ones I’ve used in real software
-for years. 你已经学习了大部分 C 语言编程的基础知识，已经可以开始做一个真正的程序员了。这正是你从入门到专家的起点，依靠 C 还有计算机科学的核心概念。我会传教你一些每个程序员都应该知道的关键的数据结构和算法，然后就是一些我在这些年实际软件编程中觉得有意思的东西。
-<!--l. 11--></p><p class="indent">    Before I can do that I have to teach you some basic skills and ideas that will help
-you make better software. Exercises 27 through 31 will teach you advanced concepts
-and feature more talking than code, but after those you’ll apply what you learn to
-making a core library of useful data structures. 在开始之前，我不得不先教一些基础的技巧和思想，可以帮助你更好的编程。习题 27 到 32 会通过较多的文字稍少的代码来教你一些高级的概念和特性，但在这之后，你应该用你所学去做一个有用的数据结构的核心库。
-<!--l. 18--></p><p class="indent">    The first step in getting better at writing C code (and really any language) is to
-learn a new mindset called ”defensive programming”. Defensive programming
-assumes that you are going to make many mistakes and then attempts to prevent
-them at every possible step. In this exercise I’m going to teach you how to think
-about programming defensively. 要写出更好的 C 代码（任何语言），第一步就是要学习一种叫做“防御性编程”的思维模式。防御性编程是设想你会出很多错误而且你应该在任何可能的步骤中尝试阻止错误发生。在本次习题中，我将教给你如何去思考防御性的编程。
-    </p><h3 class="sectionHead"><span class="titlemark">30.1    </span> <a id="x36-17400030.1"></a>The Creative Programmer Mindset</h3>
-<!--l. 28--><p class="noindent">It’s not possible to tell you how to be creative in a short exercise like this, but I will
-tell you that creativity involves taking risks and being open minded. Fear will
-quickly kill creativity, so the mindset I adopt, and many programmers adopt on,
-accident is designed to make me unafraid of taking chances and looking like an
-idiot: 在这样一个简短的练习中不可能叫你富有创造性，
-<!--l. 35--></p><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x36-174002x1">我一个错误也不会有。
-                                                                  
-
-                                                                  
-     </li>
-     <li class="enumerate" id="x36-174004x2">无所谓大家怎么在想。
-     </li>
-     <li class="enumerate" id="x36-174006x3">所有我脑海中的点子都是伟大的。</li></ol><!--l. 41--><p class="indent">    I only adopt this mindset temporarily, and even have little tricks to turn it on. By
-doing this I can come up with ideas, find creative solutions, open my thoughts to
-odd connections, and just generally invent weirdness without fear. In this mindset I
-will typically write a horrible first version of something just to get the idea
-out.
-<!--l. 47--></p><p class="indent">    However, when I’ve finished my creative prototype I will throw it out and get
-serious about making it solid. Where other people make a mistake is carrying
-the creative mindset into their implementation phase. This then leads to
-a very different destructive mindset that is the dark side of the creative
-mindset:
-<!--l. 53--></p><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x36-174008x1">写出完美的软件是有可能的。
-     </li>
-     <li class="enumerate" id="x36-174010x2">My brain tells me the truth, and it can’t find any errors, therefore I have
-     written perfect software.
-     </li>
-     <li class="enumerate" id="x36-174012x3">My code is who I am and people who criticize its perfection are criticizing
-     me.</li></ol><!--l. 59--><p class="indent">    These are lies. You will frequently run into programmers who feel intense pride
-about what they’ve created, which is natural, but this pride gets in the way of their
-ability to objectively improve their craft. Because of pride and attachment to what
-they’ve written, they can continue to believe that what they write is perfect. As long
-as they ignore other people’s criticism of their code they can protect their fragile ego
-and never improve.
-<!--l. 66--></p><p class="indent">    The trick to being creative and making solid software is to also be able to adopt a
-defensive programming mindset.
-                                                                  
-
-                                                                  
-<!--l. 70--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">30.2    </span> <a id="x36-17500030.2"></a>The Defensive Programmer Mindset</h3>
-<!--l. 72--><p class="noindent">After you have a working creative prototype and you’re feeling good about the idea,
-it’s time to switch to being a defensive programmer. The defensive programmer
-basically hates your code and believes these things:
-<!--l. 76--></p><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x36-175002x1">Software has errors.
-     </li>
-     <li class="enumerate" id="x36-175004x2">You are not your software, yet you are are responsible for the errors.
-     </li>
-     <li class="enumerate" id="x36-175006x3">You can never remove the errors, only reduce their probability.</li></ol><!--l. 82--><p class="indent">    This mindset lets you be honest about your work and critically analyze it for
-improvements. Notice that it doesn’t say you are full of errors? It says your code is
-full of errors. This is a significant thing to understand because it gives you the power
-of objectivity for the next implementation.
-<!--l. 88--></p><p class="indent">    Just like the creative mindset, the defensive programming mindset has a dark
-side as well. The defensive programmer is a paranoid who is afraid of everything,
-and this fear prevents them from possibly being wrong or making mistakes. That’s
-great when you are trying to be ruthlessly consistent and correct, but it is murder on
-creative energy and concentration.
-<!--l. 96--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">30.3    </span> <a id="x36-17600030.3"></a>The Eight Defensive Programmer Strategies</h3>
-<!--l. 98--><p class="noindent">Once you’ve adopted this mindset, you can then rewrite your prototype and
-                                                                  
-
-                                                                  
-follow a set of eight strategies I use to make my code as solid as I can. While I
-work on the ”real” version I ruthlessly follow these strategies and try to
-remove as many errors as I can, thinking like someone who wants to break the
-software.
+<html><head><title>Exercise 29: Libraries And Linking</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 30</span><br><a id="x36-19300030"></a>Exercise 29: Libraries And Linking</h2>
+<!--l. 3--><p class="noindent">A central part of any C program is the ability to link it to libraries that your
+operating system provides. Linking is how you get additional features for your
+program that someone else created and packaged on the system. You’ve been using
+some standard libraries that are automatically included, but I’m going to explain the
+different types of libraries and what they do.
+<!--l. 9--></p><p class="indent">    First off, libraries are poorly designed in every programming language. I have
+no idea why, but it seems language designers think of linking as something they just
+slap on later. They are usually confusing, hard to deal with, can’t do versioning right,
+and end up being linked differently everywhere.
+<!--l. 14--></p><p class="indent">    C is no different, but the way linking and libraries are done in C is an artifact of
+how the Unix operating system and executable formats were designed years ago.
+Learning how C links things helps you understand how your OS works and how it
+runs your programs.
+<!--l. 19--></p><p class="indent">    To start off there are two basic types of libraries:
      </p><dl class="description"><dt class="description">
-Never Trust Input </dt><dd class="description">Never trust the data you are given and always validate it.
+static </dt><dd class="description">You’ve made one of these when you used ar and ranlib to creat the
+     libYOUR_LIBRARY.a in the last exercise. This kind of library is nothing
+     more than a container for a set of .o object files and their functions, and
+     you can treat it like one big .o file when building your programs.
      </dd><dt class="description">
-Prevent Errors </dt><dd class="description">If an error is possible, no matter how probable, try to prevent
-     it.
-     </dd><dt class="description">
-Fail Early And Openly </dt><dd class="description">Fail early, cleanly, and openly, stating what happened,
-     where and how to fix it.
-     </dd><dt class="description">
-Document Assumptions </dt><dd class="description">Clearly  state  the  pre-conditions,  post-conditions,
-     and invariants.
-     </dd><dt class="description">
-Prevention Over Documentation </dt><dd class="description">Do not do with documentation, that which
-     can be done with code or avoided completely.
-     </dd><dt class="description">
-Automate Everything </dt><dd class="description">Automate everything, especially testing.
-     </dd><dt class="description">
-Simplify And Clarify </dt><dd class="description">Always simplify the code to the smallest, cleanest form
-     that works without sacrificing safety.
-     </dd><dt class="description">
-Question Authority </dt><dd class="description">Do not blindly follow or reject rules.</dd></dl><!--l. 115--><p class="indent">    These aren’t the only ones, but they’re the core things I feel programmers have
-to focus on when trying to make good solid code. Notice that I don’t really say
-exactly how to do these. I’ll go into each of these in more detail, and some of the
-exercises actually cover them extensively.
+dynamic </dt><dd class="description">These typically end in .so, .dll or about 1 million other endings
+     on OSX depending on the version and who happened to be working that
+     day. Seriously though, OSX adds .dylib, .bundle, and .framework
+     with  not  much  distinction  between  the  three.  These  files  are  built  and
+     then placed in a common location. When you run your program the OS
+     dynamically loades these files and links them to your program on the fly.</dd></dl><!--l. 34--><p class="indent">    I tend to like static libraries for small to medium sized projects because they are
+easier to deal with and work on more operating systems. I also like to put all of the
                                                                   
 
                                                                   
-<!--l. 121--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">30.4    </span> <a id="x36-17700030.4"></a>Applying The Eight Strategies</h3>
-<!--l. 123--><p class="noindent">I’ll now go through each of the eight strategies and give some basic advice and
-examples on how to use them in real code. This will help you understand these
-better since they may be vague or misinterpreted.
-<!--l. 127--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.1    </span> <a id="x36-17800030.4.1"></a>Never Trust Input</h4>
-<!--l. 129--><p class="noindent">Explain untrusted inputs. Use a few examples from the real world, maybe the recent
-Rails and Github attack. Show a simple C examples using C strings taken from a
-socket.
-<!--l. 132--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.2    </span> <a id="x36-17900030.4.2"></a>Prevent Errors</h4>
-<!--l. 134--><p class="noindent">Discuss the difference between a possible error and a probable error, then how
-humans are very bad at determining probability, therefore you should try to block all
-the possible errors you can.
-<!--l. 138--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.3    </span> <a id="x36-18000030.4.3"></a>Fail Early And Openly</h4>
-<!--l. 140--><p class="noindent">Show how my awesome macros help you do this and discuss good error messages.
-Make sure they understand that you should try to explain how to maybe fix it, or
+code I can into a static library so that I can then link it to unit tests and to the file
+programs as needed.
+<!--l. 39--></p><p class="indent">    Dynamic libraries are good for larger systems, when space is tight, or if you
+have a large number of programs that use common functionality. In this case you
+don’t want to statically link all of the code for the common features to every
+program, so you put it in a dynamic library so that it is loaded only once for all of
+them.
+<!--l. 44--></p><p class="indent">    In the previous exercise I laid out how to make a static library (a .a file), and
+that’s what I’ll use in the rest of the book. In this exercise I’m going to show you how
+to make a simple .so library, and how to dynamically load it with the Unix dlopen
+system. I’ll have you do this manually so that you understand everything that’s
+actually happening, then the Extra Credit will be to use the c-skeleton skeleton to
+create it.
+    </p><h4 class="subsectionHead"><span class="titlemark">30.0.1    </span> <a id="x36-19400030.0.1"></a>Dynamically Loading A Shared Library</h4>
+<!--l. 53--><p class="noindent">To do this I will create two source files. One will be used to make a libex29.so
+library, the other will be a program called ex29 that can load this library and run
+functions from it.
                                                                   
 
                                                                   
-report the defect.
-<!--l. 143--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.4    </span> <a id="x36-18100030.4.4"></a>Document Assumptions</h4>
-<!--l. 145--><p class="noindent">Explain design by contract and how you can use it to create pre-conditions,
-post-conditions, and invariants. Show a simple example of this with a function that
-has it all.
-<!--l. 148--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.5    </span> <a id="x36-18200030.4.5"></a>Prevention Over Documentation</h4>
-<!--l. 150--><p class="noindent">Talk about how programmers think that a documented flaw means there is no flaw
-and that they should just remove the flaw.
-<!--l. 153--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.6    </span> <a id="x36-18300030.4.6"></a>Automate Everything</h4>
-<!--l. 155--><p class="noindent">Discuss the advantages of automated testing and how I’ll teach that in a later
-exercise.
-<!--l. 157--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.7    </span> <a id="x36-18400030.4.7"></a>Simplify And Clarify</h4>
-<!--l. 159--><p class="noindent">Talk about how simpler code wins over more complex code because it reduces the
-probability of an error by reducing the number of branches and couplings in the
-code.
+<!--l. 57--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<!--l. 162--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">30.4.8    </span> <a id="x36-18500030.4.8"></a>Question Authority</h4>
-<!--l. 164--><p class="noindent">The final strategy is the most important because it breaks you out of the defensive
-programming mindset and lets you transition into the creative mindset. Defensive
-programming is authoritarian and it can be cruel. The job of this mindset is to
-make you follow rules because without them you’ll miss something or get
-distracted.
-<!--l. 170--></p><p class="indent">    This authoritarian attitude has the disadvantage of disabling independent
-creative thought. Rules are necessary for getting things done, but being a slave to
-them will kill your creativity.
-<!--l. 174--></p><p class="indent">    This final strategy means you should question the rules you follow
-periodically and assume that they could be wrong, just like the software
-you are reviewing. What I will typically do is, after a session of defensive
-programming, I’ll go take a non-programming break and let the rules go. Then I’ll
-be ready to do some creative work or do more defensive coding if need
-to.
-<!--l. 180--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">30.5    </span> <a id="x36-18600030.5"></a>Order Is Not Important</h3>
-<!--l. 182--><p class="noindent">The final thing I’ll say on this philosophy is that I’m not telling you to do this in a
-strict oder of ”CREATE! DEFEND! CREATE! DEFEND!” At first you may
-want to do that, but I will actually do either in varying amounts depend on
-what I want to do, and I may even meld them together with no defined
-boundary.
-<!--l. 187--></p><p class="indent">    I also don’t think one mindset is better than another, or that there are
-strict separation between them. You need both creativity and strictness to do
-programming well, so work on both if you want to improve.
+<a id="x36-194001r82"></a>
+ <div class="caption"><span class="id">Source 82: </span><span class="content">                                                                                                        libex29.c</span></div><!--tex4ht:label?: x36-194001r82 -->
+<div class="fancyvrb" id="fancyvrb49"><a id="x36-194003r1"></a>1  <span id="textcolor4479">#</span><span id="textcolor4480">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x36-194005r2"></a>2  <span id="textcolor4481">#</span><span id="textcolor4482">include <ctype.h></ctype.h></span><br class="fancyvrb"><a id="x36-194007r3"></a>3  <span id="textcolor4483">#</span><span id="textcolor4484">include "dbg.h"</span><br class="fancyvrb"><a id="x36-194009r4"></a>4  <br class="fancyvrb"><a id="x36-194011r5"></a>5  
+<br class="fancyvrb"><a id="x36-194013r6"></a>6  <span id="textcolor4485">int</span> <span id="textcolor4486">print_a_message</span>(<span id="textcolor4487">const</span> <span id="textcolor4488">char</span> ⋆msg)<br class="fancyvrb"><a id="x36-194015r7"></a>7  {<br class="fancyvrb"><a id="x36-194017r8"></a>8      printf(<span class="colorbox" id="colorbox4489"><span id="textcolor4490">"</span></span><span class="colorbox" id="colorbox4491"><span id="textcolor4492">A STRING: %s</span></span><span class="colorbox" id="colorbox4493"><span id="textcolor4494">\n</span></span><span class="colorbox" id="colorbox4495"><span id="textcolor4496">"</span></span>, msg);
+<br class="fancyvrb"><a id="x36-194019r9"></a>9  <br class="fancyvrb"><a id="x36-194021r10"></a>10      <span id="textcolor4497">return</span> <span id="textcolor4498">0</span>;<br class="fancyvrb"><a id="x36-194023r11"></a>11  }<br class="fancyvrb"><a id="x36-194025r12"></a>12  <br class="fancyvrb"><a id="x36-194027r13"></a>13  <br class="fancyvrb"><a id="x36-194029r14"></a>14  <span id="textcolor4499">int</span> <span id="textcolor4500">uppercase</span>(<span id="textcolor4501">const</span> <span id="textcolor4502">char</span> ⋆msg)<br class="fancyvrb"><a id="x36-194031r15"></a>15  {<br class="fancyvrb"><a id="x36-194033r16"></a>16      <span id="textcolor4503">int</span> i = <span id="textcolor4504">0</span>;<br class="fancyvrb"><a id="x36-194035r17"></a>17  
+<br class="fancyvrb"><a id="x36-194037r18"></a>18      <span id="textcolor4505">// BUG: \0 termination problems</span><br class="fancyvrb"><a id="x36-194039r19"></a>19      <span id="textcolor4506">for</span>(i = <span id="textcolor4507">0</span>; msg[i] != <span class="colorbox" id="colorbox4508"><span id="textcolor4509">’\0’</span></span>; i++) {
+<br class="fancyvrb"><a id="x36-194041r20"></a>20          printf(<span class="colorbox" id="colorbox4510"><span id="textcolor4511">"</span></span><span class="colorbox" id="colorbox4512"><span id="textcolor4513">%c</span></span><span class="colorbox" id="colorbox4514"><span id="textcolor4515">"</span></span>, toupper(msg[i]));<br class="fancyvrb"><a id="x36-194043r21"></a>21      }<br class="fancyvrb"><a id="x36-194045r22"></a>22  <br class="fancyvrb"><a id="x36-194047r23"></a>23      printf(<span class="colorbox" id="colorbox4516"><span id="textcolor4517">"</span></span><span class="colorbox" id="colorbox4518"><span id="textcolor4519">\n</span></span><span class="colorbox" id="colorbox4520"><span id="textcolor4521">"</span></span>);<br class="fancyvrb"><a id="x36-194049r24"></a>24  
+<br class="fancyvrb"><a id="x36-194051r25"></a>25      <span id="textcolor4522">return</span> <span id="textcolor4523">0</span>;<br class="fancyvrb"><a id="x36-194053r26"></a>26  }<br class="fancyvrb"><a id="x36-194055r27"></a>27  <br class="fancyvrb"><a id="x36-194057r28"></a>28  <span id="textcolor4524">int</span> <span id="textcolor4525">lowercase</span>(<span id="textcolor4526">const</span> <span id="textcolor4527">char</span> ⋆msg)<br class="fancyvrb"><a id="x36-194059r29"></a>29  {<br class="fancyvrb"><a id="x36-194061r30"></a>30      <span id="textcolor4528">int</span> i = <span id="textcolor4529">0</span>;<br class="fancyvrb"><a id="x36-194063r31"></a>31  
+<br class="fancyvrb"><a id="x36-194065r32"></a>32      <span id="textcolor4530">// BUG: \0 termination problems</span><br class="fancyvrb"><a id="x36-194067r33"></a>33      <span id="textcolor4531">for</span>(i = <span id="textcolor4532">0</span>; msg[i] != <span class="colorbox" id="colorbox4533"><span id="textcolor4534">’\0’</span></span>; i++) {
+<br class="fancyvrb"><a id="x36-194069r34"></a>34          printf(<span class="colorbox" id="colorbox4535"><span id="textcolor4536">"</span></span><span class="colorbox" id="colorbox4537"><span id="textcolor4538">%c</span></span><span class="colorbox" id="colorbox4539"><span id="textcolor4540">"</span></span>, tolower(msg[i]));<br class="fancyvrb"><a id="x36-194071r35"></a>35      }<br class="fancyvrb"><a id="x36-194073r36"></a>36  <br class="fancyvrb"><a id="x36-194075r37"></a>37      printf(<span class="colorbox" id="colorbox4541"><span id="textcolor4542">"</span></span><span class="colorbox" id="colorbox4543"><span id="textcolor4544">\n</span></span><span class="colorbox" id="colorbox4545"><span id="textcolor4546">"</span></span>);<br class="fancyvrb"><a id="x36-194077r38"></a>38  
+<br class="fancyvrb"><a id="x36-194079r39"></a>39      <span id="textcolor4547">return</span> <span id="textcolor4548">0</span>;<br class="fancyvrb"><a id="x36-194081r40"></a>40  }<br class="fancyvrb"><a id="x36-194083r41"></a>41  <br class="fancyvrb"><a id="x36-194085r42"></a>42  <span id="textcolor4549">int</span> <span id="textcolor4550">fail_on_purpose</span>(<span id="textcolor4551">const</span> <span id="textcolor4552">char</span> ⋆msg)<br class="fancyvrb"><a id="x36-194087r43"></a>43  {<br class="fancyvrb"><a id="x36-194089r44"></a>44      <span id="textcolor4553">return</span> <span id="textcolor4554">1</span>;<br class="fancyvrb"><a id="x36-194091r45"></a>45  }</div>
                                                                   
 
                                                                   
-<!--l. 192--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">30.6    </span> <a id="x36-18700030.6"></a>Extra Credit</h3>
-<!--l. 194--><p class="noindent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x36-187002x1">The code in the book up to this point (and for the rest of it) potentially
-     violates these rules. Go back through and apply what you’ve learned to
-     one exercise to see if you can improve it or find bugs.
+    </div><hr class="endfloat"></hr><!--l. 108--><p class="indent">    There’s nothing fancy in there, although there’s some bugs I’m leaving in on
+purpose to see if you’ve been paying attention. You’ll fix those later.
+<!--l. 111--></p><p class="indent">    What we want to do is use the functions dlopen, dlsym and dlclose to work
+with the above functions.
+                                                                  
+
+                                                                  
+<!--l. 114--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x36-194092r83"></a>
+ <div class="caption"><span class="id">Source 83: </span><span class="content">                                                                                                            ex29.c</span></div><!--tex4ht:label?: x36-194092r83 -->
+<div class="fancyvrb" id="fancyvrb50"><a id="x36-194094r1"></a>1  <span id="textcolor4555">#</span><span id="textcolor4556">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x36-194096r2"></a>2  <span id="textcolor4557">#</span><span id="textcolor4558">include "dbg.h"</span><br class="fancyvrb"><a id="x36-194098r3"></a>3  <span id="textcolor4559">#</span><span id="textcolor4560">include <dlfcn.h></dlfcn.h></span><br class="fancyvrb"><a id="x36-194100r4"></a>4  
+<br class="fancyvrb"><a id="x36-194102r5"></a>5  <span id="textcolor4561">typedef</span> <span id="textcolor4562">int</span> (⋆lib_function)(<span id="textcolor4563">const</span> <span id="textcolor4564">char</span> ⋆data);<br class="fancyvrb"><a id="x36-194104r6"></a>6  <br class="fancyvrb"><a id="x36-194106r7"></a>7  <br class="fancyvrb"><a id="x36-194108r8"></a>8  <span id="textcolor4565">int</span> <span id="textcolor4566">main</span>(<span id="textcolor4567">int</span> argc, <span id="textcolor4568">char</span> ⋆argv[])
+<br class="fancyvrb"><a id="x36-194110r9"></a>9  {<br class="fancyvrb"><a id="x36-194112r10"></a>10      <span id="textcolor4569">int</span> rc = <span id="textcolor4570">0</span>;<br class="fancyvrb"><a id="x36-194114r11"></a>11      check(argc == <span id="textcolor4571">4</span>, <span class="colorbox" id="colorbox4572"><span id="textcolor4573">"</span></span><span class="colorbox" id="colorbox4574"><span id="textcolor4575">USAGE: ex29 libex29.so function data</span></span><span class="colorbox" id="colorbox4576"><span id="textcolor4577">"</span></span>);
+<br class="fancyvrb"><a id="x36-194116r12"></a>12  <br class="fancyvrb"><a id="x36-194118r13"></a>13      <span id="textcolor4578">char</span> ⋆lib_file = argv[<span id="textcolor4579">1</span>];<br class="fancyvrb"><a id="x36-194120r14"></a>14      <span id="textcolor4580">char</span> ⋆func_to_run = argv[<span id="textcolor4581">2</span>];
+<br class="fancyvrb"><a id="x36-194122r15"></a>15      <span id="textcolor4582">char</span> ⋆data = argv[<span id="textcolor4583">3</span>];<br class="fancyvrb"><a id="x36-194124r16"></a>16  <br class="fancyvrb"><a id="x36-194126r17"></a>17      <span id="textcolor4584">void</span> ⋆lib = dlopen(lib_file, RTLD_NOW);
+<br class="fancyvrb"><a id="x36-194128r18"></a>18      check(lib != <span id="textcolor4585">NULL</span>, <span class="colorbox" id="colorbox4586"><span id="textcolor4587">"</span></span><span class="colorbox" id="colorbox4588"><span id="textcolor4589">Failed to open the library %s: %s</span></span><span class="colorbox" id="colorbox4590"><span id="textcolor4591">"</span></span>, lib_file, dlerror());
+<br class="fancyvrb"><a id="x36-194130r19"></a>19  <br class="fancyvrb"><a id="x36-194132r20"></a>20      lib_function func = dlsym(lib, func_to_run);
+<br class="fancyvrb"><a id="x36-194134r21"></a>21      check(func != <span id="textcolor4592">NULL</span>, <span class="colorbox" id="colorbox4593"><span id="textcolor4594">"</span></span><span class="colorbox" id="colorbox4595"><span id="textcolor4596">Did not find %s function in the library %s: %s</span></span><span class="colorbox" id="colorbox4597"><span id="textcolor4598">"</span></span>, func_to_run, lib_file, dlerror());
+<br class="fancyvrb"><a id="x36-194136r22"></a>22  <br class="fancyvrb"><a id="x36-194138r23"></a>23      rc = func(data);
+<br class="fancyvrb"><a id="x36-194140r24"></a>24      check(rc == <span id="textcolor4599">0</span>, <span class="colorbox" id="colorbox4600"><span id="textcolor4601">"</span></span><span class="colorbox" id="colorbox4602"><span id="textcolor4603">Function %s return %d for data: %s</span></span><span class="colorbox" id="colorbox4604"><span id="textcolor4605">"</span></span>, func_to_run, rc, data);
+<br class="fancyvrb"><a id="x36-194142r25"></a>25  <br class="fancyvrb"><a id="x36-194144r26"></a>26      rc = dlclose(lib);<br class="fancyvrb"><a id="x36-194146r27"></a>27      check(rc == <span id="textcolor4606">0</span>, <span class="colorbox" id="colorbox4607"><span id="textcolor4608">"</span></span><span class="colorbox" id="colorbox4609"><span id="textcolor4610">Failed to close %s</span></span><span class="colorbox" id="colorbox4611"><span id="textcolor4612">"</span></span>, lib_file);
+<br class="fancyvrb"><a id="x36-194148r28"></a>28  <br class="fancyvrb"><a id="x36-194150r29"></a>29      <span id="textcolor4613">return</span> <span id="textcolor4614">0</span>;<br class="fancyvrb"><a id="x36-194152r30"></a>30  <br class="fancyvrb"><a id="x36-194154r31"></a>31  <span id="textcolor4615">error:</span><br class="fancyvrb"><a id="x36-194156r32"></a>32      <span id="textcolor4616">return</span> <span id="textcolor4617">1</span>;<br class="fancyvrb"><a id="x36-194158r33"></a>33  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 153--><p class="indent">    I’ll now break this down so you can see what’s going on in this small bit of
+useful code:
+     </p><dl class="description"><dt class="description">
+ex29.c:5 </dt><dd class="description">I’ll  use  this  function  pointer  definition  later  to  call  functions  in  the
+     library.  This  is  nothing  new,  but  make  sure  you  understand  what  it’s
+     doing.
+     </dd><dt class="description">
+ex29.c:17 </dt><dd class="description">After the usual setup for a small program, I use the dlopen function
+     to load up the library indicated by lib_file. This function returns a
+     handle that we use later and works a lot like opening a file.
+     </dd><dt class="description">
+ex29.c:18 </dt><dd class="description">If there’s an error, I do the usual check and exit, but notice at then
+     end that I’m using dlerror to find out what the library related error
+     was.
+     </dd><dt class="description">
+ex29.c:20 </dt><dd class="description">I use dlsym to get a function out of the lib by it’s string name in
+     func_to_run. This is the powerful part, since I’m dynamically getting
+     a pointer to a function based on a string I got from the command line
+     argv.
+     </dd><dt class="description">
+ex29.c:23 </dt><dd class="description">I then call the func function that was returned, and check its return
+     value.
+     </dd><dt class="description">
+ex29.c:26 </dt><dd class="description">Finally, I close the library up just like I would a file. Usually you keep
+     these open the whole time the program is running, so closing at the end
+     isn’t as useful, but I’m demonstrating it here.</dd></dl><h3 class="sectionHead"><span class="titlemark">30.1    </span> <a id="x36-19500030.1"></a>What You Should See</h3>
+                                                                  
+
+                                                                  
+<!--l. 179--><p class="noindent">Now that you know what this file does, here’s a shell session of me building the
+libex29.so, ex29 and then working with it. Follow along so you learn how these
+things are built manually.
+                                                                  
+
+                                                                  
+<!--l. 183--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x36-195001r84"></a>
+ <div class="caption"><span class="id">Source 84: </span><span class="content">                                                                                     Building And Using
+libex29.so</span></div><!--tex4ht:label?: x36-195001r84 -->
+<div class="fancyvrb" id="fancyvrb51"><a id="x36-195003r1"></a>1  <span id="textcolor4618">#</span> compile the lib file and make the .so<br class="fancyvrb"><a id="x36-195005r2"></a>2  <span id="textcolor4619">$</span> cc -c libex29.c -o libex29.o
+<br class="fancyvrb"><a id="x36-195007r3"></a>3  <span id="textcolor4620">$</span> cc -shared -o libex29.so libex29.o<br class="fancyvrb"><a id="x36-195009r4"></a>4  <br class="fancyvrb"><a id="x36-195011r5"></a>5  <span id="textcolor4621">#</span> make the loader program
+<br class="fancyvrb"><a id="x36-195013r6"></a>6  <span id="textcolor4622">$</span> cc -Wall -g -DNDEBUG -ldl ex29.c -o ex29<br class="fancyvrb"><a id="x36-195015r7"></a>7  <br class="fancyvrb"><a id="x36-195017r8"></a>8  <span id="textcolor4623">#</span> try it out with some things that work
+<br class="fancyvrb"><a id="x36-195019r9"></a>9  <span id="textcolor4624">$</span> ex29 ./libex29.so print_a_message <span class="colorbox" id="colorbox4625"><span id="textcolor4626">"hello there"</span></span><br class="fancyvrb"><a id="x36-195021r10"></a>10  <span id="textcolor4627">-bash: ex29: command not found</span>
+<br class="fancyvrb"><a id="x36-195023r11"></a>11  <span id="textcolor4628">$</span> ./ex29 ./libex29.so print_a_message <span class="colorbox" id="colorbox4629"><span id="textcolor4630">"hello there"</span></span>
+<br class="fancyvrb"><a id="x36-195025r12"></a>12  <span id="textcolor4631">A STRING: hello there</span><br class="fancyvrb"><a id="x36-195027r13"></a>13  <span id="textcolor4632">$</span> ./ex29 ./libex29.so uppercase <span class="colorbox" id="colorbox4633"><span id="textcolor4634">"hello there"</span></span>
+<br class="fancyvrb"><a id="x36-195029r14"></a>14  <span id="textcolor4635">HELLO THERE</span><br class="fancyvrb"><a id="x36-195031r15"></a>15  <span id="textcolor4636">$</span> ./ex29 ./libex29.so lowercase <span class="colorbox" id="colorbox4637"><span id="textcolor4638">"HELLO tHeRe"</span></span>
+<br class="fancyvrb"><a id="x36-195033r16"></a>16  <span id="textcolor4639">hello there</span><br class="fancyvrb"><a id="x36-195035r17"></a>17  <span id="textcolor4640">$</span> ./ex29 ./libex29.so fail_on_purpose <span class="colorbox" id="colorbox4641"><span id="textcolor4642">"i fail"</span></span>
+<br class="fancyvrb"><a id="x36-195037r18"></a>18  <span id="textcolor4643">[ERROR] (ex29.c:23: errno: None) Function fail_on_purpose return 1 for data: i fail</span>
+<br class="fancyvrb"><a id="x36-195039r19"></a>19  <br class="fancyvrb"><a id="x36-195041r20"></a>20  <span id="textcolor4644">#</span> try to give it bad args<br class="fancyvrb"><a id="x36-195043r21"></a>21  <span id="textcolor4645">$</span> ./ex29 ./libex29.so fail_on_purpose
+<br class="fancyvrb"><a id="x36-195045r22"></a>22  <span id="textcolor4646">[ERROR] (ex29.c:11: errno: None) USAGE: ex29 libex29.so function data</span><br class="fancyvrb"><a id="x36-195047r23"></a>23  
+<br class="fancyvrb"><a id="x36-195049r24"></a>24  <span id="textcolor4647">#</span> try calling a <span id="textcolor4648">function </span>that is not there<br class="fancyvrb"><a id="x36-195051r25"></a>25  <span id="textcolor4649">$</span> ./ex29 ./libex29.so adfasfasdf asdfadff
+<br class="fancyvrb"><a id="x36-195053r26"></a>26  <span id="textcolor4650">[ERROR] (ex29.c:20: errno: None) Did not find adfasfasdf </span>
+<br class="fancyvrb"><a id="x36-195055r27"></a>27  <span id="textcolor4651">  function in the library libex29.so: dlsym(0x1076009b0, adfasfasdf): symbol not found</span>
+<br class="fancyvrb"><a id="x36-195057r28"></a>28  <br class="fancyvrb"><a id="x36-195059r29"></a>29  <span id="textcolor4652">#</span> try loading a .so that is not there<br class="fancyvrb"><a id="x36-195061r30"></a>30  <span id="textcolor4653">$</span> ./ex29 ./libex.so adfasfasdf asdfadfas
+<br class="fancyvrb"><a id="x36-195063r31"></a>31  <span id="textcolor4654">[ERROR] (ex29.c:17: errno: No such file or directory) Failed to open</span>
+<br class="fancyvrb"><a id="x36-195065r32"></a>32  <span id="textcolor4655">    the library libex.so: dlopen(libex.so, 2): image not found</span><br class="fancyvrb"><a id="x36-195067r33"></a>33  <span id="textcolor4656">$</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 222--><p class="indent">    One thing that you may run into is that every OS, every version of every OS,
+and every compiler on every version of every OS, seems to want to change the way
+you build a shared library every other month that some new programmer thinks it’s
+wrong. If the line I use to make the libex29.so file is wrong, then let me know and
+I’ll add some comments for other platforms.
+    </p><h3 class="sectionHead"><span class="titlemark">30.2    </span> <a id="x36-19600030.2"></a>How To Break It</h3>
+<!--l. 230--><p class="noindent">Open libex29.so and edit it with an editor that can handle binary files. Change a
+couple bytes, then close it. Try to see if you can get the dlopen function to load it
+even though you’ve corrupted it.
+<!--l. 235--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">30.3    </span> <a id="x36-19700030.3"></a>Extra Credit</h3>
+<!--l. 237--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x36-197002x1">Were  you  paying  attention  to  the  bad  code  I  have  in  the  libex29.c
+     functions? See how, even though I use a for-loop they still check for <span class="obeylines-h"><span class="verb">’\0’</span></span>
+     endings? Fix this so the functions always take a length for the string to
+     work with inside the function.
      </li>
-     <li class="enumerate" id="x36-187004x2">Find  an  open  source  project  and  give  some  of  the  files  a  similar  code
-     review. Submit a patch that fixes a bug if you find it.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych31.html">next</a>] [<a href="learn-c-the-hard-waypa2.html">prev</a>] [<a href="learn-c-the-hard-waypa2.html#taillearn-c-the-hard-waypa2.html">prev-tail</a>] [<a href="learn-c-the-hard-waych30.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych30.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych30.html"></a>   
+     <li class="enumerate" id="x36-197004x2">Take the c-skeleton skeleton, and create a new project for this exercise.
+     Put the libex29.c file in the src/ directory. Change the Makefile so
+     that it builds this as build/libex29.so.
+     </li>
+     <li class="enumerate" id="x36-197006x3">Take the ex29.c file and put it in tests/ex29_tests.c so that it runs
+     as a unit test. Make this all work, which means you have to change it so
+                                                                  
+
+                                                                  
+     that it loads the build/libex29.so file and runs tests similar to what
+     I did manually above.
+     </li>
+     <li class="enumerate" id="x36-197008x4">Read  the  man dlopen documentation  and  read  about  all  the  related
+     functions. Try some of the other options to dlopen beside RTLD_NOW.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

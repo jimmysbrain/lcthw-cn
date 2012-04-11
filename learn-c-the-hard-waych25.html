@@ -1,222 +1,134 @@
-<html><head><title>习题23: 接触Duff 的设备</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 2--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych26.html">next</a>] [<a href="learn-c-the-hard-waych24.html">prev</a>] [<a href="learn-c-the-hard-waych24.html#taillearn-c-the-hard-waych24.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych25.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych25.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 25</span><br><a id="x30-13500025"></a>习题23: 接触Duff 的设备</h2>
-<!--l. 5--><p class="noindent">This exercise is a brain teaser where I introduce you to one of the most famous hacks
-in C called ”Duff’s Device”, named after Tom Duff the ”inventor”. This little slice of
-awesome (evil?) has nearly everything you’ve been learning wrapped in one
-tiny little package. Figuring out how it works is also a good fun puzzle. 我向你介绍这个棘手的习题是一款著名的黑客程序，它叫“Duff 的设备”，
-用 c 语言写的，后来被 Duff 称为“邀请者”。这一小块‘神来之笔’几乎囊括你已学的那一小部分内容。了解它是如何工作的是一项富有乐趣的解谜。
+<html><head><title>习题24: 输入、输出、文件</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 25</span><br><a id="x30-13900025"></a>习题24: 输入、输出、文件</h2>
+<!--l. 3--><p class="noindent">你已经可以用 printf 来打印了，这非常好。但是你肯定不满足于此。在这一节，你将会用 fscanf 和 fgets 来构建一个结构体以存贮某个人的信息。简单介绍过如何读取数据之后，你将会看到一个 C 语言所拥有的处理 IO 的完整函数列表。你应该已经见过而且用过其中的一部分，所以本节会帮助你回想起很多东西。
                                                                   
 
                                                                   
-<!--l. 16--></p><p class="indent">    <a id="x30-135001r6"></a></p><hr class="float"></hr><div class="float">
+<!--l. 8--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<div class="caption"><span class="id">Note 6: </span><span class="content">                                                                                                 This Is Only An
-Exercise</span></div><!--tex4ht:label?: x30-135001r6 -->
-     <div class="quote">
-     <!--l. 17--><p class="indent">   Part of the fun of C is that you can come up with crazy hacks like
-     this, but this is also what makes C annoying to use. It’s good to learn
-     about these tricks because it gives you a deeper understanding of
-     the language and your computer. But, you should never use this.
-     Always strive for easy to read code. </p></div>
+<a id="x30-139001r63"></a>
+<div class="caption"><span class="id">Source 63: </span><span class="content">                                                                                                            ex24.c</span></div><!--tex4ht:label?: x30-139001r63 -->
+<div class="fancyvrb" id="fancyvrb34"><a id="x30-139003r1"></a>1  <span id="textcolor2676">#</span><span id="textcolor2677">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x30-139005r2"></a>2  <span id="textcolor2678">#</span><span id="textcolor2679">include "dbg.h"</span><br class="fancyvrb"><a id="x30-139007r3"></a>3  <br class="fancyvrb"><a id="x30-139009r4"></a>4  <span id="textcolor2680">#</span><span id="textcolor2681">define MAX_DATA 100</span><br class="fancyvrb"><a id="x30-139011r5"></a>5  
+<br class="fancyvrb"><a id="x30-139013r6"></a>6  <span id="textcolor2682">typedef</span> <span id="textcolor2683">enum</span> EyeColor {<br class="fancyvrb"><a id="x30-139015r7"></a>7      BLUE_EYES, GREEN_EYES, BROWN_EYES,
+<br class="fancyvrb"><a id="x30-139017r8"></a>8      BLACK_EYES, OTHER_EYES<br class="fancyvrb"><a id="x30-139019r9"></a>9  } EyeColor;<br class="fancyvrb"><a id="x30-139021r10"></a>10  <br class="fancyvrb"><a id="x30-139023r11"></a>11  <span id="textcolor2684">const</span> <span id="textcolor2685">char</span> ⋆EYE_COLOR_NAMES[] = {
+<br class="fancyvrb"><a id="x30-139025r12"></a>12      <span class="colorbox" id="colorbox2686"><span id="textcolor2687">"</span></span><span class="colorbox" id="colorbox2688"><span id="textcolor2689">Blue</span></span><span class="colorbox" id="colorbox2690"><span id="textcolor2691">"</span></span>, <span class="colorbox" id="colorbox2692"><span id="textcolor2693">"</span></span><span class="colorbox" id="colorbox2694"><span id="textcolor2695">Green</span></span><span class="colorbox" id="colorbox2696"><span id="textcolor2697">"</span></span>, <span class="colorbox" id="colorbox2698"><span id="textcolor2699">"</span></span><span class="colorbox" id="colorbox2700"><span id="textcolor2701">Brown</span></span><span class="colorbox" id="colorbox2702"><span id="textcolor2703">"</span></span>, <span class="colorbox" id="colorbox2704"><span id="textcolor2705">"</span></span><span class="colorbox" id="colorbox2706"><span id="textcolor2707">Black</span></span><span class="colorbox" id="colorbox2708"><span id="textcolor2709">"</span></span>, <span class="colorbox" id="colorbox2710"><span id="textcolor2711">"</span></span><span class="colorbox" id="colorbox2712"><span id="textcolor2713">Other</span></span><span class="colorbox" id="colorbox2714"><span id="textcolor2715">"</span></span><br class="fancyvrb"><a id="x30-139027r13"></a>13  };<br class="fancyvrb"><a id="x30-139029r14"></a>14  <br class="fancyvrb"><a id="x30-139031r15"></a>15  <span id="textcolor2716">typedef</span> <span id="textcolor2717">struct</span> Person {
+<br class="fancyvrb"><a id="x30-139033r16"></a>16      <span id="textcolor2718">int</span> age;<br class="fancyvrb"><a id="x30-139035r17"></a>17      <span id="textcolor2719">char</span> first_name[MAX_DATA];<br class="fancyvrb"><a id="x30-139037r18"></a>18      <span id="textcolor2720">char</span> last_name[MAX_DATA];
+<br class="fancyvrb"><a id="x30-139039r19"></a>19      EyeColor eyes;<br class="fancyvrb"><a id="x30-139041r20"></a>20      <span id="textcolor2721">float</span> income;<br class="fancyvrb"><a id="x30-139043r21"></a>21  } Person;<br class="fancyvrb"><a id="x30-139045r22"></a>22  <br class="fancyvrb"><a id="x30-139047r23"></a>23  
+<br class="fancyvrb"><a id="x30-139049r24"></a>24  <span id="textcolor2722">int</span> <span id="textcolor2723">main</span>(<span id="textcolor2724">int</span> argc, <span id="textcolor2725">char</span> ⋆argv[])<br class="fancyvrb"><a id="x30-139051r25"></a>25  {<br class="fancyvrb"><a id="x30-139053r26"></a>26      Person you = {.age = <span id="textcolor2726">0</span>};
+<br class="fancyvrb"><a id="x30-139055r27"></a>27      <span id="textcolor2727">int</span> i = <span id="textcolor2728">0</span>;<br class="fancyvrb"><a id="x30-139057r28"></a>28      <span id="textcolor2729">char</span> ⋆in = <span id="textcolor2730">NULL</span>;<br class="fancyvrb"><a id="x30-139059r29"></a>29  <br class="fancyvrb"><a id="x30-139061r30"></a>30      printf(<span class="colorbox" id="colorbox2731"><span id="textcolor2732">"</span></span><span class="colorbox" id="colorbox2733"><span id="textcolor2734">What’s your First Name? </span></span><span class="colorbox" id="colorbox2735"><span id="textcolor2736">"</span></span>);
+<br class="fancyvrb"><a id="x30-139063r31"></a>31      in = fgets(you.first_name, MAX_DATA-<span id="textcolor2737">1</span>, stdin);
+<br class="fancyvrb"><a id="x30-139065r32"></a>32      check(in != <span id="textcolor2738">NULL</span>, <span class="colorbox" id="colorbox2739"><span id="textcolor2740">"</span></span><span class="colorbox" id="colorbox2741"><span id="textcolor2742">Failed to read first name.</span></span><span class="colorbox" id="colorbox2743"><span id="textcolor2744">"</span></span>);
+<br class="fancyvrb"><a id="x30-139067r33"></a>33  <br class="fancyvrb"><a id="x30-139069r34"></a>34      printf(<span class="colorbox" id="colorbox2745"><span id="textcolor2746">"</span></span><span class="colorbox" id="colorbox2747"><span id="textcolor2748">What’s your Last Name? </span></span><span class="colorbox" id="colorbox2749"><span id="textcolor2750">"</span></span>);
+<br class="fancyvrb"><a id="x30-139071r35"></a>35      in = fgets(you.last_name, MAX_DATA-<span id="textcolor2751">1</span>, stdin);
+<br class="fancyvrb"><a id="x30-139073r36"></a>36      check(in != <span id="textcolor2752">NULL</span>, <span class="colorbox" id="colorbox2753"><span id="textcolor2754">"</span></span><span class="colorbox" id="colorbox2755"><span id="textcolor2756">Failed to read last name.</span></span><span class="colorbox" id="colorbox2757"><span id="textcolor2758">"</span></span>);<br class="fancyvrb"><a id="x30-139075r37"></a>37  
+<br class="fancyvrb"><a id="x30-139077r38"></a>38      printf(<span class="colorbox" id="colorbox2759"><span id="textcolor2760">"</span></span><span class="colorbox" id="colorbox2761"><span id="textcolor2762">How old are you? </span></span><span class="colorbox" id="colorbox2763"><span id="textcolor2764">"</span></span>);<br class="fancyvrb"><a id="x30-139079r39"></a>39      <span id="textcolor2765">int</span> rc = fscanf(stdin, <span class="colorbox" id="colorbox2766"><span id="textcolor2767">"</span></span><span class="colorbox" id="colorbox2768"><span id="textcolor2769">%d</span></span><span class="colorbox" id="colorbox2770"><span id="textcolor2771">"</span></span>, &amp;you.age);
+<br class="fancyvrb"><a id="x30-139081r40"></a>40      check(rc &gt; <span id="textcolor2772">0</span>, <span class="colorbox" id="colorbox2773"><span id="textcolor2774">"</span></span><span class="colorbox" id="colorbox2775"><span id="textcolor2776">You have to enter a number.</span></span><span class="colorbox" id="colorbox2777"><span id="textcolor2778">"</span></span>);<br class="fancyvrb"><a id="x30-139083r41"></a>41  
+<br class="fancyvrb"><a id="x30-139085r42"></a>42      printf(<span class="colorbox" id="colorbox2779"><span id="textcolor2780">"</span></span><span class="colorbox" id="colorbox2781"><span id="textcolor2782">What color are your eyes:</span></span><span class="colorbox" id="colorbox2783"><span id="textcolor2784">\n</span></span><span class="colorbox" id="colorbox2785"><span id="textcolor2786">"</span></span>);<br class="fancyvrb"><a id="x30-139087r43"></a>43      <span id="textcolor2787">for</span>(i = <span id="textcolor2788">0</span>; i <a id="x30-139089r44"></a>44          printf(<span class="colorbox" id="colorbox2789"><span id="textcolor2790">"</span></span><span class="colorbox" id="colorbox2791"><span id="textcolor2792">%d) %s</span></span><span class="colorbox" id="colorbox2793"><span id="textcolor2794">\n</span></span><span class="colorbox" id="colorbox2795"><span id="textcolor2796">"</span></span>, i+<span id="textcolor2797">1</span>, EYE_COLOR_NAMES[i]);<br class="fancyvrb"><a id="x30-139091r45"></a>45      }
+<br class="fancyvrb"><a id="x30-139093r46"></a>46      printf(<span class="colorbox" id="colorbox2798"><span id="textcolor2799">"</span></span><span class="colorbox" id="colorbox2800"><span id="textcolor2801">&gt; </span></span><span class="colorbox" id="colorbox2802"><span id="textcolor2803">"</span></span>);<br class="fancyvrb"><a id="x30-139095r47"></a>47  <br class="fancyvrb"><a id="x30-139097r48"></a>48      <span id="textcolor2804">int</span> eyes = -<span id="textcolor2805">1</span>;<br class="fancyvrb"><a id="x30-139099r49"></a>49      rc = fscanf(stdin, <span class="colorbox" id="colorbox2806"><span id="textcolor2807">"</span></span><span class="colorbox" id="colorbox2808"><span id="textcolor2809">%d</span></span><span class="colorbox" id="colorbox2810"><span id="textcolor2811">"</span></span>, &amp;eyes);
+<br class="fancyvrb"><a id="x30-139101r50"></a>50      check(rc &gt; <span id="textcolor2812">0</span>, <span class="colorbox" id="colorbox2813"><span id="textcolor2814">"</span></span><span class="colorbox" id="colorbox2815"><span id="textcolor2816">You have to enter a number.</span></span><span class="colorbox" id="colorbox2817"><span id="textcolor2818">"</span></span>);<br class="fancyvrb"><a id="x30-139103r51"></a>51  <br class="fancyvrb"><a id="x30-139105r52"></a>52      you.eyes = eyes - <span id="textcolor2819">1</span>;
+<br class="fancyvrb"><a id="x30-139107r53"></a>53      check(you.eyes = <span id="textcolor2820">0</span>, <span class="colorbox" id="colorbox2821"><span id="textcolor2822">"</span></span><span class="colorbox" id="colorbox2823"><span id="textcolor2824">Do it right, that’s not an option.</span></span><span class="colorbox" id="colorbox2825"><span id="textcolor2826">"</span></span>);
+<br class="fancyvrb"><a id="x30-139109r54"></a>54  <br class="fancyvrb"><a id="x30-139111r55"></a>55      printf(<span class="colorbox" id="colorbox2827"><span id="textcolor2828">"</span></span><span class="colorbox" id="colorbox2829"><span id="textcolor2830">How much do you make an hour? </span></span><span class="colorbox" id="colorbox2831"><span id="textcolor2832">"</span></span>);
+<br class="fancyvrb"><a id="x30-139113r56"></a>56      rc = fscanf(stdin, <span class="colorbox" id="colorbox2833"><span id="textcolor2834">"</span></span><span class="colorbox" id="colorbox2835"><span id="textcolor2836">%f</span></span><span class="colorbox" id="colorbox2837"><span id="textcolor2838">"</span></span>, &amp;you.income);
+<br class="fancyvrb"><a id="x30-139115r57"></a>57      check(rc &gt; <span id="textcolor2839">0</span>, <span class="colorbox" id="colorbox2840"><span id="textcolor2841">"</span></span><span class="colorbox" id="colorbox2842"><span id="textcolor2843">Enter a floating point number.</span></span><span class="colorbox" id="colorbox2844"><span id="textcolor2845">"</span></span>);<br class="fancyvrb"><a id="x30-139117r58"></a>58  
+<br class="fancyvrb"><a id="x30-139119r59"></a>59      printf(<span class="colorbox" id="colorbox2846"><span id="textcolor2847">"</span></span><span class="colorbox" id="colorbox2848"><span id="textcolor2849">----- RESULTS -----</span></span><span class="colorbox" id="colorbox2850"><span id="textcolor2851">\n</span></span><span class="colorbox" id="colorbox2852"><span id="textcolor2853">"</span></span>);<br class="fancyvrb"><a id="x30-139121r60"></a>60  <br class="fancyvrb"><a id="x30-139123r61"></a>61      printf(<span class="colorbox" id="colorbox2854"><span id="textcolor2855">"</span></span><span class="colorbox" id="colorbox2856"><span id="textcolor2857">First Name: %s</span></span><span class="colorbox" id="colorbox2858"><span id="textcolor2859">"</span></span>, you.first_name);
+<br class="fancyvrb"><a id="x30-139125r62"></a>62      printf(<span class="colorbox" id="colorbox2860"><span id="textcolor2861">"</span></span><span class="colorbox" id="colorbox2862"><span id="textcolor2863">Last Name: %s</span></span><span class="colorbox" id="colorbox2864"><span id="textcolor2865">"</span></span>, you.last_name);<br class="fancyvrb"><a id="x30-139127r63"></a>63      printf(<span class="colorbox" id="colorbox2866"><span id="textcolor2867">"</span></span><span class="colorbox" id="colorbox2868"><span id="textcolor2869">Age: %d</span></span><span class="colorbox" id="colorbox2870"><span id="textcolor2871">\n</span></span><span class="colorbox" id="colorbox2872"><span id="textcolor2873">"</span></span>, you.age);
+<br class="fancyvrb"><a id="x30-139129r64"></a>64      printf(<span class="colorbox" id="colorbox2874"><span id="textcolor2875">"</span></span><span class="colorbox" id="colorbox2876"><span id="textcolor2877">Eyes: %s</span></span><span class="colorbox" id="colorbox2878"><span id="textcolor2879">\n</span></span><span class="colorbox" id="colorbox2880"><span id="textcolor2881">"</span></span>, EYE_COLOR_NAMES[you.eyes]);
+<br class="fancyvrb"><a id="x30-139131r65"></a>65      printf(<span class="colorbox" id="colorbox2882"><span id="textcolor2883">"</span></span><span class="colorbox" id="colorbox2884"><span id="textcolor2885">Income: %f</span></span><span class="colorbox" id="colorbox2886"><span id="textcolor2887">\n</span></span><span class="colorbox" id="colorbox2888"><span id="textcolor2889">"</span></span>, you.income);<br class="fancyvrb"><a id="x30-139133r66"></a>66  <br class="fancyvrb"><a id="x30-139135r67"></a>67      <span id="textcolor2890">return</span> <span id="textcolor2891">0</span>;<br class="fancyvrb"><a id="x30-139137r68"></a>68  <span id="textcolor2892">error:</span><br class="fancyvrb"><a id="x30-139139r69"></a>69  <br class="fancyvrb"><a id="x30-139141r70"></a>70      <span id="textcolor2893">return</span> -<span id="textcolor2894">1</span>;<br class="fancyvrb"><a id="x30-139143r71"></a>71  }</div>
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 24--><p class="indent">    <a id="x30-135002r7"></a></p><hr class="float"></hr><div class="float">
-                                                                  
-
-                                                                  
- <div class="caption"><span class="id">Note 7: </span><span class="content">                                                                                                   这是唯一的练习</span></div><!--tex4ht:label?: x30-135002r7 -->
-     <div class="quote">
-     <!--l. 25--><p class="indent"> 通过这些有趣的 c 语言代码可以让你领略到黑客的思路，但这不是使用 c 语言的好方式。学习这些技巧能让你更深的了解 c 语言和你的计算机。你最好不要去这样使用 c 语言，你应该在阅读代码上下功夫。</p></div>
-                                                                  
-
-                                                                  
-    </div><hr class="endfloat"></hr><!--l. 30--><p class="indent">    Duff’s device was ”discovered” (created?) by Tom Duff and is a trick with the C
-compiler that actually shouldn’t work. I won’t tell you what it does yet since this is
-meant to be a puzzle for you to ponder and try to solve. You are to get this
-code running and then try to figure out what it does, and why it does it
-this way. Duff 的设备实际上是作者 Tom Duff 跟 c 编译器玩的一个花招。我不能告诉你为什么会是这样，因为这会让你没有思索就得到了谜底。你可以取得代码并在代码运行中理解它是如何工作的，为什么是这样工作的。
-                                                                  
-
-                                                                  
-<!--l. 39--></p><p class="indent">    <a id="x30-135003r62"></a></p><hr class="float"></hr><div class="float">
-                                                                  
-
-                                                                  
-<div class="caption"><span class="id">Source 62: </span><span class="content">                                                                                                            ex23.c</span></div><!--tex4ht:label?: x30-135003r62 -->
-<div class="fancyvrb" id="fancyvrb33"><a id="x30-135005r1"></a>1  <span id="textcolor2484">#</span><span id="textcolor2485">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x30-135007r2"></a>2  <span id="textcolor2486">#</span><span id="textcolor2487">include <string.h></string.h></span><br class="fancyvrb"><a id="x30-135009r3"></a>3  <span id="textcolor2488">#</span><span id="textcolor2489">include "dbg.h"</span><br class="fancyvrb"><a id="x30-135011r4"></a>4  <br class="fancyvrb"><a id="x30-135013r5"></a>5  
-<br class="fancyvrb"><a id="x30-135015r6"></a>6  <span id="textcolor2490">int</span> <span id="textcolor2491">normal_copy</span>(<span id="textcolor2492">char</span> ⋆from, <span id="textcolor2493">char</span> ⋆to, <span id="textcolor2494">int</span> count)<br class="fancyvrb"><a id="x30-135017r7"></a>7  {<br class="fancyvrb"><a id="x30-135019r8"></a>8      <span id="textcolor2495">int</span> i = <span id="textcolor2496">0</span>;<br class="fancyvrb"><a id="x30-135021r9"></a>9  
-<br class="fancyvrb"><a id="x30-135023r10"></a>10      <span id="textcolor2497">for</span>(i = <span id="textcolor2498">0</span>; i <a id="x30-135025r11"></a>11          to[i] = from[i];<br class="fancyvrb"><a id="x30-135027r12"></a>12      }<br class="fancyvrb"><a id="x30-135029r13"></a>13  
-<br class="fancyvrb"><a id="x30-135031r14"></a>14      <span id="textcolor2499">return</span> i;<br class="fancyvrb"><a id="x30-135033r15"></a>15  }<br class="fancyvrb"><a id="x30-135035r16"></a>16  <br class="fancyvrb"><a id="x30-135037r17"></a>17  <span id="textcolor2500">int</span> <span id="textcolor2501">duffs_device</span>(<span id="textcolor2502">char</span> ⋆from, <span id="textcolor2503">char</span> ⋆to, <span id="textcolor2504">int</span> count)
-<br class="fancyvrb"><a id="x30-135039r18"></a>18  {<br class="fancyvrb"><a id="x30-135041r19"></a>19      {<br class="fancyvrb"><a id="x30-135043r20"></a>20          <span id="textcolor2505">int</span> n = (count + <span id="textcolor2506">7</span>) / <span id="textcolor2507">8</span>;<br class="fancyvrb"><a id="x30-135045r21"></a>21  
-<br class="fancyvrb"><a id="x30-135047r22"></a>22          <span id="textcolor2508">switch</span>(count % <span id="textcolor2509">8</span>) {<br class="fancyvrb"><a id="x30-135049r23"></a>23              <span id="textcolor2510">case</span> <span id="textcolor2511">0</span>: <span id="textcolor2512">do</span> { ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135051r24"></a>24                          <span id="textcolor2513">case</span> <span id="textcolor2514">7</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135053r25"></a>25                          <span id="textcolor2515">case</span> <span id="textcolor2516">6</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135055r26"></a>26                          <span id="textcolor2517">case</span> <span id="textcolor2518">5</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135057r27"></a>27                          <span id="textcolor2519">case</span> <span id="textcolor2520">4</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135059r28"></a>28                          <span id="textcolor2521">case</span> <span id="textcolor2522">3</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135061r29"></a>29                          <span id="textcolor2523">case</span> <span id="textcolor2524">2</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135063r30"></a>30                          <span id="textcolor2525">case</span> <span id="textcolor2526">1</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135065r31"></a>31                      } <span id="textcolor2527">while</span>(--n &gt; <span id="textcolor2528">0</span>);<br class="fancyvrb"><a id="x30-135067r32"></a>32          }<br class="fancyvrb"><a id="x30-135069r33"></a>33      }<br class="fancyvrb"><a id="x30-135071r34"></a>34  <br class="fancyvrb"><a id="x30-135073r35"></a>35      <span id="textcolor2529">return</span> count;
-<br class="fancyvrb"><a id="x30-135075r36"></a>36  }<br class="fancyvrb"><a id="x30-135077r37"></a>37  <br class="fancyvrb"><a id="x30-135079r38"></a>38  <span id="textcolor2530">int</span> <span id="textcolor2531">zeds_device</span>(<span id="textcolor2532">char</span> ⋆from, <span id="textcolor2533">char</span> ⋆to, <span id="textcolor2534">int</span> count)<br class="fancyvrb"><a id="x30-135081r39"></a>39  {<br class="fancyvrb"><a id="x30-135083r40"></a>40      {
-<br class="fancyvrb"><a id="x30-135085r41"></a>41          <span id="textcolor2535">int</span> n = (count + <span id="textcolor2536">7</span>) / <span id="textcolor2537">8</span>;<br class="fancyvrb"><a id="x30-135087r42"></a>42  <br class="fancyvrb"><a id="x30-135089r43"></a>43          <span id="textcolor2538">switch</span>(count % <span id="textcolor2539">8</span>) {<br class="fancyvrb"><a id="x30-135091r44"></a>44              <span id="textcolor2540">case</span> <span id="textcolor2541">0</span>:
-<br class="fancyvrb"><a id="x30-135093r45"></a>45              again: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x30-135095r46"></a>46  <br class="fancyvrb"><a id="x30-135097r47"></a>47              <span id="textcolor2542">case</span> <span id="textcolor2543">7</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135099r48"></a>48              <span id="textcolor2544">case</span> <span id="textcolor2545">6</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x30-135101r49"></a>49              <span id="textcolor2546">case</span> <span id="textcolor2547">5</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135103r50"></a>50              <span id="textcolor2548">case</span> <span id="textcolor2549">4</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x30-135105r51"></a>51              <span id="textcolor2550">case</span> <span id="textcolor2551">3</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135107r52"></a>52              <span id="textcolor2552">case</span> <span id="textcolor2553">2</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x30-135109r53"></a>53              <span id="textcolor2554">case</span> <span id="textcolor2555">1</span>: ⋆to++ = ⋆from++;
-<br class="fancyvrb"><a id="x30-135111r54"></a>54                      <span id="textcolor2556">if</span>(--n &gt; <span id="textcolor2557">0</span>) <span id="textcolor2558">goto</span> again;<br class="fancyvrb"><a id="x30-135113r55"></a>55          }<br class="fancyvrb"><a id="x30-135115r56"></a>56      }<br class="fancyvrb"><a id="x30-135117r57"></a>57  <br class="fancyvrb"><a id="x30-135119r58"></a>58      <span id="textcolor2559">return</span> count;
-<br class="fancyvrb"><a id="x30-135121r59"></a>59  }<br class="fancyvrb"><a id="x30-135123r60"></a>60  <br class="fancyvrb"><a id="x30-135125r61"></a>61  <span id="textcolor2560">int</span> <span id="textcolor2561">valid_copy</span>(<span id="textcolor2562">char</span> ⋆data, <span id="textcolor2563">int</span> count, <span id="textcolor2564">char</span> expects)<br class="fancyvrb"><a id="x30-135127r62"></a>62  {<br class="fancyvrb"><a id="x30-135129r63"></a>63      <span id="textcolor2565">int</span> i = <span id="textcolor2566">0</span>;
-<br class="fancyvrb"><a id="x30-135131r64"></a>64      <span id="textcolor2567">for</span>(i = <span id="textcolor2568">0</span>; i <a id="x30-135133r65"></a>65          <span id="textcolor2569">if</span>(data[i] != expects) {
-<br class="fancyvrb"><a id="x30-135135r66"></a>66              log_err(<span class="colorbox" id="colorbox2570"><span id="textcolor2571">"</span></span><span class="colorbox" id="colorbox2572"><span id="textcolor2573">[%d] %c != %c</span></span><span class="colorbox" id="colorbox2574"><span id="textcolor2575">"</span></span>, i, data[i], expects);<br class="fancyvrb"><a id="x30-135137r67"></a>67              <span id="textcolor2576">return</span> <span id="textcolor2577">0</span>;
-<br class="fancyvrb"><a id="x30-135139r68"></a>68          }<br class="fancyvrb"><a id="x30-135141r69"></a>69      }<br class="fancyvrb"><a id="x30-135143r70"></a>70  <br class="fancyvrb"><a id="x30-135145r71"></a>71      <span id="textcolor2578">return</span> <span id="textcolor2579">1</span>;<br class="fancyvrb"><a id="x30-135147r72"></a>72  }<br class="fancyvrb"><a id="x30-135149r73"></a>73  <br class="fancyvrb"><a id="x30-135151r74"></a>74  <br class="fancyvrb"><a id="x30-135153r75"></a>75  <span id="textcolor2580">int</span> <span id="textcolor2581">main</span>(<span id="textcolor2582">int</span> argc, <span id="textcolor2583">char</span> ⋆argv[])
-<br class="fancyvrb"><a id="x30-135155r76"></a>76  {<br class="fancyvrb"><a id="x30-135157r77"></a>77      <span id="textcolor2584">char</span> from[<span id="textcolor2585">1000</span>] = {<span class="colorbox" id="colorbox2586"><span id="textcolor2587">’a’</span></span>};<br class="fancyvrb"><a id="x30-135159r78"></a>78      <span id="textcolor2588">char</span> to[<span id="textcolor2589">1000</span>] = {<span class="colorbox" id="colorbox2590"><span id="textcolor2591">’c’</span></span>};<br class="fancyvrb"><a id="x30-135161r79"></a>79      <span id="textcolor2592">int</span> rc = <span id="textcolor2593">0</span>;
-<br class="fancyvrb"><a id="x30-135163r80"></a>80  <br class="fancyvrb"><a id="x30-135165r81"></a>81      <span id="textcolor2594">// setup the from to have some stuff</span><br class="fancyvrb"><a id="x30-135167r82"></a>82      memset(from, <span class="colorbox" id="colorbox2595"><span id="textcolor2596">’x’</span></span>, <span id="textcolor2597">1000</span>);
-<br class="fancyvrb"><a id="x30-135169r83"></a>83      <span id="textcolor2598">// set it to a failure mode</span><br class="fancyvrb"><a id="x30-135171r84"></a>84      memset(to, <span class="colorbox" id="colorbox2599"><span id="textcolor2600">’y’</span></span>, <span id="textcolor2601">1000</span>);
-<br class="fancyvrb"><a id="x30-135173r85"></a>85      check(valid_copy(to, <span id="textcolor2602">1000</span>, <span class="colorbox" id="colorbox2603"><span id="textcolor2604">’y’</span></span>), <span class="colorbox" id="colorbox2605"><span id="textcolor2606">"</span></span><span class="colorbox" id="colorbox2607"><span id="textcolor2608">Not initialized right.</span></span><span class="colorbox" id="colorbox2609"><span id="textcolor2610">"</span></span>);<br class="fancyvrb"><a id="x30-135175r86"></a>86  
-<br class="fancyvrb"><a id="x30-135177r87"></a>87      <span id="textcolor2611">// use normal copy to </span><br class="fancyvrb"><a id="x30-135179r88"></a>88      rc = normal_copy(from, to, <span id="textcolor2612">1000</span>);
-<br class="fancyvrb"><a id="x30-135181r89"></a>89      check(rc == <span id="textcolor2613">1000</span>, <span class="colorbox" id="colorbox2614"><span id="textcolor2615">"</span></span><span class="colorbox" id="colorbox2616"><span id="textcolor2617">Normal copy failed: %d</span></span><span class="colorbox" id="colorbox2618"><span id="textcolor2619">"</span></span>, rc);
-<br class="fancyvrb"><a id="x30-135183r90"></a>90      check(valid_copy(to, <span id="textcolor2620">1000</span>, <span class="colorbox" id="colorbox2621"><span id="textcolor2622">’x’</span></span>), <span class="colorbox" id="colorbox2623"><span id="textcolor2624">"</span></span><span class="colorbox" id="colorbox2625"><span id="textcolor2626">Normal copy failed.</span></span><span class="colorbox" id="colorbox2627"><span id="textcolor2628">"</span></span>);
-<br class="fancyvrb"><a id="x30-135185r91"></a>91  <br class="fancyvrb"><a id="x30-135187r92"></a>92      <span id="textcolor2629">// reset</span><br class="fancyvrb"><a id="x30-135189r93"></a>93      memset(to, <span class="colorbox" id="colorbox2630"><span id="textcolor2631">’y’</span></span>, <span id="textcolor2632">1000</span>);<br class="fancyvrb"><a id="x30-135191r94"></a>94  
-<br class="fancyvrb"><a id="x30-135193r95"></a>95      <span id="textcolor2633">// duffs version</span><br class="fancyvrb"><a id="x30-135195r96"></a>96      rc = duffs_device(from, to, <span id="textcolor2634">1000</span>);
-<br class="fancyvrb"><a id="x30-135197r97"></a>97      check(rc == <span id="textcolor2635">1000</span>, <span class="colorbox" id="colorbox2636"><span id="textcolor2637">"</span></span><span class="colorbox" id="colorbox2638"><span id="textcolor2639">Duff’s device failed: %d</span></span><span class="colorbox" id="colorbox2640"><span id="textcolor2641">"</span></span>, rc);
-<br class="fancyvrb"><a id="x30-135199r98"></a>98      check(valid_copy(to, <span id="textcolor2642">1000</span>, <span class="colorbox" id="colorbox2643"><span id="textcolor2644">’x’</span></span>), <span class="colorbox" id="colorbox2645"><span id="textcolor2646">"</span></span><span class="colorbox" id="colorbox2647"><span id="textcolor2648">Duff’s device failed copy.</span></span><span class="colorbox" id="colorbox2649"><span id="textcolor2650">"</span></span>);<br class="fancyvrb"><a id="x30-135201r99"></a>99  <br class="fancyvrb"><a id="x30-135203r100"></a>100      <span id="textcolor2651">// reset</span>
-                                                                  
-
-                                                                  
-<br class="fancyvrb"><a id="x30-135205r101"></a>101      memset(to, <span class="colorbox" id="colorbox2652"><span id="textcolor2653">’y’</span></span>, <span id="textcolor2654">1000</span>);<br class="fancyvrb"><a id="x30-135207r102"></a>102  <br class="fancyvrb"><a id="x30-135209r103"></a>103      <span id="textcolor2655">// my version</span><br class="fancyvrb"><a id="x30-135211r104"></a>104      rc = zeds_device(from, to, <span id="textcolor2656">1000</span>);
-<br class="fancyvrb"><a id="x30-135213r105"></a>105      check(rc == <span id="textcolor2657">1000</span>, <span class="colorbox" id="colorbox2658"><span id="textcolor2659">"</span></span><span class="colorbox" id="colorbox2660"><span id="textcolor2661">Zed’s device failed: %d</span></span><span class="colorbox" id="colorbox2662"><span id="textcolor2663">"</span></span>, rc);
-<br class="fancyvrb"><a id="x30-135215r106"></a>106      check(valid_copy(to, <span id="textcolor2664">1000</span>, <span class="colorbox" id="colorbox2665"><span id="textcolor2666">’x’</span></span>), <span class="colorbox" id="colorbox2667"><span id="textcolor2668">"</span></span><span class="colorbox" id="colorbox2669"><span id="textcolor2670">Zed’s device failed copy.</span></span><span class="colorbox" id="colorbox2671"><span id="textcolor2672">"</span></span>);
-<br class="fancyvrb"><a id="x30-135217r107"></a>107  <br class="fancyvrb"><a id="x30-135219r108"></a>108      <span id="textcolor2673">return</span> <span id="textcolor2674">0</span>;<br class="fancyvrb"><a id="x30-135221r109"></a>109  <span id="textcolor2675">error:</span><br class="fancyvrb"><a id="x30-135223r110"></a>110      <span id="textcolor2676">return</span> <span id="textcolor2677">1</span>;<br class="fancyvrb"><a id="x30-135225r111"></a>111  }</div>
-                                                                  
-
-                                                                  
-    </div><hr class="endfloat"></hr><!--l. 156--><p class="indent">    In this code I have three versions of a copy function: 在这里面我放入了 3 个版本的拷贝函数：
+    </div><hr class="endfloat"></hr><!--l. 85--><p class="indent">    这个程序表面看似简单，其实不然。这里面用到了函数 fscanf，它是用来做文件扫描的。scanf 相关的一系列函数与 printf 相关的一系列函数起的作用正相反。
+printf 按着指定格式输出数据，scanf 按着指定格式读取数据（或者扫描输入数据）。
+<!--l. 89--></p><p class="indent">    文件的开头什么也没有，函数 main 做了如下一些事情：
      </p><dl class="description"><dt class="description">
-normal_copy </dt><dd class="description">Which is just a plain for-loop that copies characters from one
-     array to another.
+ex24.c:24-28 </dt><dd class="description">创建一些必须的变量。
      </dd><dt class="description">
-duffs_device </dt><dd class="description">This is the brain teaser called ”Duff’s Device”, named after Tom
-     Duff, the person to blame for this delicious evil.
+ex24.c:30-32 </dt><dd class="description">用 fgets 获取姓名中的名字，从输入获取一个字符串(这里是从 stdin 获取字符串) 输入名字的时候不要太长，防止存储名字的缓冲区不够长导致内存溢出。
      </dd><dt class="description">
-zeds_device </dt><dd class="description">A version of ”Duff’s Device” that just uses a goto so you can get
-     a clue about what’s happening with the weird do-while placement in
-     duffs_device.</dd></dl><dl class="description"><dt class="description">
-normal_copy </dt><dd class="description">这是一段 for-loop 代码，它将一串字符串复制到另一串字符串中。
+ex24.c:34-36 </dt><dd class="description">依然用 fgets 来获取 you.last_name。
      </dd><dt class="description">
-duffs_device </dt><dd class="description">这是“Duff 的设备”中最棘手的一块代码，后来被命名为 Tom
-     Duff ,人们就是将它称为“神来之笔”。
+ex24.c:38-39 </dt><dd class="description">用 fscanf 从 stdin 获取一个整数，并且将这个整数存储在变量 you.age。可以看到用 printf 打印整数的时候使用了同样的格式表示符。为了让 fscanf 可以把输入的值存储在某个指针变量指定的位置上，
+     你必须把 address 的地址取出来作为指针变量的值。这个例子生动的展示了如何把一串数据的内存地址作为输出参数。
      </dd><dt class="description">
-zeds_device </dt><dd class="description">这个版本的“Duff  的设备”是用 goto 语句实现的，你可以使用 do-while 替换 duffs_device 中 switch 来得到一些关于“为什么会这样子？”的线索。</dd></dl><!--l. 183--><p class="indent">    Study these three functions before continuing. Try to explain what’s going on to
-yourself before continuing. 在继续往下读之前，先学习这三个函数。并试着去解释为什么会是这个样子。
-    </p><h3 class="sectionHead"><span class="titlemark">25.1    </span> <a id="x30-13600025.1"></a>What You Should See</h3>
-<!--l. 190--><p class="noindent">There’s no output from this program, it just runs and exits. You should run it under
+ex24.c:41-45 </dt><dd class="description">通过遍历枚举 EyeColor 的全部数值，输出眼睛的颜色所具有的所有可能性。
+     </dd><dt class="description">
+ex24.c:47-50 </dt><dd class="description">继续 fscanf，给 you.eyes 赋值，同时确保这个数值是有真实有效的。这很重要，因为有的人会输入一个不在 EYE_COLOR_NAMES 数组范围之内的数字，导致一个段错误。
+     </dd><dt class="description">
+ex24.c:52-53 </dt><dd class="description">知道你挣了多少 float 收入知道你的到了多少收入 you.income。
                                                                   
 
                                                                   
-valgrind and make sure there are no errors.
-<!--l. 193--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">25.2    </span> <a id="x30-13700025.2"></a>你能看到</h3>
-<!--l. 194--><p class="noindent">这是一个没有输出的程序，程序运行完就退出了。并且在 valgrind 下运行也是无错的。
-<!--l. 197--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">25.3    </span> <a id="x30-13800025.3"></a>Solving The Puzzle</h3>
-<!--l. 198--><p class="noindent">The first thing to understand is that C is rather loose regarding some of its syntax.
-This is why you can put half of a do-while in one part of a switch-statement,
-then the other half somewhere else and it will still work. If you look at my version
-with the goto again it’s actually more clear what’s going on, but make sure you
-understand how that part works.
-<!--l. 206--></p><p class="indent">    The second thing is how the default fallthrough semantics of switch-statements
-means you can jump to a particular case, and then it will just keep running until the
-end of the switch.
-<!--l. 211--></p><p class="indent">    The final clue is the <span class="obeylines-h"><span class="verb">count % 8</span></span> and the calculation of n at the top.
-<!--l. 214--></p><p class="indent">    Now, to solve how these functions work, do the following:
-<!--l. 216--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">25.4    </span> <a id="x30-13900025.4"></a>谜底</h3>
-<!--l. 217--><p class="noindent">首先要明白的是 c 的语法是相当松散的，所以 do-while 放入到 switch-statement 中还能正常运行。如果你看我那个版本的 goto again 部分，能更好的理解其中的细节。但前提条件是你得知道这部分代码干了什么事。
-<!--l. 221--></p><p class="indent">    然后需要知道最开始的 switch-statements 会跳到对应那个 case，并且会一直反复执行直到 switch 语句结束。
-<!--l. 224--></p><p class="indent">    最后的线索就是前面 <span class="obeylines-h"><span class="verb">count % 8</span></span> 计算的结果。
-<!--l. 226--></p><p class="indent">    接下来按以下的指示去理解函数是如何工作的。
-<!--l. 228--></p><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x30-139002x1">Print this code out so you can write on some paper.
-     </li>
-     <li class="enumerate" id="x30-139004x2">On a piece of paper, write each of the variables in a table as they are when
-     they get initialized right before the switch-statement.
-     </li>
-     <li class="enumerate" id="x30-139006x3">Follow the logic to the switch, then do the jump to the right case.
-     </li>
-     <li class="enumerate" id="x30-139008x4">Update the variables, including the to, from, and the arrays they point
-     at.
-     </li>
-     <li class="enumerate" id="x30-139010x5">When  you  get  to  the  while part  or  my  goto alternative,  check  your
-     variables and then follow the logic either back to the top of the do-while
-     or to where the again label is located.
-     </li>
-     <li class="enumerate" id="x30-139012x6">Follow through this manual tracing, updating the variables, until you are
-     sure you see how this flows.</li></ol><!--l. 248--><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x30-139014x1">将这些代码打印或者手写到纸上。
-     </li>
-     <li class="enumerate" id="x30-139016x2">在纸上用表列出在 switch-statement 之前每一个变量的初始值。
-     </li>
+     </dd><dt class="description">
+ex24.c:55-61 </dt><dd class="description">打印所有的东西来确认一下程序运行无误。注意我们用 EYE_COLOR_NAMES 来打印真正的 EyeColor 的内容。</dd></dl><h3 class="sectionHead"><span class="titlemark">25.1    </span> <a id="x30-14000025.1"></a>你将看到</h3>
+<!--l. 117--><p class="noindent">当运行这个程序的时候，会看到你的输入被正确的处理。可以试试给一些奇怪的输入来检查一下代码是不是能够很好的保护自己而不是出现奇怪问题。
                                                                   
 
                                                                   
-     <li class="enumerate" id="x30-139018x3">跟着 switch 的逻辑，跳转到对应的 case 中。
+<!--l. 120--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x30-140001r64"></a>
+<div class="caption"><span class="id">Source 64: </span><span class="content">                                                                                                          ex24 输出</span></div><!--tex4ht:label?: x30-140001r64 -->
+<!--l. 121-->
+<div class="lstlisting" id="listing-41"><span class="label"><a id="x30-140002r1"></a>1</span>$ make ex24 <br><span class="label"><a id="x30-140003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex24.c   -o ex24 <br><span class="label"><a id="x30-140004r3"></a>3</span>$ ./ex24 <br><span class="label"><a id="x30-140005r4"></a>4</span>What’s your First Name? Zed <br><span class="label"><a id="x30-140006r5"></a>5</span>What’s your Last Name? Shaw <br><span class="label"><a id="x30-140007r6"></a>6</span>How old are you? 37 <br><span class="label"><a id="x30-140008r7"></a>7</span>What color are your eyes: <br><span class="label"><a id="x30-140009r8"></a>8</span>1) Blue <br><span class="label"><a id="x30-140010r9"></a>9</span>2) Green <br><span class="label"><a id="x30-140011r10"></a>10</span>3) Brown <br><span class="label"><a id="x30-140012r11"></a>11</span>4) Black <br><span class="label"><a id="x30-140013r12"></a>12</span>5) Other <br><span class="label"><a id="x30-140014r13"></a>13</span>&gt; 1 <br><span class="label"><a id="x30-140015r14"></a>14</span>How much do you make an hour? 1.2345 <br><span class="label"><a id="x30-140016r15"></a>15</span>----- RESULTS ----- <br><span class="label"><a id="x30-140017r16"></a>16</span>First Name: Zed <br><span class="label"><a id="x30-140018r17"></a>17</span>Last Name: Shaw <br><span class="label"><a id="x30-140019r18"></a>18</span>Age: 37 <br><span class="label"><a id="x30-140020r19"></a>19</span>Eyes: Blue <br><span class="label"><a id="x30-140021r20"></a>20</span>Income: 1.234500
+</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><h3 class="sectionHead"><span class="titlemark">25.2    </span> <a id="x30-14100025.2"></a>让程序出错</h3>
+<!--l. 149--><p class="noindent">到目前为止一切顺利，其实这个练习的主要目的是看 scanf 是怎么被输入搞垮的。处理简单数字转换的时候还凑活，一旦处理字符串的时候就完全的垮掉了，因为很难在读取动作完成以前告诉 scanf 输入缓冲区有多大。函数 gets(不是 fgets)也有同样的问题。这类函数完全无法知道输入的缓冲区有多大，过大的缓冲区会搞垮程序。把那行代码从用 fgets 替换成 <span class="obeylines-h"><span class="verb">fscanf(stdin, "%50s", you.first_name)</span></span>然后再运行一次程序就能看到仅靠 fscanf 和字符串就能搞垮我们的程序。
+<!--l. 157--></p><p class="indent">    注意到程序似乎读取了太多内容而且好像你敲的回车似乎没工作了么？程序似乎没有按着你的期望方式工作，而且似乎还不如奇怪的由 scanf 引起的问题，仅仅是用 fgets 就可以。
+<!--l. 161--></p><p class="indent">    下一步，把 fgets 替换成 gets，然后这样运行 valgrind：
+<span class="obeylines-h"><span class="verb">valgrind ./ex24 </span>，这将把一些随机生成的垃圾丢给程序。这称作 Fuzzing 程序，这是一种有效的发现输入处理逻辑 bug 的方法。目前这种情况，是从/dev/urandom 获得随机数并且喂给程序处理，然后看着它崩溃掉。在某些操作系统上，你可能需要多试几次，或者把 MAX_DATA 的定义改的小一点来让程序崩溃。
+<!--l. 167--><p class="indent">    gets 确实非常差劲，以至于某些操作系统平台会在 program 运行 gets 的时候发出警告。你应该离这个函数越远越好，如果非要加个期限，我希望是一万年。最后，
+继续给 you.eyes 赋值并且把确保输入在合理范围内的代码删掉。然后输入一些有问题的数字比如 -1，或者 1000。在 Valgrind 里面再来一遍看看会发生什么。
+<!--l. 172--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">25.3    </span> <a id="x30-14200025.3"></a>I/O 函数</h3>
+<!--l. 174--><p class="noindent">你应该为如下的函数列表创建索引卡，在上面写上函数名字，作用，以及类似变种。
+<!--l. 176--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x30-142002x1">fscanf
      </li>
-     <li class="enumerate" id="x30-139020x4">更新变量，并包含 to 和 from 所指向的数组位置。
+     <li class="enumerate" id="x30-142004x2">fgets
      </li>
-     <li class="enumerate" id="x30-139022x5">选择 while 版本或我的 goto 版本进行跟踪。检查变量，并跟并来回跟踪 do-while 或者 again 的定位标签。
+     <li class="enumerate" id="x30-142006x3">fopen
      </li>
-     <li class="enumerate" id="x30-139024x6">重复以上步骤并更新变量的值，直到你觉得你完全理解了这一部分代码是怎样工作的。</li></ol><!--l. 264--><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">25.4.1    </span> <a id="x30-14000025.4.1"></a>Why Bother?</h4>
-<!--l. 266--><p class="noindent">When you’ve figured out how it actually works, the final question is: Why would
-you ever want to do this? The purpose of this trick is to manually do ”loop
-unrolling”. Large long loops can be slow, so one way to speed them up is to find
-some fixed chunk of the loop, and then just duplicate the code in the loop out that
-many times sequentially. For example, if you know a loop runs a minimum of
-20 times, then you can put the contents of the loop 20 times in the source
-code.
-<!--l. 275--></p><p class="indent">    Duff’s device is basically doing this automatically by chunking up the loop into
-8 iteration chunks. It’s clever and actually works, but these days a good compiler
-will do this for you. You shouldn’t need this except in the rare case where you have
-proven it would improve your speed.
-<!--l. 280--></p><p class="noindent">
-    </p><h4 class="subsectionHead"><span class="titlemark">25.4.2    </span> <a id="x30-14100025.4.2"></a>有必要这样吗？</h4>
-<!--l. 281--><p class="noindent">当你完全理解了它是如何工作的后。最后的问题是：“为什么要这样做？”。它这样做的目的是手动“展开循环”。一次循环只一件事是很慢的，所以让其加速的方法是让每次循环多做几件事。比如:如果你知道一个循环要运行 20 次，为了加速，你可以手动写 20 条语句用来代替其中的循环。
-<!--l. 286--></p><p class="indent">    “Duff 的设备”是每次自动的让循环迭代 8 次。它能正常运行并非常巧妙，但是一些优秀现代编译器已经帮你做了这些事情了。你不需要用这些罕见的玩意去优化速度。
-<!--l. 290--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">25.5    </span> <a id="x30-14200025.5"></a>Extra Credit</h3>
-<!--l. 292--><p class="noindent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x30-142002x1">Never use this again.
+     <li class="enumerate" id="x30-142008x4">freopen
      </li>
-     <li class="enumerate" id="x30-142004x2">Go look at the Wikipedia entry for ”Duff’s Device” and see if you can
-     spot the error. Compare it to the version I have here and read the article
-     carefully to try to understand why the Wikipedia code won’t work for
-     you but worked for Tom Duff.
+     <li class="enumerate" id="x30-142010x5">fdopen
      </li>
-     <li class="enumerate" id="x30-142006x3">Create a set of macros that lets you create any length device like this. For
-     example, what if you wanted to have 32 case statements and didn’t want
-     to write out all of them? Can you do a macro that lays down 8 at a time?
+     <li class="enumerate" id="x30-142012x6">fclose
      </li>
-     <li class="enumerate" id="x30-142008x4">Change the main to conduct some speed tests to see which one is really
-     the fastest.
+     <li class="enumerate" id="x30-142014x7">fcloseall
      </li>
-     <li class="enumerate" id="x30-142010x5">Read about memcpy, memmove, memset, and also compare their speed.
+     <li class="enumerate" id="x30-142016x8">fgetpos
      </li>
-     <li class="enumerate" id="x30-142012x6">Never use this again!</li></ol><!--l. 313--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">25.6    </span> <a id="x30-14300025.6"></a>加分练习</h3>
-<!--l. 314--><p class="noindent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x30-143002x1">再也别去使用这些技巧。
+     <li class="enumerate" id="x30-142018x9">fseek
      </li>
-     <li class="enumerate" id="x30-143004x2">去维基百科搜索“Duff Device”词条。如果你发现了错误，仔细阅读词条，比较词条上的代码和我们的代码。并解释为什么维基百科上的代码不能运行而我们的代码却能？
+     <li class="enumerate" id="x30-142020x10">ftell
      </li>
-     <li class="enumerate" id="x30-143006x3">创建一个宏集，让它能生产任何长度“duff 的设备”。比如，你想要一个有 32 条 case 语句的“duff 设备”，你能一次性产生它们吗？你的宏一次能产生 8 条 case 语句吗？
+     <li class="enumerate" id="x30-142022x11">rewind
      </li>
-     <li class="enumerate" id="x30-143008x4">在 main 函数中放一些测速代码，看看那个地方的速度会比较快。
+     <li class="enumerate" id="x30-142024x12">fprintf
      </li>
-     <li class="enumerate" id="x30-143010x5">阅读关于函数 memcpy，memmove，memset 的资料，并比较它们的速度。
+     <li class="enumerate" id="x30-142026x13">fwrite
+                                                                  
+
+                                                                  
      </li>
-     <li class="enumerate" id="x30-143012x6">再次建议你别去使用这些技巧！</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych26.html">next</a>] [<a href="learn-c-the-hard-waych24.html">prev</a>] [<a href="learn-c-the-hard-waych24.html#taillearn-c-the-hard-waych24.html">prev-tail</a>] [<a href="learn-c-the-hard-waych25.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych25.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych25.html"></a>   
-</p></body></html>
+     <li class="enumerate" id="x30-142028x14">fread</li></ol><!--l. 193--><p class="indent">    仔细浏览一遍这些函数，记住他们的区别和作用。比如有 fscanf 的卡片上，同样会有 scanf，sscanf，vscanf，卡片背面会有函数作用的说明。最后，可以用 man 读取卡片的相关信息。例如 <span class="obeylines-h"><span class="verb">man fscanf</span></span> 就可以得到 fscanf 的帮助信息。
+<!--l. 198--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">25.4    </span> <a id="x30-14300025.4"></a>额外小作业</h3>
+<!--l. 200--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x30-143002x1">不用 fscanf 完全重写一遍代码。你将会用到诸如 atoi 的函数来把输入的字符串转换成数字。
+     </li>
+     <li class="enumerate" id="x30-143004x2">把 fscanf 改成只用 scanf 看看有什么不同。
+     </li>
+     <li class="enumerate" id="x30-143006x3">把代码改成输入的名字会被回车以及任何空格截断的形式。
+     </li>
+     <li class="enumerate" id="x30-143008x4">使用 scanf 写一个函数，让它从文件中一次读入一个字符，但不要读到结束符后面。将函数写得尽可能通用化，让它接收字符串的大小作为参数，记得确认不论在任何情况下，字符串都以 <span class="obeylines-h"><span class="verb">’\0’</span></span>结尾。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
+</p></span></p></body></html>

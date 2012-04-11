@@ -1,26 +1,329 @@
-<html><head><title>Exercise 29: Libraries And Linking</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych33.html">next</a>] [<a href="learn-c-the-hard-waych31.html">prev</a>] [<a href="learn-c-the-hard-waych31.html#taillearn-c-the-hard-waych31.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych32.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych32.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 32</span><br><a id="x38-19200032"></a>Exercise 29: Libraries And Linking</h2>
-<!--l. 3--><p class="noindent">A central part of any C program is the ability to link it to libraries that your
-operating system provides. Linking is how you get additional features for your
-program that someone else created and packaged on the system. You’ve
-been using some standard libraries that are automatically included by the
-compiler, but we’ll use some other ones and then we’ll create our own little
-one.
-    </p><h3 class="sectionHead"><span class="titlemark">32.1    </span> <a id="x38-19300032.1"></a>What You Should See</h3>
-<!--l. 13--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">32.2    </span> <a id="x38-19400032.2"></a>How To Break It</h3>
-<!--l. 16--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">32.3    </span> <a id="x38-19500032.3"></a>Extra Credit</h3>
+<html><head><title>Exercise 31: Debugging Code</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 32</span><br><a id="x38-20100032"></a>Exercise 31: Debugging Code</h2>
+<!--l. 3--><p class="noindent">I’ve already taught you about my awesome debug macros and you’ve been using
+them. When I debug code I use the debug() macro almost exclusively to analyze
+what’s going on and track down the problem. In this exercise I’m going to teach you
+the basics of using gdb to inspect a simple program that runs and doesn’t exit. You’ll
+learn how to use gdb to attach to a running process, stop it, and see what’s
+happening. After that I’ll give you some little tips and tricks that you can use with
+gdb.
+    </p><h3 class="sectionHead"><span class="titlemark">32.1    </span> <a id="x38-20200032.1"></a>Debug Printing Vs. GDB Vs. Valgrind</h3>
+<!--l. 14--><p class="noindent">I approach debugging primarily with a ”scientific method” style, where I come up
+with possible causes and then rule them out or prove they cause the defect. The
+problem many programmers have though is their panic and rush to solve a bug
+makes them feel like this approach will ”slow them down”. In their rush to solve
+they fail to notice that they’re really just flailing around and gathering no
+useful information. I find that logging (debug printing) forces me to solve
+a bug scientifically and it’s also just easier to gather information in more
+situations.
+<!--l. 23--></p><p class="indent">    In addition to that, I also have these reasons for using debug printing as my
+primary debugging tool:
+<!--l. 26--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x38-202002x1">You see an entire tracing of a program’s execution with debug printing
+     of variables which lets you track how things are going wrong. With gdb
+     you have to place watch and debug statements all over for every thing
+     you want and it’s difficult to get a solid trace of the execution.
+     </li>
+     <li class="enumerate" id="x38-202004x2">The debug prints can stay in the code, and when you need them you can
                                                                   
 
                                                                   
+     recompile and they come back. With gdb you have to configure the same
+     information uniquely for every defect you have to hunt down.
+     </li>
+     <li class="enumerate" id="x38-202006x3">It’s easier to turn on debug logging on a server that’s not working right
+     and then inspect the logs while it runs to see what’s going on. System
+     administrators know how to handle logging, they don’t know how to use
+     gdb.
+     </li>
+     <li class="enumerate" id="x38-202008x4">Printing  things  is  just  easier.  Debuggers  are  always  obtuse  and  weird
+     with  their  own  quirky  interface  and  inconsistencies.  There’s  nothing
+     complicated about <span class="obeylines-h"><span class="verb">debug("Yo, dis right? %d", my_stuff);</span></span>.
+     </li>
+     <li class="enumerate" id="x38-202010x5">Writing debug prints to find a defect forces you to actually analyze the
+     code and use the scientific method. You can think of a debug usage as,
+     ”I hypothesize that the code is broken here.” Then when you run it you
+     get  your  hypothesis  tested  and  if  it’s  not  broken  then  you  can  move
+     to  another  part  where  it  could  be.  This  may  seem  like  it  takes  longer,
+     but it’s actually faster because you go through a process of ”differential
+     diagnosis” and rule out possible causes until you find the real one.
+     </li>
+     <li class="enumerate" id="x38-202012x6">Debug  printing  works  better  with  unit  testing.  You  can  actually  just
+     compile the debugs in all the time while you work, and when a unit test
+     explodes just go look at the logs any time. With gdb you’d have to rerun
+     the unit test under gdb and then trace through it to see what’s going on.
+     </li>
+     <li class="enumerate" id="x38-202014x7">With valgrind you get the equivalent of debug prints for many memory
+     related errors, so you don’t need to use something like gdb to find those
+     defects anymore.</li></ol><!--l. 49--><p class="indent">    Despite all these reasons that I rely on debug over gdb, I still use gdb in a few
+situations and I think you should have any tool that helps you get your work
+done. Sometimes, you just have to connect to a broken program and poke
+around. Or, maybe you’ve got a server that’s crashing and you can only get
                                                                   
 
                                                                   
+at core files to see why. In these and a few other cases, gdb is the way to
+go, and it’s always good to have as many tools as possible to help solve
+problems.
+<!--l. 57--></p><p class="indent">    I then break down when I use gdb vs. valgrind vs. debug printing like
+this:
+<!--l. 59--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x38-202016x1">Valgrind is used to catch all memory errors. I use gdb if valgrind is having
+     problems or if using valgrind would slow the program down too much.
+     </li>
+     <li class="enumerate" id="x38-202018x2">Print with debug to diagnose and fix defects related to logic or usage.
+     This amounts to about 90% of the defects after you start using Valgrind.
+     </li>
+     <li class="enumerate" id="x38-202020x3">Use gdb for the remaining ”mystery weird stuff” or emergency situations
+     to  gather  information.  If  Valgrind  isn’t  turning  anything  up  and  I
+     can’t  even  print  out  the  information  I  need,  then  I  bust  out  gdb  and
+     start  poking  around.  My  use  of  gdb  in  this  case  is  entirely  to  gather
+     information. Once I have an idea of what’s going on I go back to writing
+     a unit test to cause the defect, and then do print statements to find out
+     why.</li></ol><!--l. 71--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">32.2    </span> <a id="x38-20300032.2"></a>A Debugging Strategy</h3>
+<!--l. 73--><p class="noindent">This process will actually work with any debugging technique you’re going to use,
+whether that’s Valgrind, debug printing, or using a debugger. I’m going to describe
+it in terms of using gdb since it seems people skip this process the most when using
+debuggers, but use this for every bug until you only need it on the very difficult
+ones.
+<!--l. 79--></p><p class="indent">
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych33.html">next</a>] [<a href="learn-c-the-hard-waych31.html">prev</a>] [<a href="learn-c-the-hard-waych31.html#taillearn-c-the-hard-waych31.html">prev-tail</a>] [<a href="learn-c-the-hard-waych32.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych32.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych32.html"></a>   
+     </p><ol class="enumerate1"><li class="enumerate" id="x38-203002x1">Start a little text file called notes.txt and use it as a kind of ”lab notes”
+     for ideas, bugs, problems, etc.
+     </li>
+     <li class="enumerate" id="x38-203004x2">Before you use gdb, write out the bug you’re going to fix and what could
+     be causing it.
+     </li>
+     <li class="enumerate" id="x38-203006x3">For  each  cause,  write  out  the  files  and  functions  where  you  think  the
+     cause is coming from, or just write that you don’t know.
+     </li>
+     <li class="enumerate" id="x38-203008x4">Now start gdb and pick the first possible cause with good file:function
+     possibles and set breakpoints there.
+     </li>
+     <li class="enumerate" id="x38-203010x5">Use gdb to then run the program and confirm if that is the cause. The best
+     way is to see if you can use the set command to either fix the program
+     easily or cause the error immediately.
+     </li>
+     <li class="enumerate" id="x38-203012x6">If this isn’t the cause, then mark in the notes.txt that it wasn’t and
+     why. Move on to the next possible cause that’s easiest to debug, and keep
+     adding information you gather.</li></ol><!--l. 96--><p class="indent">    In case you haven’t noticed, this is basically the scientific method. You write
+down a set of hypotheses, then you use debugging to prove or disprove them. This
+gives you insight into more possible causes and then eventually you find it. This
+process helps you avoid going over the same possible causes repeatedly even though
+you’ve found they aren’t possible.
+<!--l. 102--></p><p class="indent">    You can also do this with debug printing, the only difference is you
+actually write out your hypotheses in the source code where you think the
+problem is instead of the notes.txt. In a way, debug printing forces you to
+tackle bugs scientifically since you have to write out hypotheses as print
+statements.
+                                                                  
+
+                                                                  
+<!--l. 108--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">32.3    </span> <a id="x38-20400032.3"></a>Using GDB</h3>
+<!--l. 110--><p class="noindent">The program I’ll debug in this exercise is just a while-loop that doesn’t terminate
+correctly. I’m putting a small usleep call in it so that there’s something interesting
+to troll through as well.
+                                                                  
+
+                                                                  
+<!--l. 114--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x38-204001r90"></a>
+ <div class="caption"><span class="id">Source 90: </span><span class="content">                                                                                                            ex31.c</span></div><!--tex4ht:label?: x38-204001r90 -->
+<div class="fancyvrb" id="fancyvrb57"><a id="x38-204003r1"></a>1  <span id="textcolor4913">#</span><span id="textcolor4914">include <unistd.h></unistd.h></span><br class="fancyvrb"><a id="x38-204005r2"></a>2  <br class="fancyvrb"><a id="x38-204007r3"></a>3  <span id="textcolor4915">int</span> <span id="textcolor4916">main</span>(<span id="textcolor4917">int</span> argc, <span id="textcolor4918">char</span> ⋆argv[])<br class="fancyvrb"><a id="x38-204009r4"></a>4  {<br class="fancyvrb"><a id="x38-204011r5"></a>5      <span id="textcolor4919">int</span> i = <span id="textcolor4920">0</span>;
+<br class="fancyvrb"><a id="x38-204013r6"></a>6  <br class="fancyvrb"><a id="x38-204015r7"></a>7      <span id="textcolor4921">while</span>(i 100) {<br class="fancyvrb"><a id="x38-204017r8"></a>8          usleep(<span id="textcolor4923">3000</span>);<br class="fancyvrb"><a id="x38-204019r9"></a>9      }<br class="fancyvrb"><a id="x38-204021r10"></a>10  <br class="fancyvrb"><a id="x38-204023r11"></a>11      <span id="textcolor4924">return</span> <span id="textcolor4925">0</span>;<br class="fancyvrb"><a id="x38-204025r12"></a>12  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 132--><p class="indent">    Compile this like normal and then start it under gdb like this: <span class="obeylines-h"><span class="verb">gdb ./ex31</span></span>
+<!--l. 134--></p><p class="indent">    Once it’s running I want you to play around with these gdb commands to see
+what they do and how to use them.
+     </p><dl class="description"><dt class="description">
+help COMMAND </dt><dd class="description">Get a short help with COMMAND.
+     </dd><dt class="description">
+break file.c:(line—function) </dt><dd class="description">Sets  a  break  point  where  you  want  to  pause
+     execution. You can give lines or function names to break at after the file.
+     </dd><dt class="description">
+run ARGS </dt><dd class="description">Runs the program, using the ARGS as arguments to the program.
+     </dd><dt class="description">
+cont </dt><dd class="description">Continues execution until a new breakpoint or error.
+     </dd><dt class="description">
+step </dt><dd class="description">Step through the code, but move into functions. Use this to trace into a
+     function and see what it’s doing.
+     </dd><dt class="description">
+next </dt><dd class="description">Just like step, but go over functions by just running them.
+     </dd><dt class="description">
+backtrace (or bt) </dt><dd class="description">Does a ”backtrace”, which dumps the trace of function calls
+     leading to the current point in the program. Very useful for figuring out
+     how you got there, since it also prints the parameters that were passed to
+     each function. It’s also similar to what Valgrind reports when you have a
+     memory error.
+     </dd><dt class="description">
+set var X = Y </dt><dd class="description">Set variable X equal to Y.
+     </dd><dt class="description">
+print X </dt><dd class="description">Prints out the value of X, and you can usually use C syntax to access
+     the values of pointers and contents of structs.
+     </dd><dt class="description">
+                                                                  
+
+                                                                  
+ENTER </dt><dd class="description">The ENTER key just repeats the last command.
+     </dd><dt class="description">
+quit </dt><dd class="description">Exits gdb</dd></dl><!--l. 157--><p class="indent">    Those are the majority of commands I use with gdb. Your job is to now play
+with these and ex31 so you can get familiar with the output.
+<!--l. 160--></p><p class="indent">    Once you’re familiar with gdb you’ll want to play with it some more. Try using
+it on more complicated programs like devpkg to see if you can alter the program’s
+execution or analyze what it’s doing.
+    </p><h3 class="sectionHead"><span class="titlemark">32.4    </span> <a id="x38-20500032.4"></a>Process Attaching</h3>
+<!--l. 167--><p class="noindent">The most useful thing about gdb is the ability to attach to a running program and
+debug it right there. When you have a crashing server or a GUI program, you can’t
+usually start it under gdb like you just did. Instead, you have to start it, hope it
+doesn’t crash right away, then attach to it and set a breakpoint. In this part of the
+exercise I’ll show you how to do that.
+<!--l. 173--></p><p class="indent">    After you exit gdb I want you to restart ex31 if you stopped it, and then start
+another Terminal window so you can process attach to it. Process attaching is where
+you tell gdb to connect to a program that’s already running so you can inspect it live.
+It stops the program and then you can walk through it, and when you’re done it’ll
+continue just like normal.
+<!--l. 180--></p><p class="indent">    Here’s a session of me doing it to ex31, stepping through it, then fixing the
+while-loop to make it exit.
+                                                                  
+
+                                                                  
+<!--l. 183--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x38-205001r91"></a>
+ <div class="caption"><span class="id">Source 91: </span><span class="content">                                                                                             ex31.sh-session</span></div><!--tex4ht:label?: x38-205001r91 -->
+<div class="fancyvrb" id="fancyvrb58"><a id="x38-205003r1"></a>1  <span id="textcolor4926">$</span> ps ax | grep ex31<br class="fancyvrb"><a id="x38-205005r2"></a>2  <span id="textcolor4927">10026 s000  S+     0:00.11 ./ex31</span>
+<br class="fancyvrb"><a id="x38-205007r3"></a>3  <span id="textcolor4928">10036 s001  R+     0:00.00 grep ex31</span><br class="fancyvrb"><a id="x38-205009r4"></a>4  <br class="fancyvrb"><a id="x38-205011r5"></a>5  <span id="textcolor4929">$</span> gdb ./ex31 10026
+<br class="fancyvrb"><a id="x38-205013r6"></a>6  <span id="textcolor4930">GNU gdb 6.3.50-20050815 (Apple version gdb-1705) (Fri Jul  1 10:50:06 UTC 2011)</span>
+<br class="fancyvrb"><a id="x38-205015r7"></a>7  <span id="textcolor4931">Copyright 2004 Free Software Foundation, Inc.</span>
+<br class="fancyvrb"><a id="x38-205017r8"></a>8  <span id="textcolor4932">GDB is free software, covered by the GNU General Public License, and you are</span>
+<br class="fancyvrb"><a id="x38-205019r9"></a>9  <span id="textcolor4933">welcome to change it and/or distribute copies of it under certain conditions.</span>
+<br class="fancyvrb"><a id="x38-205021r10"></a>10  <span id="textcolor4934">Type "show copying" to see the conditions.</span>
+<br class="fancyvrb"><a id="x38-205023r11"></a>11  <span id="textcolor4935">There is absolutely no warranty for GDB.  Type "show warranty" for details.</span>
+<br class="fancyvrb"><a id="x38-205025r12"></a>12  <span id="textcolor4936">This GDB was configured as "x86_64-apple-darwin"...Reading symbols for shared libraries .. done</span>
+<br class="fancyvrb"><a id="x38-205027r13"></a>13  <br class="fancyvrb"><a id="x38-205029r14"></a>14  <span id="textcolor4937">/Users/zedshaw/projects/books/learn-c-the-hard-way/code/10026: No such file or directory</span>
+<br class="fancyvrb"><a id="x38-205031r15"></a>15  <span id="textcolor4938">Attaching to program: ‘/Users/zedshaw/projects/books/learn-c-the-hard-way/code/ex31’, process 10026.</span>
+<br class="fancyvrb"><a id="x38-205033r16"></a>16  <span id="textcolor4939">Reading symbols for shared libraries + done</span>
+<br class="fancyvrb"><a id="x38-205035r17"></a>17  <span id="textcolor4940">Reading symbols for shared libraries ++........................ done</span>
+<br class="fancyvrb"><a id="x38-205037r18"></a>18  <span id="textcolor4941">Reading symbols for shared libraries + done</span>
+<br class="fancyvrb"><a id="x38-205039r19"></a>19  <span id="textcolor4942">0x00007fff862c9e42 in __semwait_signal ()</span><br class="fancyvrb"><a id="x38-205041r20"></a>20  <br class="fancyvrb"><a id="x38-205043r21"></a>21  <span id="textcolor4943">(gdb) break 8</span>
+<br class="fancyvrb"><a id="x38-205045r22"></a>22  <span id="textcolor4944">Breakpoint 1 at 0x107babf14: file ex31.c, line 8.</span><br class="fancyvrb"><a id="x38-205047r23"></a>23  <br class="fancyvrb"><a id="x38-205049r24"></a>24  <span id="textcolor4945">(gdb) break ex31.c:11</span>
+<br class="fancyvrb"><a id="x38-205051r25"></a>25  <span id="textcolor4946">Breakpoint 2 at 0x107babf1c: file ex31.c, line 12.</span><br class="fancyvrb"><a id="x38-205053r26"></a>26  <br class="fancyvrb"><a id="x38-205055r27"></a>27  <span id="textcolor4947">(gdb) cont</span>
+<br class="fancyvrb"><a id="x38-205057r28"></a>28  <span id="textcolor4948">Continuing.</span><br class="fancyvrb"><a id="x38-205059r29"></a>29  <br class="fancyvrb"><a id="x38-205061r30"></a>30  <span id="textcolor4949">Breakpoint 1, main (argc=1, argv=0x7fff677aabd8) at ex31.c:8</span>
+<br class="fancyvrb"><a id="x38-205063r31"></a>31  <span id="textcolor4950">8            while(i <br class="fancyvrb"><a id="x38-205065r32"></a>32  <br class="fancyvrb"><a id="x38-205067r33"></a>33  <span id="textcolor4951">(gdb) p i</span><br class="fancyvrb"><a id="x38-205069r34"></a>34  <span id="textcolor4952">$</span><span id="textcolor4953">1</span> = 0<br class="fancyvrb"><a id="x38-205071r35"></a>35  <br class="fancyvrb"><a id="x38-205073r36"></a>36  <span id="textcolor4954">(gdb) cont</span>
+<br class="fancyvrb"><a id="x38-205075r37"></a>37  <span id="textcolor4955">Continuing.</span><br class="fancyvrb"><a id="x38-205077r38"></a>38  <br class="fancyvrb"><a id="x38-205079r39"></a>39  <span id="textcolor4956">Breakpoint 1, main (argc=1, argv=0x7fff677aabd8) at ex31.c:8</span>
+<br class="fancyvrb"><a id="x38-205081r40"></a>40  <span id="textcolor4957">8            while(i <br class="fancyvrb"><a id="x38-205083r41"></a>41  <br class="fancyvrb"><a id="x38-205085r42"></a>42  <span id="textcolor4958">(gdb) p i</span><br class="fancyvrb"><a id="x38-205087r43"></a>43  <span id="textcolor4959">$</span><span id="textcolor4960">2</span> = 0<br class="fancyvrb"><a id="x38-205089r44"></a>44  <br class="fancyvrb"><a id="x38-205091r45"></a>45  <span id="textcolor4961">(gdb) list</span><br class="fancyvrb"><a id="x38-205093r46"></a>46  <span id="textcolor4962">3        </span>
+<br class="fancyvrb"><a id="x38-205095r47"></a>47  <span id="textcolor4963">4        int main(int argc, char ⋆argv[])</span><br class="fancyvrb"><a id="x38-205097r48"></a>48  <span id="textcolor4964">5        {</span><br class="fancyvrb"><a id="x38-205099r49"></a>49  <span id="textcolor4965">6            int i = 0;</span>
+<br class="fancyvrb"><a id="x38-205101r50"></a>50  <span id="textcolor4966">7        </span><br class="fancyvrb"><a id="x38-205103r51"></a>51  <span id="textcolor4967">8            while(i <br class="fancyvrb"><a id="x38-205105r52"></a>52  <span id="textcolor4968">9                usleep(3000);</span>
+<br class="fancyvrb"><a id="x38-205107r53"></a>53  <span id="textcolor4969">10            }</span><br class="fancyvrb"><a id="x38-205109r54"></a>54  <span id="textcolor4970">11        </span><br class="fancyvrb"><a id="x38-205111r55"></a>55  <span id="textcolor4971">12            return 0;</span><br class="fancyvrb"><a id="x38-205113r56"></a>56  
+<br class="fancyvrb"><a id="x38-205115r57"></a>57  <span id="textcolor4972">(gdb) set var i = 200</span><br class="fancyvrb"><a id="x38-205117r58"></a>58  <br class="fancyvrb"><a id="x38-205119r59"></a>59  <span id="textcolor4973">(gdb) p i</span><br class="fancyvrb"><a id="x38-205121r60"></a>60  <span id="textcolor4974">$</span><span id="textcolor4975">3</span> = 200<br class="fancyvrb"><a id="x38-205123r61"></a>61  <br class="fancyvrb"><a id="x38-205125r62"></a>62  <span id="textcolor4976">(gdb) next</span><br class="fancyvrb"><a id="x38-205127r63"></a>63  
+<br class="fancyvrb"><a id="x38-205129r64"></a>64  <span id="textcolor4977">Breakpoint 2, main (argc=1, argv=0x7fff677aabd8) at ex31.c:12</span><br class="fancyvrb"><a id="x38-205131r65"></a>65  <span id="textcolor4978">12            return 0;</span>
+<br class="fancyvrb"><a id="x38-205133r66"></a>66  <br class="fancyvrb"><a id="x38-205135r67"></a>67  <span id="textcolor4979">(gdb) cont</span><br class="fancyvrb"><a id="x38-205137r68"></a>68  <span id="textcolor4980">Continuing.</span><br class="fancyvrb"><a id="x38-205139r69"></a>69  <br class="fancyvrb"><a id="x38-205141r70"></a>70  <span id="textcolor4981">Program exited normally.</span><br class="fancyvrb"><a id="x38-205143r71"></a>71  <span id="textcolor4982">(gdb) quit</span><br class="fancyvrb"><a id="x38-205145r72"></a>72  <span id="textcolor4983">$</span></span></span></span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 261--><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x38-205146r10"></a>
+<div class="caption"><span class="id">Note 10: </span><span class="content">                                                                                                                 OSX
+Problems</span></div><!--tex4ht:label?: x38-205146r10 -->
+     <div class="quote">
+     <!--l. 262--><p class="indent">   On OSX you may see a GUI prompt for the root password, and
+     even after you give it you still get an error from gdb saying ”Unable
+     to access task for process-id XXX: (os/kern) failure.” In that case
+     stop both gdb and the ex31 program, then start over and it should
+     work as long as you successfully entered the root password. </p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 268--><p class="indent">    I’ll walk through this session and explain what I did:
+     </p><dl class="description"><dt class="description">
+gdb:1 </dt><dd class="description">I use ps to find out what the process id is of the ex31 I want to attach.
+     </dd><dt class="description">
+gdb:5 </dt><dd class="description">I’m attaching using <span class="obeylines-h"><span class="verb">gdb ./ex31 PID</span></span> replacing PID with the process
+     id I have.
+     </dd><dt class="description">
+gdb:6-19 </dt><dd class="description">gdb prints out a bunch of information about it’s license and then all
+     the things it’s reading. <span class="footnote-mark"><a id="fn1x33-bk"><sup class="textsuperscript">1</sup></a></span><a id="x38-205147f1"></a>
+     </dd><dt class="description">
+gdb:21 </dt><dd class="description">The  program  is  attached  and  stopped  at  this  point,  so  now  I  set  a
+     breakpoint at line 8 in the file with break. I’m assuming that I’m already
+     in the file I want to break when I do this.
+     </dd><dt class="description">
+gdb:24 </dt><dd class="description">A better way to do a break, is give file.c:line format so you can
+     be sure you did the right location. I do that in this break.
+     </dd><dt class="description">
+gdb:27 </dt><dd class="description">I use cont to continue processing until I hit a breakpoint.
+     </dd><dt class="description">
+gdb:30-31 </dt><dd class="description">The  breakpoint  is  reached  so  gdb prints  out  variables  I  need  to
+     know about (argc and argv) and where it’s stopped, then the line of
+     code for the breakpoint.
+     </dd><dt class="description">
+gdb:33-34 </dt><dd class="description">I use the abbreviation for print ”p” to print out the value of the i
+     variable. It’s 0.
+     </dd><dt class="description">
+gdb:36 </dt><dd class="description">Continue again to see if i changes.
+     </dd><dt class="description">
+gdb:42 </dt><dd class="description">Print out i again, and nope it’s not changing.
+                                                                  
+
+                                                                  
+     </dd><dt class="description">
+gdb:45-55 </dt><dd class="description">Use list to see what the code is, and then I realize it’s not exiting
+     because I’m not incrementing i.
+     </dd><dt class="description">
+gdb:57 </dt><dd class="description">Confirm  my  hypothesis  that  i needs  to  change  by  using  the  set
+     command to change it to be <span class="obeylines-h"><span class="verb">i = 200</span></span>. This is one of the best features of
+     gdb as it lets you ”fix” a program really quick to see if you’re right.
+     </dd><dt class="description">
+gdb:59 </dt><dd class="description">Print out i just to make sure it changed.
+     </dd><dt class="description">
+gdb:62 </dt><dd class="description">Use  next to  move  to  the  next  piece  of  code,  and  I  see  that  the
+     breakpoint at ex31.c:12 is hit, so that means the while-loop exited. My
+     hypothesis is correct, I need to make i change.
+     </dd><dt class="description">
+gdb:67 </dt><dd class="description">Use cont to continue and the program exits like normal.
+     </dd><dt class="description">
+gdb:71 </dt><dd class="description">I finally use quit to get out of gdb.</dd></dl><h3 class="sectionHead"><span class="titlemark">32.5    </span> <a id="x38-20600032.5"></a>GDB Tricks</h3>
+<!--l. 308--><p class="noindent">Here’s a list of simple tricks you can do with GDB:
+     </p><dl class="description"><dt class="description">
+gdb –args </dt><dd class="description">Normally gdb takes arguments you give it and assumes they are
+     for itself. Using --args passes them to the program.
+     </dd><dt class="description">
+thread apply all bt </dt><dd class="description">Dumps a backtrace for all threads. Very useful.
+     </dd><dt class="description">
+gdb –batch –ex r –ex bt –ex q –args </dt><dd class="description">Runs the program so that, if it bombs you
+                                                                  
+
+                                                                  
+     get a backtrace.
+     </dd><dt class="description">
+? </dt><dd class="description">Got one? Leave it in the comments.</dd></dl><!--l. 321--><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">32.6    </span> <a id="x38-20700032.6"></a>Extra Credit</h3>
+<!--l. 323--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x38-207002x1">Find a graphical debugger and compare using it to raw gdb. These are
+     useful when the program you’re looking at is local, but they are pointless
+     if you have to debug a program on a server.
+     </li>
+     <li class="enumerate" id="x38-207004x2">You can enable ”core dumps” on your OS, and when a program crashes
+     you’ll get a core file. This core file is like a post-mortem of the program so
+     you can load up what happened right at the crash and see what caused
+     it. Change ex31.c so that it crashes after a few iterations, then try to get
+     a core dump and analyze it.</li></ol><div class="footnotes"><!--l. 278--><p class="noindent"><span class="footnote-mark"><a id="fn1x33"><sup class="textsuperscript">1</sup></a></span>Just in case you missed it that gdbreally was the GNU debugger and just in case you didn’t
+know it was doing all this stuff.                                            </p></div> <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>]
+[<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

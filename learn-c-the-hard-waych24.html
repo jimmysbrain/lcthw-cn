@@ -1,9 +1,127 @@
-<html><head><title>Exercise 23: Meet Duff’s Device</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych25.html">next</a>] [<a href="learn-c-the-hard-waych23.html">prev</a>] [<a href="learn-c-the-hard-waych23.html#taillearn-c-the-hard-waych23.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych24.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych24.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 24</span><br><a id="x29-13400024"></a>Exercise 23: Meet Duff’s Device</h2>
+<html><head><title>习题23: 接触Duff 的设备</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 24</span><br><a id="x29-13400024"></a>习题23: 接触Duff 的设备</h2>
+<!--l. 3--><p class="noindent">本节习题可以看做是一个脑力游戏，你将接触到的是一个叫“Duff 的设备”的东西，
+它的名称来自于其发明者 Tom Duff，而这也是最著名的 C 语言实现范例之一。这一小段杰作（恶魔的杰作？）几乎包含了你学过的所有的内容。研究它的工作原理也是一件乐事。
                                                                   
 
                                                                   
-    <!--l. 2--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych25.html">next</a>] [<a href="learn-c-the-hard-waych23.html">prev</a>] [<a href="learn-c-the-hard-waych23.html#taillearn-c-the-hard-waych23.html">prev-tail</a>] [<a href="learn-c-the-hard-waych24.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych24.html">up</a>] </p></div>
-<!--l. 2--><p class="indent">    <a id="taillearn-c-the-hard-waych24.html"></a>  
+<!--l. 8--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x29-134001r6"></a>
+<div class="caption"><span class="id">Note 6: </span><span class="content">                                                                                                               仅供练习</span></div><!--tex4ht:label?: x29-134001r6 -->
+     <div class="quote">
+     <!--l. 9--><p class="indent"> C 语言的乐趣之一就是你可以用它产生和本习题一样的各种令人匪夷所思的实现方案，不过这也是 C 语言让人恼火的一个原因。学习这些技巧能让你更深的了解 C 语言和你的计算机。然而，你绝对不能把这些技巧用到实际编程中去。简单易读的代码是你永远的奋斗目标。</p></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 15--><p class="indent">    Duff 的设备实际上是作者 Tom Duff 跟 C 编译器玩的一个骗招，其实按理说这种用法不应该生效才对。这个一道供你思考解决的迷题，所以我不会告诉你它实现的功能。你需要运行这段代码，从中理解它的功能，以及为什么可以通过这种方法实现。
+                                                                  
+
+                                                                  
+<!--l. 19--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x29-134002r62"></a>
+<div class="caption"><span class="id">Source 62: </span><span class="content">                                                                                                            ex23.c</span></div><!--tex4ht:label?: x29-134002r62 -->
+<div class="fancyvrb" id="fancyvrb33"><a id="x29-134004r1"></a>1  <span id="textcolor2482">#</span><span id="textcolor2483">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x29-134006r2"></a>2  <span id="textcolor2484">#</span><span id="textcolor2485">include <string.h></string.h></span><br class="fancyvrb"><a id="x29-134008r3"></a>3  <span id="textcolor2486">#</span><span id="textcolor2487">include "dbg.h"</span><br class="fancyvrb"><a id="x29-134010r4"></a>4  <br class="fancyvrb"><a id="x29-134012r5"></a>5  
+<br class="fancyvrb"><a id="x29-134014r6"></a>6  <span id="textcolor2488">int</span> <span id="textcolor2489">normal_copy</span>(<span id="textcolor2490">char</span> ⋆from, <span id="textcolor2491">char</span> ⋆to, <span id="textcolor2492">int</span> count)<br class="fancyvrb"><a id="x29-134016r7"></a>7  {<br class="fancyvrb"><a id="x29-134018r8"></a>8      <span id="textcolor2493">int</span> i = <span id="textcolor2494">0</span>;<br class="fancyvrb"><a id="x29-134020r9"></a>9  
+<br class="fancyvrb"><a id="x29-134022r10"></a>10      <span id="textcolor2495">for</span>(i = <span id="textcolor2496">0</span>; i <a id="x29-134024r11"></a>11          to[i] = from[i];<br class="fancyvrb"><a id="x29-134026r12"></a>12      }<br class="fancyvrb"><a id="x29-134028r13"></a>13  
+<br class="fancyvrb"><a id="x29-134030r14"></a>14      <span id="textcolor2497">return</span> i;<br class="fancyvrb"><a id="x29-134032r15"></a>15  }<br class="fancyvrb"><a id="x29-134034r16"></a>16  <br class="fancyvrb"><a id="x29-134036r17"></a>17  <span id="textcolor2498">int</span> <span id="textcolor2499">duffs_device</span>(<span id="textcolor2500">char</span> ⋆from, <span id="textcolor2501">char</span> ⋆to, <span id="textcolor2502">int</span> count)
+<br class="fancyvrb"><a id="x29-134038r18"></a>18  {<br class="fancyvrb"><a id="x29-134040r19"></a>19      {<br class="fancyvrb"><a id="x29-134042r20"></a>20          <span id="textcolor2503">int</span> n = (count + <span id="textcolor2504">7</span>) / <span id="textcolor2505">8</span>;<br class="fancyvrb"><a id="x29-134044r21"></a>21  
+<br class="fancyvrb"><a id="x29-134046r22"></a>22          <span id="textcolor2506">switch</span>(count % <span id="textcolor2507">8</span>) {<br class="fancyvrb"><a id="x29-134048r23"></a>23              <span id="textcolor2508">case</span> <span id="textcolor2509">0</span>: <span id="textcolor2510">do</span> { ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134050r24"></a>24                          <span id="textcolor2511">case</span> <span id="textcolor2512">7</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134052r25"></a>25                          <span id="textcolor2513">case</span> <span id="textcolor2514">6</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134054r26"></a>26                          <span id="textcolor2515">case</span> <span id="textcolor2516">5</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134056r27"></a>27                          <span id="textcolor2517">case</span> <span id="textcolor2518">4</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134058r28"></a>28                          <span id="textcolor2519">case</span> <span id="textcolor2520">3</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134060r29"></a>29                          <span id="textcolor2521">case</span> <span id="textcolor2522">2</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134062r30"></a>30                          <span id="textcolor2523">case</span> <span id="textcolor2524">1</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134064r31"></a>31                      } <span id="textcolor2525">while</span>(--n &gt; <span id="textcolor2526">0</span>);<br class="fancyvrb"><a id="x29-134066r32"></a>32          }<br class="fancyvrb"><a id="x29-134068r33"></a>33      }<br class="fancyvrb"><a id="x29-134070r34"></a>34  <br class="fancyvrb"><a id="x29-134072r35"></a>35      <span id="textcolor2527">return</span> count;
+<br class="fancyvrb"><a id="x29-134074r36"></a>36  }<br class="fancyvrb"><a id="x29-134076r37"></a>37  <br class="fancyvrb"><a id="x29-134078r38"></a>38  <span id="textcolor2528">int</span> <span id="textcolor2529">zeds_device</span>(<span id="textcolor2530">char</span> ⋆from, <span id="textcolor2531">char</span> ⋆to, <span id="textcolor2532">int</span> count)<br class="fancyvrb"><a id="x29-134080r39"></a>39  {<br class="fancyvrb"><a id="x29-134082r40"></a>40      {
+<br class="fancyvrb"><a id="x29-134084r41"></a>41          <span id="textcolor2533">int</span> n = (count + <span id="textcolor2534">7</span>) / <span id="textcolor2535">8</span>;<br class="fancyvrb"><a id="x29-134086r42"></a>42  <br class="fancyvrb"><a id="x29-134088r43"></a>43          <span id="textcolor2536">switch</span>(count % <span id="textcolor2537">8</span>) {<br class="fancyvrb"><a id="x29-134090r44"></a>44              <span id="textcolor2538">case</span> <span id="textcolor2539">0</span>:
+<br class="fancyvrb"><a id="x29-134092r45"></a>45              again: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x29-134094r46"></a>46  <br class="fancyvrb"><a id="x29-134096r47"></a>47              <span id="textcolor2540">case</span> <span id="textcolor2541">7</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134098r48"></a>48              <span id="textcolor2542">case</span> <span id="textcolor2543">6</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x29-134100r49"></a>49              <span id="textcolor2544">case</span> <span id="textcolor2545">5</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134102r50"></a>50              <span id="textcolor2546">case</span> <span id="textcolor2547">4</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x29-134104r51"></a>51              <span id="textcolor2548">case</span> <span id="textcolor2549">3</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134106r52"></a>52              <span id="textcolor2550">case</span> <span id="textcolor2551">2</span>: ⋆to++ = ⋆from++;<br class="fancyvrb"><a id="x29-134108r53"></a>53              <span id="textcolor2552">case</span> <span id="textcolor2553">1</span>: ⋆to++ = ⋆from++;
+<br class="fancyvrb"><a id="x29-134110r54"></a>54                      <span id="textcolor2554">if</span>(--n &gt; <span id="textcolor2555">0</span>) <span id="textcolor2556">goto</span> again;<br class="fancyvrb"><a id="x29-134112r55"></a>55          }<br class="fancyvrb"><a id="x29-134114r56"></a>56      }<br class="fancyvrb"><a id="x29-134116r57"></a>57  <br class="fancyvrb"><a id="x29-134118r58"></a>58      <span id="textcolor2557">return</span> count;
+<br class="fancyvrb"><a id="x29-134120r59"></a>59  }<br class="fancyvrb"><a id="x29-134122r60"></a>60  <br class="fancyvrb"><a id="x29-134124r61"></a>61  <span id="textcolor2558">int</span> <span id="textcolor2559">valid_copy</span>(<span id="textcolor2560">char</span> ⋆data, <span id="textcolor2561">int</span> count, <span id="textcolor2562">char</span> expects)<br class="fancyvrb"><a id="x29-134126r62"></a>62  {<br class="fancyvrb"><a id="x29-134128r63"></a>63      <span id="textcolor2563">int</span> i = <span id="textcolor2564">0</span>;
+<br class="fancyvrb"><a id="x29-134130r64"></a>64      <span id="textcolor2565">for</span>(i = <span id="textcolor2566">0</span>; i <a id="x29-134132r65"></a>65          <span id="textcolor2567">if</span>(data[i] != expects) {
+<br class="fancyvrb"><a id="x29-134134r66"></a>66              log_err(<span class="colorbox" id="colorbox2568"><span id="textcolor2569">"</span></span><span class="colorbox" id="colorbox2570"><span id="textcolor2571">[%d] %c != %c</span></span><span class="colorbox" id="colorbox2572"><span id="textcolor2573">"</span></span>, i, data[i], expects);<br class="fancyvrb"><a id="x29-134136r67"></a>67              <span id="textcolor2574">return</span> <span id="textcolor2575">0</span>;
+<br class="fancyvrb"><a id="x29-134138r68"></a>68          }<br class="fancyvrb"><a id="x29-134140r69"></a>69      }<br class="fancyvrb"><a id="x29-134142r70"></a>70  <br class="fancyvrb"><a id="x29-134144r71"></a>71      <span id="textcolor2576">return</span> <span id="textcolor2577">1</span>;<br class="fancyvrb"><a id="x29-134146r72"></a>72  }<br class="fancyvrb"><a id="x29-134148r73"></a>73  <br class="fancyvrb"><a id="x29-134150r74"></a>74  <br class="fancyvrb"><a id="x29-134152r75"></a>75  <span id="textcolor2578">int</span> <span id="textcolor2579">main</span>(<span id="textcolor2580">int</span> argc, <span id="textcolor2581">char</span> ⋆argv[])
+<br class="fancyvrb"><a id="x29-134154r76"></a>76  {<br class="fancyvrb"><a id="x29-134156r77"></a>77      <span id="textcolor2582">char</span> from[<span id="textcolor2583">1000</span>] = {<span class="colorbox" id="colorbox2584"><span id="textcolor2585">’a’</span></span>};<br class="fancyvrb"><a id="x29-134158r78"></a>78      <span id="textcolor2586">char</span> to[<span id="textcolor2587">1000</span>] = {<span class="colorbox" id="colorbox2588"><span id="textcolor2589">’c’</span></span>};<br class="fancyvrb"><a id="x29-134160r79"></a>79      <span id="textcolor2590">int</span> rc = <span id="textcolor2591">0</span>;
+<br class="fancyvrb"><a id="x29-134162r80"></a>80  <br class="fancyvrb"><a id="x29-134164r81"></a>81      <span id="textcolor2592">// setup the from to have some stuff</span><br class="fancyvrb"><a id="x29-134166r82"></a>82      memset(from, <span class="colorbox" id="colorbox2593"><span id="textcolor2594">’x’</span></span>, <span id="textcolor2595">1000</span>);
+<br class="fancyvrb"><a id="x29-134168r83"></a>83      <span id="textcolor2596">// set it to a failure mode</span><br class="fancyvrb"><a id="x29-134170r84"></a>84      memset(to, <span class="colorbox" id="colorbox2597"><span id="textcolor2598">’y’</span></span>, <span id="textcolor2599">1000</span>);
+<br class="fancyvrb"><a id="x29-134172r85"></a>85      check(valid_copy(to, <span id="textcolor2600">1000</span>, <span class="colorbox" id="colorbox2601"><span id="textcolor2602">’y’</span></span>), <span class="colorbox" id="colorbox2603"><span id="textcolor2604">"</span></span><span class="colorbox" id="colorbox2605"><span id="textcolor2606">Not initialized right.</span></span><span class="colorbox" id="colorbox2607"><span id="textcolor2608">"</span></span>);<br class="fancyvrb"><a id="x29-134174r86"></a>86  
+<br class="fancyvrb"><a id="x29-134176r87"></a>87      <span id="textcolor2609">// use normal copy to </span><br class="fancyvrb"><a id="x29-134178r88"></a>88      rc = normal_copy(from, to, <span id="textcolor2610">1000</span>);
+<br class="fancyvrb"><a id="x29-134180r89"></a>89      check(rc == <span id="textcolor2611">1000</span>, <span class="colorbox" id="colorbox2612"><span id="textcolor2613">"</span></span><span class="colorbox" id="colorbox2614"><span id="textcolor2615">Normal copy failed: %d</span></span><span class="colorbox" id="colorbox2616"><span id="textcolor2617">"</span></span>, rc);
+<br class="fancyvrb"><a id="x29-134182r90"></a>90      check(valid_copy(to, <span id="textcolor2618">1000</span>, <span class="colorbox" id="colorbox2619"><span id="textcolor2620">’x’</span></span>), <span class="colorbox" id="colorbox2621"><span id="textcolor2622">"</span></span><span class="colorbox" id="colorbox2623"><span id="textcolor2624">Normal copy failed.</span></span><span class="colorbox" id="colorbox2625"><span id="textcolor2626">"</span></span>);
+<br class="fancyvrb"><a id="x29-134184r91"></a>91  <br class="fancyvrb"><a id="x29-134186r92"></a>92      <span id="textcolor2627">// reset</span><br class="fancyvrb"><a id="x29-134188r93"></a>93      memset(to, <span class="colorbox" id="colorbox2628"><span id="textcolor2629">’y’</span></span>, <span id="textcolor2630">1000</span>);<br class="fancyvrb"><a id="x29-134190r94"></a>94  
+<br class="fancyvrb"><a id="x29-134192r95"></a>95      <span id="textcolor2631">// duffs version</span><br class="fancyvrb"><a id="x29-134194r96"></a>96      rc = duffs_device(from, to, <span id="textcolor2632">1000</span>);
+<br class="fancyvrb"><a id="x29-134196r97"></a>97      check(rc == <span id="textcolor2633">1000</span>, <span class="colorbox" id="colorbox2634"><span id="textcolor2635">"</span></span><span class="colorbox" id="colorbox2636"><span id="textcolor2637">Duff’s device failed: %d</span></span><span class="colorbox" id="colorbox2638"><span id="textcolor2639">"</span></span>, rc);
+<br class="fancyvrb"><a id="x29-134198r98"></a>98      check(valid_copy(to, <span id="textcolor2640">1000</span>, <span class="colorbox" id="colorbox2641"><span id="textcolor2642">’x’</span></span>), <span class="colorbox" id="colorbox2643"><span id="textcolor2644">"</span></span><span class="colorbox" id="colorbox2645"><span id="textcolor2646">Duff’s device failed copy.</span></span><span class="colorbox" id="colorbox2647"><span id="textcolor2648">"</span></span>);<br class="fancyvrb"><a id="x29-134200r99"></a>99  <br class="fancyvrb"><a id="x29-134202r100"></a>100      <span id="textcolor2649">// reset</span>
+                                                                  
+
+                                                                  
+<br class="fancyvrb"><a id="x29-134204r101"></a>101      memset(to, <span class="colorbox" id="colorbox2650"><span id="textcolor2651">’y’</span></span>, <span id="textcolor2652">1000</span>);<br class="fancyvrb"><a id="x29-134206r102"></a>102  <br class="fancyvrb"><a id="x29-134208r103"></a>103      <span id="textcolor2653">// my version</span><br class="fancyvrb"><a id="x29-134210r104"></a>104      rc = zeds_device(from, to, <span id="textcolor2654">1000</span>);
+<br class="fancyvrb"><a id="x29-134212r105"></a>105      check(rc == <span id="textcolor2655">1000</span>, <span class="colorbox" id="colorbox2656"><span id="textcolor2657">"</span></span><span class="colorbox" id="colorbox2658"><span id="textcolor2659">Zed’s device failed: %d</span></span><span class="colorbox" id="colorbox2660"><span id="textcolor2661">"</span></span>, rc);
+<br class="fancyvrb"><a id="x29-134214r106"></a>106      check(valid_copy(to, <span id="textcolor2662">1000</span>, <span class="colorbox" id="colorbox2663"><span id="textcolor2664">’x’</span></span>), <span class="colorbox" id="colorbox2665"><span id="textcolor2666">"</span></span><span class="colorbox" id="colorbox2667"><span id="textcolor2668">Zed’s device failed copy.</span></span><span class="colorbox" id="colorbox2669"><span id="textcolor2670">"</span></span>);
+<br class="fancyvrb"><a id="x29-134216r107"></a>107  <br class="fancyvrb"><a id="x29-134218r108"></a>108      <span id="textcolor2671">return</span> <span id="textcolor2672">0</span>;<br class="fancyvrb"><a id="x29-134220r109"></a>109  <span id="textcolor2673">error:</span><br class="fancyvrb"><a id="x29-134222r110"></a>110      <span id="textcolor2674">return</span> <span id="textcolor2675">1</span>;<br class="fancyvrb"><a id="x29-134224r111"></a>111  }</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 136--><p class="indent">    这段代码中有 3 个版本的拷贝函数：
+     </p><dl class="description"><dt class="description">
+normal_copy </dt><dd class="description">这是一段 for-loop 代码，它将字符串从一个数组复制到另一个数组中。
+     </dd><dt class="description">
+duffs_device </dt><dd class="description">这就是称作“Duff 的设备”的脑力游戏，以 Tom Duff 命名，他就是这一段邪恶代码的始作俑者。
+     </dd><dt class="description">
+zeds_device </dt><dd class="description">这是“Duff 的设备”的另一个版本，是用一个 goto 语句实现的，
+     以方便你理解前面 duffs_device 函数中奇怪的 do-while 片段。</dd></dl><!--l. 147--><p class="indent">    在继续往下读之前，先学习这三个函数。并试着去解释究竟发生了什么事情。
+    </p><h3 class="sectionHead"><span class="titlemark">24.1    </span> <a id="x29-13500024.1"></a>你应该看到的结果</h3>
+<!--l. 151--><p class="noindent">这是一个没有输出的程序，程序运行完就退出了。并且在 valgrind 下运行也是无错的。
+<!--l. 154--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">24.2    </span> <a id="x29-13600024.2"></a>谜底</h3>
+<!--l. 156--><p class="noindent">首先要明白的是 C 的语法是相当松散的，你可以把 do-while 的一半内容放到 switch-statement 中，另一半放到别的地方，代码还能正常工作。如果你看我那个版本的 goto again 部分，其中的细节其实更容易理解。不过你还是应该弄明白原始版本中的那部分是如何实现的。
+<!--l. 161--></p><p class="indent">    其次要明白的是 switch-statement 的默认的一步到底的语义，正因为如此，
+你才能跳到某个 case，然后接着运行，直到 switch 语句结束。
+                                                                  
+
+                                                                  
+<!--l. 164--></p><p class="indent">    最后的线索就是前面的 <span class="obeylines-h"><span class="verb">count % 8</span></span> 和 n 的计算结果。
+<!--l. 166--></p><p class="indent">    接下来，你要通过下面的方法去理解函数是如何工作的。
+<!--l. 168--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x29-136002x1">将这些代码打印出来，这样你就能从纸面工作了。
+     </li>
+     <li class="enumerate" id="x29-136004x2">在纸上用表列出在 switch-statement 之前每一个变量的初始值。
+     </li>
+     <li class="enumerate" id="x29-136006x3">跟着 switch 的逻辑，跳转到对应的 case 中。
+     </li>
+     <li class="enumerate" id="x29-136008x4">更新变量，包括 to、from、以及它们指向的数组。
+     </li>
+     <li class="enumerate" id="x29-136010x5">选择 while 版本或我的 goto 版本进行跟踪。检查变量，并来回跟踪 do-while 或者 again 的定位标签。
+     </li>
+     <li class="enumerate" id="x29-136012x6">重复以上步骤并更新变量的值，直到你确认自己完全理解了这一部分代码是怎样工作的为止。</li></ol><!--l. 179--><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">24.2.1    </span> <a id="x29-13700024.2.1"></a>有必要这样做吗？</h4>
+<!--l. 181--><p class="noindent">当你完全理解了它是如何工作。最后的问题是：为什么要这样做呢？这样做的目的是手动“展开循环”。大的循环执行起来可能会很慢，加快速度的方法之一就是找出循环中的固定步骤，把它放到循环外面顺次重复地写出来，并让重复的次数和循环的次数对应。比如：如果你知道一个循环要运行至少 20 次，那你可以将循环的内容在代码中写 20 次以代替这一段循环。
+<!--l. 187--></p><p class="indent">    “Duff 的设备”是每次自动的让循环迭代 8 次。它能正常运行并非常巧妙，但是时至今日，好的编译器已经在帮你做这些事情了。这种技巧对你来说应该没多大用处，除非在极少数情况下，你可以证明这样做真能提高速度。
+<!--l. 191--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">24.3    </span> <a id="x29-13800024.3"></a>加分习题</h3>
+<!--l. 193--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x29-138002x1">永远都别去使用这个技巧。
+     </li>
+     <li class="enumerate" id="x29-138004x2">去维基百科搜索“Duff Device”词条。看你能否从里边的代码发现错误。
+     比较词条上的代码和我们的代码，仔细阅读并试图理解为什么我们运行维基百科上的代码会失败，而当时 Tom Duff 却能运行成功。
+     </li>
+     <li class="enumerate" id="x29-138006x3">创建一个宏集，让它能生产任何长度“duff 的设备”。比如，你想要一个有 32 条 case 语句的“Duff 设备”，你能一次性产生它们吗？你的宏一次能产生 8 条 case 语句吗？
+     </li>
+     <li class="enumerate" id="x29-138008x4">修改 main 函数，在里边放一些测速代码，看看三种实现方式哪种速度会比较快。
+     </li>
+     <li class="enumerate" id="x29-138010x5">阅读 memcpy、memmove、memset 这几个函数的文档，并比较它们的速度。
+     </li>
+     <li class="enumerate" id="x29-138012x6">永远都别去使用这个技巧！</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

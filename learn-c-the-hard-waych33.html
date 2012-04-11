@@ -1,25 +1,378 @@
-<html><head><title>Exercise 30: Automated Testing</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych34.html">next</a>] [<a href="learn-c-the-hard-waych32.html">prev</a>] [<a href="learn-c-the-hard-waych32.html#taillearn-c-the-hard-waych32.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych33.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych33.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 33</span><br><a id="x39-19600033"></a>Exercise 30: Automated Testing</h2>
-<!--l. 3--><p class="noindent">Automated testing is used frequently in other languages like Python and Ruby, but
-rarely used in C. Part of the reason comes from the difficulty of automatically
-loading and testing pieces of C code. In this chapter we’ll create a very small little
-testing ”framework” and get your skeleton directory building an example test
-case.
-    </p><h3 class="sectionHead"><span class="titlemark">33.1    </span> <a id="x39-19700033.1"></a>What You Should See</h3>
-<!--l. 12--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">33.2    </span> <a id="x39-19800033.2"></a>How To Break It</h3>
-<!--l. 15--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">33.3    </span> <a id="x39-19900033.3"></a>Extra Credit</h3>
+<html><head><title>Exercise 32: Double Linked Lists</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 33</span><br><a id="x39-20800033"></a>Exercise 32: Double Linked Lists</h2>
+<!--l. 3--><p class="noindent">The purpose of this book is to teach you how your computer really works, and
+included in that is how various data structures and algorithms function. Computers
+by themselves don’t do a lot of useful processing. To make them do useful things
+you need to structure the data and then organize processing on these structures.
+Other programming languages either include libraries that implement all of these
+structures, or they have direct syntax for them. C makes you implement all the data
+structures you need yourself, which makes it the perfect language to learn how they
+actually work.
+<!--l. 11--></p><p class="indent">    My goal in teaching you these data structures and these algorithms is to help
+you do three things:
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-208002x1">Understand what is really going on in Python, Ruby, or JavaScript code
+     like: <span class="obeylines-h"><span class="verb">data = {"name": "Zed}</span></span>
+     </li>
+     <li class="enumerate" id="x39-208004x2">Get even better at C code by applying what you know to a set of solved
+     problems using the data structures.
+     </li>
+     <li class="enumerate" id="x39-208006x3">Learn a core set of data structures and algorithms so that you are better
+     informed about what ones work best in certain situations.</li></ol><h3 class="sectionHead"><span class="titlemark">33.1    </span> <a id="x39-20900033.1"></a>What Are Data Structures</h3>
+<!--l. 23--><p class="noindent">The name ”data structure” is self-explanatory. It is an organization of data that fits a
+certain model. Maybe the model is designed to allow processing the data
+in a new way. Maybe it’s just organized to store it on disk efficiently. In
+this book I’ll follow a simple pattern for making data structures that works
+reliably:
+<!--l. 27--></p><p class="indent">
+                                                                  
+
+                                                                  
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-209002x1">Define a struct for the main ”outer structure”.
+     </li>
+     <li class="enumerate" id="x39-209004x2">Define a struct for the contents, usually nodes with links between them.
+     </li>
+     <li class="enumerate" id="x39-209006x3">Create functions that operate on these two.</li></ol><!--l. 33--><p class="indent">    There’s other styles of data structures in C, but this pattern works well and is
+consistent for most data structures you’ll make.
+<!--l. 37--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">33.2    </span> <a id="x39-21000033.2"></a>Making The Library</h3>
+<!--l. 39--><p class="noindent">For the rest of this book you’ll be creating a library that you can use when you’re
+done with this book. This library will have the following elements:
+<!--l. 42--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-210002x1">Header (.h) files for each data structure.
+     </li>
+     <li class="enumerate" id="x39-210004x2">Implementation (.c) files for the algorithms.
+     </li>
+     <li class="enumerate" id="x39-210006x3">Unit tests that test all of them to make sure they keep working.
+     </li>
+     <li class="enumerate" id="x39-210008x4">Documentation we’ll autogenerate from the header files.</li></ol><!--l. 49--><p class="indent">    You already have the c-skeleton so use it to create a liblcthw project:
+                                                                  
+
+                                                                  
+<!--l. 51--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x39-210009r92"></a>
+ <div class="caption"><span class="id">Source 92: </span><span class="content">                                                                                             ex32.sh-session</span></div><!--tex4ht:label?: x39-210009r92 -->
+<div class="fancyvrb" id="fancyvrb59"><a id="x39-210011r1"></a>1  <span id="textcolor4984">$</span> cp -r c-skeleton liblcthw<br class="fancyvrb"><a id="x39-210013r2"></a>2  <span id="textcolor4985">$</span> <span id="textcolor4986">cd </span>liblcthw/<br class="fancyvrb"><a id="x39-210015r3"></a>3  <span id="textcolor4987">$</span> ls
+<br class="fancyvrb"><a id="x39-210017r4"></a>4  <span id="textcolor4988">LICENSE                Makefile        README.md        bin                build                src                tests</span>
+<br class="fancyvrb"><a id="x39-210019r5"></a>5  <span id="textcolor4989">$</span> vim Makefile<br class="fancyvrb"><a id="x39-210021r6"></a>6  <span id="textcolor4990">$</span> ls src/<br class="fancyvrb"><a id="x39-210023r7"></a>7  <span id="textcolor4991">dbg.h                libex29.c        libex29.o</span>
+<br class="fancyvrb"><a id="x39-210025r8"></a>8  <span id="textcolor4992">$</span> mkdir src/lcthw<br class="fancyvrb"><a id="x39-210027r9"></a>9  <span id="textcolor4993">$</span> mv src/dbg.h src/lcthw<br class="fancyvrb"><a id="x39-210029r10"></a>10  <span id="textcolor4994">$</span> vim tests/minunit.h
+<br class="fancyvrb"><a id="x39-210031r11"></a>11  <span id="textcolor4995">$</span> rm src/libex29.⋆ tests/libex29⋆<br class="fancyvrb"><a id="x39-210033r12"></a>12  <span id="textcolor4996">$</span> make clean<br class="fancyvrb"><a id="x39-210035r13"></a>13  <span id="textcolor4997">rm -rf build  tests/libex29_tests</span>
+<br class="fancyvrb"><a id="x39-210037r14"></a>14  <span id="textcolor4998">rm -f tests/tests.log </span><br class="fancyvrb"><a id="x39-210039r15"></a>15  <span id="textcolor4999">find . -name "⋆.gc⋆" -exec rm {} \;</span>
+<br class="fancyvrb"><a id="x39-210041r16"></a>16  <span id="textcolor5000">rm -rf ‘find . -name "⋆.dSYM" -print‘</span><br class="fancyvrb"><a id="x39-210043r17"></a>17  <span id="textcolor5001">$</span> ls tests/<br class="fancyvrb"><a id="x39-210045r18"></a>18  <span id="textcolor5002">minunit.h        runtests.sh</span><br class="fancyvrb"><a id="x39-210047r19"></a>19  <span id="textcolor5003">$</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 76--><p class="indent">    In this session I’m doing the following:
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-210049x1">Copy the c-skeleton over.
+     </li>
+     <li class="enumerate" id="x39-210051x2">Edit the Makefile to change libYOUR_LIBRARY.a to liblcthw.a as
+     the new TARGET.
+     </li>
+     <li class="enumerate" id="x39-210053x3">Make the src/lcthw directory where we’ll put our code.
+     </li>
+     <li class="enumerate" id="x39-210055x4">Move the src/dbg.h into this new directory.
+     </li>
+     <li class="enumerate" id="x39-210057x5">Edit tests/minunit.h so that it uses <span class="obeylines-h"><span class="verb">#include <lcthw></lcthw></span></span> as
+     the include.
+     </li>
+     <li class="enumerate" id="x39-210059x6">Get rid of the source and test files we don’t need for libex29.⋆.
+     </li>
+     <li class="enumerate" id="x39-210061x7">Clean up everything that’s left over.</li></ol><!--l. 90--><p class="indent">    With that you’re ready to start building the library, and the first data structure
+I’ll build is the Double Linked List.
+    </p><h3 class="sectionHead"><span class="titlemark">33.3    </span> <a id="x39-21100033.3"></a>Double Linked Lists</h3>
+<!--l. 95--><p class="noindent">The first data strucutre we’ll add to liblcthw is a double linked list. This is the
+simplest data structure you can make, and it has useful properties for certain
+operations. A linked list works by nodes having pointers to their next or previous
+element. A ”double linked list” contains pointers to both, while a ”single linked list”
+only points at the next element.
+<!--l. 101--></p><p class="indent">    Because each node has pointers to the next and previous, and because you keep
+                                                                  
+
+                                                                  
+track of the first and last element of the list, you can do some operations very
+quickly. Anything that involves inserting or deleting an element will be very fast.
+They are also easy to implement by most people.
+<!--l. 106--></p><p class="indent">    The main disadvantage of a linked list is that traversing it involves processing
+every single pointer along the way. This means that searching, most sorting, or
+iterating over the elements will be slow. It also means that you can’t really jump to
+random parts of the list. If you had an array of elements you could just index
+right into the middle of the list, but a linked list uses a stream of pointers.
+That means if you want the 10th element, you have to go through elements
+1-9.
+<!--l. 114--></p><p class="noindent">
+    </p><h4 class="subsectionHead"><span class="titlemark">33.3.1    </span> <a id="x39-21200033.3.1"></a>Definition</h4>
+<!--l. 116--><p class="noindent">As I said in the introduction to this exercise, the process to follow is to first write a
+header file with the right C struct statements in it.
+                                                                  
+
+                                                                  
+<!--l. 119--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x39-212001r93"></a>
+ <div class="caption"><span class="id">Source 93: </span><span class="content">                                                                                              src/lcthw/list.h</span></div><!--tex4ht:label?: x39-212001r93 -->
+<div class="fancyvrb" id="fancyvrb60"><a id="x39-212003r1"></a>1  <span id="textcolor5004">#</span><span id="textcolor5005">ifndef lcthw_List_h</span><br class="fancyvrb"><a id="x39-212005r2"></a>2  <span id="textcolor5006">#</span><span id="textcolor5007">define lcthw_List_h</span><br class="fancyvrb"><a id="x39-212007r3"></a>3  <br class="fancyvrb"><a id="x39-212009r4"></a>4  <span id="textcolor5008">#</span><span id="textcolor5009">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x39-212011r5"></a>5  
+<br class="fancyvrb"><a id="x39-212013r6"></a>6  <span id="textcolor5010">struct</span> ListNode;<br class="fancyvrb"><a id="x39-212015r7"></a>7  <br class="fancyvrb"><a id="x39-212017r8"></a>8  <span id="textcolor5011">typedef</span> <span id="textcolor5012">struct</span> ListNode {<br class="fancyvrb"><a id="x39-212019r9"></a>9      <span id="textcolor5013">struct</span> ListNode ⋆next;
+<br class="fancyvrb"><a id="x39-212021r10"></a>10      <span id="textcolor5014">struct</span> ListNode ⋆prev;<br class="fancyvrb"><a id="x39-212023r11"></a>11      <span id="textcolor5015">void</span> ⋆value;<br class="fancyvrb"><a id="x39-212025r12"></a>12  } ListNode;<br class="fancyvrb"><a id="x39-212027r13"></a>13  <br class="fancyvrb"><a id="x39-212029r14"></a>14  <span id="textcolor5016">typedef</span> <span id="textcolor5017">struct</span> List {
+<br class="fancyvrb"><a id="x39-212031r15"></a>15      <span id="textcolor5018">int</span> count;<br class="fancyvrb"><a id="x39-212033r16"></a>16      ListNode ⋆first;<br class="fancyvrb"><a id="x39-212035r17"></a>17      ListNode ⋆last;<br class="fancyvrb"><a id="x39-212037r18"></a>18  } List;<br class="fancyvrb"><a id="x39-212039r19"></a>19  
+<br class="fancyvrb"><a id="x39-212041r20"></a>20  List ⋆List_create();<br class="fancyvrb"><a id="x39-212043r21"></a>21  <span id="textcolor5019">void</span> List_destroy(List ⋆list);<br class="fancyvrb"><a id="x39-212045r22"></a>22  <span id="textcolor5020">void</span> List_clear(List ⋆list);
+<br class="fancyvrb"><a id="x39-212047r23"></a>23  <span id="textcolor5021">void</span> List_clear_destroy(List ⋆list);<br class="fancyvrb"><a id="x39-212049r24"></a>24  <br class="fancyvrb"><a id="x39-212051r25"></a>25  <span id="textcolor5022">#</span><span id="textcolor5023">define List_count(A) ((A)-&gt;count)</span>
+<br class="fancyvrb"><a id="x39-212053r26"></a>26  <span id="textcolor5024">#</span><span id="textcolor5025">define List_first(A) ((A)-&gt;first != NULL ? (A)-&gt;first-&gt;value : NULL)</span>
+<br class="fancyvrb"><a id="x39-212055r27"></a>27  <span id="textcolor5026">#</span><span id="textcolor5027">define List_last(A) ((A)-&gt;last != NULL ? (A)-&gt;last-&gt;value : NULL)</span><br class="fancyvrb"><a id="x39-212057r28"></a>28  
+<br class="fancyvrb"><a id="x39-212059r29"></a>29  <span id="textcolor5028">void</span> List_push(List ⋆list, <span id="textcolor5029">void</span> ⋆value);<br class="fancyvrb"><a id="x39-212061r30"></a>30  <span id="textcolor5030">void</span> ⋆List_pop(List ⋆list);<br class="fancyvrb"><a id="x39-212063r31"></a>31  
+<br class="fancyvrb"><a id="x39-212065r32"></a>32  <span id="textcolor5031">void</span> List_shift(List ⋆list, <span id="textcolor5032">void</span> ⋆value);<br class="fancyvrb"><a id="x39-212067r33"></a>33  <span id="textcolor5033">void</span> ⋆List_unshift(List ⋆list);
+<br class="fancyvrb"><a id="x39-212069r34"></a>34  <br class="fancyvrb"><a id="x39-212071r35"></a>35  <span id="textcolor5034">void</span> ⋆List_remove(List ⋆list, ListNode ⋆node);<br class="fancyvrb"><a id="x39-212073r36"></a>36  
+<br class="fancyvrb"><a id="x39-212075r37"></a>37  <span id="textcolor5035">#</span><span id="textcolor5036">define LIST_FOREACH(L, S, M, V) ListNode ⋆_node = NULL;\</span><br class="fancyvrb"><a id="x39-212077r38"></a>38  <span id="textcolor5037">    ListNode ⋆V = NULL;\</span>
+<br class="fancyvrb"><a id="x39-212079r39"></a>39  <span id="textcolor5038">    for(V = _node = L-&gt;S; _node != NULL; V = _node = _node-&gt;M)</span><br class="fancyvrb"><a id="x39-212081r40"></a>40  <br class="fancyvrb"><a id="x39-212083r41"></a>41  <span id="textcolor5039">#</span><span id="textcolor5040">endif</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 166--><p class="indent">    The first thing I do is create two structs for the ListNode and the List that will
+contain those nodes. This creates the data structure I’ll use in the functions and
+macros I define after that. If you read through these functions they seem rather
+simple. I’ll be explaining them when I cover the implementation, but hopefully you
+can guess what they do.
+<!--l. 173--></p><p class="indent">    How the data structure works is each ListNode has three components:
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-212085x1">A value, which is a pointer to anything and stores the thing we want to
+     put in the list.
+     </li>
+     <li class="enumerate" id="x39-212087x2">A  ListNode ⋆next pointer  which  points  at  another  ListNode  that
+     holds the next element in the list.
+     </li>
+     <li class="enumerate" id="x39-212089x3">A ListNode ⋆prev that holds the previous element. Complex right?
+     Calling the previous thing ”previous”. I could have used ”anterior” and
+     ”posterior” but only a jerk would do that.</li></ol><!--l. 185--><p class="indent">    The List struct is then nothing more than a container for these ListNode
+structs that have been linked together in a chain. It keeps track of the count, first
+and last element of the list.
+<!--l. 190--></p><p class="indent">    Finally, take a look at src/lcthw/list.h:37 where I define the LIST_FOREACH
+macro. This is a common idiom where you make a macro that generates iteration
+code so people can’t mess it up. Getting this kind of processing right can be difficult
+with data structures, so writing macros helps people out. You’ll see how I use this
+when I talk about the implementation.
+    </p><h4 class="subsectionHead"><span class="titlemark">33.3.2    </span> <a id="x39-21300033.3.2"></a>Implemention</h4>
+<!--l. 199--><p class="noindent">Once you understand that, you mostly understand how a double linked list works. It
+is nothing more than nodes with two pointers to the next and previous element of
+                                                                  
+
+                                                                  
+the list. You can then write the src/lcthw/list.c code to see how each operation
+is implemented.
+                                                                  
+
+                                                                  
+<!--l. 204--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x39-213001r94"></a>
+ <div class="caption"><span class="id">Source 94: </span><span class="content">                                                                                              src/lcthw/list.c</span></div><!--tex4ht:label?: x39-213001r94 -->
+<div class="fancyvrb" id="fancyvrb61"><a id="x39-213003r1"></a>1  <span id="textcolor5041">#</span><span id="textcolor5042">include <lcthw><span id="textcolor5043">/</span><span id="textcolor5044">list.h&gt;</span><br class="fancyvrb"><a id="x39-213005r2"></a>2  <span id="textcolor5045">#</span><span id="textcolor5046">include <lcthw><span id="textcolor5047">/</span><span id="textcolor5048">dbg.h&gt;</span><br class="fancyvrb"><a id="x39-213007r3"></a>3  <br class="fancyvrb"><a id="x39-213009r4"></a>4  List ⋆<span id="textcolor5049">List_create</span>()<br class="fancyvrb"><a id="x39-213011r5"></a>5  {
+<br class="fancyvrb"><a id="x39-213013r6"></a>6      <span id="textcolor5050">return</span> calloc(<span id="textcolor5051">1</span>, <span id="textcolor5052">sizeof</span>(List));<br class="fancyvrb"><a id="x39-213015r7"></a>7  }<br class="fancyvrb"><a id="x39-213017r8"></a>8  <br class="fancyvrb"><a id="x39-213019r9"></a>9  <span id="textcolor5053">void</span> <span id="textcolor5054">List_destroy</span>(List ⋆list)
+<br class="fancyvrb"><a id="x39-213021r10"></a>10  {<br class="fancyvrb"><a id="x39-213023r11"></a>11      LIST_FOREACH(list, first, next, cur) {<br class="fancyvrb"><a id="x39-213025r12"></a>12          <span id="textcolor5055">if</span>(cur-&gt;prev) {
+<br class="fancyvrb"><a id="x39-213027r13"></a>13              free(cur-&gt;prev);<br class="fancyvrb"><a id="x39-213029r14"></a>14          }<br class="fancyvrb"><a id="x39-213031r15"></a>15      }<br class="fancyvrb"><a id="x39-213033r16"></a>16  <br class="fancyvrb"><a id="x39-213035r17"></a>17      free(list-&gt;last);
+<br class="fancyvrb"><a id="x39-213037r18"></a>18      free(list);<br class="fancyvrb"><a id="x39-213039r19"></a>19  }<br class="fancyvrb"><a id="x39-213041r20"></a>20  <br class="fancyvrb"><a id="x39-213043r21"></a>21  <br class="fancyvrb"><a id="x39-213045r22"></a>22  <span id="textcolor5056">void</span> <span id="textcolor5057">List_clear</span>(List ⋆list)<br class="fancyvrb"><a id="x39-213047r23"></a>23  {
+<br class="fancyvrb"><a id="x39-213049r24"></a>24      LIST_FOREACH(list, first, next, cur) {<br class="fancyvrb"><a id="x39-213051r25"></a>25          free(cur-&gt;value);
+<br class="fancyvrb"><a id="x39-213053r26"></a>26      }<br class="fancyvrb"><a id="x39-213055r27"></a>27  }<br class="fancyvrb"><a id="x39-213057r28"></a>28  <br class="fancyvrb"><a id="x39-213059r29"></a>29  <br class="fancyvrb"><a id="x39-213061r30"></a>30  <span id="textcolor5058">void</span> <span id="textcolor5059">List_clear_destroy</span>(List ⋆list)<br class="fancyvrb"><a id="x39-213063r31"></a>31  {<br class="fancyvrb"><a id="x39-213065r32"></a>32      List_clear(list);
+<br class="fancyvrb"><a id="x39-213067r33"></a>33      List_destroy(list);<br class="fancyvrb"><a id="x39-213069r34"></a>34  }<br class="fancyvrb"><a id="x39-213071r35"></a>35  <br class="fancyvrb"><a id="x39-213073r36"></a>36  <br class="fancyvrb"><a id="x39-213075r37"></a>37  <span id="textcolor5060">void</span> <span id="textcolor5061">List_push</span>(List ⋆list, <span id="textcolor5062">void</span> ⋆value)<br class="fancyvrb"><a id="x39-213077r38"></a>38  {
+<br class="fancyvrb"><a id="x39-213079r39"></a>39      ListNode ⋆node = calloc(<span id="textcolor5063">1</span>, <span id="textcolor5064">sizeof</span>(ListNode));<br class="fancyvrb"><a id="x39-213081r40"></a>40      check_mem(node);
+<br class="fancyvrb"><a id="x39-213083r41"></a>41  <br class="fancyvrb"><a id="x39-213085r42"></a>42      node-&gt;value = value;<br class="fancyvrb"><a id="x39-213087r43"></a>43  <br class="fancyvrb"><a id="x39-213089r44"></a>44      <span id="textcolor5065">if</span>(list-&gt;last == <span id="textcolor5066">NULL</span>) {
+<br class="fancyvrb"><a id="x39-213091r45"></a>45          list-&gt;first = node;<br class="fancyvrb"><a id="x39-213093r46"></a>46          list-&gt;last = node;<br class="fancyvrb"><a id="x39-213095r47"></a>47      } <span id="textcolor5067">else</span> {
+<br class="fancyvrb"><a id="x39-213097r48"></a>48          list-&gt;last-&gt;next = node;<br class="fancyvrb"><a id="x39-213099r49"></a>49          node-&gt;prev = list-&gt;last;
+<br class="fancyvrb"><a id="x39-213101r50"></a>50          list-&gt;last = node;<br class="fancyvrb"><a id="x39-213103r51"></a>51      }<br class="fancyvrb"><a id="x39-213105r52"></a>52  <br class="fancyvrb"><a id="x39-213107r53"></a>53      list-&gt;count++;<br class="fancyvrb"><a id="x39-213109r54"></a>54  <br class="fancyvrb"><a id="x39-213111r55"></a>55  <span id="textcolor5068">error:</span><br class="fancyvrb"><a id="x39-213113r56"></a>56      <span id="textcolor5069">return</span>;
+<br class="fancyvrb"><a id="x39-213115r57"></a>57  }<br class="fancyvrb"><a id="x39-213117r58"></a>58  <br class="fancyvrb"><a id="x39-213119r59"></a>59  <span id="textcolor5070">void</span> ⋆<span id="textcolor5071">List_pop</span>(List ⋆list)<br class="fancyvrb"><a id="x39-213121r60"></a>60  {<br class="fancyvrb"><a id="x39-213123r61"></a>61      ListNode ⋆node = list-&gt;last;
+<br class="fancyvrb"><a id="x39-213125r62"></a>62      <span id="textcolor5072">return</span> node != <span id="textcolor5073">NULL</span> ? List_remove(list, node) : <span id="textcolor5074">NULL</span>;
+<br class="fancyvrb"><a id="x39-213127r63"></a>63  }<br class="fancyvrb"><a id="x39-213129r64"></a>64  <br class="fancyvrb"><a id="x39-213131r65"></a>65  <span id="textcolor5075">void</span> <span id="textcolor5076">List_shift</span>(List ⋆list, <span id="textcolor5077">void</span> ⋆value)<br class="fancyvrb"><a id="x39-213133r66"></a>66  {
+<br class="fancyvrb"><a id="x39-213135r67"></a>67      ListNode ⋆node = calloc(<span id="textcolor5078">1</span>, <span id="textcolor5079">sizeof</span>(ListNode));<br class="fancyvrb"><a id="x39-213137r68"></a>68      check_mem(node);
+<br class="fancyvrb"><a id="x39-213139r69"></a>69  <br class="fancyvrb"><a id="x39-213141r70"></a>70      node-&gt;value = value;<br class="fancyvrb"><a id="x39-213143r71"></a>71  <br class="fancyvrb"><a id="x39-213145r72"></a>72      <span id="textcolor5080">if</span>(list-&gt;first == <span id="textcolor5081">NULL</span>) {
+<br class="fancyvrb"><a id="x39-213147r73"></a>73          list-&gt;first = node;<br class="fancyvrb"><a id="x39-213149r74"></a>74          list-&gt;last = node;<br class="fancyvrb"><a id="x39-213151r75"></a>75      } <span id="textcolor5082">else</span> {
+<br class="fancyvrb"><a id="x39-213153r76"></a>76          node-&gt;next = list-&gt;first;<br class="fancyvrb"><a id="x39-213155r77"></a>77          list-&gt;first-&gt;prev = node;
+<br class="fancyvrb"><a id="x39-213157r78"></a>78          list-&gt;first = node;<br class="fancyvrb"><a id="x39-213159r79"></a>79      }<br class="fancyvrb"><a id="x39-213161r80"></a>80  <br class="fancyvrb"><a id="x39-213163r81"></a>81      list-&gt;count++;<br class="fancyvrb"><a id="x39-213165r82"></a>82  <br class="fancyvrb"><a id="x39-213167r83"></a>83  <span id="textcolor5083">error:</span><br class="fancyvrb"><a id="x39-213169r84"></a>84      <span id="textcolor5084">return</span>;
+<br class="fancyvrb"><a id="x39-213171r85"></a>85  }<br class="fancyvrb"><a id="x39-213173r86"></a>86  <br class="fancyvrb"><a id="x39-213175r87"></a>87  <span id="textcolor5085">void</span> ⋆<span id="textcolor5086">List_unshift</span>(List ⋆list)<br class="fancyvrb"><a id="x39-213177r88"></a>88  {<br class="fancyvrb"><a id="x39-213179r89"></a>89      ListNode ⋆node = list-&gt;first;
+<br class="fancyvrb"><a id="x39-213181r90"></a>90      <span id="textcolor5087">return</span> node != <span id="textcolor5088">NULL</span> ? List_remove(list, node) : <span id="textcolor5089">NULL</span>;<br class="fancyvrb"><a id="x39-213183r91"></a>91  }<br class="fancyvrb"><a id="x39-213185r92"></a>92  
+<br class="fancyvrb"><a id="x39-213187r93"></a>93  <span id="textcolor5090">void</span> ⋆<span id="textcolor5091">List_remove</span>(List ⋆list, ListNode ⋆node)<br class="fancyvrb"><a id="x39-213189r94"></a>94  {<br class="fancyvrb"><a id="x39-213191r95"></a>95      <span id="textcolor5092">void</span> ⋆result = <span id="textcolor5093">NULL</span>;
+<br class="fancyvrb"><a id="x39-213193r96"></a>96  <br class="fancyvrb"><a id="x39-213195r97"></a>97      check(list-&gt;first &amp;&amp; list-&gt;last, <span class="colorbox" id="colorbox5094"><span id="textcolor5095">"</span></span><span class="colorbox" id="colorbox5096"><span id="textcolor5097">List is empty.</span></span><span class="colorbox" id="colorbox5098"><span id="textcolor5099">"</span></span>);
+<br class="fancyvrb"><a id="x39-213197r98"></a>98      check(node, <span class="colorbox" id="colorbox5100"><span id="textcolor5101">"</span></span><span class="colorbox" id="colorbox5102"><span id="textcolor5103">node can’t be NULL</span></span><span class="colorbox" id="colorbox5104"><span id="textcolor5105">"</span></span>);<br class="fancyvrb"><a id="x39-213199r99"></a>99  
+<br class="fancyvrb"><a id="x39-213201r100"></a>100      <span id="textcolor5106">if</span>(node == list-&gt;first &amp;&amp; node == list-&gt;last) {<br class="fancyvrb"><a id="x39-213203r101"></a>101          list-&gt;first = <span id="textcolor5107">NULL</span>;
+<br class="fancyvrb"><a id="x39-213205r102"></a>102          list-&gt;last = <span id="textcolor5108">NULL</span>;<br class="fancyvrb"><a id="x39-213207r103"></a>103      } <span id="textcolor5109">else</span> <span id="textcolor5110">if</span>(node == list-&gt;first) {
+<br class="fancyvrb"><a id="x39-213209r104"></a>104          list-&gt;first = node-&gt;next;<br class="fancyvrb"><a id="x39-213211r105"></a>105      } <span id="textcolor5111">else</span> <span id="textcolor5112">if</span> (node == list-&gt;last) {
+<br class="fancyvrb"><a id="x39-213213r106"></a>106          list-&gt;last = node-&gt;prev;<br class="fancyvrb"><a id="x39-213215r107"></a>107      } <span id="textcolor5113">else</span> {<br class="fancyvrb"><a id="x39-213217r108"></a>108          ListNode ⋆after = node-&gt;next;
+<br class="fancyvrb"><a id="x39-213219r109"></a>109          ListNode ⋆before = node-&gt;prev;<br class="fancyvrb"><a id="x39-213221r110"></a>110          after-&gt;prev = before;
+<br class="fancyvrb"><a id="x39-213223r111"></a>111          before-&gt;next = after;<br class="fancyvrb"><a id="x39-213225r112"></a>112      }<br class="fancyvrb"><a id="x39-213227r113"></a>113  <br class="fancyvrb"><a id="x39-213229r114"></a>114      list-&gt;count--;
+<br class="fancyvrb"><a id="x39-213231r115"></a>115      result = node-&gt;value;<br class="fancyvrb"><a id="x39-213233r116"></a>116      free(node);<br class="fancyvrb"><a id="x39-213235r117"></a>117  <br class="fancyvrb"><a id="x39-213237r118"></a>118  <span id="textcolor5114">error:</span><br class="fancyvrb"><a id="x39-213239r119"></a>119      <span id="textcolor5115">return</span> result;<br class="fancyvrb"><a id="x39-213241r120"></a>120  }</lcthw></span></lcthw></span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 330--><p class="indent">    I then implement all of the operations on a double linked list that can’t be done
+with simple macros. Rather than cover every tiny little line of this file, I’m going to
+give high-level overview of every operation in both the list.h and list.c file,
+then leave you to read the code.
+     </p><dl class="description"><dt class="description">
+list.h:List_count </dt><dd class="description">Returns   the   number   of   elements   in   the   list,   which   is
+     maintained as elements are added and removed.
+     </dd><dt class="description">
+list.h:List_first </dt><dd class="description">Returns the first element of the list, but does not remove it.
+     </dd><dt class="description">
+list.h:List_last </dt><dd class="description">Returns the last element of the list, but does not remove it.
+     </dd><dt class="description">
+list.h:LIST_FOREACH </dt><dd class="description">Iterates over the elements in the list.
+     </dd><dt class="description">
+list.c:List_create </dt><dd class="description">Simply creates the main List struct.
+     </dd><dt class="description">
+list.c:List_destroy </dt><dd class="description">Destroys a List and any elements it might have.
+     </dd><dt class="description">
+list.c:List_clear </dt><dd class="description">Convenience function for freeing the values in each node, not
+     the nodes.
+     </dd><dt class="description">
+list.c:List_clear_destroy </dt><dd class="description">Clears and destroys a list. It’s not very efficient since
+     it loops through them twice.
+     </dd><dt class="description">
+list.c:List_push </dt><dd class="description">The  first  operation  that  demonstrates  the  advantage  of  a
+     linked list. It adds a new element to the end of the list, and because that’s
+     just a couple of pointer assignments, does it very fast.
+     </dd><dt class="description">
+list.c:List_pop </dt><dd class="description">The inverse of List_push, this takes the last element off and
+                                                                  
+
+                                                                  
+     returns it.
+     </dd><dt class="description">
+list.c:List_shift </dt><dd class="description">The  other  thing  you  can  easily  do  to  a  linked  list  is  add
+     elements  to  the  front  of  the  list  very  fast.  In  this  case  I  call  that
+     List_shift for lack of a better term.
+     </dd><dt class="description">
+list.c:List_unshift </dt><dd class="description">Just  like  List_pop,  this  removes  the  first  element  and
+     returns it.
+     </dd><dt class="description">
+list.c:List_remove </dt><dd class="description">This  is  actually  doing  all  of  the  removal  when  you  do
+     List_pop or  List_unshift.  Something  that  seems  to  always  be
+     difficult  in  data  structures  is  removing  things,  and  this  function  is  no
+     different.  It  has  to  handle  quite  a  few  conditions  depending  on  if  the
+     element being removed is at the front; the end; both front and end; or
+     middle.</dd></dl><!--l. 367--><p class="indent">    Most of these functions are nothing special, and you should be able to easily
+digest this and understand it from just the code. You should definitely focus on how
+the LIST_FOREACH macro is used in List_destroy so you can understand how
+much it simplifies this common operation.
+    </p><h3 class="sectionHead"><span class="titlemark">33.4    </span> <a id="x39-21400033.4"></a>Tests</h3>
+<!--l. 374--><p class="noindent">After you have those compiling it’s time to create the test that makes sure they
+operate correctly.
+                                                                  
+
+                                                                  
+<!--l. 377--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x39-214001r95"></a>
+ <div class="caption"><span class="id">Source 95: </span><span class="content">                                                                                              src/lcthw/list.c</span></div><!--tex4ht:label?: x39-214001r95 -->
+<div class="fancyvrb" id="fancyvrb62"><a id="x39-214003r1"></a>1  <span id="textcolor5116">#</span><span id="textcolor5117">include "minunit.h"</span><br class="fancyvrb"><a id="x39-214005r2"></a>2  <span id="textcolor5118">#</span><span id="textcolor5119">include <lcthw><span id="textcolor5120">/</span><span id="textcolor5121">list.h&gt;</span><br class="fancyvrb"><a id="x39-214007r3"></a>3  <span id="textcolor5122">#</span><span id="textcolor5123">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x39-214009r4"></a>4  
+<br class="fancyvrb"><a id="x39-214011r5"></a>5  <span id="textcolor5124">static</span> List ⋆list = <span id="textcolor5125">NULL</span>;<br class="fancyvrb"><a id="x39-214013r6"></a>6  <span id="textcolor5126">char</span> ⋆test1 = <span class="colorbox" id="colorbox5127"><span id="textcolor5128">"</span></span><span class="colorbox" id="colorbox5129"><span id="textcolor5130">test1 data</span></span><span class="colorbox" id="colorbox5131"><span id="textcolor5132">"</span></span>;<br class="fancyvrb"><a id="x39-214015r7"></a>7  <span id="textcolor5133">char</span> ⋆test2 = <span class="colorbox" id="colorbox5134"><span id="textcolor5135">"</span></span><span class="colorbox" id="colorbox5136"><span id="textcolor5137">test2 data</span></span><span class="colorbox" id="colorbox5138"><span id="textcolor5139">"</span></span>;
+<br class="fancyvrb"><a id="x39-214017r8"></a>8  <span id="textcolor5140">char</span> ⋆test3 = <span class="colorbox" id="colorbox5141"><span id="textcolor5142">"</span></span><span class="colorbox" id="colorbox5143"><span id="textcolor5144">test3 data</span></span><span class="colorbox" id="colorbox5145"><span id="textcolor5146">"</span></span>;<br class="fancyvrb"><a id="x39-214019r9"></a>9  <br class="fancyvrb"><a id="x39-214021r10"></a>10  <br class="fancyvrb"><a id="x39-214023r11"></a>11  <span id="textcolor5147">char</span> ⋆<span id="textcolor5148">test_create</span>()<br class="fancyvrb"><a id="x39-214025r12"></a>12  {<br class="fancyvrb"><a id="x39-214027r13"></a>13      list = List_create();
+<br class="fancyvrb"><a id="x39-214029r14"></a>14      mu_assert(list != <span id="textcolor5149">NULL</span>, <span class="colorbox" id="colorbox5150"><span id="textcolor5151">"</span></span><span class="colorbox" id="colorbox5152"><span id="textcolor5153">Failed to create list.</span></span><span class="colorbox" id="colorbox5154"><span id="textcolor5155">"</span></span>);<br class="fancyvrb"><a id="x39-214031r15"></a>15  <br class="fancyvrb"><a id="x39-214033r16"></a>16      <span id="textcolor5156">return</span> <span id="textcolor5157">NULL</span>;<br class="fancyvrb"><a id="x39-214035r17"></a>17  }
+<br class="fancyvrb"><a id="x39-214037r18"></a>18  <br class="fancyvrb"><a id="x39-214039r19"></a>19  <br class="fancyvrb"><a id="x39-214041r20"></a>20  <span id="textcolor5158">char</span> ⋆<span id="textcolor5159">test_destroy</span>()<br class="fancyvrb"><a id="x39-214043r21"></a>21  {<br class="fancyvrb"><a id="x39-214045r22"></a>22      List_clear_destroy(list);<br class="fancyvrb"><a id="x39-214047r23"></a>23  <br class="fancyvrb"><a id="x39-214049r24"></a>24      <span id="textcolor5160">return</span> <span id="textcolor5161">NULL</span>;
+<br class="fancyvrb"><a id="x39-214051r25"></a>25  <br class="fancyvrb"><a id="x39-214053r26"></a>26  }<br class="fancyvrb"><a id="x39-214055r27"></a>27  <br class="fancyvrb"><a id="x39-214057r28"></a>28  <br class="fancyvrb"><a id="x39-214059r29"></a>29  <span id="textcolor5162">char</span> ⋆<span id="textcolor5163">test_push_pop</span>()<br class="fancyvrb"><a id="x39-214061r30"></a>30  {<br class="fancyvrb"><a id="x39-214063r31"></a>31      List_push(list, test1);
+<br class="fancyvrb"><a id="x39-214065r32"></a>32      mu_assert(List_last(list) == test1, <span class="colorbox" id="colorbox5164"><span id="textcolor5165">"</span></span><span class="colorbox" id="colorbox5166"><span id="textcolor5167">Wrong last value.</span></span><span class="colorbox" id="colorbox5168"><span id="textcolor5169">"</span></span>);<br class="fancyvrb"><a id="x39-214067r33"></a>33  
+<br class="fancyvrb"><a id="x39-214069r34"></a>34      List_push(list, test2);<br class="fancyvrb"><a id="x39-214071r35"></a>35      mu_assert(List_last(list) == test2, <span class="colorbox" id="colorbox5170"><span id="textcolor5171">"</span></span><span class="colorbox" id="colorbox5172"><span id="textcolor5173">Wrong last value</span></span><span class="colorbox" id="colorbox5174"><span id="textcolor5175">"</span></span>);<br class="fancyvrb"><a id="x39-214073r36"></a>36  
+<br class="fancyvrb"><a id="x39-214075r37"></a>37      List_push(list, test3);<br class="fancyvrb"><a id="x39-214077r38"></a>38      mu_assert(List_last(list) == test3, <span class="colorbox" id="colorbox5176"><span id="textcolor5177">"</span></span><span class="colorbox" id="colorbox5178"><span id="textcolor5179">Wrong last value.</span></span><span class="colorbox" id="colorbox5180"><span id="textcolor5181">"</span></span>);
+<br class="fancyvrb"><a id="x39-214079r39"></a>39      mu_assert(List_count(list) == <span id="textcolor5182">3</span>, <span class="colorbox" id="colorbox5183"><span id="textcolor5184">"</span></span><span class="colorbox" id="colorbox5185"><span id="textcolor5186">Wrong count on push.</span></span><span class="colorbox" id="colorbox5187"><span id="textcolor5188">"</span></span>);<br class="fancyvrb"><a id="x39-214081r40"></a>40  
+<br class="fancyvrb"><a id="x39-214083r41"></a>41      <span id="textcolor5189">char</span> ⋆val = List_pop(list);<br class="fancyvrb"><a id="x39-214085r42"></a>42      mu_assert(val == test3, <span class="colorbox" id="colorbox5190"><span id="textcolor5191">"</span></span><span class="colorbox" id="colorbox5192"><span id="textcolor5193">Wrong value on pop.</span></span><span class="colorbox" id="colorbox5194"><span id="textcolor5195">"</span></span>);
+<br class="fancyvrb"><a id="x39-214087r43"></a>43  <br class="fancyvrb"><a id="x39-214089r44"></a>44      val = List_pop(list);<br class="fancyvrb"><a id="x39-214091r45"></a>45      mu_assert(val == test2, <span class="colorbox" id="colorbox5196"><span id="textcolor5197">"</span></span><span class="colorbox" id="colorbox5198"><span id="textcolor5199">Wrong value on pop.</span></span><span class="colorbox" id="colorbox5200"><span id="textcolor5201">"</span></span>);
+<br class="fancyvrb"><a id="x39-214093r46"></a>46  <br class="fancyvrb"><a id="x39-214095r47"></a>47      val = List_pop(list);<br class="fancyvrb"><a id="x39-214097r48"></a>48      mu_assert(val == test1, <span class="colorbox" id="colorbox5202"><span id="textcolor5203">"</span></span><span class="colorbox" id="colorbox5204"><span id="textcolor5205">Wrong value on pop.</span></span><span class="colorbox" id="colorbox5206"><span id="textcolor5207">"</span></span>);
+<br class="fancyvrb"><a id="x39-214099r49"></a>49      mu_assert(List_count(list) == <span id="textcolor5208">0</span>, <span class="colorbox" id="colorbox5209"><span id="textcolor5210">"</span></span><span class="colorbox" id="colorbox5211"><span id="textcolor5212">Wrong count after pop.</span></span><span class="colorbox" id="colorbox5213"><span id="textcolor5214">"</span></span>);<br class="fancyvrb"><a id="x39-214101r50"></a>50  
+<br class="fancyvrb"><a id="x39-214103r51"></a>51      <span id="textcolor5215">return</span> <span id="textcolor5216">NULL</span>;<br class="fancyvrb"><a id="x39-214105r52"></a>52  }<br class="fancyvrb"><a id="x39-214107r53"></a>53  <br class="fancyvrb"><a id="x39-214109r54"></a>54  <span id="textcolor5217">char</span> ⋆<span id="textcolor5218">test_shift</span>()<br class="fancyvrb"><a id="x39-214111r55"></a>55  {<br class="fancyvrb"><a id="x39-214113r56"></a>56      List_shift(list, test1);
+<br class="fancyvrb"><a id="x39-214115r57"></a>57      mu_assert(List_first(list) == test1, <span class="colorbox" id="colorbox5219"><span id="textcolor5220">"</span></span><span class="colorbox" id="colorbox5221"><span id="textcolor5222">Wrong last value.</span></span><span class="colorbox" id="colorbox5223"><span id="textcolor5224">"</span></span>);<br class="fancyvrb"><a id="x39-214117r58"></a>58  
+<br class="fancyvrb"><a id="x39-214119r59"></a>59      List_shift(list, test2);<br class="fancyvrb"><a id="x39-214121r60"></a>60      mu_assert(List_first(list) == test2, <span class="colorbox" id="colorbox5225"><span id="textcolor5226">"</span></span><span class="colorbox" id="colorbox5227"><span id="textcolor5228">Wrong last value</span></span><span class="colorbox" id="colorbox5229"><span id="textcolor5230">"</span></span>);<br class="fancyvrb"><a id="x39-214123r61"></a>61  
+<br class="fancyvrb"><a id="x39-214125r62"></a>62      List_shift(list, test3);<br class="fancyvrb"><a id="x39-214127r63"></a>63      mu_assert(List_first(list) == test3, <span class="colorbox" id="colorbox5231"><span id="textcolor5232">"</span></span><span class="colorbox" id="colorbox5233"><span id="textcolor5234">Wrong last value.</span></span><span class="colorbox" id="colorbox5235"><span id="textcolor5236">"</span></span>);
+<br class="fancyvrb"><a id="x39-214129r64"></a>64      mu_assert(List_count(list) == <span id="textcolor5237">3</span>, <span class="colorbox" id="colorbox5238"><span id="textcolor5239">"</span></span><span class="colorbox" id="colorbox5240"><span id="textcolor5241">Wrong count on shift.</span></span><span class="colorbox" id="colorbox5242"><span id="textcolor5243">"</span></span>);
+<br class="fancyvrb"><a id="x39-214131r65"></a>65  <br class="fancyvrb"><a id="x39-214133r66"></a>66      <span id="textcolor5244">return</span> <span id="textcolor5245">NULL</span>;<br class="fancyvrb"><a id="x39-214135r67"></a>67  }<br class="fancyvrb"><a id="x39-214137r68"></a>68  <br class="fancyvrb"><a id="x39-214139r69"></a>69  <span id="textcolor5246">char</span> ⋆<span id="textcolor5247">test_remove</span>()<br class="fancyvrb"><a id="x39-214141r70"></a>70  {
+<br class="fancyvrb"><a id="x39-214143r71"></a>71      <span id="textcolor5248">// we only need to test the middle remove case since push/shift </span>
+<br class="fancyvrb"><a id="x39-214145r72"></a>72      <span id="textcolor5249">// already tests the other cases</span><br class="fancyvrb"><a id="x39-214147r73"></a>73  
+<br class="fancyvrb"><a id="x39-214149r74"></a>74      <span id="textcolor5250">char</span> ⋆val = List_remove(list, list-&gt;first-&gt;next);
+<br class="fancyvrb"><a id="x39-214151r75"></a>75      mu_assert(val == test2, <span class="colorbox" id="colorbox5251"><span id="textcolor5252">"</span></span><span class="colorbox" id="colorbox5253"><span id="textcolor5254">Wrong removed element.</span></span><span class="colorbox" id="colorbox5255"><span id="textcolor5256">"</span></span>);
+<br class="fancyvrb"><a id="x39-214153r76"></a>76      mu_assert(List_count(list) == <span id="textcolor5257">2</span>, <span class="colorbox" id="colorbox5258"><span id="textcolor5259">"</span></span><span class="colorbox" id="colorbox5260"><span id="textcolor5261">Wrong count after remove.</span></span><span class="colorbox" id="colorbox5262"><span id="textcolor5263">"</span></span>);
+<br class="fancyvrb"><a id="x39-214155r77"></a>77      mu_assert(List_first(list) == test3, <span class="colorbox" id="colorbox5264"><span id="textcolor5265">"</span></span><span class="colorbox" id="colorbox5266"><span id="textcolor5267">Wrong first after remove.</span></span><span class="colorbox" id="colorbox5268"><span id="textcolor5269">"</span></span>);
+<br class="fancyvrb"><a id="x39-214157r78"></a>78      mu_assert(List_last(list) == test1, <span class="colorbox" id="colorbox5270"><span id="textcolor5271">"</span></span><span class="colorbox" id="colorbox5272"><span id="textcolor5273">Wrong last after remove.</span></span><span class="colorbox" id="colorbox5274"><span id="textcolor5275">"</span></span>);<br class="fancyvrb"><a id="x39-214159r79"></a>79  
+<br class="fancyvrb"><a id="x39-214161r80"></a>80      <span id="textcolor5276">return</span> <span id="textcolor5277">NULL</span>;<br class="fancyvrb"><a id="x39-214163r81"></a>81  }<br class="fancyvrb"><a id="x39-214165r82"></a>82  <br class="fancyvrb"><a id="x39-214167r83"></a>83  <br class="fancyvrb"><a id="x39-214169r84"></a>84  <span id="textcolor5278">char</span> ⋆<span id="textcolor5279">test_unshift</span>()<br class="fancyvrb"><a id="x39-214171r85"></a>85  {<br class="fancyvrb"><a id="x39-214173r86"></a>86      <span id="textcolor5280">char</span> ⋆val = List_unshift(list);
+<br class="fancyvrb"><a id="x39-214175r87"></a>87      mu_assert(val == test3, <span class="colorbox" id="colorbox5281"><span id="textcolor5282">"</span></span><span class="colorbox" id="colorbox5283"><span id="textcolor5284">Wrong value on unshift.</span></span><span class="colorbox" id="colorbox5285"><span id="textcolor5286">"</span></span>);<br class="fancyvrb"><a id="x39-214177r88"></a>88  
+<br class="fancyvrb"><a id="x39-214179r89"></a>89      val = List_unshift(list);<br class="fancyvrb"><a id="x39-214181r90"></a>90      mu_assert(val == test1, <span class="colorbox" id="colorbox5287"><span id="textcolor5288">"</span></span><span class="colorbox" id="colorbox5289"><span id="textcolor5290">Wrong value on unshift.</span></span><span class="colorbox" id="colorbox5291"><span id="textcolor5292">"</span></span>);
+<br class="fancyvrb"><a id="x39-214183r91"></a>91      mu_assert(List_count(list) == <span id="textcolor5293">0</span>, <span class="colorbox" id="colorbox5294"><span id="textcolor5295">"</span></span><span class="colorbox" id="colorbox5296"><span id="textcolor5297">Wrong count after unshift.</span></span><span class="colorbox" id="colorbox5298"><span id="textcolor5299">"</span></span>);<br class="fancyvrb"><a id="x39-214185r92"></a>92  
+<br class="fancyvrb"><a id="x39-214187r93"></a>93      <span id="textcolor5300">return</span> <span id="textcolor5301">NULL</span>;<br class="fancyvrb"><a id="x39-214189r94"></a>94  }<br class="fancyvrb"><a id="x39-214191r95"></a>95  <br class="fancyvrb"><a id="x39-214193r96"></a>96  <br class="fancyvrb"><a id="x39-214195r97"></a>97  <br class="fancyvrb"><a id="x39-214197r98"></a>98  <span id="textcolor5302">char</span> ⋆<span id="textcolor5303">all_tests</span>() {<br class="fancyvrb"><a id="x39-214199r99"></a>99      mu_suite_start();
+<br class="fancyvrb"><a id="x39-214201r100"></a>100  <br class="fancyvrb"><a id="x39-214203r101"></a>101      mu_run_test(test_create);<br class="fancyvrb"><a id="x39-214205r102"></a>102      mu_run_test(test_push_pop);
+<br class="fancyvrb"><a id="x39-214207r103"></a>103      mu_run_test(test_shift);<br class="fancyvrb"><a id="x39-214209r104"></a>104      mu_run_test(test_remove);
+<br class="fancyvrb"><a id="x39-214211r105"></a>105      mu_run_test(test_unshift);<br class="fancyvrb"><a id="x39-214213r106"></a>106      mu_run_test(test_destroy);<br class="fancyvrb"><a id="x39-214215r107"></a>107  
+<br class="fancyvrb"><a id="x39-214217r108"></a>108      <span id="textcolor5304">return</span> <span id="textcolor5305">NULL</span>;<br class="fancyvrb"><a id="x39-214219r109"></a>109  }<br class="fancyvrb"><a id="x39-214221r110"></a>110  <br class="fancyvrb"><a id="x39-214223r111"></a>111  RUN_TESTS(all_tests);</lcthw></span></div>
                                                                   
 
                                                                   
                                                                   
 
                                                                   
+    </div><hr class="endfloat"></hr><!--l. 494--><p class="indent">    This test simply goes through every operation and makes sure it works. I use a
+simplification in the test where I create just one List ⋆list for the whole program,
+then have the tests work on it. This saves the trouble of building a List for every
+test, but it could mean that some tests only pass because of how the previous test
+ran. In this case I try to make each test keep the list clear or actually use the previous
+test’s results.
+    </p><h3 class="sectionHead"><span class="titlemark">33.5    </span> <a id="x39-21500033.5"></a>What You Should See</h3>
+<!--l. 503--><p class="noindent">If you did everything right, then when you do a build and run the unit tests it should
+look like this:
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych34.html">next</a>] [<a href="learn-c-the-hard-waych32.html">prev</a>] [<a href="learn-c-the-hard-waych32.html#taillearn-c-the-hard-waych32.html">prev-tail</a>] [<a href="learn-c-the-hard-waych33.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych33.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych33.html"></a>   
+<!--l. 506--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x39-215001r96"></a>
+ <div class="caption"><span class="id">Source 96: </span><span class="content">                                                                                                              Ex32
+Session</span></div><!--tex4ht:label?: x39-215001r96 -->
+<div class="fancyvrb" id="fancyvrb63"><a id="x39-215003r1"></a>1  <span id="textcolor5306">$</span> make
+<br class="fancyvrb"><a id="x39-215005r2"></a>2  <span id="textcolor5307">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  -fPIC   -c -o src/lcthw/list.o src/lcthw/list.c</span>
+<br class="fancyvrb"><a id="x39-215007r3"></a>3  <span id="textcolor5308">ar rcs build/liblcthw.a src/lcthw/list.o</span><br class="fancyvrb"><a id="x39-215009r4"></a>4  <span id="textcolor5309">ranlib build/liblcthw.a</span>
+<br class="fancyvrb"><a id="x39-215011r5"></a>5  <span id="textcolor5310">cc -shared -o build/liblcthw.so src/lcthw/list.o</span>
+<br class="fancyvrb"><a id="x39-215013r6"></a>6  <span id="textcolor5311">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  build/liblcthw.a    tests/list_tests.c   -o tests/list_tests</span>
+<br class="fancyvrb"><a id="x39-215015r7"></a>7  <span id="textcolor5312">sh ./tests/runtests.sh</span><br class="fancyvrb"><a id="x39-215017r8"></a>8  <span id="textcolor5313">Running unit tests:</span><br class="fancyvrb"><a id="x39-215019r9"></a>9  <span id="textcolor5314">----</span><br class="fancyvrb"><a id="x39-215021r10"></a>10  <span id="textcolor5315">RUNNING: ./tests/list_tests</span>
+<br class="fancyvrb"><a id="x39-215023r11"></a>11  <span id="textcolor5316">ALL TESTS PASSED</span><br class="fancyvrb"><a id="x39-215025r12"></a>12  <span id="textcolor5317">Tests run: 6</span><br class="fancyvrb"><a id="x39-215027r13"></a>13  <span id="textcolor5318">tests/list_tests PASS</span><br class="fancyvrb"><a id="x39-215029r14"></a>14  <span id="textcolor5319">$</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 526--><p class="indent">    Make sure 6 tests ran, that it builds without warnings or errors, and that it’s
+making the build/liblcthw.a and build/liblcthw.so files.
+    </p><h3 class="sectionHead"><span class="titlemark">33.6    </span> <a id="x39-21600033.6"></a>How To Improve It</h3>
+<!--l. 531--><p class="noindent">Instead of breaking this, I’m going to tell you how to improve the code:
+<!--l. 533--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-216002x1">You    can    make    List_clear_destroy more    efficient    by    using
+     LIST_FOREACH and doing both free calls inside one loop.
+     </li>
+     <li class="enumerate" id="x39-216004x2">You can add asserts for preconditions that it isn’t given a NULL value for
+     the List ⋆list parameters.
+     </li>
+     <li class="enumerate" id="x39-216006x3">You can add invariants that check the list’s contents are always correct,
+     such as count is never <span class="obeylines-h"><span class="verb"></span>, and if <span class="obeylines-h"><span class="verb">count &gt; 0</span></span> then first isn’t NULL.
+     </span></li>
+     <li class="enumerate" id="x39-216008x4">You can add documentation to the header file in the form of comments
+     before each struct, function, and macro that describes what it does.</li></ol><!--l. 545--><p class="indent">    These amount to going through the defensive programming practices I talked
+about and ”hardening” this code against flaws or improving usability. Go
+ahead and do these things, then find as many other ways to improve the
+code.
+<!--l. 549--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">33.7    </span> <a id="x39-21700033.7"></a>Extra Credit</h3>
+                                                                  
+
+                                                                  
+<!--l. 551--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x39-217002x1">Research double vs. single linked lists and when one is preferred over the
+     other.
+     </li>
+     <li class="enumerate" id="x39-217004x2">Research the limitations of a double linked list. For example, while they
+     are efficient for inserting and deleting elements, they are very slow for
+     iterating over them all.
+     </li>
+     <li class="enumerate" id="x39-217006x3">What  operations  are  missing  that  you  can  imagine  needing?  Some
+     examples are copying, joining, splitting. Implement these operations and
+     write the unit tests for them.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

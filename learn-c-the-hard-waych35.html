@@ -1,77 +1,244 @@
-<html><head><title>Exercise 32: Double Linked Lists</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych36.html">next</a>] [<a href="learn-c-the-hard-waych34.html">prev</a>] [<a href="learn-c-the-hard-waych34.html#taillearn-c-the-hard-waych34.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych35.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych35.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 35</span><br><a id="x41-20400035"></a>Exercise 32: Double Linked Lists</h2>
-<!--l. 3--><p class="noindent">The purpose of this book is to teach you how your computer really works, and
-included in that is how various data structures and algorithms function. Computers
-by themselves don’t do a lot of useful processing. To make them do useful things
-you need to structure the data and then organize processing on these structures.
-Other programming languages either include libraries that implement all of these
-structures, or they have direct syntax for them. C makes you implement all the data
-structures you need yourself, which makes it the perfect language to learn how they
-actually work.
-<!--l. 11--></p><p class="indent">    My goal in teaching you these data structures and these algorithms is to help
-you do three things:
-     </p><ol class="enumerate1"><li class="enumerate" id="x41-204002x1">Understand what is really going on in Python, Ruby, or JavaScript code
-     like: <span class="obeylines-h"><span class="verb">data = {"name": "Zed}</span></span>
-     </li>
-     <li class="enumerate" id="x41-204004x2">Get even better at C code by applying what you know to a set of solved
-     problems using the data structures.
-     </li>
-     <li class="enumerate" id="x41-204006x3">Learn a core set of data structures and algorithms so that you are better
-     informed about what ones work best in certain situations.</li></ol><h3 class="sectionHead"><span class="titlemark">35.1    </span> <a id="x41-20500035.1"></a>What Are Data Structures</h3>
-<!--l. 23--><p class="noindent">The name ”data structure” is self-explanatory. It is an organization of data that fits a
-certain model. Maybe the model is designed to allow processing the data
-in a new way. Maybe it’s just organized to store it on disk efficiently. In
-this book I’ll follow a simple pattern for making data structures that works
-reliably:
-<!--l. 27--></p><p class="indent">
+<html><head><title>Exercise 34: Dynamic Array</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 35</span><br><a id="x41-22500035"></a>Exercise 34: Dynamic Array</h2>
+<!--l. 3--><p class="noindent">This is an array that grows on its own and has most of the same features as a linked
+list. It will usually take up less space, run faster, and has other beneficial properties.
+This exercise will cover a few of the disadvantages like very slow removal from the
+front, with a solution (just do it at the end).
+<!--l. 8--></p><p class="indent">    A dynamic array is simply an array of void ⋆⋆ pointers that is pre-allocated in
+one shot and that point at the data. In the linked list you had a full struct that stored
+the void ⋆value pointer, but in a dynamic array there’s just a single array with all
+of them. This means you don’t need any other pointers for next and previous records
+since you can just index into it directly.
+<!--l. 14--></p><p class="indent">    To start, I’ll give you the header file you should type up for the implementation:
                                                                   
 
                                                                   
-     </p><ol class="enumerate1"><li class="enumerate" id="x41-205002x1">Define a struct for the main ”outer structure”.
-     </li>
-     <li class="enumerate" id="x41-205004x2">Define a struct for the contents, usually nodes with links between them.
-     </li>
-     <li class="enumerate" id="x41-205006x3">Create functions that operate on these two.</li></ol><!--l. 33--><p class="indent">    There’s other styles of data structures in C, but this pattern works well and is
-consistent for most data structures you’ll make.
-<!--l. 37--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">35.2    </span> <a id="x41-20600035.2"></a>Making Our Library</h3>
-<!--l. 39--><p class="noindent">For the rest of this book you’ll be creating a library that you can use when you’re
-done with this book. This library will have the following elements:
-<!--l. 42--></p><p class="indent">
-     </p><ol class="enumerate1"><li class="enumerate" id="x41-206002x1">Header (.h) files for each data structure.
-     </li>
-     <li class="enumerate" id="x41-206004x2">Implementation (.c) files for the algorithms.
-     </li>
-     <li class="enumerate" id="x41-206006x3">Unit tests that test all of them to make sure they keep working.
-     </li>
-     <li class="enumerate" id="x41-206008x4">Documentation we’ll autogenerate from the header files.</li></ol><!--l. 49--><p class="indent">    Rather than mire the book down with long descriptions of how to setup the
-library, I’m going to just have you check out a project that I’ve created to get you
-started.
-<!--l. 52--></p><p class="indent">    TODO: explain how to get the code from learncodethehardway.org and setup
-git or mercurial to maintain it.
+<!--l. 16--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<!--l. 54--></p><p class="indent">    Once you have this checked out you will then use this repository to make your
-changes and work with the rest of this book.
-<!--l. 58--></p><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">35.3    </span> <a id="x41-20700035.3"></a>A Double Linked List Implementation</h3>
-<!--l. 62--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">35.4    </span> <a id="x41-20800035.4"></a>What You Should See</h3>
-<!--l. 65--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">35.5    </span> <a id="x41-20900035.5"></a>How To Break It</h3>
-<!--l. 68--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">35.6    </span> <a id="x41-21000035.6"></a>Extra Credit</h3>
+<a id="x41-225001r101"></a>
+ <div class="caption"><span class="id">Source 101: </span><span class="content">                                                                                       src/lcthw/darray.h</span></div><!--tex4ht:label?: x41-225001r101 -->
+<div class="fancyvrb" id="fancyvrb68"><a id="x41-225003r1"></a>1  <span id="textcolor5555">#</span><span id="textcolor5556">ifndef _DArray_h</span><br class="fancyvrb"><a id="x41-225005r2"></a>2  <span id="textcolor5557">#</span><span id="textcolor5558">define _DArray_h</span><br class="fancyvrb"><a id="x41-225007r3"></a>3  <span id="textcolor5559">#</span><span id="textcolor5560">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x41-225009r4"></a>4  <span id="textcolor5561">#</span><span id="textcolor5562">include <assert.h></assert.h></span>
+<br class="fancyvrb"><a id="x41-225011r5"></a>5  <span id="textcolor5563">#</span><span id="textcolor5564">include <lcthw><span id="textcolor5565">/</span><span id="textcolor5566">dbg.h&gt;</span><br class="fancyvrb"><a id="x41-225013r6"></a>6  <br class="fancyvrb"><a id="x41-225015r7"></a>7  <span id="textcolor5567">typedef</span> <span id="textcolor5568">struct</span> DArray {<br class="fancyvrb"><a id="x41-225017r8"></a>8      <span id="textcolor5569">int</span> end;<br class="fancyvrb"><a id="x41-225019r9"></a>9      <span id="textcolor5570">int</span> max;
+<br class="fancyvrb"><a id="x41-225021r10"></a>10      <span id="textcolor5571">size_t</span> element_size;<br class="fancyvrb"><a id="x41-225023r11"></a>11      <span id="textcolor5572">size_t</span> expand_rate;<br class="fancyvrb"><a id="x41-225025r12"></a>12      <span id="textcolor5573">void</span> ⋆⋆contents;
+<br class="fancyvrb"><a id="x41-225027r13"></a>13  } DArray;<br class="fancyvrb"><a id="x41-225029r14"></a>14  <br class="fancyvrb"><a id="x41-225031r15"></a>15  DArray ⋆DArray_create(<span id="textcolor5574">size_t</span> element_size, <span id="textcolor5575">size_t</span> initial_max);
+<br class="fancyvrb"><a id="x41-225033r16"></a>16  <br class="fancyvrb"><a id="x41-225035r17"></a>17  <span id="textcolor5576">void</span> DArray_destroy(DArray ⋆array);<br class="fancyvrb"><a id="x41-225037r18"></a>18  <br class="fancyvrb"><a id="x41-225039r19"></a>19  <span id="textcolor5577">void</span> DArray_clear(DArray ⋆array);
+<br class="fancyvrb"><a id="x41-225041r20"></a>20  <br class="fancyvrb"><a id="x41-225043r21"></a>21  <span id="textcolor5578">int</span> DArray_expand(DArray ⋆array);<br class="fancyvrb"><a id="x41-225045r22"></a>22  <br class="fancyvrb"><a id="x41-225047r23"></a>23  <span id="textcolor5579">int</span> DArray_contract(DArray ⋆array);
+<br class="fancyvrb"><a id="x41-225049r24"></a>24  <br class="fancyvrb"><a id="x41-225051r25"></a>25  <span id="textcolor5580">int</span> DArray_push(DArray ⋆array, <span id="textcolor5581">void</span> ⋆el);<br class="fancyvrb"><a id="x41-225053r26"></a>26  
+<br class="fancyvrb"><a id="x41-225055r27"></a>27  <span id="textcolor5582">void</span> ⋆DArray_pop(DArray ⋆array);<br class="fancyvrb"><a id="x41-225057r28"></a>28  <br class="fancyvrb"><a id="x41-225059r29"></a>29  <span id="textcolor5583">void</span> DArray_clear_destroy(DArray ⋆array);
+<br class="fancyvrb"><a id="x41-225061r30"></a>30  <br class="fancyvrb"><a id="x41-225063r31"></a>31  <span id="textcolor5584">#</span><span id="textcolor5585">define DArray_last(A) ((A)-&gt;contents[(A)-&gt;end - 1])</span>
+<br class="fancyvrb"><a id="x41-225065r32"></a>32  <span id="textcolor5586">#</span><span id="textcolor5587">define DArray_first(A) ((A)-&gt;contents[0])</span>
+<br class="fancyvrb"><a id="x41-225067r33"></a>33  <span id="textcolor5588">#</span><span id="textcolor5589">define DArray_end(A) ((A)-&gt;end)</span><br class="fancyvrb"><a id="x41-225069r34"></a>34  <span id="textcolor5590">#</span><span id="textcolor5591">define DArray_count(A) DArray_end(A)</span>
+<br class="fancyvrb"><a id="x41-225071r35"></a>35  <span id="textcolor5592">#</span><span id="textcolor5593">define DArray_max(A) ((A)-&gt;max)</span><br class="fancyvrb"><a id="x41-225073r36"></a>36  <br class="fancyvrb"><a id="x41-225075r37"></a>37  <span id="textcolor5594">#</span><span id="textcolor5595">define DEFAULT_EXPAND_RATE 300</span>
+<br class="fancyvrb"><a id="x41-225077r38"></a>38  <br class="fancyvrb"><a id="x41-225079r39"></a>39  <br class="fancyvrb"><a id="x41-225081r40"></a>40  <span id="textcolor5596">static</span> <span id="textcolor5597">inline</span> <span id="textcolor5598">void</span> <span id="textcolor5599">DArray_set</span>(DArray ⋆array, <span id="textcolor5600">int</span> i, <span id="textcolor5601">void</span> ⋆el)
+<br class="fancyvrb"><a id="x41-225083r41"></a>41  {<br class="fancyvrb"><a id="x41-225085r42"></a>42      check(i max, <span class="colorbox" id="colorbox5602"><span id="textcolor5603">"</span></span><span class="colorbox" id="colorbox5604"><span id="textcolor5605">darray attempt to set past max</span></span><span class="colorbox" id="colorbox5606"><span id="textcolor5607">"</span></span>);
+<br class="fancyvrb"><a id="x41-225087r43"></a>43      array-&gt;contents[i] = el;<br class="fancyvrb"><a id="x41-225089r44"></a>44  <span id="textcolor5608">error:</span><br class="fancyvrb"><a id="x41-225091r45"></a>45      <span id="textcolor5609">return</span>;<br class="fancyvrb"><a id="x41-225093r46"></a>46  }<br class="fancyvrb"><a id="x41-225095r47"></a>47  
+<br class="fancyvrb"><a id="x41-225097r48"></a>48  <span id="textcolor5610">static</span> <span id="textcolor5611">inline</span> <span id="textcolor5612">void</span> ⋆<span id="textcolor5613">DArray_get</span>(DArray ⋆array, <span id="textcolor5614">int</span> i)<br class="fancyvrb"><a id="x41-225099r49"></a>49  {
+<br class="fancyvrb"><a id="x41-225101r50"></a>50      check(i max, <span class="colorbox" id="colorbox5615"><span id="textcolor5616">"</span></span><span class="colorbox" id="colorbox5617"><span id="textcolor5618">darray attempt to get past max</span></span><span class="colorbox" id="colorbox5619"><span id="textcolor5620">"</span></span>);
+<br class="fancyvrb"><a id="x41-225103r51"></a>51      <span id="textcolor5621">return</span> array-&gt;contents[i];<br class="fancyvrb"><a id="x41-225105r52"></a>52  <span id="textcolor5622">error:</span><br class="fancyvrb"><a id="x41-225107r53"></a>53      <span id="textcolor5623">return</span> <span id="textcolor5624">NULL</span>;<br class="fancyvrb"><a id="x41-225109r54"></a>54  }<br class="fancyvrb"><a id="x41-225111r55"></a>55  
+<br class="fancyvrb"><a id="x41-225113r56"></a>56  <span id="textcolor5625">static</span> <span id="textcolor5626">inline</span> <span id="textcolor5627">void</span> ⋆<span id="textcolor5628">DArray_remove</span>(DArray ⋆array, <span id="textcolor5629">int</span> i)<br class="fancyvrb"><a id="x41-225115r57"></a>57  {
+<br class="fancyvrb"><a id="x41-225117r58"></a>58      <span id="textcolor5630">void</span> ⋆el = array-&gt;contents[i];<br class="fancyvrb"><a id="x41-225119r59"></a>59  <br class="fancyvrb"><a id="x41-225121r60"></a>60      array-&gt;contents[i] = <span id="textcolor5631">NULL</span>;<br class="fancyvrb"><a id="x41-225123r61"></a>61  
+<br class="fancyvrb"><a id="x41-225125r62"></a>62      <span id="textcolor5632">return</span> el;<br class="fancyvrb"><a id="x41-225127r63"></a>63  }<br class="fancyvrb"><a id="x41-225129r64"></a>64  <br class="fancyvrb"><a id="x41-225131r65"></a>65  <span id="textcolor5633">static</span> <span id="textcolor5634">inline</span> <span id="textcolor5635">void</span> ⋆<span id="textcolor5636">DArray_new</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225133r66"></a>66  {
+<br class="fancyvrb"><a id="x41-225135r67"></a>67      check(array-&gt;element_size &gt; <span id="textcolor5637">0</span>, <span class="colorbox" id="colorbox5638"><span id="textcolor5639">"</span></span><span class="colorbox" id="colorbox5640"><span id="textcolor5641">Can’t use DArray_new on 0 size darrays.</span></span><span class="colorbox" id="colorbox5642"><span id="textcolor5643">"</span></span>);
+<br class="fancyvrb"><a id="x41-225137r68"></a>68  <br class="fancyvrb"><a id="x41-225139r69"></a>69      <span id="textcolor5644">return</span> calloc(<span id="textcolor5645">1</span>, array-&gt;element_size);<br class="fancyvrb"><a id="x41-225141r70"></a>70  <br class="fancyvrb"><a id="x41-225143r71"></a>71  <span id="textcolor5646">error:</span>
+<br class="fancyvrb"><a id="x41-225145r72"></a>72      <span id="textcolor5647">return</span> <span id="textcolor5648">NULL</span>;<br class="fancyvrb"><a id="x41-225147r73"></a>73  }<br class="fancyvrb"><a id="x41-225149r74"></a>74  <br class="fancyvrb"><a id="x41-225151r75"></a>75  <span id="textcolor5649">#</span><span id="textcolor5650">define DArray_free(E) free((E))</span><br class="fancyvrb"><a id="x41-225153r76"></a>76  <br class="fancyvrb"><a id="x41-225155r77"></a>77  <span id="textcolor5651">#</span><span id="textcolor5652">endif</span></lcthw></span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 99--><p class="indent">    This header file is showing you a new technique where I put static inline
+functions right in the header. These function definitions will work similar to the
+define macros you’ve been making, but they’re cleaner and easier to write. If you
+need to create a block of code for a macro and you don’t need code generation, then
+use a static inline function.
+<!--l. 105--></p><p class="indent">    Compare this technique to the LIST_FOREACH that generates a proper for-loop
+for a list. This would be impossible to do with a static inline function because
+it actually has to generate the inner block of code for the loop. The only way to
+do that is with a callback function, but that’s not as fast and is harder to
+use.
+<!--l. 110--></p><p class="indent">    I’ll then change things up and have you create the unit test for DArray:
+                                                                  
+
+                                                                  
+<!--l. 112--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x41-225156r102"></a>
+ <div class="caption"><span class="id">Source 102: </span><span class="content">                                                                                     tests/darray_tests.c</span></div><!--tex4ht:label?: x41-225156r102 -->
+<div class="fancyvrb" id="fancyvrb69"><a id="x41-225158r1"></a>1  <span id="textcolor5653">#</span><span id="textcolor5654">include "minunit.h"</span><br class="fancyvrb"><a id="x41-225160r2"></a>2  <span id="textcolor5655">#</span><span id="textcolor5656">include <lcthw><span id="textcolor5657">/</span><span id="textcolor5658">darray.h&gt;</span><br class="fancyvrb"><a id="x41-225162r3"></a>3  <br class="fancyvrb"><a id="x41-225164r4"></a>4  <span id="textcolor5659">static</span> DArray ⋆array = <span id="textcolor5660">NULL</span>;
+<br class="fancyvrb"><a id="x41-225166r5"></a>5  <span id="textcolor5661">static</span> <span id="textcolor5662">int</span> ⋆val1 = <span id="textcolor5663">NULL</span>;<br class="fancyvrb"><a id="x41-225168r6"></a>6  <span id="textcolor5664">static</span> <span id="textcolor5665">int</span> ⋆val2 = <span id="textcolor5666">NULL</span>;<br class="fancyvrb"><a id="x41-225170r7"></a>7  
+<br class="fancyvrb"><a id="x41-225172r8"></a>8  <span id="textcolor5667">char</span> ⋆<span id="textcolor5668">test_create</span>()<br class="fancyvrb"><a id="x41-225174r9"></a>9  {<br class="fancyvrb"><a id="x41-225176r10"></a>10      array = DArray_create(<span id="textcolor5669">sizeof</span>(<span id="textcolor5670">int</span>), <span id="textcolor5671">100</span>);
+<br class="fancyvrb"><a id="x41-225178r11"></a>11      mu_assert(array != <span id="textcolor5672">NULL</span>, <span class="colorbox" id="colorbox5673"><span id="textcolor5674">"</span></span><span class="colorbox" id="colorbox5675"><span id="textcolor5676">DArray_create failed.</span></span><span class="colorbox" id="colorbox5677"><span id="textcolor5678">"</span></span>);
+<br class="fancyvrb"><a id="x41-225180r12"></a>12      mu_assert(array-&gt;contents != <span id="textcolor5679">NULL</span>, <span class="colorbox" id="colorbox5680"><span id="textcolor5681">"</span></span><span class="colorbox" id="colorbox5682"><span id="textcolor5683">contents are wrong in darray</span></span><span class="colorbox" id="colorbox5684"><span id="textcolor5685">"</span></span>);
+<br class="fancyvrb"><a id="x41-225182r13"></a>13      mu_assert(array-&gt;end == <span id="textcolor5686">0</span>, <span class="colorbox" id="colorbox5687"><span id="textcolor5688">"</span></span><span class="colorbox" id="colorbox5689"><span id="textcolor5690">end isn’t at the right spot</span></span><span class="colorbox" id="colorbox5691"><span id="textcolor5692">"</span></span>);
+<br class="fancyvrb"><a id="x41-225184r14"></a>14      mu_assert(array-&gt;element_size == <span id="textcolor5693">sizeof</span>(<span id="textcolor5694">int</span>), <span class="colorbox" id="colorbox5695"><span id="textcolor5696">"</span></span><span class="colorbox" id="colorbox5697"><span id="textcolor5698">element size is wrong.</span></span><span class="colorbox" id="colorbox5699"><span id="textcolor5700">"</span></span>);
+<br class="fancyvrb"><a id="x41-225186r15"></a>15      mu_assert(array-&gt;max == <span id="textcolor5701">100</span>, <span class="colorbox" id="colorbox5702"><span id="textcolor5703">"</span></span><span class="colorbox" id="colorbox5704"><span id="textcolor5705">wrong max length on initial size</span></span><span class="colorbox" id="colorbox5706"><span id="textcolor5707">"</span></span>);<br class="fancyvrb"><a id="x41-225188r16"></a>16  
+<br class="fancyvrb"><a id="x41-225190r17"></a>17      <span id="textcolor5708">return</span> <span id="textcolor5709">NULL</span>;<br class="fancyvrb"><a id="x41-225192r18"></a>18  }<br class="fancyvrb"><a id="x41-225194r19"></a>19  <br class="fancyvrb"><a id="x41-225196r20"></a>20  <span id="textcolor5710">char</span> ⋆<span id="textcolor5711">test_destroy</span>()<br class="fancyvrb"><a id="x41-225198r21"></a>21  {<br class="fancyvrb"><a id="x41-225200r22"></a>22      DArray_destroy(array);
+<br class="fancyvrb"><a id="x41-225202r23"></a>23  <br class="fancyvrb"><a id="x41-225204r24"></a>24      <span id="textcolor5712">return</span> <span id="textcolor5713">NULL</span>;<br class="fancyvrb"><a id="x41-225206r25"></a>25  }<br class="fancyvrb"><a id="x41-225208r26"></a>26  <br class="fancyvrb"><a id="x41-225210r27"></a>27  <span id="textcolor5714">char</span> ⋆<span id="textcolor5715">test_new</span>()<br class="fancyvrb"><a id="x41-225212r28"></a>28  {<br class="fancyvrb"><a id="x41-225214r29"></a>29      val1 = DArray_new(array);
+<br class="fancyvrb"><a id="x41-225216r30"></a>30      mu_assert(val1 != <span id="textcolor5716">NULL</span>, <span class="colorbox" id="colorbox5717"><span id="textcolor5718">"</span></span><span class="colorbox" id="colorbox5719"><span id="textcolor5720">failed to make a new element</span></span><span class="colorbox" id="colorbox5721"><span id="textcolor5722">"</span></span>);
+<br class="fancyvrb"><a id="x41-225218r31"></a>31  <br class="fancyvrb"><a id="x41-225220r32"></a>32      val2 = DArray_new(array);
+<br class="fancyvrb"><a id="x41-225222r33"></a>33      mu_assert(val2 != <span id="textcolor5723">NULL</span>, <span class="colorbox" id="colorbox5724"><span id="textcolor5725">"</span></span><span class="colorbox" id="colorbox5726"><span id="textcolor5727">failed to make a new element</span></span><span class="colorbox" id="colorbox5728"><span id="textcolor5729">"</span></span>);<br class="fancyvrb"><a id="x41-225224r34"></a>34  
+<br class="fancyvrb"><a id="x41-225226r35"></a>35      <span id="textcolor5730">return</span> <span id="textcolor5731">NULL</span>;<br class="fancyvrb"><a id="x41-225228r36"></a>36  }<br class="fancyvrb"><a id="x41-225230r37"></a>37  <br class="fancyvrb"><a id="x41-225232r38"></a>38  <span id="textcolor5732">char</span> ⋆<span id="textcolor5733">test_set</span>()<br class="fancyvrb"><a id="x41-225234r39"></a>39  {<br class="fancyvrb"><a id="x41-225236r40"></a>40      DArray_set(array, <span id="textcolor5734">0</span>, val1);
+<br class="fancyvrb"><a id="x41-225238r41"></a>41      DArray_set(array, <span id="textcolor5735">1</span>, val2);<br class="fancyvrb"><a id="x41-225240r42"></a>42  <br class="fancyvrb"><a id="x41-225242r43"></a>43      <span id="textcolor5736">return</span> <span id="textcolor5737">NULL</span>;<br class="fancyvrb"><a id="x41-225244r44"></a>44  }<br class="fancyvrb"><a id="x41-225246r45"></a>45  <br class="fancyvrb"><a id="x41-225248r46"></a>46  <span id="textcolor5738">char</span> ⋆<span id="textcolor5739">test_get</span>()
+<br class="fancyvrb"><a id="x41-225250r47"></a>47  {<br class="fancyvrb"><a id="x41-225252r48"></a>48      mu_assert(DArray_get(array, <span id="textcolor5740">0</span>) == val1, <span class="colorbox" id="colorbox5741"><span id="textcolor5742">"</span></span><span class="colorbox" id="colorbox5743"><span id="textcolor5744">Wrong first value.</span></span><span class="colorbox" id="colorbox5745"><span id="textcolor5746">"</span></span>);
+<br class="fancyvrb"><a id="x41-225254r49"></a>49      mu_assert(DArray_get(array, <span id="textcolor5747">1</span>) == val2, <span class="colorbox" id="colorbox5748"><span id="textcolor5749">"</span></span><span class="colorbox" id="colorbox5750"><span id="textcolor5751">Wrong second value.</span></span><span class="colorbox" id="colorbox5752"><span id="textcolor5753">"</span></span>);<br class="fancyvrb"><a id="x41-225256r50"></a>50  <br class="fancyvrb"><a id="x41-225258r51"></a>51      <span id="textcolor5754">return</span> <span id="textcolor5755">NULL</span>;
+<br class="fancyvrb"><a id="x41-225260r52"></a>52  }<br class="fancyvrb"><a id="x41-225262r53"></a>53  <br class="fancyvrb"><a id="x41-225264r54"></a>54  <span id="textcolor5756">char</span> ⋆<span id="textcolor5757">test_remove</span>()<br class="fancyvrb"><a id="x41-225266r55"></a>55  {<br class="fancyvrb"><a id="x41-225268r56"></a>56      <span id="textcolor5758">int</span> ⋆val_check = DArray_remove(array, <span id="textcolor5759">0</span>);
+<br class="fancyvrb"><a id="x41-225270r57"></a>57      mu_assert(val_check != <span id="textcolor5760">NULL</span>, <span class="colorbox" id="colorbox5761"><span id="textcolor5762">"</span></span><span class="colorbox" id="colorbox5763"><span id="textcolor5764">Should not get NULL.</span></span><span class="colorbox" id="colorbox5765"><span id="textcolor5766">"</span></span>);
+<br class="fancyvrb"><a id="x41-225272r58"></a>58      mu_assert(⋆val_check == ⋆val1, <span class="colorbox" id="colorbox5767"><span id="textcolor5768">"</span></span><span class="colorbox" id="colorbox5769"><span id="textcolor5770">Should get the first value.</span></span><span class="colorbox" id="colorbox5771"><span id="textcolor5772">"</span></span>);
+<br class="fancyvrb"><a id="x41-225274r59"></a>59      mu_assert(DArray_get(array, <span id="textcolor5773">0</span>) == <span id="textcolor5774">NULL</span>, <span class="colorbox" id="colorbox5775"><span id="textcolor5776">"</span></span><span class="colorbox" id="colorbox5777"><span id="textcolor5778">Should be gone.</span></span><span class="colorbox" id="colorbox5779"><span id="textcolor5780">"</span></span>);
+<br class="fancyvrb"><a id="x41-225276r60"></a>60      DArray_free(val_check);<br class="fancyvrb"><a id="x41-225278r61"></a>61  <br class="fancyvrb"><a id="x41-225280r62"></a>62      val_check = DArray_remove(array, <span id="textcolor5781">1</span>);
+<br class="fancyvrb"><a id="x41-225282r63"></a>63      mu_assert(val_check != <span id="textcolor5782">NULL</span>, <span class="colorbox" id="colorbox5783"><span id="textcolor5784">"</span></span><span class="colorbox" id="colorbox5785"><span id="textcolor5786">Should not get NULL.</span></span><span class="colorbox" id="colorbox5787"><span id="textcolor5788">"</span></span>);
+<br class="fancyvrb"><a id="x41-225284r64"></a>64      mu_assert(⋆val_check == ⋆val2, <span class="colorbox" id="colorbox5789"><span id="textcolor5790">"</span></span><span class="colorbox" id="colorbox5791"><span id="textcolor5792">Should get the first value.</span></span><span class="colorbox" id="colorbox5793"><span id="textcolor5794">"</span></span>);
+<br class="fancyvrb"><a id="x41-225286r65"></a>65      mu_assert(DArray_get(array, <span id="textcolor5795">1</span>) == <span id="textcolor5796">NULL</span>, <span class="colorbox" id="colorbox5797"><span id="textcolor5798">"</span></span><span class="colorbox" id="colorbox5799"><span id="textcolor5800">Should be gone.</span></span><span class="colorbox" id="colorbox5801"><span id="textcolor5802">"</span></span>);
+<br class="fancyvrb"><a id="x41-225288r66"></a>66      DArray_free(val_check);<br class="fancyvrb"><a id="x41-225290r67"></a>67  <br class="fancyvrb"><a id="x41-225292r68"></a>68      <span id="textcolor5803">return</span> <span id="textcolor5804">NULL</span>;<br class="fancyvrb"><a id="x41-225294r69"></a>69  }<br class="fancyvrb"><a id="x41-225296r70"></a>70  <br class="fancyvrb"><a id="x41-225298r71"></a>71  <span id="textcolor5805">char</span> ⋆<span id="textcolor5806">test_expand_contract</span>()
+<br class="fancyvrb"><a id="x41-225300r72"></a>72  {<br class="fancyvrb"><a id="x41-225302r73"></a>73      <span id="textcolor5807">int</span> old_max = array-&gt;max;<br class="fancyvrb"><a id="x41-225304r74"></a>74      DArray_expand(array);
+<br class="fancyvrb"><a id="x41-225306r75"></a>75      mu_assert((<span id="textcolor5808">unsigned</span> <span id="textcolor5809">int</span>)array-&gt;max == old_max + array-&gt;expand_rate, <span class="colorbox" id="colorbox5810"><span id="textcolor5811">"</span></span><span class="colorbox" id="colorbox5812"><span id="textcolor5813">Wrong size after expand.</span></span><span class="colorbox" id="colorbox5814"><span id="textcolor5815">"</span></span>);
+<br class="fancyvrb"><a id="x41-225308r76"></a>76  <br class="fancyvrb"><a id="x41-225310r77"></a>77      DArray_contract(array);
+<br class="fancyvrb"><a id="x41-225312r78"></a>78      mu_assert((<span id="textcolor5816">unsigned</span> <span id="textcolor5817">int</span>)array-&gt;max == array-&gt;expand_rate + <span id="textcolor5818">1</span>, <span class="colorbox" id="colorbox5819"><span id="textcolor5820">"</span></span><span class="colorbox" id="colorbox5821"><span id="textcolor5822">Should stay at the expand_rate at least.</span></span><span class="colorbox" id="colorbox5823"><span id="textcolor5824">"</span></span>);
+<br class="fancyvrb"><a id="x41-225314r79"></a>79  <br class="fancyvrb"><a id="x41-225316r80"></a>80      DArray_contract(array);
+<br class="fancyvrb"><a id="x41-225318r81"></a>81      mu_assert((<span id="textcolor5825">unsigned</span> <span id="textcolor5826">int</span>)array-&gt;max == array-&gt;expand_rate + <span id="textcolor5827">1</span>, <span class="colorbox" id="colorbox5828"><span id="textcolor5829">"</span></span><span class="colorbox" id="colorbox5830"><span id="textcolor5831">Should stay at the expand_rate at least.</span></span><span class="colorbox" id="colorbox5832"><span id="textcolor5833">"</span></span>);
+<br class="fancyvrb"><a id="x41-225320r82"></a>82  <br class="fancyvrb"><a id="x41-225322r83"></a>83      <span id="textcolor5834">return</span> <span id="textcolor5835">NULL</span>;<br class="fancyvrb"><a id="x41-225324r84"></a>84  }<br class="fancyvrb"><a id="x41-225326r85"></a>85  <br class="fancyvrb"><a id="x41-225328r86"></a>86  <span id="textcolor5836">char</span> ⋆<span id="textcolor5837">test_push_pop</span>()<br class="fancyvrb"><a id="x41-225330r87"></a>87  {<br class="fancyvrb"><a id="x41-225332r88"></a>88      <span id="textcolor5838">int</span> i = <span id="textcolor5839">0</span>;
+<br class="fancyvrb"><a id="x41-225334r89"></a>89      <span id="textcolor5840">for</span>(i = <span id="textcolor5841">0</span>; i 1000</lcthw></span>; i++) {<br class="fancyvrb"><a id="x41-225336r90"></a>90          <span id="textcolor5843">int</span> ⋆val = DArray_new(array);
+<br class="fancyvrb"><a id="x41-225338r91"></a>91          ⋆val = i ⋆ <span id="textcolor5844">333</span>;<br class="fancyvrb"><a id="x41-225340r92"></a>92          DArray_push(array, val);<br class="fancyvrb"><a id="x41-225342r93"></a>93      }
+<br class="fancyvrb"><a id="x41-225344r94"></a>94  <br class="fancyvrb"><a id="x41-225346r95"></a>95      mu_assert(array-&gt;max == <span id="textcolor5845">1201</span>, <span class="colorbox" id="colorbox5846"><span id="textcolor5847">"</span></span><span class="colorbox" id="colorbox5848"><span id="textcolor5849">Wrong max size.</span></span><span class="colorbox" id="colorbox5850"><span id="textcolor5851">"</span></span>);<br class="fancyvrb"><a id="x41-225348r96"></a>96  
+                                                                  
+
+                                                                  
+<br class="fancyvrb"><a id="x41-225350r97"></a>97      <span id="textcolor5852">for</span>(i = <span id="textcolor5853">999</span>; i &gt;= <span id="textcolor5854">0</span>; i--) {<br class="fancyvrb"><a id="x41-225352r98"></a>98          <span id="textcolor5855">int</span> ⋆val = DArray_pop(array);
+<br class="fancyvrb"><a id="x41-225354r99"></a>99          mu_assert(val != <span id="textcolor5856">NULL</span>, <span class="colorbox" id="colorbox5857"><span id="textcolor5858">"</span></span><span class="colorbox" id="colorbox5859"><span id="textcolor5860">Shouldn’t get a NULL.</span></span><span class="colorbox" id="colorbox5861"><span id="textcolor5862">"</span></span>);
+<br class="fancyvrb"><a id="x41-225356r100"></a>100          mu_assert(⋆val == i ⋆ <span id="textcolor5863">333</span>, <span class="colorbox" id="colorbox5864"><span id="textcolor5865">"</span></span><span class="colorbox" id="colorbox5866"><span id="textcolor5867">Wrong value.</span></span><span class="colorbox" id="colorbox5868"><span id="textcolor5869">"</span></span>);<br class="fancyvrb"><a id="x41-225358r101"></a>101          DArray_free(val);
+<br class="fancyvrb"><a id="x41-225360r102"></a>102      }<br class="fancyvrb"><a id="x41-225362r103"></a>103  <br class="fancyvrb"><a id="x41-225364r104"></a>104      <span id="textcolor5870">return</span> <span id="textcolor5871">NULL</span>;<br class="fancyvrb"><a id="x41-225366r105"></a>105  }<br class="fancyvrb"><a id="x41-225368r106"></a>106  <br class="fancyvrb"><a id="x41-225370r107"></a>107  <br class="fancyvrb"><a id="x41-225372r108"></a>108  <span id="textcolor5872">char</span> ⋆ <span id="textcolor5873">all_tests</span>() {<br class="fancyvrb"><a id="x41-225374r109"></a>109      mu_suite_start();
+<br class="fancyvrb"><a id="x41-225376r110"></a>110  <br class="fancyvrb"><a id="x41-225378r111"></a>111      mu_run_test(test_create);<br class="fancyvrb"><a id="x41-225380r112"></a>112      mu_run_test(test_new);
+<br class="fancyvrb"><a id="x41-225382r113"></a>113      mu_run_test(test_set);<br class="fancyvrb"><a id="x41-225384r114"></a>114      mu_run_test(test_get);<br class="fancyvrb"><a id="x41-225386r115"></a>115      mu_run_test(test_remove);
+<br class="fancyvrb"><a id="x41-225388r116"></a>116      mu_run_test(test_expand_contract);<br class="fancyvrb"><a id="x41-225390r117"></a>117      mu_run_test(test_push_pop);
+<br class="fancyvrb"><a id="x41-225392r118"></a>118      mu_run_test(test_destroy);<br class="fancyvrb"><a id="x41-225394r119"></a>119  <br class="fancyvrb"><a id="x41-225396r120"></a>120      <span id="textcolor5874">return</span> <span id="textcolor5875">NULL</span>;<br class="fancyvrb"><a id="x41-225398r121"></a>121  }<br class="fancyvrb"><a id="x41-225400r122"></a>122  <br class="fancyvrb"><a id="x41-225402r123"></a>123  RUN_TESTS(all_tests);</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 241--><p class="indent">    This shows you how all of the operations are used, which then makes
+implementing the DArray much easier:
+                                                                  
+
+                                                                  
+<!--l. 244--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x41-225403r103"></a>
+ <div class="caption"><span class="id">Source 103: </span><span class="content">                                                                                       src/lcthw/darray.c</span></div><!--tex4ht:label?: x41-225403r103 -->
+<div class="fancyvrb" id="fancyvrb70"><a id="x41-225405r1"></a>1  <span id="textcolor5876">#</span><span id="textcolor5877">include <lcthw><span id="textcolor5878">/</span><span id="textcolor5879">darray.h&gt;</span><br class="fancyvrb"><a id="x41-225407r2"></a>2  <span id="textcolor5880">#</span><span id="textcolor5881">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x41-225409r3"></a>3  <br class="fancyvrb"><a id="x41-225411r4"></a>4  
+<br class="fancyvrb"><a id="x41-225413r5"></a>5  DArray ⋆<span id="textcolor5882">DArray_create</span>(<span id="textcolor5883">size_t</span> element_size, <span id="textcolor5884">size_t</span> initial_max)
+<br class="fancyvrb"><a id="x41-225415r6"></a>6  {<br class="fancyvrb"><a id="x41-225417r7"></a>7      DArray ⋆array = malloc(<span id="textcolor5885">sizeof</span>(DArray));
+<br class="fancyvrb"><a id="x41-225419r8"></a>8      check_mem(array);<br class="fancyvrb"><a id="x41-225421r9"></a>9      array-&gt;max = initial_max;
+<br class="fancyvrb"><a id="x41-225423r10"></a>10      check(array-&gt;max &gt; <span id="textcolor5886">0</span>, <span class="colorbox" id="colorbox5887"><span id="textcolor5888">"</span></span><span class="colorbox" id="colorbox5889"><span id="textcolor5890">You must set an initial_max &gt; 0.</span></span><span class="colorbox" id="colorbox5891"><span id="textcolor5892">"</span></span>);<br class="fancyvrb"><a id="x41-225425r11"></a>11  
+<br class="fancyvrb"><a id="x41-225427r12"></a>12      array-&gt;contents = calloc(initial_max, <span id="textcolor5893">sizeof</span>(<span id="textcolor5894">void</span> ⋆));
+<br class="fancyvrb"><a id="x41-225429r13"></a>13      check_mem(array-&gt;contents);<br class="fancyvrb"><a id="x41-225431r14"></a>14  <br class="fancyvrb"><a id="x41-225433r15"></a>15      array-&gt;end = <span id="textcolor5895">0</span>;
+<br class="fancyvrb"><a id="x41-225435r16"></a>16      array-&gt;element_size = element_size;<br class="fancyvrb"><a id="x41-225437r17"></a>17      array-&gt;expand_rate = DEFAULT_EXPAND_RATE;
+<br class="fancyvrb"><a id="x41-225439r18"></a>18  <br class="fancyvrb"><a id="x41-225441r19"></a>19      <span id="textcolor5896">return</span> array;<br class="fancyvrb"><a id="x41-225443r20"></a>20  <br class="fancyvrb"><a id="x41-225445r21"></a>21  <span id="textcolor5897">error:</span><br class="fancyvrb"><a id="x41-225447r22"></a>22      <span id="textcolor5898">if</span>(array) free(array);
+<br class="fancyvrb"><a id="x41-225449r23"></a>23      <span id="textcolor5899">return</span> <span id="textcolor5900">NULL</span>;<br class="fancyvrb"><a id="x41-225451r24"></a>24  }<br class="fancyvrb"><a id="x41-225453r25"></a>25  <br class="fancyvrb"><a id="x41-225455r26"></a>26  <span id="textcolor5901">void</span> <span id="textcolor5902">DArray_clear</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225457r27"></a>27  {<br class="fancyvrb"><a id="x41-225459r28"></a>28      <span id="textcolor5903">int</span> i = <span id="textcolor5904">0</span>;
+<br class="fancyvrb"><a id="x41-225461r29"></a>29      <span id="textcolor5905">if</span>(array-&gt;element_size &gt; <span id="textcolor5906">0</span>) {<br class="fancyvrb"><a id="x41-225463r30"></a>30          <span id="textcolor5907">for</span>(i = <span id="textcolor5908">0</span>; i max; i++) {
+<br class="fancyvrb"><a id="x41-225465r31"></a>31              <span id="textcolor5909">if</span>(array-&gt;contents[i] != <span id="textcolor5910">NULL</span>) {
+<br class="fancyvrb"><a id="x41-225467r32"></a>32                  free(array-&gt;contents[i]);<br class="fancyvrb"><a id="x41-225469r33"></a>33              }<br class="fancyvrb"><a id="x41-225471r34"></a>34          }<br class="fancyvrb"><a id="x41-225473r35"></a>35      }
+<br class="fancyvrb"><a id="x41-225475r36"></a>36  }<br class="fancyvrb"><a id="x41-225477r37"></a>37  <br class="fancyvrb"><a id="x41-225479r38"></a>38  <span id="textcolor5911">static</span> <span id="textcolor5912">inline</span> <span id="textcolor5913">int</span> <span id="textcolor5914">DArray_resize</span>(DArray ⋆array, <span id="textcolor5915">size_t</span> newsize)<br class="fancyvrb"><a id="x41-225481r39"></a>39  {
+<br class="fancyvrb"><a id="x41-225483r40"></a>40      array-&gt;max = newsize;<br class="fancyvrb"><a id="x41-225485r41"></a>41      check(array-&gt;max &gt; <span id="textcolor5916">0</span>, <span class="colorbox" id="colorbox5917"><span id="textcolor5918">"</span></span><span class="colorbox" id="colorbox5919"><span id="textcolor5920">The newsize must be &gt; 0.</span></span><span class="colorbox" id="colorbox5921"><span id="textcolor5922">"</span></span>);
+<br class="fancyvrb"><a id="x41-225487r42"></a>42      array-&gt;contents = realloc(array-&gt;contents, array-&gt;max ⋆ <span id="textcolor5923">sizeof</span>(<span id="textcolor5924">void</span> ⋆));
+<br class="fancyvrb"><a id="x41-225489r43"></a>43      check_mem(array-&gt;contents);<br class="fancyvrb"><a id="x41-225491r44"></a>44      <span id="textcolor5925">return</span> <span id="textcolor5926">0</span>;<br class="fancyvrb"><a id="x41-225493r45"></a>45  <span id="textcolor5927">error:</span><br class="fancyvrb"><a id="x41-225495r46"></a>46      <span id="textcolor5928">return</span> -<span id="textcolor5929">1</span>;<br class="fancyvrb"><a id="x41-225497r47"></a>47  }
+<br class="fancyvrb"><a id="x41-225499r48"></a>48  <br class="fancyvrb"><a id="x41-225501r49"></a>49  <span id="textcolor5930">int</span> <span id="textcolor5931">DArray_expand</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225503r50"></a>50  {<br class="fancyvrb"><a id="x41-225505r51"></a>51      <span id="textcolor5932">size_t</span> old_max = array-&gt;max;
+<br class="fancyvrb"><a id="x41-225507r52"></a>52      check(DArray_resize(array, array-&gt;max + array-&gt;expand_rate) == <span id="textcolor5933">0</span>,
+<br class="fancyvrb"><a id="x41-225509r53"></a>53              <span class="colorbox" id="colorbox5934"><span id="textcolor5935">"</span></span><span class="colorbox" id="colorbox5936"><span id="textcolor5937">Failed to expand array to new size: %d</span></span><span class="colorbox" id="colorbox5938"><span id="textcolor5939">"</span></span>,
+<br class="fancyvrb"><a id="x41-225511r54"></a>54              array-&gt;max + (<span id="textcolor5940">int</span>)array-&gt;expand_rate);<br class="fancyvrb"><a id="x41-225513r55"></a>55  
+<br class="fancyvrb"><a id="x41-225515r56"></a>56      memset(array-&gt;contents + old_max, <span id="textcolor5941">0</span>, array-&gt;expand_rate + <span id="textcolor5942">1</span>);<br class="fancyvrb"><a id="x41-225517r57"></a>57      <span id="textcolor5943">return</span> <span id="textcolor5944">0</span>;
+<br class="fancyvrb"><a id="x41-225519r58"></a>58  <br class="fancyvrb"><a id="x41-225521r59"></a>59  <span id="textcolor5945">error:</span><br class="fancyvrb"><a id="x41-225523r60"></a>60      <span id="textcolor5946">return</span> -<span id="textcolor5947">1</span>;<br class="fancyvrb"><a id="x41-225525r61"></a>61  }<br class="fancyvrb"><a id="x41-225527r62"></a>62  <br class="fancyvrb"><a id="x41-225529r63"></a>63  <span id="textcolor5948">int</span> <span id="textcolor5949">DArray_contract</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225531r64"></a>64  {
+<br class="fancyvrb"><a id="x41-225533r65"></a>65      <span id="textcolor5950">int</span> new_size = array-&gt;end int</lcthw></span>)array-&gt;expand_rate ? (<span id="textcolor5952">int</span>)array-&gt;expand_rate : array-&gt;end;
+<br class="fancyvrb"><a id="x41-225535r66"></a>66  <br class="fancyvrb"><a id="x41-225537r67"></a>67      <span id="textcolor5953">return</span> DArray_resize(array, new_size + <span id="textcolor5954">1</span>);<br class="fancyvrb"><a id="x41-225539r68"></a>68  }<br class="fancyvrb"><a id="x41-225541r69"></a>69  
+<br class="fancyvrb"><a id="x41-225543r70"></a>70  <br class="fancyvrb"><a id="x41-225545r71"></a>71  <span id="textcolor5955">void</span> <span id="textcolor5956">DArray_destroy</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225547r72"></a>72  {<br class="fancyvrb"><a id="x41-225549r73"></a>73      <span id="textcolor5957">if</span>(array) {
+<br class="fancyvrb"><a id="x41-225551r74"></a>74          <span id="textcolor5958">if</span>(array-&gt;contents) free(array-&gt;contents);<br class="fancyvrb"><a id="x41-225553r75"></a>75          free(array);<br class="fancyvrb"><a id="x41-225555r76"></a>76      }
+<br class="fancyvrb"><a id="x41-225557r77"></a>77  }<br class="fancyvrb"><a id="x41-225559r78"></a>78  <br class="fancyvrb"><a id="x41-225561r79"></a>79  <span id="textcolor5959">void</span> <span id="textcolor5960">DArray_clear_destroy</span>(DArray ⋆array)<br class="fancyvrb"><a id="x41-225563r80"></a>80  {<br class="fancyvrb"><a id="x41-225565r81"></a>81      DArray_clear(array);
+<br class="fancyvrb"><a id="x41-225567r82"></a>82      DArray_destroy(array);<br class="fancyvrb"><a id="x41-225569r83"></a>83  }<br class="fancyvrb"><a id="x41-225571r84"></a>84  <br class="fancyvrb"><a id="x41-225573r85"></a>85  <span id="textcolor5961">int</span> <span id="textcolor5962">DArray_push</span>(DArray ⋆array, <span id="textcolor5963">void</span> ⋆el)
+<br class="fancyvrb"><a id="x41-225575r86"></a>86  {<br class="fancyvrb"><a id="x41-225577r87"></a>87      array-&gt;contents[array-&gt;end] = el;<br class="fancyvrb"><a id="x41-225579r88"></a>88      array-&gt;end++;<br class="fancyvrb"><a id="x41-225581r89"></a>89  
+<br class="fancyvrb"><a id="x41-225583r90"></a>90      <span id="textcolor5964">if</span>(DArray_end(array) &gt;= DArray_max(array)) {<br class="fancyvrb"><a id="x41-225585r91"></a>91          <span id="textcolor5965">return</span> DArray_expand(array);
+<br class="fancyvrb"><a id="x41-225587r92"></a>92      } <span id="textcolor5966">else</span> {<br class="fancyvrb"><a id="x41-225589r93"></a>93          <span id="textcolor5967">return</span> <span id="textcolor5968">0</span>;<br class="fancyvrb"><a id="x41-225591r94"></a>94      }<br class="fancyvrb"><a id="x41-225593r95"></a>95  }<br class="fancyvrb"><a id="x41-225595r96"></a>96  <br class="fancyvrb"><a id="x41-225597r97"></a>97  <span id="textcolor5969">void</span> ⋆<span id="textcolor5970">DArray_pop</span>(DArray ⋆array)
+<br class="fancyvrb"><a id="x41-225599r98"></a>98  {<br class="fancyvrb"><a id="x41-225601r99"></a>99      check(array-&gt;end - <span id="textcolor5971">1</span> &gt;= <span id="textcolor5972">0</span>, <span class="colorbox" id="colorbox5973"><span id="textcolor5974">"</span></span><span class="colorbox" id="colorbox5975"><span id="textcolor5976">Attempt to pop from empty array.</span></span><span class="colorbox" id="colorbox5977"><span id="textcolor5978">"</span></span>);<br class="fancyvrb"><a id="x41-225603r100"></a>100  
+<br class="fancyvrb"><a id="x41-225605r101"></a>101      <span id="textcolor5979">void</span> ⋆el = DArray_remove(array, array-&gt;end - <span id="textcolor5980">1</span>);<br class="fancyvrb"><a id="x41-225607r102"></a>102      array-&gt;end--;<br class="fancyvrb"><a id="x41-225609r103"></a>103  
+<br class="fancyvrb"><a id="x41-225611r104"></a>104      <span id="textcolor5981">if</span>(DArray_end(array) &gt; (<span id="textcolor5982">int</span>)array-&gt;expand_rate &amp;&amp; DArray_end(array) % array-&gt;expand_rate) {
+<br class="fancyvrb"><a id="x41-225613r105"></a>105          DArray_contract(array);<br class="fancyvrb"><a id="x41-225615r106"></a>106      }<br class="fancyvrb"><a id="x41-225617r107"></a>107  <br class="fancyvrb"><a id="x41-225619r108"></a>108      <span id="textcolor5983">return</span> el;<br class="fancyvrb"><a id="x41-225621r109"></a>109  <span id="textcolor5984">error:</span><br class="fancyvrb"><a id="x41-225623r110"></a>110      <span id="textcolor5985">return</span> <span id="textcolor5986">NULL</span>;<br class="fancyvrb"><a id="x41-225625r111"></a>111  }</div>
                                                                   
 
                                                                   
                                                                   
 
                                                                   
+    </div><hr class="endfloat"></hr><!--l. 361--><p class="indent">    This shows you another way to tackle complex code. Instead of diving right into
+the .c implementation, look at the header file, then read the unit test. This gives you
+an ”abstract to concrete” understanding how the pieces work together and making it
+easier to remember.
+    </p><h3 class="sectionHead"><span class="titlemark">35.1    </span> <a id="x41-22600035.1"></a>Advantages And Disadvantages</h3>
+<!--l. 368--><p class="noindent">A DArray is better when you need to optimize these operations:
+<!--l. 370--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x41-226002x1">Iteration.  You  can  just  use  a  basic  for-loop  and  DArray_count with
+     DArray_get and you’re done. No special macros needed, and it’s faster
+     because you aren’t walking pointers.
+     </li>
+     <li class="enumerate" id="x41-226004x2">Indexing.  You  can  use  DArray_get and  DArray_set to  access  any
+     element at random, but with a List you have to go through N elements
+     to get to N+1.
+     </li>
+     <li class="enumerate" id="x41-226006x3">Destroying. You just free the struct and the contents in two operations.
+     A List requires a series of free calls and also walking every element.
+     </li>
+     <li class="enumerate" id="x41-226008x4">Cloning.  You  can  also  clone  it  in  just  two  operations  (plus  whatever
+     it’s storing) by copying the struct and contents. A list again requires
+     walking the whole thing and copying every ListNode plus its value.
+     </li>
+     <li class="enumerate" id="x41-226010x5">Sorting. As you saw, List is horrible if you need to keep the data sorted.
+     A DArray opens up a whole class of great sorting algorithms because
+     now you can access elements randomly.
+     </li>
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych36.html">next</a>] [<a href="learn-c-the-hard-waych34.html">prev</a>] [<a href="learn-c-the-hard-waych34.html#taillearn-c-the-hard-waych34.html">prev-tail</a>] [<a href="learn-c-the-hard-waych35.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych35.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych35.html"></a>   
+     <li class="enumerate" id="x41-226012x6">Large Data. If you need to keep around a lot of data, then a DArray wins
+     since it’s base contents takes up less memory than the same number of
+     ListNode structs.</li></ol><!--l. 392--><p class="indent">    The List however wins on these operations:
+<!--l. 394--></p><p class="indent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x41-226014x1">Insert  and  remove  on  the  front  (what  I  called  shift).  A  DArray needs
+     special treatment to be able to do this efficiently, and usually has to do
+     some copying.
+     </li>
+     <li class="enumerate" id="x41-226016x2">Splitting or joining. A List can just copy some pointers and it’s done,
+     but with a DArray you have to do copying of the arrays involved.
+     </li>
+     <li class="enumerate" id="x41-226018x3">Small Data. If you only need to store a few elements, then typically the
+     storage will be less in a List than a generic DArray because the DArray
+     needs to expand the backing store to accommodate future inserts, but a
+     List only makes what it needs.</li></ol><!--l. 407--><p class="indent">    With this, I prefer to use a DArray for most of the things you see other people
+use a List. I reserve using List for any data structure that requires small
+number of nodes that are inserted and removed from either end. I’ll show
+you two similar data structures called a Stack and Queue where this is
+important.
+<!--l. 413--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">35.2    </span> <a id="x41-22700035.2"></a>How To Improve It</h3>
+<!--l. 415--><p class="noindent">As usual, go through each function and operation and add the defensive
+programming checks, pre-conditions, invariants, and anything else you can find to
+make the implementation more bulletproof.
+                                                                  
+
+                                                                  
+<!--l. 419--></p><p class="noindent">
+    </p><h3 class="sectionHead"><span class="titlemark">35.3    </span> <a id="x41-22800035.3"></a>Extra Credit</h3>
+<!--l. 421--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x41-228002x1">Improve the unit tests to cover more of the operations and test that using
+     a for-loop to iterate works.
+     </li>
+     <li class="enumerate" id="x41-228004x2">Research what it would take to implement bubble sort and merge sort for
+     DArray, but don’t do it yet. I’ll be implementing DArray algorithms next
+     and you’ll do this then.
+     </li>
+     <li class="enumerate" id="x41-228006x3">Write some performance tests for common operations and compare them
+     to the same operations in List. You did some of this, but this time, write
+     a unit test that repeatedly does the operation in question, then in the main
+     runner do the timing.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

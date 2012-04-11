@@ -1,24 +1,205 @@
-<html><head><title>Exercise 28: Intermediate Makefiles</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych32.html">next</a>] [<a href="learn-c-the-hard-waych30.html">prev</a>] [<a href="learn-c-the-hard-waych30.html#taillearn-c-the-hard-waych30.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych31.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych31.html">up</a>] </p></div>
-    <h2 class="chapterHead"><span class="titlemark">Chapter 31</span><br><a id="x37-18800031"></a>Exercise 28: Intermediate Makefiles</h2>
-<!--l. 3--><p class="noindent">In this chapter you’ll learn more about make by creating a skeleton project directory
-to use in building your C programs later. This skeleton directory will be used in the
-next few exercises so you understand more details about how a real C program is
-structured.
-    </p><h3 class="sectionHead"><span class="titlemark">31.1    </span> <a id="x37-18900031.1"></a>What You Should See</h3>
-<!--l. 12--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">31.2    </span> <a id="x37-19000031.2"></a>How To Break It</h3>
-<!--l. 15--><p class="noindent">
-    </p><h3 class="sectionHead"><span class="titlemark">31.3    </span> <a id="x37-19100031.3"></a>Extra Credit</h3>
+<html><head><title>Exercise 30: Automated Testing</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+    <h2 class="chapterHead"><span class="titlemark">Chapter 31</span><br><a id="x37-19800031"></a>Exercise 30: Automated Testing</h2>
+<!--l. 3--><p class="noindent">Automated testing is used frequently in other languages like Python and Ruby, but
+rarely used in C. Part of the reason comes from the difficulty of automatically
+loading and testing pieces of C code. In this chapter we’ll create a very small little
+testing ”framework” and get your skeleton directory building an example test
+case.
+<!--l. 9--></p><p class="indent">    The frameworks I’m going to use, and which you’ll include in your
+c-skeleton skeleton is called ”minunit” which started with code from a tiny
+snippet of code by <a href="http://www.jera.com/techinfo/jtns/jtn002.html">Jera Design</a>. I then evolved it further, to be this:
                                                                   
 
                                                                   
+<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x37-198001r85"></a>
+ <div class="caption"><span class="id">Source 85: </span><span class="content">                                                                                             tests/minunit.h</span></div><!--tex4ht:label?: x37-198001r85 -->
+<div class="fancyvrb" id="fancyvrb52"><a id="x37-198003r1"></a>1  <span id="textcolor4657">#</span><span id="textcolor4658">undef NDEBUG</span><br class="fancyvrb"><a id="x37-198005r2"></a>2  <span id="textcolor4659">#</span><span id="textcolor4660">ifndef _minunit_h</span><br class="fancyvrb"><a id="x37-198007r3"></a>3  <span id="textcolor4661">#</span><span id="textcolor4662">define _minunit_h</span><br class="fancyvrb"><a id="x37-198009r4"></a>4  <br class="fancyvrb"><a id="x37-198011r5"></a>5  <span id="textcolor4663">#</span><span id="textcolor4664">include <stdio.h></stdio.h></span>
+<br class="fancyvrb"><a id="x37-198013r6"></a>6  <span id="textcolor4665">#</span><span id="textcolor4666">include <dbg.h></dbg.h></span><br class="fancyvrb"><a id="x37-198015r7"></a>7  <span id="textcolor4667">#</span><span id="textcolor4668">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x37-198017r8"></a>8  <br class="fancyvrb"><a id="x37-198019r9"></a>9  <span id="textcolor4669">#</span><span id="textcolor4670">define mu_suite_start() char ⋆message = NULL</span>
+<br class="fancyvrb"><a id="x37-198021r10"></a>10  <br class="fancyvrb"><a id="x37-198023r11"></a>11  <span id="textcolor4671">#</span><span id="textcolor4672">define mu_assert(test, message) if (!(test)) { log_err(message); return message; }</span>
+<br class="fancyvrb"><a id="x37-198025r12"></a>12  <span id="textcolor4673">#</span><span id="textcolor4674">define mu_run_test(test) debug("\n-----%s", " " #test); \</span>
+<br class="fancyvrb"><a id="x37-198027r13"></a>13  <span id="textcolor4675">    message = test(); tests_run++; if (message) return message;</span><br class="fancyvrb"><a id="x37-198029r14"></a>14  
+<br class="fancyvrb"><a id="x37-198031r15"></a>15  <span id="textcolor4676">#</span><span id="textcolor4677">define RUN_TESTS(name) int main(int argc, char ⋆argv[]) {\</span>
+<br class="fancyvrb"><a id="x37-198033r16"></a>16  <span id="textcolor4678">    argc = 1; \</span><br class="fancyvrb"><a id="x37-198035r17"></a>17  <span id="textcolor4679">    debug("----- RUNNING: %s", argv[0]);\</span>
+<br class="fancyvrb"><a id="x37-198037r18"></a>18  <span id="textcolor4680">        printf("----\nRUNNING: %s\n", argv[0]);\</span><br class="fancyvrb"><a id="x37-198039r19"></a>19  <span id="textcolor4681">        char ⋆result = name();\</span>
+<br class="fancyvrb"><a id="x37-198041r20"></a>20  <span id="textcolor4682">        if (result != 0) {\</span><br class="fancyvrb"><a id="x37-198043r21"></a>21  <span id="textcolor4683">            printf("FAILED: %s\n", result);\</span>
+<br class="fancyvrb"><a id="x37-198045r22"></a>22  <span id="textcolor4684">        }\</span><br class="fancyvrb"><a id="x37-198047r23"></a>23  <span id="textcolor4685">        else {\</span><br class="fancyvrb"><a id="x37-198049r24"></a>24  <span id="textcolor4686">            printf("ALL TESTS PASSED\n");\</span>
+<br class="fancyvrb"><a id="x37-198051r25"></a>25  <span id="textcolor4687">        }\</span><br class="fancyvrb"><a id="x37-198053r26"></a>26  <span id="textcolor4688">    printf("Tests run: %d\n", tests_run);\</span>
+<br class="fancyvrb"><a id="x37-198055r27"></a>27  <span id="textcolor4689">        exit(result != 0);\</span><br class="fancyvrb"><a id="x37-198057r28"></a>28  <span id="textcolor4690">}</span><br class="fancyvrb"><a id="x37-198059r29"></a>29  <br class="fancyvrb"><a id="x37-198061r30"></a>30  <br class="fancyvrb"><a id="x37-198063r31"></a>31  <span id="textcolor4691">int</span> tests_run;<br class="fancyvrb"><a id="x37-198065r32"></a>32  <br class="fancyvrb"><a id="x37-198067r33"></a>33  <span id="textcolor4692">#</span><span id="textcolor4693">endif</span></div>
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych32.html">next</a>] [<a href="learn-c-the-hard-waych30.html">prev</a>] [<a href="learn-c-the-hard-waych30.html#taillearn-c-the-hard-waych30.html">prev-tail</a>] [<a href="learn-c-the-hard-waych31.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych31.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych31.html"></a>   
+    </div><hr class="endfloat"></hr><!--l. 53--><p class="indent">    There’s mostly nothing left of the original, as now I’m using the dbg.h macros
+and I’ve created a large macro at the end for the boilerplate test runner. Even with
+this tiny amount of code we’ll create a fully functioning unit test system you
+can use in your C code once it’s combined with a shell script to run the
+tests.
+    </p><h3 class="sectionHead"><span class="titlemark">31.1    </span> <a id="x37-19900031.1"></a>Wiring Up The Test Framework</h3>
+<!--l. 61--><p class="noindent">To continue this exercise, you should have your src/libex29.c working and that
+you completed the Exercise 29 extra credit where you got the ex29.c loader
+program to properly run. In Exercise 29 I had an extra credit to make it work like a
+unit test, but I’m going to start over and show you how to do that with
+minunit.h.
+<!--l. 67--></p><p class="indent">    The first thing to do is create a simple empty unit test name
+tests/libex29_tests.c with this in it:
+                                                                  
+
+                                                                  
+<!--l. 69--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x37-199001r86"></a>
+ <div class="caption"><span class="id">Source 86: </span><span class="content">                                                                                   tests/libex29_tests.c.h</span></div><!--tex4ht:label?: x37-199001r86 -->
+<div class="fancyvrb" id="fancyvrb53"><a id="x37-199003r1"></a>1  <span id="textcolor4694">#</span><span id="textcolor4695">include "minunit.h"</span><br class="fancyvrb"><a id="x37-199005r2"></a>2  <br class="fancyvrb"><a id="x37-199007r3"></a>3  <span id="textcolor4696">char</span> ⋆<span id="textcolor4697">test_dlopen</span>()<br class="fancyvrb"><a id="x37-199009r4"></a>4  {<br class="fancyvrb"><a id="x37-199011r5"></a>5  <br class="fancyvrb"><a id="x37-199013r6"></a>6      <span id="textcolor4698">return</span> <span id="textcolor4699">NULL</span>;<br class="fancyvrb"><a id="x37-199015r7"></a>7  }<br class="fancyvrb"><a id="x37-199017r8"></a>8  
+<br class="fancyvrb"><a id="x37-199019r9"></a>9  <span id="textcolor4700">char</span> ⋆<span id="textcolor4701">test_functions</span>()<br class="fancyvrb"><a id="x37-199021r10"></a>10  {<br class="fancyvrb"><a id="x37-199023r11"></a>11  <br class="fancyvrb"><a id="x37-199025r12"></a>12      <span id="textcolor4702">return</span> <span id="textcolor4703">NULL</span>;<br class="fancyvrb"><a id="x37-199027r13"></a>13  }<br class="fancyvrb"><a id="x37-199029r14"></a>14  <br class="fancyvrb"><a id="x37-199031r15"></a>15  <span id="textcolor4704">char</span> ⋆<span id="textcolor4705">test_failures</span>()
+<br class="fancyvrb"><a id="x37-199033r16"></a>16  {<br class="fancyvrb"><a id="x37-199035r17"></a>17  <br class="fancyvrb"><a id="x37-199037r18"></a>18      <span id="textcolor4706">return</span> <span id="textcolor4707">NULL</span>;<br class="fancyvrb"><a id="x37-199039r19"></a>19  }<br class="fancyvrb"><a id="x37-199041r20"></a>20  <br class="fancyvrb"><a id="x37-199043r21"></a>21  <span id="textcolor4708">char</span> ⋆<span id="textcolor4709">test_dlclose</span>()<br class="fancyvrb"><a id="x37-199045r22"></a>22  {<br class="fancyvrb"><a id="x37-199047r23"></a>23  <br class="fancyvrb"><a id="x37-199049r24"></a>24      <span id="textcolor4710">return</span> <span id="textcolor4711">NULL</span>;<br class="fancyvrb"><a id="x37-199051r25"></a>25  }
+<br class="fancyvrb"><a id="x37-199053r26"></a>26  <br class="fancyvrb"><a id="x37-199055r27"></a>27  <span id="textcolor4712">char</span> ⋆<span id="textcolor4713">all_tests</span>() {<br class="fancyvrb"><a id="x37-199057r28"></a>28      mu_suite_start();<br class="fancyvrb"><a id="x37-199059r29"></a>29  <br class="fancyvrb"><a id="x37-199061r30"></a>30      mu_run_test(test_dlopen);
+<br class="fancyvrb"><a id="x37-199063r31"></a>31      mu_run_test(test_functions);<br class="fancyvrb"><a id="x37-199065r32"></a>32      mu_run_test(test_failures);
+<br class="fancyvrb"><a id="x37-199067r33"></a>33      mu_run_test(test_dlclose);<br class="fancyvrb"><a id="x37-199069r34"></a>34  <br class="fancyvrb"><a id="x37-199071r35"></a>35      <span id="textcolor4714">return</span> <span id="textcolor4715">NULL</span>;<br class="fancyvrb"><a id="x37-199073r36"></a>36  }<br class="fancyvrb"><a id="x37-199075r37"></a>37  <br class="fancyvrb"><a id="x37-199077r38"></a>38  RUN_TESTS(all_tests);</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 113--><p class="indent">    This code is demonstrating the RUN_TESTS macro in tests/minunit.h and
+how to use the other test runner macros. I have the actual test functions stubbed out
+so that you can see how to structure a unit test. I’ll break this file down
+first:
+     </p><dl class="description"><dt class="description">
+libex29_tests.c:1 </dt><dd class="description">Include the minunit.h framework.
+     </dd><dt class="description">
+libex29_tests.c:3-7 </dt><dd class="description">A first test. Tests are structured so they take no arguments
+     and return a char ⋆ which is NULL on success. This is important because
+     the  other  macros  will  be  used  to  return  an  error  message  to  the  test
+     runner.
+     </dd><dt class="description">
+libex29_tests.c:9-25 </dt><dd class="description">More tests that are the same as the first one.
+     </dd><dt class="description">
+libex29_tests.c:27 </dt><dd class="description">The runner function that will control all the other tests. It
+     has the same form as any other test case, but it gets configured with some
+     additional gear.
+     </dd><dt class="description">
+libex29_tests.c:28 </dt><dd class="description">Sets     up     some     common     stuff     for     a     test     with
+     mu_suite_start.
+     </dd><dt class="description">
+libex29_tests.c:30 </dt><dd class="description">This   is   how   you   say   what   test   to   run,   using   the
+     mu_run_test macro.
+     </dd><dt class="description">
+libex29_tests.c:35 </dt><dd class="description">After you say what tests to run, you then return NULL just
+     like a normal test function.
+     </dd><dt class="description">
+libex29_tests.c:38 </dt><dd class="description">Finally, you just use the big RUN_TESTS macro to wire up
+     the main method with all the goodies and tell it to run the all_tests
+     starter.</dd></dl><!--l. 136--><p class="indent">    That’s all there is to running a test, now you should try getting just
+this to run within the project skeleton. Here’s what it looks like when I do
+it:
+                                                                  
+
+                                                                  
+<!--l. 139--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x37-199078r87"></a>
+ <div class="caption"><span class="id">Source 87: </span><span class="content">                                                                                                   First run of
+libex29_tests</span></div><!--tex4ht:label?: x37-199078r87 -->
+<div class="fancyvrb" id="fancyvrb54"><a id="x37-199080r1"></a>1  <span id="textcolor4716">$</span> make clean<br class="fancyvrb"><a id="x37-199082r2"></a>2  <span id="textcolor4717">rm -rf build src/libex29.o tests/libex29_tests</span><br class="fancyvrb"><a id="x37-199084r3"></a>3  <span id="textcolor4718">rm -f tests/tests.log </span>
+<br class="fancyvrb"><a id="x37-199086r4"></a>4  <span id="textcolor4719">find . -name "⋆.gc⋆" -exec rm {} \;</span><br class="fancyvrb"><a id="x37-199088r5"></a>5  <span id="textcolor4720">rm -rf ‘find . -name "⋆.dSYM" -print‘</span>
+<br class="fancyvrb"><a id="x37-199090r6"></a>6  <span id="textcolor4721">$</span> make<br class="fancyvrb"><a id="x37-199092r7"></a>7  <span id="textcolor4722">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  -fPIC </span>
+<br class="fancyvrb"><a id="x37-199094r8"></a>8  <span id="textcolor4723">    -c -o src/libex29.o src/libex29.c</span>
+<br class="fancyvrb"><a id="x37-199096r9"></a>9  <span id="textcolor4724">src/libex29.c: In function fail_on_purpose:</span>
+<br class="fancyvrb"><a id="x37-199098r10"></a>10  <span id="textcolor4725">src/libex29.c:42: warning: unused parameter msg</span>
+<br class="fancyvrb"><a id="x37-199100r11"></a>11  <span id="textcolor4726">ar rcs build/libYOUR_LIBRARY.a src/libex29.o</span><br class="fancyvrb"><a id="x37-199102r12"></a>12  <span id="textcolor4727">ranlib build/libYOUR_LIBRARY.a</span>
+<br class="fancyvrb"><a id="x37-199104r13"></a>13  <span id="textcolor4728">cc -shared -o build/libYOUR_LIBRARY.so src/libex29.o</span>
+<br class="fancyvrb"><a id="x37-199106r14"></a>14  <span id="textcolor4729">cc -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG  build/libYOUR_LIBRARY.a </span>
+<br class="fancyvrb"><a id="x37-199108r15"></a>15  <span id="textcolor4730">    tests/libex29_tests.c   -o tests/libex29_tests</span><br class="fancyvrb"><a id="x37-199110r16"></a>16  <span id="textcolor4731">sh ./tests/runtests.sh</span>
+<br class="fancyvrb"><a id="x37-199112r17"></a>17  <span id="textcolor4732">Running unit tests:</span><br class="fancyvrb"><a id="x37-199114r18"></a>18  <span id="textcolor4733">----</span><br class="fancyvrb"><a id="x37-199116r19"></a>19  <span id="textcolor4734">RUNNING: ./tests/libex29_tests</span>
+<br class="fancyvrb"><a id="x37-199118r20"></a>20  <span id="textcolor4735">ALL TESTS PASSED</span><br class="fancyvrb"><a id="x37-199120r21"></a>21  <span id="textcolor4736">Tests run: 4</span><br class="fancyvrb"><a id="x37-199122r22"></a>22  <span id="textcolor4737">tests/libex29_tests PASS</span><br class="fancyvrb"><a id="x37-199124r23"></a>23  <br class="fancyvrb"><a id="x37-199126r24"></a>24  <span id="textcolor4738">$</span></div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 169--><p class="indent">    I first did a <span class="obeylines-h"><span class="verb">make clean</span></span> and then I ran the build, which remade the template
+libYOUR_LIBRARY.a and libYOUR_LIBRARY.so files. Remember that you had
+to do this in the extra credit for Exercise 29, but just in case you didn’t figure it out,
+here’s the diff for the Makefile I’m using now:
+                                                                  
+
+                                                                  
+<!--l. 174--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x37-199127r88"></a>
+ <div class="caption"><span class="id">Source 88: </span><span class="content">                                                                                Makefile changes for .so
+builds</span></div><!--tex4ht:label?: x37-199127r88 -->
+<div class="fancyvrb" id="fancyvrb55"><a id="x37-199129r1"></a>  <span id="textcolor4739">diff --git a/code/c-skeleton/Makefile b/code/c-skeleton/Makefile</span>
+<br class="fancyvrb"><a id="x37-199131r2"></a>  <span id="textcolor4740">index 135d538..21b92bf 100644</span><br class="fancyvrb"><a id="x37-199133r3"></a>  <span class="colorbox" id="colorbox4741"><span id="textcolor4742">--- a/code/c-skeleton/Makefile</span></span>
+<br class="fancyvrb"><a id="x37-199135r4"></a>  <span class="colorbox" id="colorbox4743"><span id="textcolor4744">+++ b/code/c-skeleton/Makefile</span></span><br class="fancyvrb"><a id="x37-199137r5"></a>  <span id="textcolor4745">@@ -9,9 +9,10 @@ TEST_SRC=$(wildcard tests/⋆_tests.c)</span>
+<br class="fancyvrb"><a id="x37-199139r6"></a>   TESTS=$(patsubst %.c,%,$(TEST_SRC))<br class="fancyvrb"><a id="x37-199141r7"></a>  <br class="fancyvrb"><a id="x37-199143r8"></a>   TARGET=build/libYOUR_LIBRARY.a
+<br class="fancyvrb"><a id="x37-199145r9"></a>  <span class="colorbox" id="colorbox4746"><span id="textcolor4747">+SO_TARGET=$(patsubst %.a,%.so,$(TARGET))</span></span><br class="fancyvrb"><a id="x37-199147r10"></a>  <br class="fancyvrb"><a id="x37-199149r11"></a>   # The Target Build
+<br class="fancyvrb"><a id="x37-199151r12"></a>  <span class="colorbox" id="colorbox4748"><span id="textcolor4749">-all: $(TARGET) tests</span></span><br class="fancyvrb"><a id="x37-199153r13"></a>  <span class="colorbox" id="colorbox4750"><span id="textcolor4751">+all: $(TARGET) $(SO_TARGET) tests</span></span><br class="fancyvrb"><a id="x37-199155r14"></a>  
+<br class="fancyvrb"><a id="x37-199157r15"></a>   dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)<br class="fancyvrb"><a id="x37-199159r16"></a>   dev: all
+<br class="fancyvrb"><a id="x37-199161r17"></a>  <span id="textcolor4752">@@ -21,6 +22,9 @@ $(TARGET): build $(OBJECTS)</span><br class="fancyvrb"><a id="x37-199163r18"></a>           ar rcs $@ $(OBJECTS)
+<br class="fancyvrb"><a id="x37-199165r19"></a>           ranlib $@<br class="fancyvrb"><a id="x37-199167r20"></a>  <br class="fancyvrb"><a id="x37-199169r21"></a>  <span class="colorbox" id="colorbox4753"><span id="textcolor4754">+$(SO_TARGET): $(TARGET) $(OBJECTS)</span></span>
+<br class="fancyvrb"><a id="x37-199171r22"></a>  <span class="colorbox" id="colorbox4755"><span id="textcolor4756">+        $(CC) -shared -o $@ $(OBJECTS)</span></span><br class="fancyvrb"><a id="x37-199173r23"></a>  <span class="colorbox" id="colorbox4757"><span id="textcolor4758">+</span></span><br class="fancyvrb"><a id="x37-199175r24"></a>   build:
+<br class="fancyvrb"><a id="x37-199177r25"></a>           @mkdir -p build<br class="fancyvrb"><a id="x37-199179r26"></a>           @mkdir -p bin</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 206--><p class="indent">    With those changes you should be now building everything and you can finally
+fill in the remaining unit test functions:
+                                                                  
+
+                                                                  
+<!--l. 209--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+                                                                  
+
+                                                                  
+<a id="x37-199180r89"></a>
+ <div class="caption"><span class="id">Source 89: </span><span class="content">                                                                                             Final version of
+tests/libex29_tests.c</span></div><!--tex4ht:label?: x37-199180r89 -->
+<div class="fancyvrb" id="fancyvrb56"><a id="x37-199182r1"></a>1  <span id="textcolor4759">#</span><span id="textcolor4760">include "minunit.h"</span><br class="fancyvrb"><a id="x37-199184r2"></a>2  <span id="textcolor4761">#</span><span id="textcolor4762">include <dlfcn.h></dlfcn.h></span><br class="fancyvrb"><a id="x37-199186r3"></a>3  
+<br class="fancyvrb"><a id="x37-199188r4"></a>4  <span id="textcolor4763">typedef</span> <span id="textcolor4764">int</span> (⋆lib_function)(<span id="textcolor4765">const</span> <span id="textcolor4766">char</span> ⋆data);
+<br class="fancyvrb"><a id="x37-199190r5"></a>5  <span id="textcolor4767">char</span> ⋆lib_file = <span class="colorbox" id="colorbox4768"><span id="textcolor4769">"</span></span><span class="colorbox" id="colorbox4770"><span id="textcolor4771">build/libYOUR_LIBRARY.so</span></span><span class="colorbox" id="colorbox4772"><span id="textcolor4773">"</span></span>;<br class="fancyvrb"><a id="x37-199192r6"></a>6  <span id="textcolor4774">void</span> ⋆lib = <span id="textcolor4775">NULL</span>;<br class="fancyvrb"><a id="x37-199194r7"></a>7  
+<br class="fancyvrb"><a id="x37-199196r8"></a>8  <span id="textcolor4776">int</span> <span id="textcolor4777">check_function</span>(<span id="textcolor4778">const</span> <span id="textcolor4779">char</span> ⋆func_to_run, <span id="textcolor4780">const</span> <span id="textcolor4781">char</span> ⋆data, <span id="textcolor4782">int</span> expected)
+<br class="fancyvrb"><a id="x37-199198r9"></a>9  {<br class="fancyvrb"><a id="x37-199200r10"></a>10      lib_function func = dlsym(lib, func_to_run);
+<br class="fancyvrb"><a id="x37-199202r11"></a>11      check(func != <span id="textcolor4783">NULL</span>, <span class="colorbox" id="colorbox4784"><span id="textcolor4785">"</span></span><span class="colorbox" id="colorbox4786"><span id="textcolor4787">Did not find %s function in the library %s: %s</span></span><span class="colorbox" id="colorbox4788"><span id="textcolor4789">"</span></span>, func_to_run, lib_file, dlerror());
+<br class="fancyvrb"><a id="x37-199204r12"></a>12  <br class="fancyvrb"><a id="x37-199206r13"></a>13      <span id="textcolor4790">int</span> rc = func(data);
+<br class="fancyvrb"><a id="x37-199208r14"></a>14      check(rc == expected, <span class="colorbox" id="colorbox4791"><span id="textcolor4792">"</span></span><span class="colorbox" id="colorbox4793"><span id="textcolor4794">Function %s return %d for data: %s</span></span><span class="colorbox" id="colorbox4795"><span id="textcolor4796">"</span></span>, func_to_run, rc, data);
+<br class="fancyvrb"><a id="x37-199210r15"></a>15  <br class="fancyvrb"><a id="x37-199212r16"></a>16      <span id="textcolor4797">return</span> <span id="textcolor4798">1</span>;<br class="fancyvrb"><a id="x37-199214r17"></a>17  <span id="textcolor4799">error:</span><br class="fancyvrb"><a id="x37-199216r18"></a>18      <span id="textcolor4800">return</span> <span id="textcolor4801">0</span>;<br class="fancyvrb"><a id="x37-199218r19"></a>19  }<br class="fancyvrb"><a id="x37-199220r20"></a>20  
+<br class="fancyvrb"><a id="x37-199222r21"></a>21  <span id="textcolor4802">char</span> ⋆<span id="textcolor4803">test_dlopen</span>()<br class="fancyvrb"><a id="x37-199224r22"></a>22  {<br class="fancyvrb"><a id="x37-199226r23"></a>23      lib = dlopen(lib_file, RTLD_NOW);
+<br class="fancyvrb"><a id="x37-199228r24"></a>24      mu_assert(lib != <span id="textcolor4804">NULL</span>, <span class="colorbox" id="colorbox4805"><span id="textcolor4806">"</span></span><span class="colorbox" id="colorbox4807"><span id="textcolor4808">Failed to open the library to test.</span></span><span class="colorbox" id="colorbox4809"><span id="textcolor4810">"</span></span>);
+<br class="fancyvrb"><a id="x37-199230r25"></a>25  <br class="fancyvrb"><a id="x37-199232r26"></a>26      <span id="textcolor4811">return</span> <span id="textcolor4812">NULL</span>;<br class="fancyvrb"><a id="x37-199234r27"></a>27  }<br class="fancyvrb"><a id="x37-199236r28"></a>28  <br class="fancyvrb"><a id="x37-199238r29"></a>29  <span id="textcolor4813">char</span> ⋆<span id="textcolor4814">test_functions</span>()<br class="fancyvrb"><a id="x37-199240r30"></a>30  {
+<br class="fancyvrb"><a id="x37-199242r31"></a>31      mu_assert(check_function(<span class="colorbox" id="colorbox4815"><span id="textcolor4816">"</span></span><span class="colorbox" id="colorbox4817"><span id="textcolor4818">print_a_message</span></span><span class="colorbox" id="colorbox4819"><span id="textcolor4820">"</span></span>, <span class="colorbox" id="colorbox4821"><span id="textcolor4822">"</span></span><span class="colorbox" id="colorbox4823"><span id="textcolor4824">Hello</span></span><span class="colorbox" id="colorbox4825"><span id="textcolor4826">"</span></span>, <span id="textcolor4827">0</span>), <span class="colorbox" id="colorbox4828"><span id="textcolor4829">"</span></span><span class="colorbox" id="colorbox4830"><span id="textcolor4831">print_a_message failed.</span></span><span class="colorbox" id="colorbox4832"><span id="textcolor4833">"</span></span>);
+<br class="fancyvrb"><a id="x37-199244r32"></a>32      mu_assert(check_function(<span class="colorbox" id="colorbox4834"><span id="textcolor4835">"</span></span><span class="colorbox" id="colorbox4836"><span id="textcolor4837">uppercase</span></span><span class="colorbox" id="colorbox4838"><span id="textcolor4839">"</span></span>, <span class="colorbox" id="colorbox4840"><span id="textcolor4841">"</span></span><span class="colorbox" id="colorbox4842"><span id="textcolor4843">Hello</span></span><span class="colorbox" id="colorbox4844"><span id="textcolor4845">"</span></span>, <span id="textcolor4846">0</span>), <span class="colorbox" id="colorbox4847"><span id="textcolor4848">"</span></span><span class="colorbox" id="colorbox4849"><span id="textcolor4850">uppercase failed.</span></span><span class="colorbox" id="colorbox4851"><span id="textcolor4852">"</span></span>);
+<br class="fancyvrb"><a id="x37-199246r33"></a>33      mu_assert(check_function(<span class="colorbox" id="colorbox4853"><span id="textcolor4854">"</span></span><span class="colorbox" id="colorbox4855"><span id="textcolor4856">lowercase</span></span><span class="colorbox" id="colorbox4857"><span id="textcolor4858">"</span></span>, <span class="colorbox" id="colorbox4859"><span id="textcolor4860">"</span></span><span class="colorbox" id="colorbox4861"><span id="textcolor4862">Hello</span></span><span class="colorbox" id="colorbox4863"><span id="textcolor4864">"</span></span>, <span id="textcolor4865">0</span>), <span class="colorbox" id="colorbox4866"><span id="textcolor4867">"</span></span><span class="colorbox" id="colorbox4868"><span id="textcolor4869">lowercase failed.</span></span><span class="colorbox" id="colorbox4870"><span id="textcolor4871">"</span></span>);
+<br class="fancyvrb"><a id="x37-199248r34"></a>34  <br class="fancyvrb"><a id="x37-199250r35"></a>35      <span id="textcolor4872">return</span> <span id="textcolor4873">NULL</span>;<br class="fancyvrb"><a id="x37-199252r36"></a>36  }<br class="fancyvrb"><a id="x37-199254r37"></a>37  <br class="fancyvrb"><a id="x37-199256r38"></a>38  <span id="textcolor4874">char</span> ⋆<span id="textcolor4875">test_failures</span>()<br class="fancyvrb"><a id="x37-199258r39"></a>39  {
+<br class="fancyvrb"><a id="x37-199260r40"></a>40      mu_assert(check_function(<span class="colorbox" id="colorbox4876"><span id="textcolor4877">"</span></span><span class="colorbox" id="colorbox4878"><span id="textcolor4879">fail_on_purpose</span></span><span class="colorbox" id="colorbox4880"><span id="textcolor4881">"</span></span>, <span class="colorbox" id="colorbox4882"><span id="textcolor4883">"</span></span><span class="colorbox" id="colorbox4884"><span id="textcolor4885">Hello</span></span><span class="colorbox" id="colorbox4886"><span id="textcolor4887">"</span></span>, <span id="textcolor4888">1</span>), <span class="colorbox" id="colorbox4889"><span id="textcolor4890">"</span></span><span class="colorbox" id="colorbox4891"><span id="textcolor4892">fail_on_purpose should fail.</span></span><span class="colorbox" id="colorbox4893"><span id="textcolor4894">"</span></span>);
+<br class="fancyvrb"><a id="x37-199262r41"></a>41  <br class="fancyvrb"><a id="x37-199264r42"></a>42      <span id="textcolor4895">return</span> <span id="textcolor4896">NULL</span>;<br class="fancyvrb"><a id="x37-199266r43"></a>43  }<br class="fancyvrb"><a id="x37-199268r44"></a>44  <br class="fancyvrb"><a id="x37-199270r45"></a>45  <span id="textcolor4897">char</span> ⋆<span id="textcolor4898">test_dlclose</span>()<br class="fancyvrb"><a id="x37-199272r46"></a>46  {<br class="fancyvrb"><a id="x37-199274r47"></a>47      <span id="textcolor4899">int</span> rc = dlclose(lib);
+<br class="fancyvrb"><a id="x37-199276r48"></a>48      mu_assert(rc == <span id="textcolor4900">0</span>, <span class="colorbox" id="colorbox4901"><span id="textcolor4902">"</span></span><span class="colorbox" id="colorbox4903"><span id="textcolor4904">Failed to close lib.</span></span><span class="colorbox" id="colorbox4905"><span id="textcolor4906">"</span></span>);<br class="fancyvrb"><a id="x37-199278r49"></a>49  <br class="fancyvrb"><a id="x37-199280r50"></a>50      <span id="textcolor4907">return</span> <span id="textcolor4908">NULL</span>;<br class="fancyvrb"><a id="x37-199282r51"></a>51  }<br class="fancyvrb"><a id="x37-199284r52"></a>52  
+<br class="fancyvrb"><a id="x37-199286r53"></a>53  <span id="textcolor4909">char</span> ⋆<span id="textcolor4910">all_tests</span>() {<br class="fancyvrb"><a id="x37-199288r54"></a>54      mu_suite_start();<br class="fancyvrb"><a id="x37-199290r55"></a>55  <br class="fancyvrb"><a id="x37-199292r56"></a>56      mu_run_test(test_dlopen);
+<br class="fancyvrb"><a id="x37-199294r57"></a>57      mu_run_test(test_functions);<br class="fancyvrb"><a id="x37-199296r58"></a>58      mu_run_test(test_failures);
+<br class="fancyvrb"><a id="x37-199298r59"></a>59      mu_run_test(test_dlclose);<br class="fancyvrb"><a id="x37-199300r60"></a>60  <br class="fancyvrb"><a id="x37-199302r61"></a>61      <span id="textcolor4911">return</span> <span id="textcolor4912">NULL</span>;<br class="fancyvrb"><a id="x37-199304r62"></a>62  }<br class="fancyvrb"><a id="x37-199306r63"></a>63  <br class="fancyvrb"><a id="x37-199308r64"></a>64  RUN_TESTS(all_tests);</div>
+                                                                  
+
+                                                                  
+    </div><hr class="endfloat"></hr><!--l. 279--><p class="indent">    Hopefully by now you can figure out what’s going on, since there’s nothing new
+in this except for the check_function function. This is a common pattern
+where I see that I’ll be doing a chunk of code repeatedly, and then simply
+automate it either by creating a function or a macro for it. In this case I’m
+going to run functions in the .so I load so I just made a little function to do
+it.
+    </p><h3 class="sectionHead"><span class="titlemark">31.2    </span> <a id="x37-20000031.2"></a>Extra Credit</h3>
+<!--l. 288--><p class="noindent">
+     </p><ol class="enumerate1"><li class="enumerate" id="x37-200002x1">This  works  but  it’s  probably  a  bit  messy.  Clean  the  c-skeleton
+     directory  up  so  that  it  has  all  these  files,  but  remove  any  of  the  code
+     related to Exercise 29. You should be able to copy this directory over and
+     kickstart new projects without much editing.
+     </li>
+     <li class="enumerate" id="x37-200004x2">Study the runtests.sh and go read about bash syntax so you know
+     what it does. Think you could write a C version of this script?</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>

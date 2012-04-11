@@ -1,19 +1,20 @@
-<html><head><title>Exercise 3: 格式化打印输出</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-01 17:12:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych5.html">next</a>] [<a href="learn-c-the-hard-waych3.html">prev</a>] [<a href="learn-c-the-hard-waych3.html#taillearn-c-the-hard-waych3.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych4.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych4.html">up</a>] </p></div>
+<html><head><title>Exercise 3: 格式化打印输出</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 4</span><br><a id="x9-240004"></a>Exercise 3: 格式化打印输出</h2>
 <!--l. 3--><p class="noindent">请保留 Makefile 文件，因为它可以帮你找到错误，而且将来我们要把更多任务自动化时，我们还会往里面添加内容。
 <!--l. 5--></p><p class="indent">    许多编程语言使用 C 风格的格式化输出, 让我们来试一下吧:
                                                                   
 
                                                                   
-<!--l. 7--></p><p class="indent">    <a id="x9-24001r12"></a></p><hr class="float"></hr><div class="float">
+<!--l. 7--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x9-24001r12"></a>
  <div class="caption"><span class="id">Source 12: </span><span class="content">                                                                                                              ex3.c</span></div><!--tex4ht:label?: x9-24001r12 -->
-<div class="fancyvrb" id="fancyvrb2"><a id="x9-24003r1"></a>1  <span id="textcolor13">#</span><span id="textcolor14">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x9-24005r2"></a>2  <br class="fancyvrb"><a id="x9-24007r3"></a>3  <span id="textcolor15">int</span> <span id="textcolor16">main</span>()<br class="fancyvrb"><a id="x9-24009r4"></a>4  {<br class="fancyvrb"><a id="x9-24011r5"></a>5      <span id="textcolor17">int</span> age = <span id="textcolor18">10</span>;
-<br class="fancyvrb"><a id="x9-24013r6"></a>6      <span id="textcolor19">int</span> height = <span id="textcolor20">72</span>;<br class="fancyvrb"><a id="x9-24015r7"></a>7  <br class="fancyvrb"><a id="x9-24017r8"></a>8      printf(<span class="colorbox" id="colorbox21"><span id="textcolor22">"</span></span><span class="colorbox" id="colorbox23"><span id="textcolor24">I am %d years old.</span></span><span class="colorbox" id="colorbox25"><span id="textcolor26">\n</span></span><span class="colorbox" id="colorbox27"><span id="textcolor28">"</span></span>, age);
-<br class="fancyvrb"><a id="x9-24019r9"></a>9      printf(<span class="colorbox" id="colorbox29"><span id="textcolor30">"</span></span><span class="colorbox" id="colorbox31"><span id="textcolor32">I am %d inches tall.</span></span><span class="colorbox" id="colorbox33"><span id="textcolor34">\n</span></span><span class="colorbox" id="colorbox35"><span id="textcolor36">"</span></span>, height);<br class="fancyvrb"><a id="x9-24021r10"></a>10  <br class="fancyvrb"><a id="x9-24023r11"></a>11      <span id="textcolor37">return</span> <span id="textcolor38">0</span>;<br class="fancyvrb"><a id="x9-24025r12"></a>12  }</div>
+<div class="fancyvrb" id="fancyvrb2"><a id="x9-24003r1"></a>1  <span id="textcolor11">#</span><span id="textcolor12">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x9-24005r2"></a>2  <br class="fancyvrb"><a id="x9-24007r3"></a>3  <span id="textcolor13">int</span> <span id="textcolor14">main</span>()<br class="fancyvrb"><a id="x9-24009r4"></a>4  {<br class="fancyvrb"><a id="x9-24011r5"></a>5      <span id="textcolor15">int</span> age = <span id="textcolor16">10</span>;
+<br class="fancyvrb"><a id="x9-24013r6"></a>6      <span id="textcolor17">int</span> height = <span id="textcolor18">72</span>;<br class="fancyvrb"><a id="x9-24015r7"></a>7  <br class="fancyvrb"><a id="x9-24017r8"></a>8      printf(<span class="colorbox" id="colorbox19"><span id="textcolor20">"</span></span><span class="colorbox" id="colorbox21"><span id="textcolor22">I am %d years old.</span></span><span class="colorbox" id="colorbox23"><span id="textcolor24">\n</span></span><span class="colorbox" id="colorbox25"><span id="textcolor26">"</span></span>, age);
+<br class="fancyvrb"><a id="x9-24019r9"></a>9      printf(<span class="colorbox" id="colorbox27"><span id="textcolor28">"</span></span><span class="colorbox" id="colorbox29"><span id="textcolor30">I am %d inches tall.</span></span><span class="colorbox" id="colorbox31"><span id="textcolor32">\n</span></span><span class="colorbox" id="colorbox33"><span id="textcolor34">"</span></span>, height);<br class="fancyvrb"><a id="x9-24021r10"></a>10  <br class="fancyvrb"><a id="x9-24023r11"></a>11      <span id="textcolor35">return</span> <span id="textcolor36">0</span>;<br class="fancyvrb"><a id="x9-24025r12"></a>12  }</div>
                                                                   
 
                                                                   
@@ -36,10 +37,11 @@
                                                                   
 
                                                                   
-<!--l. 45--></p><p class="indent">    <a id="x9-25001r13"></a></p><hr class="float"></hr><div class="float">
+<!--l. 45--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x9-25001r13"></a>
 <div class="caption"><span class="id">Source 13: </span><span class="content">                                                                                                    Build 并运行 ex3.c</span></div><!--tex4ht:label?: x9-25001r13 -->
 <!--l. 46-->
 <div class="lstlisting" id="listing-12"><span class="label"><a id="x9-25002r1"></a>1</span>$ make ex3 <br><span class="label"><a id="x9-25003r2"></a>2</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-25004r3"></a>3</span>$ ./ex3 <br><span class="label"><a id="x9-25005r4"></a>4</span>I am 10 years old. <br><span class="label"><a id="x9-25006r5"></a>5</span>I am 72 inches tall. <br><span class="label"><a id="x9-25007r6"></a>6</span>$
@@ -66,10 +68,11 @@
      </li>
      <li class="enumerate" id="x9-27004x2">运行这个程序的话，你的程序可能会报错，或者输出一个相当不合理的年龄值。
      </li>
-     <li class="enumerate" id="x9-27006x3">将 printf 改回原样，但不要给 age 变量赋值，取而代之的是将这行改为 int age;然后重新 build 并运行.</li></ol><!--l. 81--><p class="indent">    <a id="x9-27007r14"></a></p><hr class="float"></hr><div class="float">
+     <li class="enumerate" id="x9-27006x3">将 printf 改回原样，但不要给 age 变量赋值，取而代之的是将这行改为 int age;然后重新 build 并运行.</li></ol><!--l. 81--><p class="indent">    </p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
+<a id="x9-27007r14"></a>
  <div class="caption"><span class="id">Source 14: </span><span class="content">                                                                                                     让 ex3.c 出错</span></div><!--tex4ht:label?: x9-27007r14 -->
 <!--l. 82-->
 <div class="lstlisting" id="listing-13"><span class="label"><a id="x9-27008r1"></a>1</span># edit ex3.c to break printf <br><span class="label"><a id="x9-27009r2"></a>2</span>$ make ex3 <br><span class="label"><a id="x9-27010r3"></a>3</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-27011r4"></a>4</span>ex3.c: In function ’main’: <br><span class="label"><a id="x9-27012r5"></a>5</span>ex3.c:8: warning: too few arguments for format <br><span class="label"><a id="x9-27013r6"></a>6</span>ex3.c:5: warning: unused variable ’age’ <br><span class="label"><a id="x9-27014r7"></a>7</span>$ ./ex3 <br><span class="label"><a id="x9-27015r8"></a>8</span>I am -919092456 years old. <br><span class="label"><a id="x9-27016r9"></a>9</span>I am 72 inches tall. <br><span class="label"><a id="x9-27017r10"></a>10</span># edit ex3.c again to fix printf, but don’t init age <br><span class="label"><a id="x9-27018r11"></a>11</span>$ make ex3 <br><span class="label"><a id="x9-27019r12"></a>12</span>cc -Wall -g    ex3.c   -o ex3 <br><span class="label"><a id="x9-27020r13"></a>13</span>ex3.c: In function ’main’: <br><span class="label"><a id="x9-27021r14"></a>14</span>ex3.c:8: warning: ’age’ is used uninitialized in this function <br><span class="label"><a id="x9-27022r15"></a>15</span>$ ./ex3 <br><span class="label"><a id="x9-27023r16"></a>16</span>I am 0 years old. <br><span class="label"><a id="x9-27024r17"></a>17</span>I am 72 inches tall. <br><span class="label"><a id="x9-27025r18"></a>18</span>$
@@ -85,6 +88,6 @@
      </li>
      <li class="enumerate" id="x9-28006x3">把 ex3 加入到你的 Makefile 的 all 列表，使用这个 Makefile  运行 <span class="obeylines-h"><span class="verb">make clean all</span></span> 来重新 build 你做过的所有习题。
      </li>
-     <li class="enumerate" id="x9-28008x4">把 ex3 这个文件也加到 Makefile 的 clean 列表中。现在使用 <span class="obeylines-h"><span class="verb">make clean</span></span> 将会把它也删除掉。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych5.html">next</a>] [<a href="learn-c-the-hard-waych3.html">prev</a>] [<a href="learn-c-the-hard-waych3.html#taillearn-c-the-hard-waych3.html">prev-tail</a>] [<a href="learn-c-the-hard-waych4.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych4.html">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych4.html"></a>   
+     <li class="enumerate" id="x9-28008x4">把 ex3 这个文件也加到 Makefile 的 clean 列表中。现在使用 <span class="obeylines-h"><span class="verb">make clean</span></span> 将会把它也删除掉。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="tail"></a>   
 </p></body></html>
