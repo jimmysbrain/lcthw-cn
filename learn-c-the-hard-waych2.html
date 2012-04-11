@@ -1,15 +1,14 @@
-<html><head><title>习题1: 重拾编译器</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题1: 重拾编译器</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych3.html">next</a>] [<a href="learn-c-the-hard-waych1.html">prev</a>] [<a href="learn-c-the-hard-waych1.html#taillearn-c-the-hard-waych1.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych2.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych2.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 2</span><br><a id="x7-150002"></a>习题1: 重拾编译器</h2>
 <!--l. 3--><p class="noindent">这是你用 C 语言写的第一个简单程序：
                                                                   
 
                                                                   
-<!--l. 5--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 5--></p><p class="indent">    <a id="x7-15001r3"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x7-15001r3"></a>
 <div class="caption"><span class="id">Source 3: </span><span class="content">                                                                                                                ex1.c</span></div><!--tex4ht:label?: x7-15001r3 -->
 <div class="fancyvrb" id="fancyvrb1"><a id="x7-15003r1"></a>1  <span id="textcolor1">int</span> <span id="textcolor2">main</span>()<br class="fancyvrb"><a id="x7-15005r2"></a>2  {<br class="fancyvrb"><a id="x7-15007r3"></a>3      puts(<span class="colorbox" id="colorbox3"><span id="textcolor4">"</span></span><span class="colorbox" id="colorbox5"><span id="textcolor6">Hello world.</span></span><span class="colorbox" id="colorbox7"><span id="textcolor8">"</span></span>);<br class="fancyvrb"><a id="x7-15009r4"></a>4  <br class="fancyvrb"><a id="x7-15011r5"></a>5      <span id="textcolor9">return</span> <span id="textcolor10">0</span>;<br class="fancyvrb"><a id="x7-15013r6"></a>6  }</div>
                                                                   
@@ -19,11 +18,10 @@
                                                                   
 
                                                                   
-<!--l. 19--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 19--></p><p class="indent">    <a id="x7-15014r4"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x7-15014r4"></a>
 <div class="caption"><span class="id">Source 4: </span><span class="content">                                                                                                               Build
 ex1</span></div><!--tex4ht:label?: x7-15014r4 -->
 <!--l. 20-->
@@ -38,11 +36,10 @@ ex1</span></div><!--tex4ht:label?: x7-15014r4 -->
                                                                   
 
                                                                   
-<!--l. 32--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 32--></p><p class="indent">    <a id="x7-16001r5"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x7-16001r5"></a>
 <div class="caption"><span class="id">Source 5: </span><span class="content">                                                                                                                    运行 ex1</span></div><!--tex4ht:label?: x7-16001r5 -->
 <!--l. 33-->
 <div class="lstlisting" id="listing-4"><span class="label"><a id="x7-16002r1"></a>1</span>$ ./ex1 <br><span class="label"><a id="x7-16003r2"></a>2</span>Hello world.
@@ -57,11 +54,10 @@ ex1</span></div><!--tex4ht:label?: x7-15014r4 -->
                                                                   
 
                                                                   
-<!--l. 48--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 48--></p><p class="indent">    <a id="x7-17001r6"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x7-17001r6"></a>
 <div class="caption"><span class="id">Source 6: </span><span class="content">                                                                               Build ex1，使用 -Wall 参数</span></div><!--tex4ht:label?: x7-17001r6 -->
 <!--l. 49-->
 <div class="lstlisting" id="listing-5"><span class="label"><a id="x7-17002r1"></a>1</span>$ rm ex1 <br><span class="label"><a id="x7-17003r2"></a>2</span>$ CFLAGS="-Wall" make ex1 <br><span class="label"><a id="x7-17004r3"></a>3</span>cc -Wall    ex1.c   -o ex1 <br><span class="label"><a id="x7-17005r4"></a>4</span>ex1.c: In function ’main’: <br><span class="label"><a id="x7-17006r5"></a>5</span>ex1.c:3: warning: implicit declaration of function ’puts’ <br><span class="label"><a id="x7-17007r6"></a>6</span>$ ./ex1 <br><span class="label"><a id="x7-17008r7"></a>7</span>Hello world. <br><span class="label"><a id="x7-17009r8"></a>8</span>$
@@ -80,6 +76,6 @@ ex1</span></div><!--tex4ht:label?: x7-15014r4 -->
      </li>
      <li class="enumerate" id="x7-18004x2">再多打印 5 行的文字或者比“hello world”复杂一些的句子。
      </li>
-     <li class="enumerate" id="x7-18006x3">运行 <span class="obeylines-h"><span class="verb">man 3 puts</span></span> 阅读一下关于这个函数的内容以及别的内容。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x7-18006x3">运行 <span class="obeylines-h"><span class="verb">man 3 puts</span></span> 阅读一下关于这个函数的内容以及别的内容。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych3.html">next</a>] [<a href="learn-c-the-hard-waych1.html">prev</a>] [<a href="learn-c-the-hard-waych1.html#taillearn-c-the-hard-waych1.html">prev-tail</a>] [<a href="learn-c-the-hard-waych2.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych2.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych2.html"></a>   
 </p></body></html>

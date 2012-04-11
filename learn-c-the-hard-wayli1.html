@@ -1,6 +1,344 @@
-<html><head><title>Contents</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 17--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Contents</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+                                                                  
+
+                                                                  
+    <!--l. 17--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-wayli2.html">next</a>] [<a href="learn-c-the-hard-way.html">prev</a>] [<a href="learn-c-the-hard-way.html#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#taillearn-c-the-hard-wayli1.html">tail</a>] [<a href="learn-c-the-hard-way.html#learn-c-the-hard-wayli1.html">up</a>] </p></div>
     <h2 class="likechapterHead"><a id="x2-1000"></a>Contents</h2> <div class="tableofcontents">
+    <span class="partToc">I  <a href="learn-c-the-hard-waypa1.html#x5-8000I">基本技能</a></span>
+<br><span class="chapterToc">1 <a href="learn-c-the-hard-waych1.html#x6-90001">习题0: 准备工作</a></span>
+<br>     <span class="sectionToc">1.1 <a href="learn-c-the-hard-waych1.html#x6-100001.1">Linux</a></span>
+<br>     <span class="sectionToc">1.2 <a href="learn-c-the-hard-waych1.html#x6-110001.2">Mac OSX</a></span>
+<br>     <span class="sectionToc">1.3 <a href="learn-c-the-hard-waych1.html#x6-120001.3">Windows</a></span>
+<br>     <span class="sectionToc">1.4 <a href="learn-c-the-hard-waych1.html#x6-130001.4">文本编辑器</a></span>
+<br>      <span class="subsectionToc">1.4.1 <a href="learn-c-the-hard-waych1.html#x6-140001.4.1" id="QQ2-6-16">警告: 不要使用IDE</a></span>
+<br><span class="chapterToc">2 <a href="learn-c-the-hard-waych2.html#x7-150002">习题1: 重拾编译器</a></span>
+<br>     <span class="sectionToc">2.1 <a href="learn-c-the-hard-waych2.html#x7-160002.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">2.2 <a href="learn-c-the-hard-waych2.html#x7-170002.2">让程序出错</a></span>
+<br>     <span class="sectionToc">2.3 <a href="learn-c-the-hard-waych2.html#x7-180002.3">加分习题</a></span>
+<br><span class="chapterToc">3 <a href="learn-c-the-hard-waych3.html#x8-190003">习题2: ”Make”是你的Python了</a></span>
+<br>     <span class="sectionToc">3.1 <a href="learn-c-the-hard-waych3.html#x8-200003.1">使用Make</a></span>
+<br>     <span class="sectionToc">3.2 <a href="learn-c-the-hard-waych3.html#x8-210003.2">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">3.3 <a href="learn-c-the-hard-waych3.html#x8-220003.3">让程序出错</a></span>
+<br>     <span class="sectionToc">3.4 <a href="learn-c-the-hard-waych3.html#x8-230003.4">加分习题</a></span>
+<br><span class="chapterToc">4 <a href="learn-c-the-hard-waych4.html#x9-240004">Exercise 3: 格式化打印输出</a></span>
+<br>     <span class="sectionToc">4.1 <a href="learn-c-the-hard-waych4.html#x9-250004.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">4.2 <a href="learn-c-the-hard-waych4.html#x9-260004.2">使用外部资源做研究</a></span>
+<br>     <span class="sectionToc">4.3 <a href="learn-c-the-hard-waych4.html#x9-270004.3">让程序出错</a></span>
+<br>     <span class="sectionToc">4.4 <a href="learn-c-the-hard-waych4.html#x9-280004.4">加分习题</a></span>
+<br><span class="chapterToc">5 <a href="learn-c-the-hard-waych5.html#x10-290005">习题4: 介绍Valgrind</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">5.1 <a href="learn-c-the-hard-waych5.html#x10-300005.1">安装Valgrind</a></span>
+<br>     <span class="sectionToc">5.2 <a href="learn-c-the-hard-waych5.html#x10-310005.2">使用Valgrind</a></span>
+<br>     <span class="sectionToc">5.3 <a href="learn-c-the-hard-waych5.html#x10-320005.3">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">5.4 <a href="learn-c-the-hard-waych5.html#x10-330005.4">加分习题</a></span>
+<br><span class="chapterToc">6 <a href="learn-c-the-hard-waych6.html#x11-340006">Exercise 5: C 程序的结构</a></span>
+<br>     <span class="sectionToc">6.1 <a href="learn-c-the-hard-waych6.html#x11-350006.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">6.2 <a href="learn-c-the-hard-waych6.html#x11-360006.2">代码详解</a></span>
+<br>     <span class="sectionToc">6.3 <a href="learn-c-the-hard-waych6.html#x11-370006.3">加分习题</a></span>
+<br><span class="chapterToc">7 <a href="learn-c-the-hard-waych7.html#x12-380007">习题6: 变量类型</a></span>
+<br>     <span class="sectionToc">7.1 <a href="learn-c-the-hard-waych7.html#x12-390007.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">7.2 <a href="learn-c-the-hard-waych7.html#x12-400007.2">让程序出错</a></span>
+<br>     <span class="sectionToc">7.3 <a href="learn-c-the-hard-waych7.html#x12-410007.3">加分习题</a></span>
+<br><span class="chapterToc">8 <a href="learn-c-the-hard-waych8.html#x13-420008">习题7: 再讲点变量，加上点算术</a></span>
+<br>     <span class="sectionToc">8.1 <a href="learn-c-the-hard-waych8.html#x13-430008.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">8.2 <a href="learn-c-the-hard-waych8.html#x13-440008.2">让程序出错</a></span>
+<br>     <span class="sectionToc">8.3 <a href="learn-c-the-hard-waych8.html#x13-450008.3">加分习题</a></span>
+<br><span class="chapterToc">9 <a href="learn-c-the-hard-waych9.html#x14-460009">习题8: 数组和大小</a></span>
+<br>     <span class="sectionToc">9.1 <a href="learn-c-the-hard-waych9.html#x14-470009.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">9.2 <a href="learn-c-the-hard-waych9.html#x14-480009.2">让程序出错</a></span>
+<br>     <span class="sectionToc">9.3 <a href="learn-c-the-hard-waych9.html#x14-490009.3">加分习题</a></span>
+<br><span class="chapterToc">10 <a href="learn-c-the-hard-waych10.html#x15-5000010">习题9: 数组和字符串</a></span>
+<br>     <span class="sectionToc">10.1 <a href="learn-c-the-hard-waych10.html#x15-5100010.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">10.2 <a href="learn-c-the-hard-waych10.html#x15-5200010.2">让程序出错</a></span>
+<br>     <span class="sectionToc">10.3 <a href="learn-c-the-hard-waych10.html#x15-5300010.3">加分习题</a></span>
+                                                                  
+
+                                                                  
+<br><span class="chapterToc">11 <a href="learn-c-the-hard-waych11.html#x16-5400011">习题10: 字符串数组，循环</a></span>
+<br>     <span class="sectionToc">11.1 <a href="learn-c-the-hard-waych11.html#x16-5500011.1">你应该看到的结果</a></span>
+<br>      <span class="subsectionToc">11.1.1 <a href="learn-c-the-hard-waych11.html#x16-5600011.1.1" id="QQ2-16-90">理解字符串数组</a></span>
+<br>     <span class="sectionToc">11.2 <a href="learn-c-the-hard-waych11.html#x16-5700011.2">让程序出错</a></span>
+<br>     <span class="sectionToc">11.3 <a href="learn-c-the-hard-waych11.html#x16-5800011.3">加分习题</a></span>
+<br><span class="chapterToc">12 <a href="learn-c-the-hard-waych12.html#x17-5900012">Exercise 11: While 循环和布尔表达式</a></span>
+<br>     <span class="sectionToc">12.1 <a href="learn-c-the-hard-waych12.html#x17-6000012.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">12.2 <a href="learn-c-the-hard-waych12.html#x17-6100012.2">让程序出错</a></span>
+<br>     <span class="sectionToc">12.3 <a href="learn-c-the-hard-waych12.html#x17-6200012.3">加分习题</a></span>
+<br><span class="chapterToc">13 <a href="learn-c-the-hard-waych13.html#x18-6300013">Exercise 12: If, Else-If, Else</a></span>
+<br>     <span class="sectionToc">13.1 <a href="learn-c-the-hard-waych13.html#x18-6400013.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">13.2 <a href="learn-c-the-hard-waych13.html#x18-6500013.2">让程序出错</a></span>
+<br>     <span class="sectionToc">13.3 <a href="learn-c-the-hard-waych13.html#x18-6600013.3">加分习题</a></span>
+<br><span class="chapterToc">14 <a href="learn-c-the-hard-waych14.html#x19-6700014">Exercise 13: Switch 语句</a></span>
+<br>     <span class="sectionToc">14.1 <a href="learn-c-the-hard-waych14.html#x19-6800014.1">你会看到什么</a></span>
+<br>     <span class="sectionToc">14.2 <a href="learn-c-the-hard-waych14.html#x19-6900014.2">让程序出错</a></span>
+<br>     <span class="sectionToc">14.3 <a href="learn-c-the-hard-waych14.html#x19-7000014.3">加分习题</a></span>
+<br><span class="chapterToc">15 <a href="learn-c-the-hard-waych15.html#x20-7100015">习题14: 创建和使用函数</a></span>
+<br>     <span class="sectionToc">15.1 <a href="learn-c-the-hard-waych15.html#x20-7200015.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">15.2 <a href="learn-c-the-hard-waych15.html#x20-7300015.2">让程序出错</a></span>
+<br>     <span class="sectionToc">15.3 <a href="learn-c-the-hard-waych15.html#x20-7400015.3">加分习题</a></span>
+<br><span class="chapterToc">16 <a href="learn-c-the-hard-waych16.html#x21-7500016">Exercise 15: 指针啊指针，恐怖的指针</a></span>
+<br>     <span class="sectionToc">16.1 <a href="learn-c-the-hard-waych16.html#x21-7600016.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">16.2 <a href="learn-c-the-hard-waych16.html#x21-7700016.2">解释指针</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">16.3 <a href="learn-c-the-hard-waych16.html#x21-7800016.3">指针使用练习</a></span>
+<br>     <span class="sectionToc">16.4 <a href="learn-c-the-hard-waych16.html#x21-7900016.4">指针词典</a></span>
+<br>     <span class="sectionToc">16.5 <a href="learn-c-the-hard-waych16.html#x21-8000016.5">如何让程序出错</a></span>
+<br>     <span class="sectionToc">16.6 <a href="learn-c-the-hard-waych16.html#x21-8100016.6">加分习题</a></span>
+<br><span class="chapterToc">17 <a href="learn-c-the-hard-waych17.html#x22-8200017">Exercise 16: Structs And Pointers To Them</a></span>
+<br>     <span class="sectionToc">17.1 <a href="learn-c-the-hard-waych17.html#x22-8300017.1">What You Should See</a></span>
+<br>     <span class="sectionToc">17.2 <a href="learn-c-the-hard-waych17.html#x22-8400017.2">Explaining Structures</a></span>
+<br>     <span class="sectionToc">17.3 <a href="learn-c-the-hard-waych17.html#x22-8500017.3">How To Break It</a></span>
+<br>     <span class="sectionToc">17.4 <a href="learn-c-the-hard-waych17.html#x22-8600017.4">Extra Credit</a></span>
+<br><span class="chapterToc">18 <a href="learn-c-the-hard-waych18.html#x23-8700018">Exercise 17: Heap And Stack Memory Allocation</a></span>
+<br>     <span class="sectionToc">18.1 <a href="learn-c-the-hard-waych18.html#x23-8800018.1">What You Should See</a></span>
+<br>     <span class="sectionToc">18.2 <a href="learn-c-the-hard-waych18.html#x23-8900018.2">Heap vs. Stack Allocation</a></span>
+<br>     <span class="sectionToc">18.3 <a href="learn-c-the-hard-waych18.html#x23-9000018.3">How To Break It</a></span>
+<br>     <span class="sectionToc">18.4 <a href="learn-c-the-hard-waych18.html#x23-9100018.4">Extra Credit</a></span>
+<br><span class="chapterToc">19 <a href="learn-c-the-hard-waych19.html#x24-9200019">习题18: 指向函数的指针</a></span>
+<br>     <span class="sectionToc">19.1 <a href="learn-c-the-hard-waych19.html#x24-9300019.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">19.2 <a href="learn-c-the-hard-waych19.html#x24-9400019.2">让程序出错</a></span>
+<br>     <span class="sectionToc">19.3 <a href="learn-c-the-hard-waych19.html#x24-9500019.3">加分习题</a></span>
+<br><span class="chapterToc">20 <a href="learn-c-the-hard-waych20.html#x25-9600020">习题19: 一个简单的对象系统</a></span>
+<br>     <span class="sectionToc">20.1 <a href="learn-c-the-hard-waych20.html#x25-9700020.1">How The CPP Works</a></span>
+<br>     <span class="sectionToc">20.2 <a href="learn-c-the-hard-waych20.html#x25-9800020.2">The Prototype Object System</a></span>
+<br>      <span class="subsectionToc">20.2.1 <a href="learn-c-the-hard-waych20.html#x25-9900020.2.1" id="QQ2-25-152">The Object Header File</a></span>
+<br>      <span class="subsectionToc">20.2.2 <a href="learn-c-the-hard-waych20.html#x25-10000020.2.2" id="QQ2-25-154">The Object Source File</a></span>
+<br>     <span class="sectionToc">20.3 <a href="learn-c-the-hard-waych20.html#x25-10100020.3">The Game Implementation</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">20.4 <a href="learn-c-the-hard-waych20.html#x25-10200020.4">What You Should See</a></span>
+<br>     <span class="sectionToc">20.5 <a href="learn-c-the-hard-waych20.html#x25-10300020.5">Auditing The Game</a></span>
+<br>     <span class="sectionToc">20.6 <a href="learn-c-the-hard-waych20.html#x25-10400020.6">Extra Credit</a></span>
+<br><span class="chapterToc">21 <a href="learn-c-the-hard-waych21.html#x26-10500021">习题20: Zed 的强悍的debug 宏命令</a></span>
+<br>     <span class="sectionToc">21.1 <a href="learn-c-the-hard-waych21.html#x26-10600021.1">The C Error Handling Problem</a></span>
+<br>     <span class="sectionToc">21.2 <a href="learn-c-the-hard-waych21.html#x26-10700021.2">The Debug Macros</a></span>
+<br>     <span class="sectionToc">21.3 <a href="learn-c-the-hard-waych21.html#x26-10800021.3">Using dbg.h</a></span>
+<br>     <span class="sectionToc">21.4 <a href="learn-c-the-hard-waych21.html#x26-10900021.4">What You Should See</a></span>
+<br>     <span class="sectionToc">21.5 <a href="learn-c-the-hard-waych21.html#x26-11000021.5">How The CPP Expands Macros</a></span>
+<br>     <span class="sectionToc">21.6 <a href="learn-c-the-hard-waych21.html#x26-11100021.6">Extra Credit</a></span>
+<br><span class="chapterToc">22 <a href="learn-c-the-hard-waych22.html#x27-11200022">习题21: 高级数据类型与流程控制</a></span>
+<br>     <span class="sectionToc">22.1 <a href="learn-c-the-hard-waych22.html#x27-11300022.1">可用数据类型</a></span>
+<br>      <span class="subsectionToc">22.1.1 <a href="learn-c-the-hard-waych22.html#x27-11400022.1.1" id="QQ2-27-176">类型修饰符</a></span>
+<br>      <span class="subsectionToc">22.1.2 <a href="learn-c-the-hard-waych22.html#x27-11500022.1.2" id="QQ2-27-177">类型限定符</a></span>
+<br>      <span class="subsectionToc">22.1.3 <a href="learn-c-the-hard-waych22.html#x27-11600022.1.3" id="QQ2-27-178">类型转换</a></span>
+<br>      <span class="subsectionToc">22.1.4 <a href="learn-c-the-hard-waych22.html#x27-11700022.1.4" id="QQ2-27-179">类型大小</a></span>
+<br>     <span class="sectionToc">22.2 <a href="learn-c-the-hard-waych22.html#x27-11800022.2">可用运算符</a></span>
+<br>      <span class="subsectionToc">22.2.1 <a href="learn-c-the-hard-waych22.html#x27-11900022.2.1" id="QQ2-27-181">数学运算符</a></span>
+<br>      <span class="subsectionToc">22.2.2 <a href="learn-c-the-hard-waych22.html#x27-12000022.2.2" id="QQ2-27-182">数据运算符</a></span>
+<br>      <span class="subsectionToc">22.2.3 <a href="learn-c-the-hard-waych22.html#x27-12100022.2.3" id="QQ2-27-183">逻辑运算符</a></span>
+<br>      <span class="subsectionToc">22.2.4 <a href="learn-c-the-hard-waych22.html#x27-12200022.2.4" id="QQ2-27-184">位运算符</a></span>
+<br>      <span class="subsectionToc">22.2.5 <a href="learn-c-the-hard-waych22.html#x27-12300022.2.5" id="QQ2-27-185">布尔运算符</a></span>
+<br>      <span class="subsectionToc">22.2.6 <a href="learn-c-the-hard-waych22.html#x27-12400022.2.6" id="QQ2-27-186">赋值运算符</a></span>
+<br>     <span class="sectionToc">22.3 <a href="learn-c-the-hard-waych22.html#x27-12500022.3">可用的控制结构</a></span>
+                                                                  
+
+                                                                  
+<br>      <span class="subsectionToc">22.3.1 <a href="learn-c-the-hard-waych22.html#x27-12600022.3.1" id="QQ2-27-188">加分习题</a></span>
+<br><span class="chapterToc">23 <a href="learn-c-the-hard-waych23.html#x28-12700023">Exercise 22: The Stack, Scope, And Globals</a></span>
+<br>      <span class="subsectionToc">23.0.2 <a href="learn-c-the-hard-waych23.html#x28-12800023.0.2" id="QQ2-28-190">ex22.h and ex22.c</a></span>
+<br>      <span class="subsectionToc">23.0.3 <a href="learn-c-the-hard-waych23.html#x28-12900023.0.3" id="QQ2-28-193">ex22_main.c</a></span>
+<br>     <span class="sectionToc">23.1 <a href="learn-c-the-hard-waych23.html#x28-13000023.1">What You Should See</a></span>
+<br>     <span class="sectionToc">23.2 <a href="learn-c-the-hard-waych23.html#x28-13100023.2">Scope, Stack, And Bugs</a></span>
+<br>     <span class="sectionToc">23.3 <a href="learn-c-the-hard-waych23.html#x28-13200023.3">How To Break It</a></span>
+<br>     <span class="sectionToc">23.4 <a href="learn-c-the-hard-waych23.html#x28-13300023.4">Extra Credit</a></span>
+<br><span class="chapterToc">24 <a href="learn-c-the-hard-waych24.html#x29-13400024">习题23: 接触Duff 的设备</a></span>
+<br>     <span class="sectionToc">24.1 <a href="learn-c-the-hard-waych24.html#x29-13500024.1">你应该看到的结果</a></span>
+<br>     <span class="sectionToc">24.2 <a href="learn-c-the-hard-waych24.html#x29-13600024.2">谜底</a></span>
+<br>      <span class="subsectionToc">24.2.1 <a href="learn-c-the-hard-waych24.html#x29-13700024.2.1" id="QQ2-29-205">有必要这样做吗？</a></span>
+<br>     <span class="sectionToc">24.3 <a href="learn-c-the-hard-waych24.html#x29-13800024.3">加分习题</a></span>
+<br><span class="chapterToc">25 <a href="learn-c-the-hard-waych25.html#x30-13900025">习题24: 输入、输出、文件</a></span>
+<br>     <span class="sectionToc">25.1 <a href="learn-c-the-hard-waych25.html#x30-14000025.1">你将看到</a></span>
+<br>     <span class="sectionToc">25.2 <a href="learn-c-the-hard-waych25.html#x30-14100025.2">让程序出错</a></span>
+<br>     <span class="sectionToc">25.3 <a href="learn-c-the-hard-waych25.html#x30-14200025.3">I/O 函数</a></span>
+<br>     <span class="sectionToc">25.4 <a href="learn-c-the-hard-waych25.html#x30-14300025.4">额外小作业</a></span>
+<br><span class="chapterToc">26 <a href="learn-c-the-hard-waych26.html#x31-14400026">Exercise 25: Variable Argument Functions</a></span>
+<br>     <span class="sectionToc">26.1 <a href="learn-c-the-hard-waych26.html#x31-14500026.1">What You Should See</a></span>
+<br>     <span class="sectionToc">26.2 <a href="learn-c-the-hard-waych26.html#x31-14600026.2">How To Break It</a></span>
+<br>     <span class="sectionToc">26.3 <a href="learn-c-the-hard-waych26.html#x31-14700026.3">Extra Credit</a></span>
+<br><span class="chapterToc">27 <a href="learn-c-the-hard-waych27.html#x32-14800027">习题26: 第一个真正的程序</a></span>
+<br>     <span class="sectionToc">27.1 <a href="learn-c-the-hard-waych27.html#x32-14900027.1">什么是devpkg?</a></span>
+                                                                  
+
+                                                                  
+<br>      <span class="subsectionToc">27.1.1 <a href="learn-c-the-hard-waych27.html#x32-15000027.1.1" id="QQ2-32-223">我们要实现的功能</a></span>
+<br>      <span class="subsectionToc">27.1.2 <a href="learn-c-the-hard-waych27.html#x32-15100027.1.2" id="QQ2-32-224">软件设计</a></span>
+<br>      <span class="subsectionToc">27.1.3 <a href="learn-c-the-hard-waych27.html#x32-15200027.1.3" id="QQ2-32-225">Apache Portable Runtime</a></span>
+<br>     <span class="sectionToc">27.2 <a href="learn-c-the-hard-waych27.html#x32-15300027.2">项目结构</a></span>
+<br>      <span class="subsectionToc">27.2.1 <a href="learn-c-the-hard-waych27.html#x32-15400027.2.1" id="QQ2-32-229">其他需求</a></span>
+<br>     <span class="sectionToc">27.3 <a href="learn-c-the-hard-waych27.html#x32-15500027.3">Makefile</a></span>
+<br>     <span class="sectionToc">27.4 <a href="learn-c-the-hard-waych27.html#x32-15600027.4">代码文件</a></span>
+<br>      <span class="subsectionToc">27.4.1 <a href="learn-c-the-hard-waych27.html#x32-15700027.4.1" id="QQ2-32-235">数据库函数</a></span>
+<br>      <span class="subsectionToc">27.4.2 <a href="learn-c-the-hard-waych27.html#x32-15900027.4.2" id="QQ2-32-239">Shell 函数</a></span>
+<br>      <span class="subsectionToc">27.4.3 <a href="learn-c-the-hard-waych27.html#x32-16100027.4.3" id="QQ2-32-243">命令函数</a></span>
+<br>      <span class="subsectionToc">27.4.4 <a href="learn-c-the-hard-waych27.html#x32-16300027.4.4" id="QQ2-32-247">devpkg的主函数</a></span>
+<br>     <span class="sectionToc">27.5 <a href="learn-c-the-hard-waych27.html#x32-16500027.5"></a></span>
+<br><span class="partToc">II  <a href="learn-c-the-hard-waypa2.html#x33-166000II">数据结构和算法</a></span>
+<br><span class="chapterToc">28 <a href="learn-c-the-hard-waych28.html#x34-16700028">习题27: 创造性与防御性编程</a></span>
+<br>     <span class="sectionToc">28.1 <a href="learn-c-the-hard-waych28.html#x34-16800028.1">The Creative Programmer Mindset</a></span>
+<br>     <span class="sectionToc">28.2 <a href="learn-c-the-hard-waych28.html#x34-16900028.2">The Defensive Programmer Mindset 防御性编程思维模式</a></span>
+<br>     <span class="sectionToc">28.3 <a href="learn-c-the-hard-waych28.html#x34-17000028.3">八个防御性编程的策略</a></span>
+<br>     <span class="sectionToc">28.4 <a href="learn-c-the-hard-waych28.html#x34-17100028.4">Applying The Eight Strategies 应用八大策略</a></span>
+<br>      <span class="subsectionToc">28.4.1 <a href="learn-c-the-hard-waych28.html#x34-17200028.4.1" id="QQ2-34-257">Never Trust Input 从不信任输入</a></span>
+<br>      <span class="subsectionToc">28.4.2 <a href="learn-c-the-hard-waych28.html#x34-17300028.4.2" id="QQ2-34-258">Prevent Errors 预防错误</a></span>
+<br>      <span class="subsectionToc">28.4.3 <a href="learn-c-the-hard-waych28.html#x34-17400028.4.3" id="QQ2-34-259">Fail Early And Openly 出错要尽早且有错误输出</a></span>
+<br>      <span class="subsectionToc">28.4.4 <a href="learn-c-the-hard-waych28.html#x34-17500028.4.4" id="QQ2-34-260">Document Assumptions 前提建档</a></span>
+<br>      <span class="subsectionToc">28.4.5 <a href="learn-c-the-hard-waych28.html#x34-17600028.4.5" id="QQ2-34-261">Prevention Over Documentation 靠预防措施不靠文档说明</a></span>
+<br>      <span class="subsectionToc">28.4.6 <a href="learn-c-the-hard-waych28.html#x34-17700028.4.6" id="QQ2-34-262">Automate Everything 自动化</a></span>
+                                                                  
+
+                                                                  
+<br>      <span class="subsectionToc">28.4.7 <a href="learn-c-the-hard-waych28.html#x34-17800028.4.7" id="QQ2-34-263">Simplify And Clarify 简洁明了</a></span>
+<br>      <span class="subsectionToc">28.4.8 <a href="learn-c-the-hard-waych28.html#x34-17900028.4.8" id="QQ2-34-264">Question Authority 质疑权威</a></span>
+<br>     <span class="sectionToc">28.5 <a href="learn-c-the-hard-waych28.html#x34-18000028.5">Order Is Not Important 秩序不重要</a></span>
+<br>     <span class="sectionToc">28.6 <a href="learn-c-the-hard-waych28.html#x34-18100028.6">加分题</a></span>
+<br><span class="chapterToc">29 <a href="learn-c-the-hard-waych29.html#x35-18200029">Exercise 28: Intermediate Makefiles</a></span>
+<br>     <span class="sectionToc">29.1 <a href="learn-c-the-hard-waych29.html#x35-18300029.1">The Basic Project Structure</a></span>
+<br>     <span class="sectionToc">29.2 <a href="learn-c-the-hard-waych29.html#x35-18400029.2">Makefile</a></span>
+<br>      <span class="subsectionToc">29.2.1 <a href="learn-c-the-hard-waych29.html#x35-18500029.2.1" id="QQ2-35-272">The Header</a></span>
+<br>      <span class="subsectionToc">29.2.2 <a href="learn-c-the-hard-waych29.html#x35-18600029.2.2" id="QQ2-35-274">The Target Build</a></span>
+<br>      <span class="subsectionToc">29.2.3 <a href="learn-c-the-hard-waych29.html#x35-18700029.2.3" id="QQ2-35-275">The Unit Tests</a></span>
+<br>      <span class="subsectionToc">29.2.4 <a href="learn-c-the-hard-waych29.html#x35-18800029.2.4" id="QQ2-35-277">The Cleaner</a></span>
+<br>      <span class="subsectionToc">29.2.5 <a href="learn-c-the-hard-waych29.html#x35-18900029.2.5" id="QQ2-35-278">The Install</a></span>
+<br>      <span class="subsectionToc">29.2.6 <a href="learn-c-the-hard-waych29.html#x35-19000029.2.6" id="QQ2-35-279">The Checker</a></span>
+<br>     <span class="sectionToc">29.3 <a href="learn-c-the-hard-waych29.html#x35-19100029.3">What You Should See</a></span>
+<br>     <span class="sectionToc">29.4 <a href="learn-c-the-hard-waych29.html#x35-19200029.4">Extra Credit</a></span>
+<br><span class="chapterToc">30 <a href="learn-c-the-hard-waych30.html#x36-19300030">Exercise 29: Libraries And Linking</a></span>
+<br>      <span class="subsectionToc">30.0.1 <a href="learn-c-the-hard-waych30.html#x36-19400030.0.1" id="QQ2-36-284">Dynamically Loading A Shared Library</a></span>
+<br>     <span class="sectionToc">30.1 <a href="learn-c-the-hard-waych30.html#x36-19500030.1">What You Should See</a></span>
+<br>     <span class="sectionToc">30.2 <a href="learn-c-the-hard-waych30.html#x36-19600030.2">How To Break It</a></span>
+<br>     <span class="sectionToc">30.3 <a href="learn-c-the-hard-waych30.html#x36-19700030.3">Extra Credit</a></span>
+<br><span class="chapterToc">31 <a href="learn-c-the-hard-waych31.html#x37-19800031">Exercise 30: Automated Testing</a></span>
+<br>     <span class="sectionToc">31.1 <a href="learn-c-the-hard-waych31.html#x37-19900031.1">Wiring Up The Test Framework</a></span>
+<br>     <span class="sectionToc">31.2 <a href="learn-c-the-hard-waych31.html#x37-20000031.2">Extra Credit</a></span>
+<br><span class="chapterToc">32 <a href="learn-c-the-hard-waych32.html#x38-20100032">Exercise 31: Debugging Code</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">32.1 <a href="learn-c-the-hard-waych32.html#x38-20200032.1">Debug Printing Vs. GDB Vs. Valgrind</a></span>
+<br>     <span class="sectionToc">32.2 <a href="learn-c-the-hard-waych32.html#x38-20300032.2">A Debugging Strategy</a></span>
+<br>     <span class="sectionToc">32.3 <a href="learn-c-the-hard-waych32.html#x38-20400032.3">Using GDB</a></span>
+<br>     <span class="sectionToc">32.4 <a href="learn-c-the-hard-waych32.html#x38-20500032.4">Process Attaching</a></span>
+<br>     <span class="sectionToc">32.5 <a href="learn-c-the-hard-waych32.html#x38-20600032.5">GDB Tricks</a></span>
+<br>     <span class="sectionToc">32.6 <a href="learn-c-the-hard-waych32.html#x38-20700032.6">Extra Credit</a></span>
+<br><span class="chapterToc">33 <a href="learn-c-the-hard-waych33.html#x39-20800033">Exercise 32: Double Linked Lists</a></span>
+<br>     <span class="sectionToc">33.1 <a href="learn-c-the-hard-waych33.html#x39-20900033.1">What Are Data Structures</a></span>
+<br>     <span class="sectionToc">33.2 <a href="learn-c-the-hard-waych33.html#x39-21000033.2">Making The Library</a></span>
+<br>     <span class="sectionToc">33.3 <a href="learn-c-the-hard-waych33.html#x39-21100033.3">Double Linked Lists</a></span>
+<br>      <span class="subsectionToc">33.3.1 <a href="learn-c-the-hard-waych33.html#x39-21200033.3.1" id="QQ2-39-314">Definition</a></span>
+<br>      <span class="subsectionToc">33.3.2 <a href="learn-c-the-hard-waych33.html#x39-21300033.3.2" id="QQ2-39-316">Implemention</a></span>
+<br>     <span class="sectionToc">33.4 <a href="learn-c-the-hard-waych33.html#x39-21400033.4">Tests</a></span>
+<br>     <span class="sectionToc">33.5 <a href="learn-c-the-hard-waych33.html#x39-21500033.5">What You Should See</a></span>
+<br>     <span class="sectionToc">33.6 <a href="learn-c-the-hard-waych33.html#x39-21600033.6">How To Improve It</a></span>
+<br>     <span class="sectionToc">33.7 <a href="learn-c-the-hard-waych33.html#x39-21700033.7">Extra Credit</a></span>
+<br><span class="chapterToc">34 <a href="learn-c-the-hard-waych34.html#x40-21800034">Exercise 33: Linked List Algorithms</a></span>
+<br>      <span class="subsectionToc">34.0.1 <a href="learn-c-the-hard-waych34.html#x40-21900034.0.1" id="QQ2-40-325">Bubble And Merge Sort</a></span>
+<br>      <span class="subsectionToc">34.0.2 <a href="learn-c-the-hard-waych34.html#x40-22000034.0.2" id="QQ2-40-326">The Unit Test</a></span>
+<br>      <span class="subsectionToc">34.0.3 <a href="learn-c-the-hard-waych34.html#x40-22100034.0.3" id="QQ2-40-328">The Implementation</a></span>
+<br>     <span class="sectionToc">34.1 <a href="learn-c-the-hard-waych34.html#x40-22200034.1">What You Should See</a></span>
+<br>     <span class="sectionToc">34.2 <a href="learn-c-the-hard-waych34.html#x40-22300034.2">How To Improve It</a></span>
+<br>     <span class="sectionToc">34.3 <a href="learn-c-the-hard-waych34.html#x40-22400034.3">Extra Credit</a></span>
+<br><span class="chapterToc">35 <a href="learn-c-the-hard-waych35.html#x41-22500035">Exercise 34: Dynamic Array</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">35.1 <a href="learn-c-the-hard-waych35.html#x41-22600035.1">Advantages And Disadvantages</a></span>
+<br>     <span class="sectionToc">35.2 <a href="learn-c-the-hard-waych35.html#x41-22700035.2">How To Improve It</a></span>
+<br>     <span class="sectionToc">35.3 <a href="learn-c-the-hard-waych35.html#x41-22800035.3">Extra Credit</a></span>
+<br><span class="chapterToc">36 <a href="learn-c-the-hard-waych36.html#x42-22900036">Exercise 35: Dynamic Array Algorithms</a></span>
+<br>     <span class="sectionToc">36.1 <a href="learn-c-the-hard-waych36.html#x42-23000036.1">What You Should See</a></span>
+<br>     <span class="sectionToc">36.2 <a href="learn-c-the-hard-waych36.html#x42-23100036.2">How To Break It</a></span>
+<br>     <span class="sectionToc">36.3 <a href="learn-c-the-hard-waych36.html#x42-23200036.3">Extra Credit</a></span>
+<br><span class="chapterToc">37 <a href="learn-c-the-hard-waych37.html#x43-23300037">Exercise 36: Hash Maps</a></span>
+<br>     <span class="sectionToc">37.1 <a href="learn-c-the-hard-waych37.html#x43-23400037.1">What You Should See</a></span>
+<br>     <span class="sectionToc">37.2 <a href="learn-c-the-hard-waych37.html#x43-23500037.2">How To Break It</a></span>
+<br>     <span class="sectionToc">37.3 <a href="learn-c-the-hard-waych37.html#x43-23600037.3">Extra Credit</a></span>
+<br><span class="chapterToc">38 <a href="learn-c-the-hard-waych38.html#x44-23700038">Exercise 37: Hash Map Algorithms</a></span>
+<br>     <span class="sectionToc">38.1 <a href="learn-c-the-hard-waych38.html#x44-23800038.1">What You Should See</a></span>
+<br>     <span class="sectionToc">38.2 <a href="learn-c-the-hard-waych38.html#x44-23900038.2">How To Break It</a></span>
+<br>     <span class="sectionToc">38.3 <a href="learn-c-the-hard-waych38.html#x44-24000038.3">Extra Credit</a></span>
+<br><span class="chapterToc">39 <a href="learn-c-the-hard-waych39.html#x45-24100039">Exercise 38: Safer Strings</a></span>
+<br>     <span class="sectionToc">39.1 <a href="learn-c-the-hard-waych39.html#x45-24200039.1">What You Should See</a></span>
+<br>     <span class="sectionToc">39.2 <a href="learn-c-the-hard-waych39.html#x45-24300039.2">How To Break It</a></span>
+<br>     <span class="sectionToc">39.3 <a href="learn-c-the-hard-waych39.html#x45-24400039.3">Extra Credit</a></span>
+<br><span class="chapterToc">40 <a href="learn-c-the-hard-waych40.html#x46-24500040">Exercise 39: String Algorithms</a></span>
+<br>     <span class="sectionToc">40.1 <a href="learn-c-the-hard-waych40.html#x46-24600040.1">What You Should See</a></span>
+<br>     <span class="sectionToc">40.2 <a href="learn-c-the-hard-waych40.html#x46-24700040.2">How To Break It</a></span>
+<br>     <span class="sectionToc">40.3 <a href="learn-c-the-hard-waych40.html#x46-24800040.3">Extra Credit</a></span>
+<br><span class="chapterToc">41 <a href="learn-c-the-hard-waych41.html#x47-24900041">Exercise 40: Binary Trees</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">41.1 <a href="learn-c-the-hard-waych41.html#x47-25000041.1">What You Should See</a></span>
+<br>     <span class="sectionToc">41.2 <a href="learn-c-the-hard-waych41.html#x47-25100041.2">How To Break It</a></span>
+<br>     <span class="sectionToc">41.3 <a href="learn-c-the-hard-waych41.html#x47-25200041.3">Extra Credit</a></span>
+<br><span class="chapterToc">42 <a href="learn-c-the-hard-waych42.html#x48-25300042">Exercise 41: Binary Tree Algorithms</a></span>
+<br>     <span class="sectionToc">42.1 <a href="learn-c-the-hard-waych42.html#x48-25400042.1">What You Should See</a></span>
+<br>     <span class="sectionToc">42.2 <a href="learn-c-the-hard-waych42.html#x48-25500042.2">How To Break It</a></span>
+<br>     <span class="sectionToc">42.3 <a href="learn-c-the-hard-waych42.html#x48-25600042.3">Extra Credit</a></span>
+<br><span class="chapterToc">43 <a href="learn-c-the-hard-waych43.html#x49-25700043">Exercise 42: Stacks and Queues</a></span>
+<br>     <span class="sectionToc">43.1 <a href="learn-c-the-hard-waych43.html#x49-25800043.1">What You Should See</a></span>
+<br>     <span class="sectionToc">43.2 <a href="learn-c-the-hard-waych43.html#x49-25900043.2">How To Break It</a></span>
+<br>     <span class="sectionToc">43.3 <a href="learn-c-the-hard-waych43.html#x49-26000043.3">Extra Credit</a></span>
+<br><span class="chapterToc">44 <a href="learn-c-the-hard-waych44.html#x50-26100044">Exercise 43: Stack and Queue Algorithms</a></span>
+<br>     <span class="sectionToc">44.1 <a href="learn-c-the-hard-waych44.html#x50-26200044.1">What You Should See</a></span>
+<br>     <span class="sectionToc">44.2 <a href="learn-c-the-hard-waych44.html#x50-26300044.2">How To Break It</a></span>
+<br>     <span class="sectionToc">44.3 <a href="learn-c-the-hard-waych44.html#x50-26400044.3">Extra Credit</a></span>
+<br><span class="chapterToc">45 <a href="learn-c-the-hard-waych45.html#x51-26500045">Exercise 44: Ring Buffer</a></span>
+<br>     <span class="sectionToc">45.1 <a href="learn-c-the-hard-waych45.html#x51-26600045.1">What You Should See</a></span>
+<br>     <span class="sectionToc">45.2 <a href="learn-c-the-hard-waych45.html#x51-26700045.2">How To Break It</a></span>
+<br>     <span class="sectionToc">45.3 <a href="learn-c-the-hard-waych45.html#x51-26800045.3">Extra Credit</a></span>
+<br><span class="chapterToc">46 <a href="learn-c-the-hard-waych46.html#x52-26900046">Exercise 45: Ring Buffer Algorithms</a></span>
+<br>     <span class="sectionToc">46.1 <a href="learn-c-the-hard-waych46.html#x52-27000046.1">What You Should See</a></span>
+<br>     <span class="sectionToc">46.2 <a href="learn-c-the-hard-waych46.html#x52-27100046.2">How To Break It</a></span>
+<br>     <span class="sectionToc">46.3 <a href="learn-c-the-hard-waych46.html#x52-27200046.3">Extra Credit</a></span>
+<br><span class="chapterToc">47 <a href="learn-c-the-hard-waych47.html#x53-27300047">Exercise 46: Suffix Arrays</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">47.1 <a href="learn-c-the-hard-waych47.html#x53-27400047.1">What You Should See</a></span>
+<br>     <span class="sectionToc">47.2 <a href="learn-c-the-hard-waych47.html#x53-27500047.2">How To Break It</a></span>
+<br>     <span class="sectionToc">47.3 <a href="learn-c-the-hard-waych47.html#x53-27600047.3">Extra Credit</a></span>
+<br><span class="chapterToc">48 <a href="learn-c-the-hard-waych48.html#x54-27700048">Exercise 47: Suffix Array Algorithms</a></span>
+<br>     <span class="sectionToc">48.1 <a href="learn-c-the-hard-waych48.html#x54-27800048.1">What You Should See</a></span>
+<br>     <span class="sectionToc">48.2 <a href="learn-c-the-hard-waych48.html#x54-27900048.2">How To Break It</a></span>
+<br>     <span class="sectionToc">48.3 <a href="learn-c-the-hard-waych48.html#x54-28000048.3">Extra Credit</a></span>
+<br><span class="chapterToc">49 <a href="learn-c-the-hard-waych49.html#x55-28100049">Exercise 48: Ternary Search Tree</a></span>
+<br>     <span class="sectionToc">49.1 <a href="learn-c-the-hard-waych49.html#x55-28200049.1">What You Should See</a></span>
+<br>     <span class="sectionToc">49.2 <a href="learn-c-the-hard-waych49.html#x55-28300049.2">How To Break It</a></span>
+<br>     <span class="sectionToc">49.3 <a href="learn-c-the-hard-waych49.html#x55-28400049.3">Extra Credit</a></span>
+<br><span class="chapterToc">50 <a href="learn-c-the-hard-waych50.html#x56-28500050">Exercise 49: Ternary Search Tree Algorithms</a></span>
+<br>     <span class="sectionToc">50.1 <a href="learn-c-the-hard-waych50.html#x56-28600050.1">What You Should See</a></span>
+<br>     <span class="sectionToc">50.2 <a href="learn-c-the-hard-waych50.html#x56-28700050.2">How To Break It</a></span>
+<br>     <span class="sectionToc">50.3 <a href="learn-c-the-hard-waych50.html#x56-28800050.3">Extra Credit</a></span>
+<br><span class="chapterToc">51 <a href="learn-c-the-hard-waych51.html#x57-28900051">Exercise 50: A Tiny Virtual Machine Part 1</a></span>
+<br>     <span class="sectionToc">51.1 <a href="learn-c-the-hard-waych51.html#x57-29000051.1">What You Should See</a></span>
+<br>     <span class="sectionToc">51.2 <a href="learn-c-the-hard-waych51.html#x57-29100051.2">How To Break It</a></span>
+<br>     <span class="sectionToc">51.3 <a href="learn-c-the-hard-waych51.html#x57-29200051.3">Extra Credit</a></span>
+<br><span class="chapterToc">52 <a href="learn-c-the-hard-waych52.html#x58-29300052">Exercise 51: A Tiny Virtual Machine Part 2</a></span>
+<br>     <span class="sectionToc">52.1 <a href="learn-c-the-hard-waych52.html#x58-29400052.1">What You Should See</a></span>
+<br>     <span class="sectionToc">52.2 <a href="learn-c-the-hard-waych52.html#x58-29500052.2">How To Break It</a></span>
+<br>     <span class="sectionToc">52.3 <a href="learn-c-the-hard-waych52.html#x58-29600052.3">Extra Credit</a></span>
+<br><span class="chapterToc">53 <a href="learn-c-the-hard-waych53.html#x59-29700053">Exercise 52: A Tiny Virtual Machine Part 3</a></span>
+                                                                  
+
+                                                                  
+<br>     <span class="sectionToc">53.1 <a href="learn-c-the-hard-waych53.html#x59-29800053.1">What You Should See</a></span>
+<br>     <span class="sectionToc">53.2 <a href="learn-c-the-hard-waych53.html#x59-29900053.2">How To Break It</a></span>
+<br>     <span class="sectionToc">53.3 <a href="learn-c-the-hard-waych53.html#x59-30000053.3">Extra Credit</a></span>
+<br><span class="chapterToc">54 <a href="learn-c-the-hard-waych54.html#x60-30100054">Next Steps</a></span>
+<br><span class="partToc">III  <a href="learn-c-the-hard-waypa3.html#x61-302000III">Reviewing And Critiquing Code</a></span>
+<br><span class="chapterToc">55 <a href="learn-c-the-hard-waych55.html#x62-30300055">Deconstructing "K&amp;R C"</a></span>
+<br>     <span class="sectionToc">55.1 <a href="learn-c-the-hard-waych55.html#x62-30400055.1">An Overall Critique Of Correctness</a></span>
+<br>      <span class="subsectionToc">55.1.1 <a href="learn-c-the-hard-waych55.html#x62-30500055.1.1" id="QQ2-62-419">A First Demonstration Defect</a></span>
+<br>      <span class="subsectionToc">55.1.2 <a href="learn-c-the-hard-waych55.html#x62-30600055.1.2" id="QQ2-62-422">Why copy() Fails</a></span>
+<br>      <span class="subsectionToc">55.1.3 <a href="learn-c-the-hard-waych55.html#x62-30700055.1.3" id="QQ2-62-423">But, That’s Not A C String</a></span>
+<br>      <span class="subsectionToc">55.1.4 <a href="learn-c-the-hard-waych55.html#x62-30800055.1.4" id="QQ2-62-424">Just Don’t Do That</a></span>
+<br>      <span class="subsectionToc">55.1.5 <a href="learn-c-the-hard-waych55.html#x62-30900055.1.5" id="QQ2-62-425">Stylistic Issues</a></span>
+<br>     <span class="sectionToc">55.2 <a href="learn-c-the-hard-waych55.html#x62-31000055.2">Chapter 1 Examples</a></span>
     </div>
                                                                   
 
@@ -8,6 +346,6 @@
                                                                   
 
                                                                   
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>  
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-wayli2.html">next</a>] [<a href="learn-c-the-hard-way.html">prev</a>] [<a href="learn-c-the-hard-way.html#taillearn-c-the-hard-way">prev-tail</a>] [<a href="learn-c-the-hard-wayli1.html">front</a>] [<a href="learn-c-the-hard-way.html#learn-c-the-hard-wayli1.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-wayli1.html"></a>  
 </p></body></html>

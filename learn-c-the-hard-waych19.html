@@ -1,5 +1,5 @@
-<html><head><title>习题18: 指向函数的指针</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题18: 指向函数的指针</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych20.html">next</a>] [<a href="learn-c-the-hard-waych18.html">prev</a>] [<a href="learn-c-the-hard-waych18.html#taillearn-c-the-hard-waych18.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych19.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych19.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 19</span><br><a id="x24-9200019"></a>习题18: 指向函数的指针</h2>
 <!--l. 3--><p class="noindent">C 中的函数（译注：函数名即为指针名）实际上只是指向程序中的代码的指针。就像你创建的指向结构体（structs），字符串（strings），和数组（arrays）的指针一样，你也能用指针指向函数。这么做的主要用途就是向其他函数传递”回调函数”（callbacks），或者传递给模拟的类与对象。这个练习中，我们会用到一些回调（callback）函数，在下一个中我们会做一个简单的对象系统。
 <!--l. 9--></p><p class="indent">    函数指针的格式看起来像这样:
@@ -13,11 +13,10 @@
                                                                   
 
                                                                   
-<!--l. 26--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 26--></p><p class="indent">    <a id="x24-92007r45"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x24-92007r45"></a>
 <div class="caption"><span class="id">Source 45: </span><span class="content">                                                使用行函数指针（Raw Function Pointer）
 </span></div><!--tex4ht:label?: x24-92007r45 -->
 <!--l. 27-->
@@ -35,11 +34,10 @@
                                                                   
 
                                                                   
-<!--l. 47--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 47--></p><p class="indent">    <a id="x24-92016r46"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x24-92016r46"></a>
  <div class="caption"><span class="id">Source 46: </span><span class="content">                                                                                                            ex18.c</span></div><!--tex4ht:label?: x24-92016r46 -->
 <div class="fancyvrb" id="fancyvrb21"><a id="x24-92018r1"></a>1  <span id="textcolor1437">#</span><span id="textcolor1438">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x24-92020r2"></a>2  <span id="textcolor1439">#</span><span id="textcolor1440">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x24-92022r3"></a>3  <span id="textcolor1441">#</span><span id="textcolor1442">include <assert.h></assert.h></span>
 <br class="fancyvrb"><a id="x24-92024r4"></a>4  <span id="textcolor1443">#</span><span id="textcolor1444">include <errno.h></errno.h></span><br class="fancyvrb"><a id="x24-92026r5"></a>5  <span id="textcolor1445">#</span><span id="textcolor1446">include <string.h></string.h></span><br class="fancyvrb"><a id="x24-92028r6"></a>6  <br class="fancyvrb"><a id="x24-92030r7"></a>7  <span id="textcolor1447">/⋆⋆ Our old friend die from ex17. ⋆/</span>
@@ -126,11 +124,10 @@ ex18.c:109 </dt><dd class="description">最后我们要做的就是释放我们�
                                                                   
 
                                                                   
-<!--l. 194--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 194--></p><p class="indent">    <a id="x24-93001r47"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x24-93001r47"></a>
 <div class="caption"><span class="id">Source 47: </span><span class="content">                                                                                                               ex18
 output</span></div><!--tex4ht:label?: x24-93001r47 -->
 <!--l. 195-->
@@ -144,11 +141,10 @@ output</span></div><!--tex4ht:label?: x24-93001r47 -->
                                                                   
 
                                                                   
-<!--l. 215--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 215--></p><p class="indent">    <a id="x24-94001r48"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x24-94001r48"></a>
  <div class="caption"><span class="id">Source 48: </span><span class="content">                                                                                          Function Pointer
 Evil</span></div><!--tex4ht:label?: x24-94001r48 -->
 <!--l. 216-->
@@ -171,6 +167,6 @@ Evil</span></div><!--tex4ht:label?: x24-94001r48 -->
      </li>
      <li class="enumerate" id="x24-95008x4">传入 NULL 看看你的程序出了什么问题。然后运行 Valgrind 看看报告了什么。
      </li>
-     <li class="enumerate" id="x24-95010x5">写另外一个排序算法，修改 test_sorting 调用这两个函数并比较排序结果。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x24-95010x5">写另外一个排序算法，修改 test_sorting 调用这两个函数并比较排序结果。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych20.html">next</a>] [<a href="learn-c-the-hard-waych18.html">prev</a>] [<a href="learn-c-the-hard-waych18.html#taillearn-c-the-hard-waych18.html">prev-tail</a>] [<a href="learn-c-the-hard-waych19.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych19.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych19.html"></a>   
 </p></body></html>

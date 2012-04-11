@@ -1,16 +1,15 @@
-<html><head><title>习题8: 数组和大小</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题8: 数组和大小</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych10.html">next</a>] [<a href="learn-c-the-hard-waych8.html">prev</a>] [<a href="learn-c-the-hard-waych8.html#taillearn-c-the-hard-waych8.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych9.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych9.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 9</span><br><a id="x14-460009"></a>习题8: 数组和大小</h2>
 <!--l. 3--><p class="noindent">上一个习题中你做了些数学运算，不过你在运算中使用了 <span class="obeylines-h"><span class="verb">’\0’</span></span> (null) 字符。如果你学过其他的语言，这对你来说就会有些奇怪，因为其他的语言会将字符串(string)和字节数组(byte array)当作不同的怪兽来对待，然而 C 语言则将字符串直接当字节数组对待，而只有那些实现打印功能的 C 函数才知道它们是不同的。
 <!--l. 5--></p><p class="indent">    明白 C 语言将字符串和字节数组等同对待是很重要的，而在解释这一点之前，有几个概念一定要讲清楚：sizeof 和数组。以下是我们即将探讨的代码：
                                                                   
 
                                                                   
-<!--l. 7--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 7--></p><p class="indent">    <a id="x14-46001r25"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x14-46001r25"></a>
 <div class="caption"><span class="id">Source 25: </span><span class="content">                                                                                                              ex8.c</span></div><!--tex4ht:label?: x14-46001r25 -->
 <div class="fancyvrb" id="fancyvrb8"><a id="x14-46003r1"></a>1  <span id="textcolor242">#</span><span id="textcolor243">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x14-46005r2"></a>2  <br class="fancyvrb"><a id="x14-46007r3"></a>3  <span id="textcolor244">int</span> <span id="textcolor245">main</span>(<span id="textcolor246">int</span> argc, <span id="textcolor247">char</span> ⋆argv[])<br class="fancyvrb"><a id="x14-46009r4"></a>4  {
 <br class="fancyvrb"><a id="x14-46011r5"></a>5      <span id="textcolor248">int</span> areas[] = {<span id="textcolor249">10</span>, <span id="textcolor250">12</span>, <span id="textcolor251">13</span>, <span id="textcolor252">14</span>, <span id="textcolor253">20</span>};<br class="fancyvrb"><a id="x14-46013r6"></a>6      <span id="textcolor254">char</span> name[] = <span class="colorbox" id="colorbox255"><span id="textcolor256">"</span></span><span class="colorbox" id="colorbox257"><span id="textcolor258">Zed</span></span><span class="colorbox" id="colorbox259"><span id="textcolor260">"</span></span>;
@@ -54,11 +53,10 @@ C 语言就是一门关于内存大小，内存位置，以及如何处理内存
                                                                   
 
                                                                   
-<!--l. 70--><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 70--><p class="indent">    <a id="x14-47001r26"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x14-47001r26"></a>
 <div class="caption"><span class="id">Source 26: </span><span class="content">                                                                                                        ex8 的输出</span></div><!--tex4ht:label?: x14-47001r26 -->
 <!--l. 71-->
 <div class="lstlisting" id="listing-19"><span class="label"><a id="x14-47002r1"></a>1</span>$ make ex8 <br><span class="label"><a id="x14-47003r2"></a>2</span>cc -Wall -g    ex8.c   -o ex8 <br><span class="label"><a id="x14-47004r3"></a>3</span>$ ./ex8 <br><span class="label"><a id="x14-47005r4"></a>4</span>The size of an int: 4 <br><span class="label"><a id="x14-47006r5"></a>5</span>The size of areas (int[]): 20 <br><span class="label"><a id="x14-47007r6"></a>6</span>The number of ints in areas: 5 <br><span class="label"><a id="x14-47008r7"></a>7</span>The first area is 10, the 2nd 12. <br><span class="label"><a id="x14-47009r8"></a>8</span>The size of a char: 1 <br><span class="label"><a id="x14-47010r9"></a>9</span>The size of name (char[]): 4 <br><span class="label"><a id="x14-47011r10"></a>10</span>The number of chars: 4 <br><span class="label"><a id="x14-47012r11"></a>11</span>The size of full_name (char[]): 12 <br><span class="label"><a id="x14-47013r12"></a>12</span>The number of chars: 12 <br><span class="label"><a id="x14-47014r13"></a>13</span>name="Zed" and full_name="Zed A. Shaw" <br><span class="label"><a id="x14-47015r14"></a>14</span>$
@@ -104,6 +102,6 @@ C 语言就是一门关于内存大小，内存位置，以及如何处理内存
      </li>
      <li class="enumerate" id="x14-49006x3">尝试把 areas 中的一个元素设置成 name 中的一个字符.
      </li>
-     <li class="enumerate" id="x14-49008x4">上网搜索一下，了解一下不同 CPU 整形大小差异。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x14-49008x4">上网搜索一下，了解一下不同 CPU 整形大小差异。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych10.html">next</a>] [<a href="learn-c-the-hard-waych8.html">prev</a>] [<a href="learn-c-the-hard-waych8.html#taillearn-c-the-hard-waych8.html">prev-tail</a>] [<a href="learn-c-the-hard-waych9.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych9.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych9.html"></a>   
 </p></body></html>

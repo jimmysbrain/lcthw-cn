@@ -1,5 +1,5 @@
-<html><head><title>Exercise 25: Variable Argument Functions</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 25: Variable Argument Functions</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych27.html">next</a>] [<a href="learn-c-the-hard-waych25.html">prev</a>] [<a href="learn-c-the-hard-waych25.html#taillearn-c-the-hard-waych25.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych26.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych26.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 26</span><br><a id="x31-14400026"></a>Exercise 25: Variable Argument Functions</h2>
 <!--l. 3--><p class="noindent">In C you can create your own versions of functions like printf and scanf by
 creating a ”variable argument function”. These functions use the header stdarg.h
@@ -13,11 +13,10 @@ use and gives you more understanding of the computer.
                                                                   
 
                                                                   
-<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 14--></p><p class="indent">    <a id="x31-144001r65"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x31-144001r65"></a>
  <div class="caption"><span class="id">Source 65: </span><span class="content">                                                                                                            ex25.c</span></div><!--tex4ht:label?: x31-144001r65 -->
 <div class="fancyvrb" id="fancyvrb35"><a id="x31-144003r1"></a>1  <span id="textcolor2895">/⋆⋆ WARNING: This code is fresh and potentially isn’t correct yet. ⋆/</span><br class="fancyvrb"><a id="x31-144005r2"></a>2  
 <br class="fancyvrb"><a id="x31-144007r3"></a>3  <span id="textcolor2896">#</span><span id="textcolor2897">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x31-144009r4"></a>4  <span id="textcolor2898">#</span><span id="textcolor2899">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x31-144011r5"></a>5  <span id="textcolor2900">#</span><span id="textcolor2901">include <stdarg.h></stdarg.h></span><br class="fancyvrb"><a id="x31-144013r6"></a>6  <span id="textcolor2902">#</span><span id="textcolor2903">include "dbg.h"</span>
@@ -118,11 +117,10 @@ functions. Here’s how it works:
                                                                   
 
                                                                   
-<!--l. 199--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 199--></p><p class="indent">    <a id="x31-145001r66"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x31-145001r66"></a>
  <div class="caption"><span class="id">Source 66: </span><span class="content">                                                                                                        ex25.out</span></div><!--tex4ht:label?: x31-145001r66 -->
 <!--l. 200-->
 <div class="lstlisting" id="listing-42"><span class="label"><a id="x31-145002r1"></a>1</span>$ make ex25 <br><span class="label"><a id="x31-145003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex25.c   -o ex25 <br><span class="label"><a id="x31-145004r3"></a>3</span>$ ./ex25 <br><span class="label"><a id="x31-145005r4"></a>4</span>What’s your first name? Zed <br><span class="label"><a id="x31-145006r5"></a>5</span>What’s your initial? A <br><span class="label"><a id="x31-145007r6"></a>6</span>What’s your last name? Shaw <br><span class="label"><a id="x31-145008r7"></a>7</span>How old are you? 37 <br><span class="label"><a id="x31-145009r8"></a>8</span>---- RESULTS ---- <br><span class="label"><a id="x31-145010r9"></a>9</span>First Name: Zed <br><span class="label"><a id="x31-145011r10"></a>10</span>Initial: ’A’ <br><span class="label"><a id="x31-145012r11"></a>11</span>Last Name: Shaw <br><span class="label"><a id="x31-145013r12"></a>12</span>Age: 37
@@ -151,6 +149,6 @@ fgetc but leave out the ’<br class="newline">0’ that ends the string.
      <li class="enumerate" id="x31-147006x3">As usual, read the man page on all of this so you know what it does on
      your platform. Some platforms will use macros and others use functions,
      and some have these do nothing. It all depends on the compiler and the
-     platform you use.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     platform you use.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych27.html">next</a>] [<a href="learn-c-the-hard-waych25.html">prev</a>] [<a href="learn-c-the-hard-waych25.html#taillearn-c-the-hard-waych25.html">prev-tail</a>] [<a href="learn-c-the-hard-waych26.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych26.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych26.html"></a>   
 </p></body></html>

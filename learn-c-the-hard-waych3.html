@@ -1,5 +1,5 @@
-<html><head><title>习题2: ”Make”是你的Python了</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题2: ”Make”是你的Python了</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych4.html">next</a>] [<a href="learn-c-the-hard-waych2.html">prev</a>] [<a href="learn-c-the-hard-waych2.html#taillearn-c-the-hard-waych2.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych3.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych3.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 3</span><br><a id="x8-190003"></a>习题2: ”Make”是你的Python了</h2>
 <!--l. 3--><p class="noindent">在 <a href="http://learnpythonthehardway.org">Python</a> 中你只用键入 <span class="obeylines-h"><span class="verb">python</span></span> 和你希望运行的代码文件就能城启动脚本。
 Python 解释器(interpreter)会直接运行他们，并实时载入任何其他你可能需要的库(libraries)。C 相对来说是只完全不同的怪兽，在 C 中你需要编译(compile) 源文件并将它们拼凑成一个可以自己运行的二进制程序。这个过程若要手动完成的话那就是个悲剧。在上个习题中，你是通过直接运行 make 来实现的。
@@ -13,11 +13,10 @@ Python 解释器(interpreter)会直接运行他们，并实时载入任何其他
                                                                   
 
                                                                   
-<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 14--></p><p class="indent">    <a id="x8-20001r7"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-20001r7"></a>
 <div class="caption"><span class="id">Source 7: </span><span class="content">                                                                               Build ex1，使用 -Wall 参数</span></div><!--tex4ht:label?: x8-20001r7 -->
 <!--l. 15-->
 <div class="lstlisting" id="listing-7"><span class="label"><a id="x8-20002r1"></a>1</span>$ make ex1 <br><span class="label"><a id="x8-20003r2"></a>2</span># or this one too <br><span class="label"><a id="x8-20004r3"></a>3</span>$ CFLAGS="-Wall" make ex1
@@ -42,11 +41,10 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
                                                                   
 
                                                                   
-<!--l. 38--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 38--></p><p class="indent">    <a id="x8-20015r8"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-20015r8"></a>
 <div class="caption"><span class="id">Source 8: </span><span class="content">                                                                                                        一个简单的 Makefile</span></div><!--tex4ht:label?: x8-20015r8 -->
 <!--l. 39-->
 <div class="lstlisting" id="listing-8"><span class="label"><a id="x8-20016r1"></a>1</span>CFLAGS=-Wall -g <br><span class="label"><a id="x8-20017r2"></a>2</span> <br><span class="label"><a id="x8-20018r3"></a>3</span>clean: <br><span class="label"><a id="x8-20019r4"></a>4</span>        rm -f ex1
@@ -60,11 +58,10 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
                                                                   
 
                                                                   
-<!--l. 55--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 55--></p><p class="indent">    <a id="x8-20023r9"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-20023r9"></a>
 <div class="caption"><span class="id">Source 9: </span><span class="content">                                                                                                        运行简单的 Makefile</span></div><!--tex4ht:label?: x8-20023r9 -->
 <!--l. 56-->
 <div class="lstlisting" id="listing-9"><span class="label"><a id="x8-20024r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-20025r2"></a>2</span>$ make ex1
@@ -77,11 +74,10 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
                                                                   
 
                                                                   
-<!--l. 67--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 67--></p><p class="indent">    <a id="x8-21001r10"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-21001r10"></a>
 <div class="caption"><span class="id">Source 10: </span><span class="content">                                                                                   使用 Makefile 做完整的 build</span></div><!--tex4ht:label?: x8-21001r10 -->
 <!--l. 68-->
 <div class="lstlisting" id="listing-10"><span class="label"><a id="x8-21002r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-21003r2"></a>2</span>rm -f ex1 <br><span class="label"><a id="x8-21004r3"></a>3</span>$ make ex1 <br><span class="label"><a id="x8-21005r4"></a>4</span>cc -Wall -g    ex1.c   -o ex1 <br><span class="label"><a id="x8-21006r5"></a>5</span>ex1.c: In function ’main’: <br><span class="label"><a id="x8-21007r6"></a>6</span>ex1.c:3: warning: implicit declaration of function ’puts’ <br><span class="label"><a id="x8-21008r7"></a>7</span>$
@@ -93,11 +89,10 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
                                                                   
 
                                                                   
-<!--l. 82--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 82--></p><p class="indent">    <a id="x8-21011r2"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-21011r2"></a>
 <div class="caption"><span class="id">Note 2: </span><span class="content">                                                                                           你修正 ex1.c 了吗？
 </span></div><!--tex4ht:label?: x8-21011r2 -->
      <div class="quote">
@@ -113,11 +108,10 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
                                                                   
 
                                                                   
-<!--l. 93--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 93--></p><p class="indent">    <a id="x8-22001r11"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x8-22001r11"></a>
 <div class="caption"><span class="id">Source 11: </span><span class="content">                                                                                                 运行 make 出错</span></div><!--tex4ht:label?: x8-22001r11 -->
 <!--l. 94-->
 <div class="lstlisting" id="listing-11"><span class="label"><a id="x8-22002r1"></a>1</span>$ make clean <br><span class="label"><a id="x8-22003r2"></a>2</span>Makefile:4: ⋆⋆⋆ missing separator.  Stop.
@@ -136,6 +130,6 @@ cc 报告所有警告信息。（由于命运的纠结，其实它不能报告�
      </li>
      <li class="enumerate" id="x8-23008x4">上网研究一下 Makefile，看看还能不能改进你写的 makefile。
      </li>
-     <li class="enumerate" id="x8-23010x5">在其他 C 语言项目中找一个 Makefile 并尝试了解一下它的功能。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x8-23010x5">在其他 C 语言项目中找一个 Makefile 并尝试了解一下它的功能。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych4.html">next</a>] [<a href="learn-c-the-hard-waych2.html">prev</a>] [<a href="learn-c-the-hard-waych2.html#taillearn-c-the-hard-waych2.html">prev-tail</a>] [<a href="learn-c-the-hard-waych3.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych3.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych3.html"></a>   
 </p></body></html>

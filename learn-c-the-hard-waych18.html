@@ -1,5 +1,5 @@
-<html><head><title>Exercise 17: Heap And Stack Memory Allocation</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 17: Heap And Stack Memory Allocation</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych19.html">next</a>] [<a href="learn-c-the-hard-waych17.html">prev</a>] [<a href="learn-c-the-hard-waych17.html#taillearn-c-the-hard-waych17.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych18.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych18.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 18</span><br><a id="x23-8700018"></a>Exercise 17: Heap And Stack Memory Allocation</h2>
 <!--l. 3--><p class="noindent">In this exercise you’re going to make a big leap in difficulty and create an entire
 small program to manage a database. This database isn’t very efficient and doesn’t
@@ -12,11 +12,10 @@ discuss:
                                                                   
 
                                                                   
-<!--l. 13--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 13--></p><p class="indent">    <a id="x23-87001r43"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x23-87001r43"></a>
  <div class="caption"><span class="id">Source 43: </span><span class="content">                                                                                                            ex17.c</span></div><!--tex4ht:label?: x23-87001r43 -->
 <div class="fancyvrb" id="fancyvrb20"><a id="x23-87003r1"></a>1  <span id="textcolor1134">#</span><span id="textcolor1135">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x23-87005r2"></a>2  <span id="textcolor1136">#</span><span id="textcolor1137">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x23-87007r3"></a>3  <span id="textcolor1138">#</span><span id="textcolor1139">include <stdlib.h></stdlib.h></span>
 <br class="fancyvrb"><a id="x23-87009r4"></a>4  <span id="textcolor1140">#</span><span id="textcolor1141">include <errno.h></errno.h></span><br class="fancyvrb"><a id="x23-87011r5"></a>5  <span id="textcolor1142">#</span><span id="textcolor1143">include <string.h></string.h></span><br class="fancyvrb"><a id="x23-87013r6"></a>6  <br class="fancyvrb"><a id="x23-87015r7"></a>7  <span id="textcolor1144">#</span><span id="textcolor1145">define MAX_DATA 512</span>
@@ -162,11 +161,10 @@ operations:
                                                                   
 
                                                                   
-<!--l. 282--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 282--></p><p class="indent">    <a id="x23-88001r44"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x23-88001r44"></a>
  <div class="caption"><span class="id">Source 44: </span><span class="content">                                                                                                               ex17
 output</span></div><!--tex4ht:label?: x23-88001r44 -->
 <!--l. 283-->
@@ -180,11 +178,10 @@ it.
                                                                   
 
                                                                   
-<!--l. 312--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 312--></p><p class="indent">    <a id="x23-88025r5"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x23-88025r5"></a>
  <div class="caption"><span class="id">Note 5: </span><span class="content">                                                                                                    OSX Valgrind
 ”Leaks”</span></div><!--tex4ht:label?: x23-88025r5 -->
      <div class="quote">
@@ -305,6 +302,6 @@ up with your own:
      other one?
      </li>
      <li class="enumerate" id="x23-91016x8">Go  research  ”stack  data  structure”  and  write  one  in  your  favorite
-     language, then try to do it in C.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     language, then try to do it in C.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych19.html">next</a>] [<a href="learn-c-the-hard-waych17.html">prev</a>] [<a href="learn-c-the-hard-waych17.html#taillearn-c-the-hard-waych17.html">prev-tail</a>] [<a href="learn-c-the-hard-waych18.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych18.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych18.html"></a>   
 </p></body></html>

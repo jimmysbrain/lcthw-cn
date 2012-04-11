@@ -1,5 +1,5 @@
-<html><head><title>Exercise 11: While 循环和布尔表达式</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 11: While 循环和布尔表达式</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych13.html">next</a>] [<a href="learn-c-the-hard-waych11.html">prev</a>] [<a href="learn-c-the-hard-waych11.html#taillearn-c-the-hard-waych11.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych12.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych12.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 12</span><br><a id="x17-5900012"></a>Exercise 11: While 循环和布尔表达式</h2>
 <!--l. 3--><p class="noindent">你已经体验会过了 C 语言的循环，但你可能对布尔表达式 <span class="obeylines-h"><span class="verb">i </span>的理解还不清晰。在我们看到 while   是如何工作之前，让我先解释一些东西。
 <!--l. 6--><p class="indent">    在 C 语言中根本就没有“布尔（boolean）”这种类型，取而代之的是数字零为
@@ -8,11 +8,10 @@
                                                                   
 
                                                                   
-<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 14--></p><p class="indent">    <a id="x17-59001r31"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x17-59001r31"></a>
 <div class="caption"><span class="id">Source 31: </span><span class="content">                                                                                                            ex11.c</span></div><!--tex4ht:label?: x17-59001r31 -->
 <div class="fancyvrb" id="fancyvrb12"><a id="x17-59003r1"></a>1  <span id="textcolor594">#</span><span id="textcolor595">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x17-59005r2"></a>2  <br class="fancyvrb"><a id="x17-59007r3"></a>3  <span id="textcolor596">int</span> <span id="textcolor597">main</span>(<span id="textcolor598">int</span> argc, <span id="textcolor599">char</span> ⋆argv[])<br class="fancyvrb"><a id="x17-59009r4"></a>4  {
 <br class="fancyvrb"><a id="x17-59011r5"></a>5      <span id="textcolor600">// go through each string in argv</span><br class="fancyvrb"><a id="x17-59013r6"></a>6  <br class="fancyvrb"><a id="x17-59015r7"></a>7      <span id="textcolor601">int</span> i = <span id="textcolor602">0</span>;<br class="fancyvrb"><a id="x17-59017r8"></a>8      <span id="textcolor603">while</span>(i <a id="x17-59019r9"></a>9          printf(<span class="colorbox" id="colorbox604"><span id="textcolor605">"</span></span><span class="colorbox" id="colorbox606"><span id="textcolor607">arg %d: %s</span></span><span class="colorbox" id="colorbox608"><span id="textcolor609">\n</span></span><span class="colorbox" id="colorbox610"><span id="textcolor611">"</span></span>, i, argv[i]);<br class="fancyvrb"><a id="x17-59021r10"></a>10          i++;<br class="fancyvrb"><a id="x17-59023r11"></a>11      }<br class="fancyvrb"><a id="x17-59025r12"></a>12  
@@ -32,11 +31,10 @@
                                                                   
 
                                                                   
-<!--l. 62--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 62--></p><p class="indent">    <a id="x17-60001r32"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x17-60001r32"></a>
  <div class="caption"><span class="id">Source 32: </span><span class="content">                                                                                                      ex11 的输出</span></div><!--tex4ht:label?: x17-60001r32 -->
 <!--l. 63-->
 <div class="lstlisting" id="listing-22"><span class="label"><a id="x17-60002r1"></a>1</span>$ make ex11 <br><span class="label"><a id="x17-60003r2"></a>2</span>cc -Wall -g    ex11.c   -o ex11 <br><span class="label"><a id="x17-60004r3"></a>3</span>$ ./ex11 <br><span class="label"><a id="x17-60005r4"></a>4</span>arg 0: ./ex11 <br><span class="label"><a id="x17-60006r5"></a>5</span>state 0: California <br><span class="label"><a id="x17-60007r6"></a>6</span>state 1: Oregon <br><span class="label"><a id="x17-60008r7"></a>7</span>state 2: Washington <br><span class="label"><a id="x17-60009r8"></a>8</span>state 3: Texas <br><span class="label"><a id="x17-60010r9"></a>9</span>$ <br><span class="label"><a id="x17-60011r10"></a>10</span>$ ./ex11 test it <br><span class="label"><a id="x17-60012r11"></a>11</span>arg 0: ./ex11 <br><span class="label"><a id="x17-60013r12"></a>12</span>arg 1: test <br><span class="label"><a id="x17-60014r13"></a>13</span>arg 2: it <br><span class="label"><a id="x17-60015r14"></a>14</span>state 0: California <br><span class="label"><a id="x17-60016r15"></a>15</span>state 1: Oregon <br><span class="label"><a id="x17-60017r16"></a>16</span>state 2: Washington <br><span class="label"><a id="x17-60018r17"></a>17</span>state 3: Texas <br><span class="label"><a id="x17-60019r18"></a>18</span>$
@@ -63,6 +61,6 @@
 
                                                                   
      </li>
-     <li class="enumerate" id="x17-62008x4">深入研究一下你是否真的拷贝了这些字符串。不过答案可能会使你感到惊讶与迷惑。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x17-62008x4">深入研究一下你是否真的拷贝了这些字符串。不过答案可能会使你感到惊讶与迷惑。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych13.html">next</a>] [<a href="learn-c-the-hard-waych11.html">prev</a>] [<a href="learn-c-the-hard-waych11.html#taillearn-c-the-hard-waych11.html">prev-tail</a>] [<a href="learn-c-the-hard-waych12.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych12.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych12.html"></a>   
 </p></span></p></span></p></body></html>

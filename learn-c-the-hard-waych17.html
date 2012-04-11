@@ -1,5 +1,5 @@
-<html><head><title>Exercise 16: Structs And Pointers To Them</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 16: Structs And Pointers To Them</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych18.html">next</a>] [<a href="learn-c-the-hard-waych16.html">prev</a>] [<a href="learn-c-the-hard-waych16.html#taillearn-c-the-hard-waych16.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych17.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych17.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 17</span><br><a id="x22-8200017"></a>Exercise 16: Structs And Pointers To Them</h2>
 <!--l. 3--><p class="noindent">In this exercise you’ll learn how to make a struct, point a pointer at them, and use
 them to make sense of internal memory structures. I’ll also apply the knowledge of
@@ -10,11 +10,10 @@ work:
                                                                   
 
                                                                   
-<!--l. 11--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 11--></p><p class="indent">    <a id="x22-82001r41"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x22-82001r41"></a>
  <div class="caption"><span class="id">Source 41: </span><span class="content">                                                                                                            ex16.c</span></div><!--tex4ht:label?: x22-82001r41 -->
 <div class="fancyvrb" id="fancyvrb19"><a id="x22-82003r1"></a>1  <span id="textcolor1014">#</span><span id="textcolor1015">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x22-82005r2"></a>2  <span id="textcolor1016">#</span><span id="textcolor1017">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x22-82007r3"></a>3  <span id="textcolor1018">#</span><span id="textcolor1019">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x22-82009r4"></a>4  <span id="textcolor1020">#</span><span id="textcolor1021">include <string.h></string.h></span>
 <br class="fancyvrb"><a id="x22-82011r5"></a>5  <br class="fancyvrb"><a id="x22-82013r6"></a>6  <span id="textcolor1022">struct</span> Person {<br class="fancyvrb"><a id="x22-82015r7"></a>7      <span id="textcolor1023">char</span> ⋆name;<br class="fancyvrb"><a id="x22-82017r8"></a>8      <span id="textcolor1024">int</span> age;<br class="fancyvrb"><a id="x22-82019r9"></a>9      <span id="textcolor1025">int</span> height;<br class="fancyvrb"><a id="x22-82021r10"></a>10      <span id="textcolor1026">int</span> weight;
@@ -116,11 +115,10 @@ runs and produces this output:
                                                                   
 
                                                                   
-<!--l. 169--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 169--></p><p class="indent">    <a id="x22-83001r42"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x22-83001r42"></a>
  <div class="caption"><span class="id">Source 42: </span><span class="content">                                                                                                               ex16
 output</span></div><!--tex4ht:label?: x22-83001r42 -->
 <!--l. 170-->
@@ -201,6 +199,6 @@ research the following:
      <li class="enumerate" id="x22-86004x2">How to initialize it using the <span class="obeylines-h"><span class="verb">x.y</span></span> (period) character instead of the <span class="obeylines-h"><span class="verb">x-&gt;y</span></span>
      syntax.
      </li>
-     <li class="enumerate" id="x22-86006x3">How to pass a structure to other functions without using a pointer.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x22-86006x3">How to pass a structure to other functions without using a pointer.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych18.html">next</a>] [<a href="learn-c-the-hard-waych16.html">prev</a>] [<a href="learn-c-the-hard-waych16.html#taillearn-c-the-hard-waych16.html">prev-tail</a>] [<a href="learn-c-the-hard-waych17.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych17.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych17.html"></a>   
 </p></body></html>

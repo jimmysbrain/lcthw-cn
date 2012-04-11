@@ -1,15 +1,14 @@
-<html><head><title>习题26: 第一个真正的程序</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题26: 第一个真正的程序</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa2.html">next</a>] [<a href="learn-c-the-hard-waych26.html">prev</a>] [<a href="learn-c-the-hard-waych26.html#taillearn-c-the-hard-waych26.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych27.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych27.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 27</span><br><a id="x32-14800027"></a>习题26: 第一个真正的程序</h2>
 <!--l. 3--><p class="noindent">到这里正好是本书的一半，你也该参加一次期中考试了。这次考核我要求你把我专为本书写的一个叫 devpkg 的程序重写一遍，然后你要用一些关键方法改进代码，最重要的方法就是为它写一些单元测试。
                                                                   
 
                                                                   
-<!--l. 7--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 7--></p><p class="indent">    <a id="x32-148001r7"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-148001r7"></a>
 <div class="caption"><span class="id">Note 7: </span><span class="content">                                                                                     WARNING: Beta Draft
 Content</span></div><!--tex4ht:label?: x32-148001r7 -->
      <div class="quote">
@@ -73,11 +72,10 @@ configure, make, make install </dt><dd class="description">我们假设绝大部
                                                                   
 
                                                                   
-<!--l. 79--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 79--></p><p class="indent">    <a id="x32-152001r67"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-152001r67"></a>
 <div class="caption"><span class="id">Source 67: </span><span class="content">                                                                                                 APR 安装脚本</span></div><!--tex4ht:label?: x32-152001r67 -->
 <div class="fancyvrb" id="fancyvrb36"><a id="x32-152003r1"></a>1  <span id="textcolor3156">set</span> -e<br class="fancyvrb"><a id="x32-152005r2"></a>2  <br class="fancyvrb"><a id="x32-152007r3"></a>3  <span id="textcolor3157"># go somewhere safe</span><br class="fancyvrb"><a id="x32-152009r4"></a>4  <span id="textcolor3158">cd</span> /tmp<br class="fancyvrb"><a id="x32-152011r5"></a>5  <br class="fancyvrb"><a id="x32-152013r6"></a>6  <span id="textcolor3159"># get the source to base APR 1.4.5</span>
 <br class="fancyvrb"><a id="x32-152015r7"></a>7  curl -L -O http://download.nextag.com/apache//apr/apr-1.4.5.tar.gz
@@ -101,11 +99,10 @@ configure, make, make install </dt><dd class="description">我们假设绝大部
                                                                   
 
                                                                   
-<!--l. 134--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 134--></p><p class="indent">    <a id="x32-153001r68"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-153001r68"></a>
 <div class="caption"><span class="id">Source 68: </span><span class="content">                                                                                                  项目骨架目录</span></div><!--tex4ht:label?: x32-153001r68 -->
 <div class="fancyvrb" id="fancyvrb37"><a id="x32-153003r1"></a>1  mkdir devpkg<br class="fancyvrb"><a id="x32-153005r2"></a>2  <span id="textcolor3173">cd </span>devpkg<br class="fancyvrb"><a id="x32-153007r3"></a>3  touch README Makefile</div>
                                                                   
@@ -119,11 +116,10 @@ configure, make, make install </dt><dd class="description">我们假设绝大部
      <li class="enumerate" id="x32-154004x2">bstrlib.h 和 bstrlib.c，它们来自 <a href="http://bstring.sourceforge.net/">http://bstring.sourceforge.net/</a>。
      下载并解压.zip 文件，把这两个文件复制出来即可。
      </li>
-     <li class="enumerate" id="x32-154006x3">键入命令 <span class="obeylines-h"><span class="verb">make bstrlib.o</span></span>，如果执行失败，请阅读下面的“解决 bstring 的问题”。</li></ol><!--l. 154--><p class="indent">    </p><hr class="float"></hr><div class="float">
+     <li class="enumerate" id="x32-154006x3">键入命令 <span class="obeylines-h"><span class="verb">make bstrlib.o</span></span>，如果执行失败，请阅读下面的“解决 bstring 的问题”。</li></ol><!--l. 154--><p class="indent">    <a id="x32-154007r8"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-154007r8"></a>
 <div class="caption"><span class="id">Note 8: </span><span class="content">                                                                                               解决 bstring 的问题</span></div><!--tex4ht:label?: x32-154007r8 -->
      <div class="quote">
      <!--l. 155--><p class="indent"> 有些平台上面 bstring.c 会出现如下的错误：
@@ -142,11 +138,10 @@ bstrlib.h、bstrlib.c。现在你可以继续了。
                                                                   
 
                                                                   
-<!--l. 173--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 173--></p><p class="indent">    <a id="x32-155001r69"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-155001r69"></a>
 <div class="caption"><span class="id">Source 69: </span><span class="content">                                                                                                        Makefile</span></div><!--tex4ht:label?: x32-155001r69 -->
 <!--l. 174-->
 <div class="lstlisting" id="listing-44"><span class="label"><a id="x32-155002r1"></a>1</span>PREFIX?=/usr/local <br><span class="label"><a id="x32-155003r2"></a>2</span>CFLAGS=-g -Wall -I${PREFIX}/apr/include/apr-1  -I${PREFIX}/apr/include/apr-util-1 <br><span class="label"><a id="x32-155004r3"></a>3</span>LDFLAGS=-lapr-1 -pthread -laprutil-1 <br><span class="label"><a id="x32-155005r4"></a>4</span> <br><span class="label"><a id="x32-155006r5"></a>5</span>all: devpkg <br><span class="label"><a id="x32-155007r6"></a>6</span> <br><span class="label"><a id="x32-155008r7"></a>7</span>devpkg: bstrlib.o db.o shell.o commands.o <br><span class="label"><a id="x32-155009r8"></a>8</span> <br><span class="label"><a id="x32-155010r9"></a>9</span>install: all <br><span class="label"><a id="x32-155011r10"></a>10</span>        install -d $(DESTDIR)/$(PREFIX)/bin/ <br><span class="label"><a id="x32-155012r11"></a>11</span>        install devpkg $(DESTDIR)/$(PREFIX)/bin/ <br><span class="label"><a id="x32-155013r12"></a>12</span> <br><span class="label"><a id="x32-155014r13"></a>13</span>clean: <br><span class="label"><a id="x32-155015r14"></a>14</span>        rm -f ⋆.o <br><span class="label"><a id="x32-155016r15"></a>15</span>        rm -f devpkg <br><span class="label"><a id="x32-155017r16"></a>16</span>        rm -rf ⋆.dSYM
@@ -172,11 +167,10 @@ devpkg </dt><dd class="description">我们并没有特别提及它，不过其�
                                                                   
 
                                                                   
-<!--l. 216--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 216--></p><p class="indent">    <a id="x32-156001r9"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-156001r9"></a>
 <div class="caption"><span class="id">Note 9: </span><span class="content">                                                                                       别被这场魔法秀忽悠了</span></div><!--tex4ht:label?: x32-156001r9 -->
      <div class="quote">
      <!--l. 217--><p class="indent"> 读到这里也许你会想：“神啊，Zed 怎么能这么牛，这么多东西随便搞搞就弄出来了？！我这辈子都做不到。”其实我并不是用我强悍的编程技术妙笔生花般地地写出这个 devpkg 结构的，我做的是下面这些事情：
@@ -206,11 +200,10 @@ devpkg </dt><dd class="description">我们并没有特别提及它，不过其�
                                                                   
 
                                                                   
-<!--l. 249--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 249--></p><p class="indent">    <a id="x32-157001r70"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-157001r70"></a>
 <div class="caption"><span class="id">Source 70: </span><span class="content">                                                                                                               db.h</span></div><!--tex4ht:label?: x32-157001r70 -->
 <div class="fancyvrb" id="fancyvrb38"><a id="x32-157003r1"></a>1  <span id="textcolor3174">#</span><span id="textcolor3175">ifndef _db_h</span><br class="fancyvrb"><a id="x32-157005r2"></a>2  <span id="textcolor3176">#</span><span id="textcolor3177">define _db_h</span><br class="fancyvrb"><a id="x32-157007r3"></a>3  <br class="fancyvrb"><a id="x32-157009r4"></a>4  <span id="textcolor3178">#</span><span id="textcolor3179">define DB_FILE "</span><span id="textcolor3180">/</span><span id="textcolor3181">usr</span><span id="textcolor3182">/</span><span id="textcolor3183">local</span><span id="textcolor3184">/</span><span id="textcolor3185">.devpkg</span><span id="textcolor3186">/</span><span id="textcolor3187">db"</span>
 <br class="fancyvrb"><a id="x32-157011r5"></a>5  <span id="textcolor3188">#</span><span id="textcolor3189">define DB_DIR "</span><span id="textcolor3190">/</span><span id="textcolor3191">usr</span><span id="textcolor3192">/</span><span id="textcolor3193">local</span><span id="textcolor3194">/</span><span id="textcolor3195">.devpkg"</span><br class="fancyvrb"><a id="x32-157013r6"></a>6  <br class="fancyvrb"><a id="x32-157015r7"></a>7  <br class="fancyvrb"><a id="x32-157017r8"></a>8  <span id="textcolor3196">int</span> DB_init();<br class="fancyvrb"><a id="x32-157019r9"></a>9  <span id="textcolor3197">int</span> DB_list();
@@ -222,11 +215,10 @@ devpkg </dt><dd class="description">我们并没有特别提及它，不过其�
                                                                   
 
                                                                   
-<!--l. 271--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 271--></p><p class="indent">    <a id="x32-157028r71"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-157028r71"></a>
 <div class="caption"><span class="id">Source 71: </span><span class="content">                                                                                                                db.c</span></div><!--tex4ht:label?: x32-157028r71 -->
 <div class="fancyvrb" id="fancyvrb39"><a id="x32-157030r1"></a>1  <span id="textcolor3206">#</span><span id="textcolor3207">include <unistd.h></unistd.h></span><br class="fancyvrb"><a id="x32-157032r2"></a>2  <span id="textcolor3208">#</span><span id="textcolor3209">include <apr_errno.h></apr_errno.h></span><br class="fancyvrb"><a id="x32-157034r3"></a>3  <span id="textcolor3210">#</span><span id="textcolor3211">include <apr_file_io.h></apr_file_io.h></span>
 <br class="fancyvrb"><a id="x32-157036r4"></a>4  <br class="fancyvrb"><a id="x32-157038r5"></a>5  <span id="textcolor3212">#</span><span id="textcolor3213">include "db.h"</span><br class="fancyvrb"><a id="x32-157040r6"></a>6  <span id="textcolor3214">#</span><span id="textcolor3215">include "bstrlib.h"</span><br class="fancyvrb"><a id="x32-157042r7"></a>7  <span id="textcolor3216">#</span><span id="textcolor3217">include "dbg.h"</span><br class="fancyvrb"><a id="x32-157044r8"></a>8  
@@ -279,11 +271,10 @@ devpkg </dt><dd class="description">我们并没有特别提及它，不过其�
                                                                   
 
                                                                   
-<!--l. 424--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 424--></p><p class="indent">    <a id="x32-159001r72"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-159001r72"></a>
 <div class="caption"><span class="id">Source 72: </span><span class="content">                                                                                                            shell.h</span></div><!--tex4ht:label?: x32-159001r72 -->
 <div class="fancyvrb" id="fancyvrb40"><a id="x32-159003r1"></a>1  <span id="textcolor3374">#</span><span id="textcolor3375">ifndef _shell_h</span><br class="fancyvrb"><a id="x32-159005r2"></a>2  <span id="textcolor3376">#</span><span id="textcolor3377">define _shell_h</span><br class="fancyvrb"><a id="x32-159007r3"></a>3  <br class="fancyvrb"><a id="x32-159009r4"></a>4  <span id="textcolor3378">#</span><span id="textcolor3379">define MAX_COMMAND_ARGS 100</span>
 <br class="fancyvrb"><a id="x32-159011r5"></a>5  <br class="fancyvrb"><a id="x32-159013r6"></a>6  <span id="textcolor3380">#</span><span id="textcolor3381">include <apr_thread_proc.h></apr_thread_proc.h></span><br class="fancyvrb"><a id="x32-159015r7"></a>7  <br class="fancyvrb"><a id="x32-159017r8"></a>8  <span id="textcolor3382">typedef</span> <span id="textcolor3383">struct</span> Shell {
@@ -302,11 +293,10 @@ Shell 变量。这些变量将被 Shell_run 函数和 Shell_exec 函数用以执
                                                                   
 
                                                                   
-<!--l. 465--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 465--></p><p class="indent">    <a id="x32-159064r73"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-159064r73"></a>
 <div class="caption"><span class="id">Source 73: </span><span class="content">                                                                                                            shell.c</span></div><!--tex4ht:label?: x32-159064r73 -->
 <div class="fancyvrb" id="fancyvrb41"><a id="x32-159066r1"></a>1  <span id="textcolor3402">#</span><span id="textcolor3403">include "shell.h"</span><br class="fancyvrb"><a id="x32-159068r2"></a>2  <span id="textcolor3404">#</span><span id="textcolor3405">include "dbg.h"</span><br class="fancyvrb"><a id="x32-159070r3"></a>3  <span id="textcolor3406">#</span><span id="textcolor3407">include <stdarg.h></stdarg.h></span><br class="fancyvrb"><a id="x32-159072r4"></a>4  
 <br class="fancyvrb"><a id="x32-159074r5"></a>5  <span id="textcolor3408">int</span> <span id="textcolor3409">Shell_exec</span>(Shell template, ...)<br class="fancyvrb"><a id="x32-159076r6"></a>6  {<br class="fancyvrb"><a id="x32-159078r7"></a>7      apr_pool_t ⋆p = <span id="textcolor3410">NULL</span>;<br class="fancyvrb"><a id="x32-159080r8"></a>8      <span id="textcolor3411">int</span> rc = -<span id="textcolor3412">1</span>;
@@ -377,11 +367,10 @@ struct 中我们有一个.dir 属性，它可以强制规定程序在某个指�
                                                                   
 
                                                                   
-<!--l. 622--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 622--></p><p class="indent">    <a id="x32-161001r74"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-161001r74"></a>
 <div class="caption"><span class="id">Source 74: </span><span class="content">                                                                                                  commands.h</span></div><!--tex4ht:label?: x32-161001r74 -->
 <div class="fancyvrb" id="fancyvrb42"><a id="x32-161003r1"></a>1  <span id="textcolor3758">#</span><span id="textcolor3759">ifndef _commands_h</span><br class="fancyvrb"><a id="x32-161005r2"></a>2  <span id="textcolor3760">#</span><span id="textcolor3761">define _commands_h</span><br class="fancyvrb"><a id="x32-161007r3"></a>3  <br class="fancyvrb"><a id="x32-161009r4"></a>4  <span id="textcolor3762">#</span><span id="textcolor3763">include <apr_pools.h></apr_pools.h></span><br class="fancyvrb"><a id="x32-161011r5"></a>5  
 <br class="fancyvrb"><a id="x32-161013r6"></a>6  <span id="textcolor3764">#</span><span id="textcolor3765">define DEPENDS_PATH "</span><span id="textcolor3766">/</span><span id="textcolor3767">tmp</span><span id="textcolor3768">/</span><span id="textcolor3769">DEPENDS"</span><br class="fancyvrb"><a id="x32-161015r7"></a>7  <span id="textcolor3770">#</span><span id="textcolor3771">define TAR_GZ_SRC "</span><span id="textcolor3772">/</span><span id="textcolor3773">tmp</span><span id="textcolor3774">/</span><span id="textcolor3775">pkg-src.tar.gz"</span>
@@ -404,11 +393,10 @@ struct 中我们有一个.dir 属性，它可以强制规定程序在某个指�
                                                                   
 
                                                                   
-<!--l. 663--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 663--></p><p class="indent">    <a id="x32-161066r75"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-161066r75"></a>
 <div class="caption"><span class="id">Source 75: </span><span class="content">                                                                                                  commands.c</span></div><!--tex4ht:label?: x32-161066r75 -->
 <div class="fancyvrb" id="fancyvrb43"><a id="x32-161068r1"></a>1  <span id="textcolor3832">#</span><span id="textcolor3833">include <apr_uri.h></apr_uri.h></span><br class="fancyvrb"><a id="x32-161070r2"></a>2  <span id="textcolor3834">#</span><span id="textcolor3835">include <apr_fnmatch.h></apr_fnmatch.h></span><br class="fancyvrb"><a id="x32-161072r3"></a>3  <span id="textcolor3836">#</span><span id="textcolor3837">include <unistd.h></unistd.h></span><br class="fancyvrb"><a id="x32-161074r4"></a>4  
 <br class="fancyvrb"><a id="x32-161076r5"></a>5  <span id="textcolor3838">#</span><span id="textcolor3839">include "commands.h"</span><br class="fancyvrb"><a id="x32-161078r6"></a>6  <span id="textcolor3840">#</span><span id="textcolor3841">include "dbg.h"</span><br class="fancyvrb"><a id="x32-161080r7"></a>7  <span id="textcolor3842">#</span><span id="textcolor3843">include "bstrlib.h"</span><br class="fancyvrb"><a id="x32-161082r8"></a>8  <span id="textcolor3844">#</span><span id="textcolor3845">include "db.h"</span>
@@ -510,11 +498,10 @@ struct 中我们有一个.dir 属性，它可以强制规定程序在某个指�
                                                                   
 
                                                                   
-<!--l. 867--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 867--></p><p class="indent">    <a id="x32-163001r76"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x32-163001r76"></a>
 <div class="caption"><span class="id">Source 76: </span><span class="content">                                                                                                        devpkg.c</span></div><!--tex4ht:label?: x32-163001r76 -->
 <div class="fancyvrb" id="fancyvrb44"><a id="x32-163003r1"></a>1  <span id="textcolor4249">#</span><span id="textcolor4250">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x32-163005r2"></a>2  <span id="textcolor4251">#</span><span id="textcolor4252">include <apr_general.h></apr_general.h></span><br class="fancyvrb"><a id="x32-163007r3"></a>3  <span id="textcolor4253">#</span><span id="textcolor4254">include <apr_getopt.h></apr_getopt.h></span>
 <br class="fancyvrb"><a id="x32-163009r4"></a>4  <span id="textcolor4255">#</span><span id="textcolor4256">include <apr_strings.h></apr_strings.h></span><br class="fancyvrb"><a id="x32-163011r5"></a>5  <span id="textcolor4257">#</span><span id="textcolor4258">include <apr_lib.h></apr_lib.h></span><br class="fancyvrb"><a id="x32-163013r6"></a>6  <br class="fancyvrb"><a id="x32-163015r7"></a>7  <span id="textcolor4259">#</span><span id="textcolor4260">include "dbg.h"</span><br class="fancyvrb"><a id="x32-163017r8"></a>8  <span id="textcolor4261">#</span><span id="textcolor4262">include "db.h"</span>
@@ -586,6 +573,6 @@ struct 中我们有一个.dir 属性，它可以强制规定程序在某个指�
                                                                   
 
                                                                   
-    <!--l. 53--></p><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 53--><p class="indent">    <a id="tail"></a>   
+    <!--l. 53--></p><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa2.html">next</a>] [<a href="learn-c-the-hard-waych26.html">prev</a>] [<a href="learn-c-the-hard-waych26.html#taillearn-c-the-hard-waych26.html">prev-tail</a>] [<a href="learn-c-the-hard-waych27.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych27.html">up</a>] </p></div>
+<!--l. 53--><p class="indent">    <a id="taillearn-c-the-hard-waych27.html"></a>   
 </p></body></html>

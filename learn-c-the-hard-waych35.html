@@ -1,5 +1,5 @@
-<html><head><title>Exercise 34: Dynamic Array</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 34: Dynamic Array</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych36.html">next</a>] [<a href="learn-c-the-hard-waych34.html">prev</a>] [<a href="learn-c-the-hard-waych34.html#taillearn-c-the-hard-waych34.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych35.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych35.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 35</span><br><a id="x41-22500035"></a>Exercise 34: Dynamic Array</h2>
 <!--l. 3--><p class="noindent">This is an array that grows on its own and has most of the same features as a linked
 list. It will usually take up less space, run faster, and has other beneficial properties.
@@ -14,11 +14,10 @@ since you can just index into it directly.
                                                                   
 
                                                                   
-<!--l. 16--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 16--></p><p class="indent">    <a id="x41-225001r101"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x41-225001r101"></a>
  <div class="caption"><span class="id">Source 101: </span><span class="content">                                                                                       src/lcthw/darray.h</span></div><!--tex4ht:label?: x41-225001r101 -->
 <div class="fancyvrb" id="fancyvrb68"><a id="x41-225003r1"></a>1  <span id="textcolor5555">#</span><span id="textcolor5556">ifndef _DArray_h</span><br class="fancyvrb"><a id="x41-225005r2"></a>2  <span id="textcolor5557">#</span><span id="textcolor5558">define _DArray_h</span><br class="fancyvrb"><a id="x41-225007r3"></a>3  <span id="textcolor5559">#</span><span id="textcolor5560">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x41-225009r4"></a>4  <span id="textcolor5561">#</span><span id="textcolor5562">include <assert.h></assert.h></span>
 <br class="fancyvrb"><a id="x41-225011r5"></a>5  <span id="textcolor5563">#</span><span id="textcolor5564">include <lcthw><span id="textcolor5565">/</span><span id="textcolor5566">dbg.h&gt;</span><br class="fancyvrb"><a id="x41-225013r6"></a>6  <br class="fancyvrb"><a id="x41-225015r7"></a>7  <span id="textcolor5567">typedef</span> <span id="textcolor5568">struct</span> DArray {<br class="fancyvrb"><a id="x41-225017r8"></a>8      <span id="textcolor5569">int</span> end;<br class="fancyvrb"><a id="x41-225019r9"></a>9      <span id="textcolor5570">int</span> max;
@@ -49,7 +48,7 @@ since you can just index into it directly.
                                                                   
     </div><hr class="endfloat"></hr><!--l. 99--><p class="indent">    This header file is showing you a new technique where I put static inline
 functions right in the header. These function definitions will work similar to the
-define macros you’ve been making, but they’re cleaner and easier to write. If you
+#define macros you’ve been making, but they’re cleaner and easier to write. If you
 need to create a block of code for a macro and you don’t need code generation, then
 use a static inline function.
 <!--l. 105--></p><p class="indent">    Compare this technique to the LIST_FOREACH that generates a proper for-loop
@@ -61,11 +60,10 @@ use.
                                                                   
 
                                                                   
-<!--l. 112--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 112--></p><p class="indent">    <a id="x41-225156r102"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x41-225156r102"></a>
  <div class="caption"><span class="id">Source 102: </span><span class="content">                                                                                     tests/darray_tests.c</span></div><!--tex4ht:label?: x41-225156r102 -->
 <div class="fancyvrb" id="fancyvrb69"><a id="x41-225158r1"></a>1  <span id="textcolor5653">#</span><span id="textcolor5654">include "minunit.h"</span><br class="fancyvrb"><a id="x41-225160r2"></a>2  <span id="textcolor5655">#</span><span id="textcolor5656">include <lcthw><span id="textcolor5657">/</span><span id="textcolor5658">darray.h&gt;</span><br class="fancyvrb"><a id="x41-225162r3"></a>3  <br class="fancyvrb"><a id="x41-225164r4"></a>4  <span id="textcolor5659">static</span> DArray ⋆array = <span id="textcolor5660">NULL</span>;
 <br class="fancyvrb"><a id="x41-225166r5"></a>5  <span id="textcolor5661">static</span> <span id="textcolor5662">int</span> ⋆val1 = <span id="textcolor5663">NULL</span>;<br class="fancyvrb"><a id="x41-225168r6"></a>6  <span id="textcolor5664">static</span> <span id="textcolor5665">int</span> ⋆val2 = <span id="textcolor5666">NULL</span>;<br class="fancyvrb"><a id="x41-225170r7"></a>7  
@@ -122,11 +120,10 @@ implementing the DArray much easier:
                                                                   
 
                                                                   
-<!--l. 244--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 244--></p><p class="indent">    <a id="x41-225403r103"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x41-225403r103"></a>
  <div class="caption"><span class="id">Source 103: </span><span class="content">                                                                                       src/lcthw/darray.c</span></div><!--tex4ht:label?: x41-225403r103 -->
 <div class="fancyvrb" id="fancyvrb70"><a id="x41-225405r1"></a>1  <span id="textcolor5876">#</span><span id="textcolor5877">include <lcthw><span id="textcolor5878">/</span><span id="textcolor5879">darray.h&gt;</span><br class="fancyvrb"><a id="x41-225407r2"></a>2  <span id="textcolor5880">#</span><span id="textcolor5881">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x41-225409r3"></a>3  <br class="fancyvrb"><a id="x41-225411r4"></a>4  
 <br class="fancyvrb"><a id="x41-225413r5"></a>5  DArray ⋆<span id="textcolor5882">DArray_create</span>(<span id="textcolor5883">size_t</span> element_size, <span id="textcolor5884">size_t</span> initial_max)
@@ -239,6 +236,6 @@ make the implementation more bulletproof.
      <li class="enumerate" id="x41-228006x3">Write some performance tests for common operations and compare them
      to the same operations in List. You did some of this, but this time, write
      a unit test that repeatedly does the operation in question, then in the main
-     runner do the timing.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     runner do the timing.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych36.html">next</a>] [<a href="learn-c-the-hard-waych34.html">prev</a>] [<a href="learn-c-the-hard-waych34.html#taillearn-c-the-hard-waych34.html">prev-tail</a>] [<a href="learn-c-the-hard-waych35.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych35.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych35.html"></a>   
 </p></body></html>

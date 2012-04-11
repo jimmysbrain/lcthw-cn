@@ -1,15 +1,14 @@
-<html><head><title>Exercise 12: If, Else-If, Else</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 12: If, Else-If, Else</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych14.html">next</a>] [<a href="learn-c-the-hard-waych12.html">prev</a>] [<a href="learn-c-the-hard-waych12.html#taillearn-c-the-hard-waych12.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych13.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych13.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 13</span><br><a id="x18-6300013"></a>Exercise 12: If, Else-If, Else</h2>
 <!--l. 3--><p class="noindent">在每一种语言中都共有的就是 if   ，C 语言中同样也有。下面的代码使用的就是 if   以确认你只输入一个或两个参数:
                                                                   
 
                                                                   
-<!--l. 6--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 6--></p><p class="indent">    <a id="x18-63001r33"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x18-63001r33"></a>
  <div class="caption"><span class="id">Source 33: </span><span class="content">                                                                                                            ex12.c</span></div><!--tex4ht:label?: x18-63001r33 -->
 <div class="fancyvrb" id="fancyvrb14"><a id="x18-63003r1"></a>1  <span id="textcolor653">#</span><span id="textcolor654">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x18-63005r2"></a>2  <br class="fancyvrb"><a id="x18-63007r3"></a>3  <span id="textcolor655">int</span> <span id="textcolor656">main</span>(<span id="textcolor657">int</span> argc, <span id="textcolor658">char</span> ⋆argv[])<br class="fancyvrb"><a id="x18-63009r4"></a>4  {<br class="fancyvrb"><a id="x18-63011r5"></a>5      <span id="textcolor659">int</span> i = <span id="textcolor660">0</span>;<br class="fancyvrb"><a id="x18-63013r6"></a>6  
 <br class="fancyvrb"><a id="x18-63015r7"></a>7      <span id="textcolor661">if</span>(argc == <span id="textcolor662">1</span>) {<br class="fancyvrb"><a id="x18-63017r8"></a>8          printf(<span class="colorbox" id="colorbox663"><span id="textcolor664">"</span></span><span class="colorbox" id="colorbox665"><span id="textcolor666">You only have one argument. You suck.</span></span><span class="colorbox" id="colorbox667"><span id="textcolor668">\n</span></span><span class="colorbox" id="colorbox669"><span id="textcolor670">"</span></span>);
@@ -34,11 +33,10 @@
                                                                   
 
                                                                   
-<!--l. 61--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 61--></p><p class="indent">    <a id="x18-64001r34"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x18-64001r34"></a>
  <div class="caption"><span class="id">Source 34: </span><span class="content">                                                                                                      ex12 的输出</span></div><!--tex4ht:label?: x18-64001r34 -->
 <!--l. 62-->
 <div class="lstlisting" id="listing-23"><span class="label"><a id="x18-64002r1"></a>1</span>$ make ex12 <br><span class="label"><a id="x18-64003r2"></a>2</span>cc -Wall -g    ex12.c   -o ex12 <br><span class="label"><a id="x18-64004r3"></a>3</span>$ ./ex12 <br><span class="label"><a id="x18-64005r4"></a>4</span>You only have one argument. You suck. <br><span class="label"><a id="x18-64006r5"></a>5</span>$ ./ex12 one <br><span class="label"><a id="x18-64007r6"></a>6</span>Here’s your arguments: <br><span class="label"><a id="x18-64008r7"></a>7</span>./ex12 one <br><span class="label"><a id="x18-64009r8"></a>8</span>$ ./ex12 one two <br><span class="label"><a id="x18-64010r9"></a>9</span>Here’s your arguments: <br><span class="label"><a id="x18-64011r10"></a>10</span>./ex12 one two <br><span class="label"><a id="x18-64012r11"></a>11</span>$ ./ex12 one two three <br><span class="label"><a id="x18-64013r12"></a>12</span>You have too many arguments. You suck. <br><span class="label"><a id="x18-64014r13"></a>13</span>$
@@ -61,6 +59,6 @@
      <li class="enumerate" id="x18-66006x3">回到习题 10 和 11，使用 if   将循环提前结束。完成操作你需要 break
      语句。自己查查怎么用。
      </li>
-     <li class="enumerate" id="x18-66008x4">第一个条件判断是否真的是对的呢？对于你来说”第一个参数”和用户输入的第一个参数是不一样的。把这里修改正确。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x18-66008x4">第一个条件判断是否真的是对的呢？对于你来说”第一个参数”和用户输入的第一个参数是不一样的。把这里修改正确。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych14.html">next</a>] [<a href="learn-c-the-hard-waych12.html">prev</a>] [<a href="learn-c-the-hard-waych12.html#taillearn-c-the-hard-waych12.html">prev-tail</a>] [<a href="learn-c-the-hard-waych13.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych13.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych13.html"></a>   
 </p></body></html>

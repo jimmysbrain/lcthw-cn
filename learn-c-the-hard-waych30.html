@@ -1,5 +1,5 @@
-<html><head><title>Exercise 29: Libraries And Linking</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 29: Libraries And Linking</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych31.html">next</a>] [<a href="learn-c-the-hard-waych29.html">prev</a>] [<a href="learn-c-the-hard-waych29.html#taillearn-c-the-hard-waych29.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych30.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych30.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 30</span><br><a id="x36-19300030"></a>Exercise 29: Libraries And Linking</h2>
 <!--l. 3--><p class="noindent">A central part of any C program is the ability to link it to libraries that your
 operating system provides. Linking is how you get additional features for your
@@ -51,11 +51,10 @@ functions from it.
                                                                   
 
                                                                   
-<!--l. 57--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 57--></p><p class="indent">    <a id="x36-194001r82"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x36-194001r82"></a>
  <div class="caption"><span class="id">Source 82: </span><span class="content">                                                                                                        libex29.c</span></div><!--tex4ht:label?: x36-194001r82 -->
 <div class="fancyvrb" id="fancyvrb49"><a id="x36-194003r1"></a>1  <span id="textcolor4479">#</span><span id="textcolor4480">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x36-194005r2"></a>2  <span id="textcolor4481">#</span><span id="textcolor4482">include <ctype.h></ctype.h></span><br class="fancyvrb"><a id="x36-194007r3"></a>3  <span id="textcolor4483">#</span><span id="textcolor4484">include "dbg.h"</span><br class="fancyvrb"><a id="x36-194009r4"></a>4  <br class="fancyvrb"><a id="x36-194011r5"></a>5  
 <br class="fancyvrb"><a id="x36-194013r6"></a>6  <span id="textcolor4485">int</span> <span id="textcolor4486">print_a_message</span>(<span id="textcolor4487">const</span> <span id="textcolor4488">char</span> ⋆msg)<br class="fancyvrb"><a id="x36-194015r7"></a>7  {<br class="fancyvrb"><a id="x36-194017r8"></a>8      printf(<span class="colorbox" id="colorbox4489"><span id="textcolor4490">"</span></span><span class="colorbox" id="colorbox4491"><span id="textcolor4492">A STRING: %s</span></span><span class="colorbox" id="colorbox4493"><span id="textcolor4494">\n</span></span><span class="colorbox" id="colorbox4495"><span id="textcolor4496">"</span></span>, msg);
@@ -76,11 +75,10 @@ with the above functions.
                                                                   
 
                                                                   
-<!--l. 114--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 114--></p><p class="indent">    <a id="x36-194092r83"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x36-194092r83"></a>
  <div class="caption"><span class="id">Source 83: </span><span class="content">                                                                                                            ex29.c</span></div><!--tex4ht:label?: x36-194092r83 -->
 <div class="fancyvrb" id="fancyvrb50"><a id="x36-194094r1"></a>1  <span id="textcolor4555">#</span><span id="textcolor4556">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x36-194096r2"></a>2  <span id="textcolor4557">#</span><span id="textcolor4558">include "dbg.h"</span><br class="fancyvrb"><a id="x36-194098r3"></a>3  <span id="textcolor4559">#</span><span id="textcolor4560">include <dlfcn.h></dlfcn.h></span><br class="fancyvrb"><a id="x36-194100r4"></a>4  
 <br class="fancyvrb"><a id="x36-194102r5"></a>5  <span id="textcolor4561">typedef</span> <span id="textcolor4562">int</span> (⋆lib_function)(<span id="textcolor4563">const</span> <span id="textcolor4564">char</span> ⋆data);<br class="fancyvrb"><a id="x36-194104r6"></a>6  <br class="fancyvrb"><a id="x36-194106r7"></a>7  <br class="fancyvrb"><a id="x36-194108r8"></a>8  <span id="textcolor4565">int</span> <span id="textcolor4566">main</span>(<span id="textcolor4567">int</span> argc, <span id="textcolor4568">char</span> ⋆argv[])
@@ -132,11 +130,10 @@ things are built manually.
                                                                   
 
                                                                   
-<!--l. 183--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 183--></p><p class="indent">    <a id="x36-195001r84"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x36-195001r84"></a>
  <div class="caption"><span class="id">Source 84: </span><span class="content">                                                                                     Building And Using
 libex29.so</span></div><!--tex4ht:label?: x36-195001r84 -->
 <div class="fancyvrb" id="fancyvrb51"><a id="x36-195003r1"></a>1  <span id="textcolor4618">#</span> compile the lib file and make the .so<br class="fancyvrb"><a id="x36-195005r2"></a>2  <span id="textcolor4619">$</span> cc -c libex29.c -o libex29.o
@@ -189,6 +186,6 @@ even though you’ve corrupted it.
      I did manually above.
      </li>
      <li class="enumerate" id="x36-197008x4">Read  the  man dlopen documentation  and  read  about  all  the  related
-     functions. Try some of the other options to dlopen beside RTLD_NOW.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     functions. Try some of the other options to dlopen beside RTLD_NOW.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych31.html">next</a>] [<a href="learn-c-the-hard-waych29.html">prev</a>] [<a href="learn-c-the-hard-waych29.html#taillearn-c-the-hard-waych29.html">prev-tail</a>] [<a href="learn-c-the-hard-waych30.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych30.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych30.html"></a>   
 </p></body></html>

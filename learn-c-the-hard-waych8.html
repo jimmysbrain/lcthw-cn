@@ -1,16 +1,15 @@
-<html><head><title>习题7: 再讲点变量，加上点算术</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题7: 再讲点变量，加上点算术</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych9.html">next</a>] [<a href="learn-c-the-hard-waych7.html">prev</a>] [<a href="learn-c-the-hard-waych7.html#taillearn-c-the-hard-waych7.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych8.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych8.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 8</span><br><a id="x13-420008"></a>习题7: 再讲点变量，加上点算术</h2>
 <!--l. 3--><p class="noindent">让我们通过声明更多的变量类型来熟悉变量的用法，这些类型包括 int(整数型)、
 float(单精度浮点型)、char(字符型)、以及 double(双精度浮点型)。我们会在稍后的各种数学表达式中用到它们，同时你还会学到 C 语言的基础数学。
                                                                   
 
                                                                   
-<!--l. 5--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 5--></p><p class="indent">    <a id="x13-42001r23"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x13-42001r23"></a>
 <div class="caption"><span class="id">Source 23: </span><span class="content">                                                                                                              ex7.c</span></div><!--tex4ht:label?: x13-42001r23 -->
 <div class="fancyvrb" id="fancyvrb7"><a id="x13-42003r1"></a>1  <span id="textcolor178">#</span><span id="textcolor179">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x13-42005r2"></a>2  <br class="fancyvrb"><a id="x13-42007r3"></a>3  <span id="textcolor180">int</span> <span id="textcolor181">main</span>(<span id="textcolor182">int</span> argc, <span id="textcolor183">char</span> ⋆argv[])
 <br class="fancyvrb"><a id="x13-42009r4"></a>4  {<br class="fancyvrb"><a id="x13-42011r5"></a>5      <span id="textcolor184">int</span> bugs = <span id="textcolor185">100</span>;<br class="fancyvrb"><a id="x13-42013r6"></a>6      <span id="textcolor186">double</span> bug_rate = <span id="textcolor187">1.2</span>;<br class="fancyvrb"><a id="x13-42015r7"></a>7  
@@ -59,11 +58,10 @@ ex7.c:28-30 </dt><dd class="description">main 函数的结尾。</dd></dl><!--l.
                                                                   
 
                                                                   
-<!--l. 65--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 65--></p><p class="indent">    <a id="x13-43001r24"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x13-43001r24"></a>
 <div class="caption"><span class="id">Source 24: </span><span class="content">                                                                                                            ex7 输出</span></div><!--tex4ht:label?: x13-43001r24 -->
 <!--l. 66-->
 <div class="lstlisting" id="listing-18"><span class="label"><a id="x13-43002r1"></a>1</span>$ make ex7 <br><span class="label"><a id="x13-43003r2"></a>2</span>cc -Wall -g    ex7.c   -o ex7 <br><span class="label"><a id="x13-43004r3"></a>3</span>$ ./ex7 <br><span class="label"><a id="x13-43005r4"></a>4</span>You have 100 bugs at the imaginary rate of 1.200000. <br><span class="label"><a id="x13-43006r5"></a>5</span>The entire universe has 1073741824 bugs. <br><span class="label"><a id="x13-43007r6"></a>6</span>You are expected to have 120.000000 bugs. <br><span class="label"><a id="x13-43008r7"></a>7</span>That is only a 1.117587e-07 portion of the universe. <br><span class="label"><a id="x13-43009r8"></a>8</span>Which means you should care 0%. <br><span class="label"><a id="x13-43010r9"></a>9</span>$
@@ -84,6 +82,6 @@ ex7.c:28-30 </dt><dd class="description">main 函数的结尾。</dd></dl><!--l.
      </li>
      <li class="enumerate" id="x13-45008x4">上网查查 unsigned 的功能是什么。
      </li>
-     <li class="enumerate" id="x13-45010x5">在下一个练习之前，试着向自己解释为什么 char 可以和 int 相乘.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x13-45010x5">在下一个练习之前，试着向自己解释为什么 char 可以和 int 相乘.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych9.html">next</a>] [<a href="learn-c-the-hard-waych7.html">prev</a>] [<a href="learn-c-the-hard-waych7.html#taillearn-c-the-hard-waych7.html">prev-tail</a>] [<a href="learn-c-the-hard-waych8.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych8.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych8.html"></a>   
 </p></body></html>

@@ -1,5 +1,5 @@
-<html><head><title>习题9: 数组和字符串</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题9: 数组和字符串</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych11.html">next</a>] [<a href="learn-c-the-hard-waych9.html">prev</a>] [<a href="learn-c-the-hard-waych9.html#taillearn-c-the-hard-waych9.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych10.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych10.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 10</span><br><a id="x15-5000010"></a>习题9: 数组和字符串</h2>
 <!--l. 3--><p class="noindent">在上一个习题中我们学习了如何创建基本数组以及数组和字符串的对应关系。这个习题中我们将更全面的了解数组与字符串之间的相似之处，并更多地了解关于内存分布的知识。
 <!--l. 5--></p><p class="indent">    这节习题展示给你的是 C 语言将字符串作为字节数组存放的，该数组以 <span class="obeylines-h"><span class="verb">’\0’</span></span>
@@ -7,11 +7,10 @@
                                                                   
 
                                                                   
-<!--l. 7--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 7--></p><p class="indent">    <a id="x15-50001r27"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x15-50001r27"></a>
 <div class="caption"><span class="id">Source 27: </span><span class="content">                                                                                                              ex9.c</span></div><!--tex4ht:label?: x15-50001r27 -->
 <div class="fancyvrb" id="fancyvrb9"><a id="x15-50003r1"></a>1  <span id="textcolor402">#</span><span id="textcolor403">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x15-50005r2"></a>2  <br class="fancyvrb"><a id="x15-50007r3"></a>3  <span id="textcolor404">int</span> <span id="textcolor405">main</span>(<span id="textcolor406">int</span> argc, <span id="textcolor407">char</span> ⋆argv[])<br class="fancyvrb"><a id="x15-50009r4"></a>4  {
 <br class="fancyvrb"><a id="x15-50011r5"></a>5      <span id="textcolor408">int</span> numbers[<span id="textcolor409">4</span>] = {<span id="textcolor410">0</span>};<br class="fancyvrb"><a id="x15-50013r6"></a>6      <span id="textcolor411">char</span> name[<span id="textcolor412">4</span>] = {<span class="colorbox" id="colorbox413"><span id="textcolor414">’a’</span></span>};<br class="fancyvrb"><a id="x15-50015r7"></a>7  
@@ -39,11 +38,10 @@
                                                                   
 
                                                                   
-<!--l. 73--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 73--></p><p class="indent">    <a id="x15-51001r28"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x15-51001r28"></a>
 <div class="caption"><span class="id">Source 28: </span><span class="content">                                                                                                        ex9 的输出</span></div><!--tex4ht:label?: x15-51001r28 -->
 <!--l. 74-->
 <div class="lstlisting" id="listing-20"><span class="label"><a id="x15-51002r1"></a>1</span>$ make ex9 <br><span class="label"><a id="x15-51003r2"></a>2</span>cc -Wall -g    ex9.c   -o ex9 <br><span class="label"><a id="x15-51004r3"></a>3</span>$ ./ex9 <br><span class="label"><a id="x15-51005r4"></a>4</span>numbers: 0 0 0 0 <br><span class="label"><a id="x15-51006r5"></a>5</span>name each: a <br><span class="label"><a id="x15-51007r6"></a>6</span>name: a <br><span class="label"><a id="x15-51008r7"></a>7</span>numbers: 1 2 3 4 <br><span class="label"><a id="x15-51009r8"></a>8</span>name each: Z e d <br><span class="label"><a id="x15-51010r9"></a>9</span>name: Zed <br><span class="label"><a id="x15-51011r10"></a>10</span>another: Zed <br><span class="label"><a id="x15-51012r11"></a>11</span>another: Z e d <br><span class="label"><a id="x15-51013r12"></a>12</span>$
@@ -98,6 +96,6 @@
      <li class="enumerate" id="x15-53010x5">在纸上把数组画出来，用一排盒子的格式表示出这些数组。然后将你上面的操作在纸上模拟出来，看看你是否弄对了。
      </li>
      <li class="enumerate" id="x15-53012x6">将 name 用 another 的申明风格申明一次，看看代码是否还能正常运行。
-     </li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     </li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych11.html">next</a>] [<a href="learn-c-the-hard-waych9.html">prev</a>] [<a href="learn-c-the-hard-waych9.html#taillearn-c-the-hard-waych9.html">prev-tail</a>] [<a href="learn-c-the-hard-waych10.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych10.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych10.html"></a>   
 </p></body></html>

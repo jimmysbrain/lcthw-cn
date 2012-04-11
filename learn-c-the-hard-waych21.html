@@ -1,5 +1,5 @@
-<html><head><title>习题20: Zed 的强悍的debug 宏命令</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题20: Zed 的强悍的debug 宏命令</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych22.html">next</a>] [<a href="learn-c-the-hard-waych20.html">prev</a>] [<a href="learn-c-the-hard-waych20.html#taillearn-c-the-hard-waych20.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych21.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych21.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 21</span><br><a id="x26-10500021"></a>习题20: Zed 的强悍的debug 宏命令</h2>
 <!--l. 3--><p class="noindent">There is a constant problem in C that you have been dancing around but which I am
 going to solve in this exercise using a set of macros I developed. You can thank me
@@ -69,11 +69,10 @@ you’ve ever seen:
                                                                   
 
                                                                   
-<!--l. 74--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 74--></p><p class="indent">    <a id="x26-107001r55"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x26-107001r55"></a>
  <div class="caption"><span class="id">Source 55: </span><span class="content">                                                                                                             dbg.h</span></div><!--tex4ht:label?: x26-107001r55 -->
 <div class="fancyvrb" id="fancyvrb28"><a id="x26-107003r1"></a>1  <span id="textcolor2056">#</span><span id="textcolor2057">ifndef __dbg_h__</span><br class="fancyvrb"><a id="x26-107005r2"></a>2  <span id="textcolor2058">#</span><span id="textcolor2059">define __dbg_h__</span><br class="fancyvrb"><a id="x26-107007r3"></a>3  <br class="fancyvrb"><a id="x26-107009r4"></a>4  <span id="textcolor2060">#</span><span id="textcolor2061">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x26-107011r5"></a>5  <span id="textcolor2062">#</span><span id="textcolor2063">include <errno.h></errno.h></span>
 <br class="fancyvrb"><a id="x26-107013r6"></a>6  <span id="textcolor2064">#</span><span id="textcolor2065">include <string.h></string.h></span><br class="fancyvrb"><a id="x26-107015r7"></a>7  <br class="fancyvrb"><a id="x26-107017r8"></a>8  <span id="textcolor2066">#</span><span id="textcolor2067">ifdef NDEBUG</span><br class="fancyvrb"><a id="x26-107019r9"></a>9  <span id="textcolor2068">#</span><span id="textcolor2069">define debug(M, ...)</span><br class="fancyvrb"><a id="x26-107021r10"></a>10  <span id="textcolor2070">#</span><span id="textcolor2071">else</span>
@@ -159,11 +158,10 @@ them.
                                                                   
 
                                                                   
-<!--l. 164--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 164--></p><p class="indent">    <a id="x26-108001r56"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x26-108001r56"></a>
  <div class="caption"><span class="id">Source 56: </span><span class="content">                                                                                                            ex20.c</span></div><!--tex4ht:label?: x26-108001r56 -->
 <div class="fancyvrb" id="fancyvrb29"><a id="x26-108003r1"></a>1  <span id="textcolor2094">#</span><span id="textcolor2095">include "dbg.h"</span><br class="fancyvrb"><a id="x26-108005r2"></a>2  <span id="textcolor2096">#</span><span id="textcolor2097">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x26-108007r3"></a>3  <span id="textcolor2098">#</span><span id="textcolor2099">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x26-108009r4"></a>4  <br class="fancyvrb"><a id="x26-108011r5"></a>5  <br class="fancyvrb"><a id="x26-108013r6"></a>6  <span id="textcolor2100">void</span> <span id="textcolor2101">test_debug</span>()
 <br class="fancyvrb"><a id="x26-108015r7"></a>7  {<br class="fancyvrb"><a id="x26-108017r8"></a>8      <span id="textcolor2102">// notice you don’t need the \n</span><br class="fancyvrb"><a id="x26-108019r9"></a>9      debug(<span class="colorbox" id="colorbox2103"><span id="textcolor2104">"</span></span><span class="colorbox" id="colorbox2105"><span id="textcolor2106">I have Brown Hair.</span></span><span class="colorbox" id="colorbox2107"><span id="textcolor2108">"</span></span>);<br class="fancyvrb"><a id="x26-108021r10"></a>10  
@@ -209,11 +207,10 @@ this:
                                                                   
 
                                                                   
-<!--l. 297--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 297--></p><p class="indent">    <a id="x26-109001r57"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x26-109001r57"></a>
  <div class="caption"><span class="id">Source 57: </span><span class="content">                                                                                                               ex20
 output</span></div><!--tex4ht:label?: x26-109001r57 -->
 <!--l. 298-->
@@ -321,6 +318,6 @@ check for no value.
      Makefile then recompile to see the same thing.
      </li>
      <li class="enumerate" id="x26-111006x3">Modify the logging so that it include the function name as well as the
-     file:line.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     file:line.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych22.html">next</a>] [<a href="learn-c-the-hard-waych20.html">prev</a>] [<a href="learn-c-the-hard-waych20.html#taillearn-c-the-hard-waych20.html">prev-tail</a>] [<a href="learn-c-the-hard-waych21.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych21.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych21.html"></a>   
 </p></body></html>

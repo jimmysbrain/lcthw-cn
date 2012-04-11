@@ -1,5 +1,5 @@
-<html><head><title>习题10: 字符串数组，循环</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题10: 字符串数组，循环</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych12.html">next</a>] [<a href="learn-c-the-hard-waych10.html">prev</a>] [<a href="learn-c-the-hard-waych10.html#taillearn-c-the-hard-waych10.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych11.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych11.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 11</span><br><a id="x16-5400011"></a>习题10: 字符串数组，循环</h2>
 <!--l. 3--><p class="noindent">你可以用多种数据类型组成一个数组，要记得“字符串”和“字节数组”就是一个东西。下一步就是将字符串放到数组里。这里还会为你介绍第一个循环结构——for-loop（for 循环）——它会帮助你打印出这个新的数据结构。
 <!--l. 7--></p><p class="indent">    有个有趣的地方是，其实已经有个字符串数组在你的程序中躲藏了一段时间了，
@@ -7,11 +7,10 @@
                                                                   
 
                                                                   
-<!--l. 11--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 11--></p><p class="indent">    <a id="x16-54001r29"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x16-54001r29"></a>
 <div class="caption"><span class="id">Source 29: </span><span class="content">                                                                                                            ex10.c</span></div><!--tex4ht:label?: x16-54001r29 -->
 <div class="fancyvrb" id="fancyvrb10"><a id="x16-54003r1"></a>1  <span id="textcolor534">#</span><span id="textcolor535">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x16-54005r2"></a>2  <br class="fancyvrb"><a id="x16-54007r3"></a>3  <span id="textcolor536">int</span> <span id="textcolor537">main</span>(<span id="textcolor538">int</span> argc, <span id="textcolor539">char</span> ⋆argv[])<br class="fancyvrb"><a id="x16-54009r4"></a>4  {<br class="fancyvrb"><a id="x16-54011r5"></a>5      <span id="textcolor540">int</span> i = <span id="textcolor541">0</span>;
 <br class="fancyvrb"><a id="x16-54013r6"></a>6  <br class="fancyvrb"><a id="x16-54015r7"></a>7      <span id="textcolor542">// go through each string in argv</span><br class="fancyvrb"><a id="x16-54017r8"></a>8      <span id="textcolor543">// why am I skipping argv[0]?</span>
@@ -51,11 +50,10 @@
                                                                   
 
                                                                   
-<!--l. 85--><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 85--><p class="indent">    <a id="x16-55001r30"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x16-55001r30"></a>
 <div class="caption"><span class="id">Source 30: </span><span class="content">                                                                                                      ex10 的输出</span></div><!--tex4ht:label?: x16-55001r30 -->
 <!--l. 86-->
 <div class="lstlisting" id="listing-21"><span class="label"><a id="x16-55002r1"></a>1</span>$ make ex10 <br><span class="label"><a id="x16-55003r2"></a>2</span>cc -Wall -g    ex10.c   -o ex10 <br><span class="label"><a id="x16-55004r3"></a>3</span>$ ./ex10 i am a bunch of arguments <br><span class="label"><a id="x16-55005r4"></a>4</span>arg 1: i <br><span class="label"><a id="x16-55006r5"></a>5</span>arg 2: am <br><span class="label"><a id="x16-55007r6"></a>6</span>arg 3: a <br><span class="label"><a id="x16-55008r7"></a>7</span>arg 4: bunch <br><span class="label"><a id="x16-55009r8"></a>8</span>arg 5: of <br><span class="label"><a id="x16-55010r9"></a>9</span>arg 6: arguments <br><span class="label"><a id="x16-55011r10"></a>10</span>state 0: California <br><span class="label"><a id="x16-55012r11"></a>11</span>state 1: Oregon <br><span class="label"><a id="x16-55013r12"></a>12</span>state 2: Washington <br><span class="label"><a id="x16-55014r13"></a>13</span>state 3: Texas <br><span class="label"><a id="x16-55015r14"></a>14</span>$ <br><span class="label"><a id="x16-55016r15"></a>15</span>$ ./ex10 <br><span class="label"><a id="x16-55017r16"></a>16</span>state 0: California <br><span class="label"><a id="x16-55018r17"></a>17</span>state 1: Oregon <br><span class="label"><a id="x16-55019r18"></a>18</span>state 2: Washington <br><span class="label"><a id="x16-55020r19"></a>19</span>state 3: Texas <br><span class="label"><a id="x16-55021r20"></a>20</span>$
@@ -95,6 +93,6 @@
      <li class="enumerate" id="x16-58006x3">阅读以下什么是 NULL，并尝试将数组 states 的元素之一设为 NULL，看看它会打印输出什么。
      </li>
      <li class="enumerate" id="x16-58008x4">试试你可不可以在打印输出之前将数组 states 的元素赋值到数组 argv
-     中，然后再反过来试一下。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     中，然后再反过来试一下。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych12.html">next</a>] [<a href="learn-c-the-hard-waych10.html">prev</a>] [<a href="learn-c-the-hard-waych10.html#taillearn-c-the-hard-waych10.html">prev-tail</a>] [<a href="learn-c-the-hard-waych11.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych11.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych11.html"></a>   
 </p></span></p></body></html>

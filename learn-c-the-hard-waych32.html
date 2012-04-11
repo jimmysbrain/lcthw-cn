@@ -1,5 +1,5 @@
-<html><head><title>Exercise 31: Debugging Code</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 31: Debugging Code</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych33.html">next</a>] [<a href="learn-c-the-hard-waych31.html">prev</a>] [<a href="learn-c-the-hard-waych31.html#taillearn-c-the-hard-waych31.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych32.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych32.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 32</span><br><a id="x38-20100032"></a>Exercise 31: Debugging Code</h2>
 <!--l. 3--><p class="noindent">I’ve already taught you about my awesome debug macros and you’ve been using
 them. When I debug code I use the debug() macro almost exclusively to analyze
@@ -131,11 +131,10 @@ to troll through as well.
                                                                   
 
                                                                   
-<!--l. 114--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 114--></p><p class="indent">    <a id="x38-204001r90"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x38-204001r90"></a>
  <div class="caption"><span class="id">Source 90: </span><span class="content">                                                                                                            ex31.c</span></div><!--tex4ht:label?: x38-204001r90 -->
 <div class="fancyvrb" id="fancyvrb57"><a id="x38-204003r1"></a>1  <span id="textcolor4913">#</span><span id="textcolor4914">include <unistd.h></unistd.h></span><br class="fancyvrb"><a id="x38-204005r2"></a>2  <br class="fancyvrb"><a id="x38-204007r3"></a>3  <span id="textcolor4915">int</span> <span id="textcolor4916">main</span>(<span id="textcolor4917">int</span> argc, <span id="textcolor4918">char</span> ⋆argv[])<br class="fancyvrb"><a id="x38-204009r4"></a>4  {<br class="fancyvrb"><a id="x38-204011r5"></a>5      <span id="textcolor4919">int</span> i = <span id="textcolor4920">0</span>;
 <br class="fancyvrb"><a id="x38-204013r6"></a>6  <br class="fancyvrb"><a id="x38-204015r7"></a>7      <span id="textcolor4921">while</span>(i 100) {<br class="fancyvrb"><a id="x38-204017r8"></a>8          usleep(<span id="textcolor4923">3000</span>);<br class="fancyvrb"><a id="x38-204019r9"></a>9      }<br class="fancyvrb"><a id="x38-204021r10"></a>10  <br class="fancyvrb"><a id="x38-204023r11"></a>11      <span id="textcolor4924">return</span> <span id="textcolor4925">0</span>;<br class="fancyvrb"><a id="x38-204025r12"></a>12  }</div>
@@ -197,11 +196,10 @@ while-loop to make it exit.
                                                                   
 
                                                                   
-<!--l. 183--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 183--></p><p class="indent">    <a id="x38-205001r91"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x38-205001r91"></a>
  <div class="caption"><span class="id">Source 91: </span><span class="content">                                                                                             ex31.sh-session</span></div><!--tex4ht:label?: x38-205001r91 -->
 <div class="fancyvrb" id="fancyvrb58"><a id="x38-205003r1"></a>1  <span id="textcolor4926">$</span> ps ax | grep ex31<br class="fancyvrb"><a id="x38-205005r2"></a>2  <span id="textcolor4927">10026 s000  S+     0:00.11 ./ex31</span>
 <br class="fancyvrb"><a id="x38-205007r3"></a>3  <span id="textcolor4928">10036 s001  R+     0:00.00 grep ex31</span><br class="fancyvrb"><a id="x38-205009r4"></a>4  <br class="fancyvrb"><a id="x38-205011r5"></a>5  <span id="textcolor4929">$</span> gdb ./ex31 10026
@@ -233,11 +231,10 @@ while-loop to make it exit.
                                                                   
 
                                                                   
-    </div><hr class="endfloat"></hr><!--l. 261--><p class="indent">    </p><hr class="float"></hr><div class="float">
+    </div><hr class="endfloat"></hr><!--l. 261--><p class="indent">    <a id="x38-205146r10"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x38-205146r10"></a>
 <div class="caption"><span class="id">Note 10: </span><span class="content">                                                                                                                 OSX
 Problems</span></div><!--tex4ht:label?: x38-205146r10 -->
      <div class="quote">
@@ -257,7 +254,7 @@ gdb:5 </dt><dd class="description">I’m attaching using <span class="obeylines-
      id I have.
      </dd><dt class="description">
 gdb:6-19 </dt><dd class="description">gdb prints out a bunch of information about it’s license and then all
-     the things it’s reading. <span class="footnote-mark"><a id="fn1x33-bk"><sup class="textsuperscript">1</sup></a></span><a id="x38-205147f1"></a>
+     the things it’s reading. <span class="footnote-mark"><a href="#fn1x33" id="fn1x33-bk"><sup class="textsuperscript">1</sup></a></span><a id="x38-205147f1"></a>
      </dd><dt class="description">
 gdb:21 </dt><dd class="description">The  program  is  attached  and  stopped  at  this  point,  so  now  I  set  a
      breakpoint at line 8 in the file with break. I’m assuming that I’m already
@@ -322,8 +319,8 @@ gdb –batch –ex r –ex bt –ex q –args </dt><dd class="description">Runs 
      you’ll get a core file. This core file is like a post-mortem of the program so
      you can load up what happened right at the crash and see what caused
      it. Change ex31.c so that it crashes after a few iterations, then try to get
-     a core dump and analyze it.</li></ol><div class="footnotes"><!--l. 278--><p class="noindent"><span class="footnote-mark"><a id="fn1x33"><sup class="textsuperscript">1</sup></a></span>Just in case you missed it that gdbreally was the GNU debugger and just in case you didn’t
-know it was doing all this stuff.                                            </p></div> <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>]
-[<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     a core dump and analyze it.</li></ol><div class="footnotes"><!--l. 278--><p class="noindent"><span class="footnote-mark"><a href="#fn1x33-bk" id="fn1x33"><sup class="textsuperscript">1</sup></a></span>Just in case you missed it that gdbreally was the GNU debugger and just in case you didn’t
+know it was doing all this stuff.                                            </p></div> <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych33.html">next</a>]
+[<a href="learn-c-the-hard-waych31.html">prev</a>] [<a href="learn-c-the-hard-waych31.html#taillearn-c-the-hard-waych31.html">prev-tail</a>] [<a href="learn-c-the-hard-waych32.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych32.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych32.html"></a>   
 </p></body></html>

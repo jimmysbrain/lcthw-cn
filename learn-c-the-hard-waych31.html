@@ -1,5 +1,5 @@
-<html><head><title>Exercise 30: Automated Testing</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 30: Automated Testing</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych32.html">next</a>] [<a href="learn-c-the-hard-waych30.html">prev</a>] [<a href="learn-c-the-hard-waych30.html#taillearn-c-the-hard-waych30.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych31.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych31.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 31</span><br><a id="x37-19800031"></a>Exercise 30: Automated Testing</h2>
 <!--l. 3--><p class="noindent">Automated testing is used frequently in other languages like Python and Ruby, but
 rarely used in C. Part of the reason comes from the difficulty of automatically
@@ -12,11 +12,10 @@ snippet of code by <a href="http://www.jera.com/techinfo/jtns/jtn002.html">Jera 
                                                                   
 
                                                                   
-<!--l. 14--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 14--></p><p class="indent">    <a id="x37-198001r85"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x37-198001r85"></a>
  <div class="caption"><span class="id">Source 85: </span><span class="content">                                                                                             tests/minunit.h</span></div><!--tex4ht:label?: x37-198001r85 -->
 <div class="fancyvrb" id="fancyvrb52"><a id="x37-198003r1"></a>1  <span id="textcolor4657">#</span><span id="textcolor4658">undef NDEBUG</span><br class="fancyvrb"><a id="x37-198005r2"></a>2  <span id="textcolor4659">#</span><span id="textcolor4660">ifndef _minunit_h</span><br class="fancyvrb"><a id="x37-198007r3"></a>3  <span id="textcolor4661">#</span><span id="textcolor4662">define _minunit_h</span><br class="fancyvrb"><a id="x37-198009r4"></a>4  <br class="fancyvrb"><a id="x37-198011r5"></a>5  <span id="textcolor4663">#</span><span id="textcolor4664">include <stdio.h></stdio.h></span>
 <br class="fancyvrb"><a id="x37-198013r6"></a>6  <span id="textcolor4665">#</span><span id="textcolor4666">include <dbg.h></dbg.h></span><br class="fancyvrb"><a id="x37-198015r7"></a>7  <span id="textcolor4667">#</span><span id="textcolor4668">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x37-198017r8"></a>8  <br class="fancyvrb"><a id="x37-198019r9"></a>9  <span id="textcolor4669">#</span><span id="textcolor4670">define mu_suite_start() char ⋆message = NULL</span>
@@ -49,11 +48,10 @@ tests/libex29_tests.c with this in it:
                                                                   
 
                                                                   
-<!--l. 69--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 69--></p><p class="indent">    <a id="x37-199001r86"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x37-199001r86"></a>
  <div class="caption"><span class="id">Source 86: </span><span class="content">                                                                                   tests/libex29_tests.c.h</span></div><!--tex4ht:label?: x37-199001r86 -->
 <div class="fancyvrb" id="fancyvrb53"><a id="x37-199003r1"></a>1  <span id="textcolor4694">#</span><span id="textcolor4695">include "minunit.h"</span><br class="fancyvrb"><a id="x37-199005r2"></a>2  <br class="fancyvrb"><a id="x37-199007r3"></a>3  <span id="textcolor4696">char</span> ⋆<span id="textcolor4697">test_dlopen</span>()<br class="fancyvrb"><a id="x37-199009r4"></a>4  {<br class="fancyvrb"><a id="x37-199011r5"></a>5  <br class="fancyvrb"><a id="x37-199013r6"></a>6      <span id="textcolor4698">return</span> <span id="textcolor4699">NULL</span>;<br class="fancyvrb"><a id="x37-199015r7"></a>7  }<br class="fancyvrb"><a id="x37-199017r8"></a>8  
 <br class="fancyvrb"><a id="x37-199019r9"></a>9  <span id="textcolor4700">char</span> ⋆<span id="textcolor4701">test_functions</span>()<br class="fancyvrb"><a id="x37-199021r10"></a>10  {<br class="fancyvrb"><a id="x37-199023r11"></a>11  <br class="fancyvrb"><a id="x37-199025r12"></a>12      <span id="textcolor4702">return</span> <span id="textcolor4703">NULL</span>;<br class="fancyvrb"><a id="x37-199027r13"></a>13  }<br class="fancyvrb"><a id="x37-199029r14"></a>14  <br class="fancyvrb"><a id="x37-199031r15"></a>15  <span id="textcolor4704">char</span> ⋆<span id="textcolor4705">test_failures</span>()
@@ -99,11 +97,10 @@ it:
                                                                   
 
                                                                   
-<!--l. 139--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 139--></p><p class="indent">    <a id="x37-199078r87"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x37-199078r87"></a>
  <div class="caption"><span class="id">Source 87: </span><span class="content">                                                                                                   First run of
 libex29_tests</span></div><!--tex4ht:label?: x37-199078r87 -->
 <div class="fancyvrb" id="fancyvrb54"><a id="x37-199080r1"></a>1  <span id="textcolor4716">$</span> make clean<br class="fancyvrb"><a id="x37-199082r2"></a>2  <span id="textcolor4717">rm -rf build src/libex29.o tests/libex29_tests</span><br class="fancyvrb"><a id="x37-199084r3"></a>3  <span id="textcolor4718">rm -f tests/tests.log </span>
@@ -128,11 +125,10 @@ here’s the diff for the Makefile I’m using now:
                                                                   
 
                                                                   
-<!--l. 174--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 174--></p><p class="indent">    <a id="x37-199127r88"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x37-199127r88"></a>
  <div class="caption"><span class="id">Source 88: </span><span class="content">                                                                                Makefile changes for .so
 builds</span></div><!--tex4ht:label?: x37-199127r88 -->
 <div class="fancyvrb" id="fancyvrb55"><a id="x37-199129r1"></a>  <span id="textcolor4739">diff --git a/code/c-skeleton/Makefile b/code/c-skeleton/Makefile</span>
@@ -154,11 +150,10 @@ fill in the remaining unit test functions:
                                                                   
 
                                                                   
-<!--l. 209--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 209--></p><p class="indent">    <a id="x37-199180r89"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x37-199180r89"></a>
  <div class="caption"><span class="id">Source 89: </span><span class="content">                                                                                             Final version of
 tests/libex29_tests.c</span></div><!--tex4ht:label?: x37-199180r89 -->
 <div class="fancyvrb" id="fancyvrb56"><a id="x37-199182r1"></a>1  <span id="textcolor4759">#</span><span id="textcolor4760">include "minunit.h"</span><br class="fancyvrb"><a id="x37-199184r2"></a>2  <span id="textcolor4761">#</span><span id="textcolor4762">include <dlfcn.h></dlfcn.h></span><br class="fancyvrb"><a id="x37-199186r3"></a>3  
@@ -200,6 +195,6 @@ it.
      kickstart new projects without much editing.
      </li>
      <li class="enumerate" id="x37-200004x2">Study the runtests.sh and go read about bash syntax so you know
-     what it does. Think you could write a C version of this script?</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     what it does. Think you could write a C version of this script?</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych32.html">next</a>] [<a href="learn-c-the-hard-waych30.html">prev</a>] [<a href="learn-c-the-hard-waych30.html#taillearn-c-the-hard-waych30.html">prev-tail</a>] [<a href="learn-c-the-hard-waych31.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych31.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych31.html"></a>   
 </p></body></html>

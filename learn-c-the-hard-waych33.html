@@ -1,5 +1,5 @@
-<html><head><title>Exercise 32: Double Linked Lists</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 32: Double Linked Lists</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych34.html">next</a>] [<a href="learn-c-the-hard-waych32.html">prev</a>] [<a href="learn-c-the-hard-waych32.html#taillearn-c-the-hard-waych32.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych33.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych33.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 33</span><br><a id="x39-20800033"></a>Exercise 32: Double Linked Lists</h2>
 <!--l. 3--><p class="noindent">The purpose of this book is to teach you how your computer really works, and
 included in that is how various data structures and algorithms function. Computers
@@ -49,11 +49,10 @@ done with this book. This library will have the following elements:
                                                                   
 
                                                                   
-<!--l. 51--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 51--></p><p class="indent">    <a id="x39-210009r92"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x39-210009r92"></a>
  <div class="caption"><span class="id">Source 92: </span><span class="content">                                                                                             ex32.sh-session</span></div><!--tex4ht:label?: x39-210009r92 -->
 <div class="fancyvrb" id="fancyvrb59"><a id="x39-210011r1"></a>1  <span id="textcolor4984">$</span> cp -r c-skeleton liblcthw<br class="fancyvrb"><a id="x39-210013r2"></a>2  <span id="textcolor4985">$</span> <span id="textcolor4986">cd </span>liblcthw/<br class="fancyvrb"><a id="x39-210015r3"></a>3  <span id="textcolor4987">$</span> ls
 <br class="fancyvrb"><a id="x39-210017r4"></a>4  <span id="textcolor4988">LICENSE                Makefile        README.md        bin                build                src                tests</span>
@@ -109,11 +108,10 @@ header file with the right C struct statements in it.
                                                                   
 
                                                                   
-<!--l. 119--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 119--></p><p class="indent">    <a id="x39-212001r93"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x39-212001r93"></a>
  <div class="caption"><span class="id">Source 93: </span><span class="content">                                                                                              src/lcthw/list.h</span></div><!--tex4ht:label?: x39-212001r93 -->
 <div class="fancyvrb" id="fancyvrb60"><a id="x39-212003r1"></a>1  <span id="textcolor5004">#</span><span id="textcolor5005">ifndef lcthw_List_h</span><br class="fancyvrb"><a id="x39-212005r2"></a>2  <span id="textcolor5006">#</span><span id="textcolor5007">define lcthw_List_h</span><br class="fancyvrb"><a id="x39-212007r3"></a>3  <br class="fancyvrb"><a id="x39-212009r4"></a>4  <span id="textcolor5008">#</span><span id="textcolor5009">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x39-212011r5"></a>5  
 <br class="fancyvrb"><a id="x39-212013r6"></a>6  <span id="textcolor5010">struct</span> ListNode;<br class="fancyvrb"><a id="x39-212015r7"></a>7  <br class="fancyvrb"><a id="x39-212017r8"></a>8  <span id="textcolor5011">typedef</span> <span id="textcolor5012">struct</span> ListNode {<br class="fancyvrb"><a id="x39-212019r9"></a>9      <span id="textcolor5013">struct</span> ListNode ⋆next;
@@ -164,11 +162,10 @@ is implemented.
                                                                   
 
                                                                   
-<!--l. 204--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 204--></p><p class="indent">    <a id="x39-213001r94"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x39-213001r94"></a>
  <div class="caption"><span class="id">Source 94: </span><span class="content">                                                                                              src/lcthw/list.c</span></div><!--tex4ht:label?: x39-213001r94 -->
 <div class="fancyvrb" id="fancyvrb61"><a id="x39-213003r1"></a>1  <span id="textcolor5041">#</span><span id="textcolor5042">include <lcthw><span id="textcolor5043">/</span><span id="textcolor5044">list.h&gt;</span><br class="fancyvrb"><a id="x39-213005r2"></a>2  <span id="textcolor5045">#</span><span id="textcolor5046">include <lcthw><span id="textcolor5047">/</span><span id="textcolor5048">dbg.h&gt;</span><br class="fancyvrb"><a id="x39-213007r3"></a>3  <br class="fancyvrb"><a id="x39-213009r4"></a>4  List ⋆<span id="textcolor5049">List_create</span>()<br class="fancyvrb"><a id="x39-213011r5"></a>5  {
 <br class="fancyvrb"><a id="x39-213013r6"></a>6      <span id="textcolor5050">return</span> calloc(<span id="textcolor5051">1</span>, <span id="textcolor5052">sizeof</span>(List));<br class="fancyvrb"><a id="x39-213015r7"></a>7  }<br class="fancyvrb"><a id="x39-213017r8"></a>8  <br class="fancyvrb"><a id="x39-213019r9"></a>9  <span id="textcolor5053">void</span> <span id="textcolor5054">List_destroy</span>(List ⋆list)
@@ -262,11 +259,10 @@ operate correctly.
                                                                   
 
                                                                   
-<!--l. 377--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 377--></p><p class="indent">    <a id="x39-214001r95"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x39-214001r95"></a>
  <div class="caption"><span class="id">Source 95: </span><span class="content">                                                                                              src/lcthw/list.c</span></div><!--tex4ht:label?: x39-214001r95 -->
 <div class="fancyvrb" id="fancyvrb62"><a id="x39-214003r1"></a>1  <span id="textcolor5116">#</span><span id="textcolor5117">include "minunit.h"</span><br class="fancyvrb"><a id="x39-214005r2"></a>2  <span id="textcolor5118">#</span><span id="textcolor5119">include <lcthw><span id="textcolor5120">/</span><span id="textcolor5121">list.h&gt;</span><br class="fancyvrb"><a id="x39-214007r3"></a>3  <span id="textcolor5122">#</span><span id="textcolor5123">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x39-214009r4"></a>4  
 <br class="fancyvrb"><a id="x39-214011r5"></a>5  <span id="textcolor5124">static</span> List ⋆list = <span id="textcolor5125">NULL</span>;<br class="fancyvrb"><a id="x39-214013r6"></a>6  <span id="textcolor5126">char</span> ⋆test1 = <span class="colorbox" id="colorbox5127"><span id="textcolor5128">"</span></span><span class="colorbox" id="colorbox5129"><span id="textcolor5130">test1 data</span></span><span class="colorbox" id="colorbox5131"><span id="textcolor5132">"</span></span>;<br class="fancyvrb"><a id="x39-214015r7"></a>7  <span id="textcolor5133">char</span> ⋆test2 = <span class="colorbox" id="colorbox5134"><span id="textcolor5135">"</span></span><span class="colorbox" id="colorbox5136"><span id="textcolor5137">test2 data</span></span><span class="colorbox" id="colorbox5138"><span id="textcolor5139">"</span></span>;
@@ -322,11 +318,10 @@ look like this:
                                                                   
 
                                                                   
-<!--l. 506--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 506--></p><p class="indent">    <a id="x39-215001r96"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x39-215001r96"></a>
  <div class="caption"><span class="id">Source 96: </span><span class="content">                                                                                                              Ex32
 Session</span></div><!--tex4ht:label?: x39-215001r96 -->
 <div class="fancyvrb" id="fancyvrb63"><a id="x39-215003r1"></a>1  <span id="textcolor5306">$</span> make
@@ -373,6 +368,6 @@ code.
      </li>
      <li class="enumerate" id="x39-217006x3">What  operations  are  missing  that  you  can  imagine  needing?  Some
      examples are copying, joining, splitting. Implement these operations and
-     write the unit tests for them.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     write the unit tests for them.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych34.html">next</a>] [<a href="learn-c-the-hard-waych32.html">prev</a>] [<a href="learn-c-the-hard-waych32.html#taillearn-c-the-hard-waych32.html">prev-tail</a>] [<a href="learn-c-the-hard-waych33.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych33.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych33.html"></a>   
 </p></body></html>

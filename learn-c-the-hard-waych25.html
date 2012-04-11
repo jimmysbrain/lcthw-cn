@@ -1,15 +1,14 @@
-<html><head><title>习题24: 输入、输出、文件</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题24: 输入、输出、文件</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych26.html">next</a>] [<a href="learn-c-the-hard-waych24.html">prev</a>] [<a href="learn-c-the-hard-waych24.html#taillearn-c-the-hard-waych24.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych25.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych25.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 25</span><br><a id="x30-13900025"></a>习题24: 输入、输出、文件</h2>
 <!--l. 3--><p class="noindent">你已经可以用 printf 来打印了，这非常好。但是你肯定不满足于此。在这一节，你将会用 fscanf 和 fgets 来构建一个结构体以存贮某个人的信息。简单介绍过如何读取数据之后，你将会看到一个 C 语言所拥有的处理 IO 的完整函数列表。你应该已经见过而且用过其中的一部分，所以本节会帮助你回想起很多东西。
                                                                   
 
                                                                   
-<!--l. 8--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 8--></p><p class="indent">    <a id="x30-139001r63"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x30-139001r63"></a>
 <div class="caption"><span class="id">Source 63: </span><span class="content">                                                                                                            ex24.c</span></div><!--tex4ht:label?: x30-139001r63 -->
 <div class="fancyvrb" id="fancyvrb34"><a id="x30-139003r1"></a>1  <span id="textcolor2676">#</span><span id="textcolor2677">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x30-139005r2"></a>2  <span id="textcolor2678">#</span><span id="textcolor2679">include "dbg.h"</span><br class="fancyvrb"><a id="x30-139007r3"></a>3  <br class="fancyvrb"><a id="x30-139009r4"></a>4  <span id="textcolor2680">#</span><span id="textcolor2681">define MAX_DATA 100</span><br class="fancyvrb"><a id="x30-139011r5"></a>5  
 <br class="fancyvrb"><a id="x30-139013r6"></a>6  <span id="textcolor2682">typedef</span> <span id="textcolor2683">enum</span> EyeColor {<br class="fancyvrb"><a id="x30-139015r7"></a>7      BLUE_EYES, GREEN_EYES, BROWN_EYES,
@@ -67,11 +66,10 @@ ex24.c:55-61 </dt><dd class="description">打印所有的东西来确认一下�
                                                                   
 
                                                                   
-<!--l. 120--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 120--></p><p class="indent">    <a id="x30-140001r64"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x30-140001r64"></a>
 <div class="caption"><span class="id">Source 64: </span><span class="content">                                                                                                          ex24 输出</span></div><!--tex4ht:label?: x30-140001r64 -->
 <!--l. 121-->
 <div class="lstlisting" id="listing-41"><span class="label"><a id="x30-140002r1"></a>1</span>$ make ex24 <br><span class="label"><a id="x30-140003r2"></a>2</span>cc -Wall -g -DNDEBUG    ex24.c   -o ex24 <br><span class="label"><a id="x30-140004r3"></a>3</span>$ ./ex24 <br><span class="label"><a id="x30-140005r4"></a>4</span>What’s your First Name? Zed <br><span class="label"><a id="x30-140006r5"></a>5</span>What’s your Last Name? Shaw <br><span class="label"><a id="x30-140007r6"></a>6</span>How old are you? 37 <br><span class="label"><a id="x30-140008r7"></a>7</span>What color are your eyes: <br><span class="label"><a id="x30-140009r8"></a>8</span>1) Blue <br><span class="label"><a id="x30-140010r9"></a>9</span>2) Green <br><span class="label"><a id="x30-140011r10"></a>10</span>3) Brown <br><span class="label"><a id="x30-140012r11"></a>11</span>4) Black <br><span class="label"><a id="x30-140013r12"></a>12</span>5) Other <br><span class="label"><a id="x30-140014r13"></a>13</span>&gt; 1 <br><span class="label"><a id="x30-140015r14"></a>14</span>How much do you make an hour? 1.2345 <br><span class="label"><a id="x30-140016r15"></a>15</span>----- RESULTS ----- <br><span class="label"><a id="x30-140017r16"></a>16</span>First Name: Zed <br><span class="label"><a id="x30-140018r17"></a>17</span>Last Name: Shaw <br><span class="label"><a id="x30-140019r18"></a>18</span>Age: 37 <br><span class="label"><a id="x30-140020r19"></a>19</span>Eyes: Blue <br><span class="label"><a id="x30-140021r20"></a>20</span>Income: 1.234500
@@ -129,6 +127,6 @@ ex24.c:55-61 </dt><dd class="description">打印所有的东西来确认一下�
      </li>
      <li class="enumerate" id="x30-143006x3">把代码改成输入的名字会被回车以及任何空格截断的形式。
      </li>
-     <li class="enumerate" id="x30-143008x4">使用 scanf 写一个函数，让它从文件中一次读入一个字符，但不要读到结束符后面。将函数写得尽可能通用化，让它接收字符串的大小作为参数，记得确认不论在任何情况下，字符串都以 <span class="obeylines-h"><span class="verb">’\0’</span></span>结尾。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x30-143008x4">使用 scanf 写一个函数，让它从文件中一次读入一个字符，但不要读到结束符后面。将函数写得尽可能通用化，让它接收字符串的大小作为参数，记得确认不论在任何情况下，字符串都以 <span class="obeylines-h"><span class="verb">’\0’</span></span>结尾。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych26.html">next</a>] [<a href="learn-c-the-hard-waych24.html">prev</a>] [<a href="learn-c-the-hard-waych24.html#taillearn-c-the-hard-waych24.html">prev-tail</a>] [<a href="learn-c-the-hard-waych25.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych25.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych25.html"></a>   
 </p></span></p></body></html>

@@ -1,5 +1,5 @@
-<html><head><title>Exercise 22: The Stack, Scope, And Globals</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 22: The Stack, Scope, And Globals</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych24.html">next</a>] [<a href="learn-c-the-hard-waych22.html">prev</a>] [<a href="learn-c-the-hard-waych22.html#taillearn-c-the-hard-waych22.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych23.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych23.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 23</span><br><a id="x28-12700023"></a>Exercise 22: The Stack, Scope, And Globals</h2>
 <!--l. 3--><p class="noindent">The concept of ”scope” seems to confuse quite a few people when they first start
 programming. Originally it came from the use of the system stack (which we
@@ -26,11 +26,10 @@ functions and ”extern” variables you need:
                                                                   
 
                                                                   
-<!--l. 31--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 31--></p><p class="indent">    <a id="x28-128001r58"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x28-128001r58"></a>
  <div class="caption"><span class="id">Source 58: </span><span class="content">                                                                                                            ex22.h</span></div><!--tex4ht:label?: x28-128001r58 -->
 <div class="fancyvrb" id="fancyvrb30"><a id="x28-128003r1"></a>1  <span id="textcolor2321">#</span><span id="textcolor2322">ifndef _ex22_h</span><br class="fancyvrb"><a id="x28-128005r2"></a>2  <span id="textcolor2323">#</span><span id="textcolor2324">define _ex22_h</span><br class="fancyvrb"><a id="x28-128007r3"></a>3  
 <br class="fancyvrb"><a id="x28-128009r4"></a>4  <span id="textcolor2325">// makes THE_SIZE in ex22.c available to other .c files</span><br class="fancyvrb"><a id="x28-128011r5"></a>5  <span id="textcolor2326">extern</span> <span id="textcolor2327">int</span> THE_SIZE;
@@ -45,11 +44,10 @@ explain after you also create the matching ex22.c:
                                                                   
 
                                                                   
-<!--l. 56--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 56--></p><p class="indent">    <a id="x28-128034r59"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x28-128034r59"></a>
  <div class="caption"><span class="id">Source 59: </span><span class="content">                                                                                                            ex22.c</span></div><!--tex4ht:label?: x28-128034r59 -->
 <div class="fancyvrb" id="fancyvrb31"><a id="x28-128036r1"></a>1  <span id="textcolor2338">#</span><span id="textcolor2339">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x28-128038r2"></a>2  <span id="textcolor2340">#</span><span id="textcolor2341">include "ex22.h"</span><br class="fancyvrb"><a id="x28-128040r3"></a>3  <span id="textcolor2342">#</span><span id="textcolor2343">include "dbg.h"</span><br class="fancyvrb"><a id="x28-128042r4"></a>4  
 <br class="fancyvrb"><a id="x28-128044r5"></a>5  <span id="textcolor2344">int</span> THE_SIZE = <span id="textcolor2345">1000</span>;<br class="fancyvrb"><a id="x28-128046r6"></a>6  <br class="fancyvrb"><a id="x28-128048r7"></a>7  <span id="textcolor2346">static</span> <span id="textcolor2347">int</span> THE_AGE = <span id="textcolor2348">37</span>;<br class="fancyvrb"><a id="x28-128050r8"></a>8  <br class="fancyvrb"><a id="x28-128052r9"></a>9  <span id="textcolor2349">int</span> <span id="textcolor2350">get_age</span>()<br class="fancyvrb"><a id="x28-128054r10"></a>10  {
@@ -100,11 +98,10 @@ of these and demonstrates some more scope conventions:
                                                                   
 
                                                                   
-<!--l. 135--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 135--></p><p class="indent">    <a id="x28-129001r60"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x28-129001r60"></a>
  <div class="caption"><span class="id">Source 60: </span><span class="content">                                                                                                  ex22_main.c</span></div><!--tex4ht:label?: x28-129001r60 -->
 <div class="fancyvrb" id="fancyvrb32"><a id="x28-129003r1"></a>1  <span id="textcolor2371">#</span><span id="textcolor2372">include "ex22.h"</span><br class="fancyvrb"><a id="x28-129005r2"></a>2  <span id="textcolor2373">#</span><span id="textcolor2374">include "dbg.h"</span><br class="fancyvrb"><a id="x28-129007r3"></a>3  <br class="fancyvrb"><a id="x28-129009r4"></a>4  <span id="textcolor2375">const</span> <span id="textcolor2376">char</span> ⋆MY_NAME = <span class="colorbox" id="colorbox2377"><span id="textcolor2378">"</span></span><span class="colorbox" id="colorbox2379"><span id="textcolor2380">Zed A. Shaw</span></span><span class="colorbox" id="colorbox2381"><span id="textcolor2382">"</span></span>;
 <br class="fancyvrb"><a id="x28-129011r5"></a>5  <br class="fancyvrb"><a id="x28-129013r6"></a>6  <span id="textcolor2383">void</span> <span id="textcolor2384">scope_demo</span>(<span id="textcolor2385">int</span> count)<br class="fancyvrb"><a id="x28-129015r7"></a>7  {<br class="fancyvrb"><a id="x28-129017r8"></a>8      log_info(<span class="colorbox" id="colorbox2386"><span id="textcolor2387">"</span></span><span class="colorbox" id="colorbox2388"><span id="textcolor2389">count is: %d</span></span><span class="colorbox" id="colorbox2390"><span id="textcolor2391">"</span></span>, count);
@@ -200,11 +197,10 @@ what you should do and what you should see for output.
                                                                   
 
                                                                   
-<!--l. 261--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 261--></p><p class="indent">    <a id="x28-130001r61"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x28-130001r61"></a>
  <div class="caption"><span class="id">Source 61: </span><span class="content">                                                                                                               ex22
 output</span></div><!--tex4ht:label?: x28-130001r61 -->
 <!--l. 262-->
@@ -288,6 +284,6 @@ you can’t:
      what a recursive function is? Try calling scope_demo at the bottom of
      scope_demo itself so that it loops.
      </li>
-     <li class="enumerate" id="x28-133010x5">Rewrite the Makefile so that it can build this.</li></ol><!--l. 1--><p class="noindent">﻿<!--l. 1--></p><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x28-133010x5">Rewrite the Makefile so that it can build this.</li></ol><!--l. 1--><p class="noindent">﻿<!--l. 1--></p><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych24.html">next</a>] [<a href="learn-c-the-hard-waych22.html">prev</a>] [<a href="learn-c-the-hard-waych22.html#taillearn-c-the-hard-waych22.html">prev-tail</a>] [<a href="learn-c-the-hard-waych23.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych23.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych23.html"></a>   
 </p></body></html>

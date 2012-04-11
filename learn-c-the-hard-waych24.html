@@ -1,16 +1,15 @@
-<html><head><title>习题23: 接触Duff 的设备</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题23: 接触Duff 的设备</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych25.html">next</a>] [<a href="learn-c-the-hard-waych23.html">prev</a>] [<a href="learn-c-the-hard-waych23.html#taillearn-c-the-hard-waych23.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych24.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych24.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 24</span><br><a id="x29-13400024"></a>习题23: 接触Duff 的设备</h2>
 <!--l. 3--><p class="noindent">本节习题可以看做是一个脑力游戏，你将接触到的是一个叫“Duff 的设备”的东西，
 它的名称来自于其发明者 Tom Duff，而这也是最著名的 C 语言实现范例之一。这一小段杰作（恶魔的杰作？）几乎包含了你学过的所有的内容。研究它的工作原理也是一件乐事。
                                                                   
 
                                                                   
-<!--l. 8--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 8--></p><p class="indent">    <a id="x29-134001r6"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x29-134001r6"></a>
 <div class="caption"><span class="id">Note 6: </span><span class="content">                                                                                                               仅供练习</span></div><!--tex4ht:label?: x29-134001r6 -->
      <div class="quote">
      <!--l. 9--><p class="indent"> C 语言的乐趣之一就是你可以用它产生和本习题一样的各种令人匪夷所思的实现方案，不过这也是 C 语言让人恼火的一个原因。学习这些技巧能让你更深的了解 C 语言和你的计算机。然而，你绝对不能把这些技巧用到实际编程中去。简单易读的代码是你永远的奋斗目标。</p></div>
@@ -21,11 +20,10 @@
                                                                   
 
                                                                   
-<!--l. 19--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 19--></p><p class="indent">    <a id="x29-134002r62"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x29-134002r62"></a>
 <div class="caption"><span class="id">Source 62: </span><span class="content">                                                                                                            ex23.c</span></div><!--tex4ht:label?: x29-134002r62 -->
 <div class="fancyvrb" id="fancyvrb33"><a id="x29-134004r1"></a>1  <span id="textcolor2482">#</span><span id="textcolor2483">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x29-134006r2"></a>2  <span id="textcolor2484">#</span><span id="textcolor2485">include <string.h></string.h></span><br class="fancyvrb"><a id="x29-134008r3"></a>3  <span id="textcolor2486">#</span><span id="textcolor2487">include "dbg.h"</span><br class="fancyvrb"><a id="x29-134010r4"></a>4  <br class="fancyvrb"><a id="x29-134012r5"></a>5  
 <br class="fancyvrb"><a id="x29-134014r6"></a>6  <span id="textcolor2488">int</span> <span id="textcolor2489">normal_copy</span>(<span id="textcolor2490">char</span> ⋆from, <span id="textcolor2491">char</span> ⋆to, <span id="textcolor2492">int</span> count)<br class="fancyvrb"><a id="x29-134016r7"></a>7  {<br class="fancyvrb"><a id="x29-134018r8"></a>8      <span id="textcolor2493">int</span> i = <span id="textcolor2494">0</span>;<br class="fancyvrb"><a id="x29-134020r9"></a>9  
@@ -122,6 +120,6 @@ zeds_device </dt><dd class="description">这是“Duff 的设备”的另一个�
      </li>
      <li class="enumerate" id="x29-138010x5">阅读 memcpy、memmove、memset 这几个函数的文档，并比较它们的速度。
      </li>
-     <li class="enumerate" id="x29-138012x6">永远都别去使用这个技巧！</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     <li class="enumerate" id="x29-138012x6">永远都别去使用这个技巧！</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych25.html">next</a>] [<a href="learn-c-the-hard-waych23.html">prev</a>] [<a href="learn-c-the-hard-waych23.html#taillearn-c-the-hard-waych23.html">prev-tail</a>] [<a href="learn-c-the-hard-waych24.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych24.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych24.html"></a>   
 </p></body></html>

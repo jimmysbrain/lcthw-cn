@@ -1,15 +1,14 @@
-<html><head><title>Exercise 5: C 程序的结构</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 5: C 程序的结构</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych7.html">next</a>] [<a href="learn-c-the-hard-waych5.html">prev</a>] [<a href="learn-c-the-hard-waych5.html#taillearn-c-the-hard-waych5.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych6.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych6.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 6</span><br><a id="x11-340006"></a>Exercise 5: C 程序的结构</h2>
 <!--l. 3--><p class="noindent">你现在已经知道了怎么使用 printf，也有了一些可供你支配使用的基本工具，所以我们现在来逐行分析一个简单 C 语言程序的结构。在这个程序里你将会敲一些你还不熟悉的东西，我将会慢慢地拆解他们。在接下来的一些练习中我们将继续与这些概念打交道。
                                                                   
 
                                                                   
-<!--l. 5--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 5--></p><p class="indent">    <a id="x11-34001r18"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x11-34001r18"></a>
 <div class="caption"><span class="id">Source 18: </span><span class="content">                                                                                                              ex5.c</span></div><!--tex4ht:label?: x11-34001r18 -->
 <div class="fancyvrb" id="fancyvrb5"><a id="x11-34003r1"></a>1  <span id="textcolor71">#</span><span id="textcolor72">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x11-34005r2"></a>2  <br class="fancyvrb"><a id="x11-34007r3"></a>3  <span id="textcolor73">/⋆ This is a comment. ⋆/</span><br class="fancyvrb"><a id="x11-34009r4"></a>4  <span id="textcolor74">int</span> <span id="textcolor75">main</span>(<span id="textcolor76">int</span> argc, <span id="textcolor77">char</span> ⋆argv[])
 <br class="fancyvrb"><a id="x11-34011r5"></a>5  {<br class="fancyvrb"><a id="x11-34013r6"></a>6      <span id="textcolor78">int</span> distance = <span id="textcolor79">100</span>;<br class="fancyvrb"><a id="x11-34015r7"></a>7  <br class="fancyvrb"><a id="x11-34017r8"></a>8      <span id="textcolor80">// this is also a comment</span>
@@ -24,11 +23,10 @@
                                                                   
 
                                                                   
-<!--l. 29--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 29--></p><p class="indent">    <a id="x11-35001r19"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x11-35001r19"></a>
  <div class="caption"><span class="id">Source 19: </span><span class="content">                                                                                                        ex5 的输出</span></div><!--tex4ht:label?: x11-35001r19 -->
 <!--l. 30-->
 <div class="lstlisting" id="listing-15"><span class="label"><a id="x11-35002r1"></a>1</span>$ make ex5 <br><span class="label"><a id="x11-35003r2"></a>2</span>cc -Wall -g    ex5.c   -o ex5 <br><span class="label"><a id="x11-35004r3"></a>3</span>$ ./ex5 <br><span class="label"><a id="x11-35005r4"></a>4</span>You are 100 miles away. <br><span class="label"><a id="x11-35006r5"></a>5</span>$
@@ -65,6 +63,6 @@ ex5.c:12 </dt><dd class="description">最终，我们用一个右花括号(<span
      </p><ol class="enumerate1"><li class="enumerate" id="x11-37002x1">针对每一行，写下那些你不理解的符号，看看你是否能猜到他们是什么意思。在纸上画一个表格把你的猜测记下来，等会可以回来检查一下你是否猜对了。
      </li>
      <li class="enumerate" id="x11-37004x2">回到之前练习题中的代码并做类似的解析，看看你是否理解了这些代码。
-     写下你自己不知道和不能解释的东西。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     写下你自己不知道和不能解释的东西。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych7.html">next</a>] [<a href="learn-c-the-hard-waych5.html">prev</a>] [<a href="learn-c-the-hard-waych5.html#taillearn-c-the-hard-waych5.html">prev-tail</a>] [<a href="learn-c-the-hard-waych6.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych6.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych6.html"></a>   
 </p></body></html>

@@ -1,16 +1,15 @@
-<html><head><title>习题4: 介绍Valgrind</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题4: 介绍Valgrind</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych6.html">next</a>] [<a href="learn-c-the-hard-waych4.html">prev</a>] [<a href="learn-c-the-hard-waych4.html#taillearn-c-the-hard-waych4.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych5.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych5.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 5</span><br><a id="x10-290005"></a>习题4: 介绍Valgrind</h2>
 <!--l. 3--><p class="noindent">是时候学习另外一个工具 Valgrind 了，它将伴随你学习 C 语言的整个过程。我现在介绍 Valgrind 给你，因为从现在起，在“让程序出错”这个小节里，每个练习你都将用到它。Valgrind 运行你的程序，然后报告你犯下的所有致命错误。它是一个很棒的自由软件，我经常在我写 C 代码的时候用到它。
 <!--l. 5--></p><p class="indent">    还记得在上一个习题里，我让你修改你的代码移除了 printf 函数的参数吗？它打印出了一些不寻常的结果，但我没有告诉你为什么它会打印出这些结果。在这个习题里，我们将用 Valgrind 来探个究竟。
                                                                   
 
                                                                   
-<!--l. 7--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 7--></p><p class="indent">    <a id="x10-29001r3"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x10-29001r3"></a>
 <div class="caption"><span class="id">Note 3: </span><span class="content">                                                                                 为什么要介绍这些工具？
 </span></div><!--tex4ht:label?: x10-29001r3 -->
      <div class="quote">
@@ -36,11 +35,10 @@
                                                                   
 
                                                                   
-<!--l. 28--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 28--></p><p class="indent">    <a id="x10-30011r15"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x10-30011r15"></a>
 <div class="caption"><span class="id">Source 15: </span><span class="content">                                                                                                            ex4.sh</span></div><!--tex4ht:label?: x10-30011r15 -->
 <div class="fancyvrb" id="fancyvrb3"><a id="x10-30013r1"></a>1  <span id="textcolor37"># 1) Download it (use wget if you don’t have curl)</span>
 <br class="fancyvrb"><a id="x10-30015r2"></a>2  curl -O http://valgrind.org/downloads/valgrind-3.6.1.tar.bz2
@@ -59,11 +57,10 @@
                                                                   
 
                                                                   
-<!--l. 62--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 62--></p><p class="indent">    <a id="x10-31001r16"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x10-31001r16"></a>
 <div class="caption"><span class="id">Source 16: </span><span class="content">                                                                                                              ex4.c</span></div><!--tex4ht:label?: x10-31001r16 -->
 <div class="fancyvrb" id="fancyvrb4"><a id="x10-31003r1"></a>1  <span id="textcolor45">#</span><span id="textcolor46">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x10-31005r2"></a>2  <br class="fancyvrb"><a id="x10-31007r3"></a>3  <span id="textcolor47">/⋆ Warning: This program is wrong on purpose. ⋆/</span><br class="fancyvrb"><a id="x10-31009r4"></a>4  <br class="fancyvrb"><a id="x10-31011r5"></a>5  <span id="textcolor48">int</span> <span id="textcolor49">main</span>()
 <br class="fancyvrb"><a id="x10-31013r6"></a>6  {<br class="fancyvrb"><a id="x10-31015r7"></a>7      <span id="textcolor50">int</span> age = <span id="textcolor51">10</span>;<br class="fancyvrb"><a id="x10-31017r8"></a>8      <span id="textcolor52">int</span> height;<br class="fancyvrb"><a id="x10-31019r9"></a>9  <br class="fancyvrb"><a id="x10-31021r10"></a>10      printf(<span class="colorbox" id="colorbox53"><span id="textcolor54">"</span></span><span class="colorbox" id="colorbox55"><span id="textcolor56">I am %d years old.</span></span><span class="colorbox" id="colorbox57"><span id="textcolor58">\n</span></span><span class="colorbox" id="colorbox59"><span id="textcolor60">"</span></span>);
@@ -79,11 +76,10 @@
                                                                   
 
                                                                   
-<!--l. 93--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 93--></p><p class="indent">    <a id="x10-32001r17"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x10-32001r17"></a>
 <div class="caption"><span class="id">Source 17: </span><span class="content">                                                                                 Build 并用 Valgrind 运行 ex4.c</span></div><!--tex4ht:label?: x10-32001r17 -->
 <!--l. 94-->
 <div class="lstlisting" id="listing-14"><span class="label"><a id="x10-32002r1"></a>1</span>$ make ex4 <br><span class="label"><a id="x10-32003r2"></a>2</span>cc -Wall -g    ex4.c   -o ex4 <br><span class="label"><a id="x10-32004r3"></a>3</span>ex4.c: In function ’main’: <br><span class="label"><a id="x10-32005r4"></a>4</span>ex4.c:10: warning: too few arguments for format <br><span class="label"><a id="x10-32006r5"></a>5</span>ex4.c:7: warning: unused variable ’age’ <br><span class="label"><a id="x10-32007r6"></a>6</span>ex4.c:11: warning: ’height’ is used uninitialized in this function <br><span class="label"><a id="x10-32008r7"></a>7</span>$ valgrind ./ex4 <br><span class="label"><a id="x10-32009r8"></a>8</span>==3082== Memcheck, a memory error detector <br><span class="label"><a id="x10-32010r9"></a>9</span>==3082== Copyright (C) 2002-2010, and GNU GPL’d, by Julian Seward et al. <br><span class="label"><a id="x10-32011r10"></a>10</span>==3082== Using Valgrind-3.6.0.SVN-Debian and LibVEX; rerun with -h for copyright info <br><span class="label"><a id="x10-32012r11"></a>11</span>==3082== Command: ./ex4 <br><span class="label"><a id="x10-32013r12"></a>12</span>==3082== <br><span class="label"><a id="x10-32014r13"></a>13</span>I am -16775432 years old. <br><span class="label"><a id="x10-32015r14"></a>14</span>==3082== Use of uninitialised value of size 8 <br><span class="label"><a id="x10-32016r15"></a>15</span>==3082==    at 0x4E730EB: _itoa_word (_itoa.c:195) <br><span class="label"><a id="x10-32017r16"></a>16</span>==3082==    by 0x4E743D8: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32018r17"></a>17</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32019r18"></a>18</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32020r19"></a>19</span>==3082== <br><span class="label"><a id="x10-32021r20"></a>20</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32022r21"></a>21</span>==3082==    at 0x4E730F5: _itoa_word (_itoa.c:195) <br><span class="label"><a id="x10-32023r22"></a>22</span>==3082==    by 0x4E743D8: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32024r23"></a>23</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32025r24"></a>24</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32026r25"></a>25</span>==3082== <br><span class="label"><a id="x10-32027r26"></a>26</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32028r27"></a>27</span>==3082==    at 0x4E7633B: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32029r28"></a>28</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32030r29"></a>29</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32031r30"></a>30</span>==3082== <br><span class="label"><a id="x10-32032r31"></a>31</span>==3082== Conditional jump or move depends on uninitialised value(s) <br><span class="label"><a id="x10-32033r32"></a>32</span>==3082==    at 0x4E744C6: vfprintf (vfprintf.c:1613) <br><span class="label"><a id="x10-32034r33"></a>33</span>==3082==    by 0x4E7E6F9: printf (printf.c:35) <br><span class="label"><a id="x10-32035r34"></a>34</span>==3082==    by 0x40052B: main (ex4.c:11) <br><span class="label"><a id="x10-32036r35"></a>35</span>==3082== <br><span class="label"><a id="x10-32037r36"></a>36</span>I am 0 inches tall. <br><span class="label"><a id="x10-32038r37"></a>37</span>==3082== <br><span class="label"><a id="x10-32039r38"></a>38</span>==3082== HEAP SUMMARY: <br><span class="label"><a id="x10-32040r39"></a>39</span>==3082==     in use at exit: 0 bytes in 0 blocks <br><span class="label"><a id="x10-32041r40"></a>40</span>==3082==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated <br><span class="label"><a id="x10-32042r41"></a>41</span>==3082== <br><span class="label"><a id="x10-32043r42"></a>42</span>==3082== All heap blocks were freed -- no leaks are possible <br><span class="label"><a id="x10-32044r43"></a>43</span>==3082== <br><span class="label"><a id="x10-32045r44"></a>44</span>==3082== For counts of detected and suppressed errors, rerun with: -v <br><span class="label"><a id="x10-32046r45"></a>45</span>==3082== Use --track-origins=yes to see where uninitialised values come from <br><span class="label"><a id="x10-32047r46"></a>46</span>==3082== ERROR SUMMARY: 4 errors from 4 contexts (suppressed: 4 from 4) <br><span class="label"><a id="x10-32048r47"></a>47</span>$
@@ -130,6 +126,6 @@
      <li class="enumerate" id="x10-33006x3">下载其他软件的源码，自己 build 一下。尝试一些你已经用过但还从没自己动手 build 过的软件。
      </li>
      <li class="enumerate" id="x10-33008x4">看看 Valgrind 的源码的路径组织架构，读一下它的 Makefile ，别担心，
-     我也觉得这东西一团糟。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     我也觉得这东西一团糟。</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych6.html">next</a>] [<a href="learn-c-the-hard-waych4.html">prev</a>] [<a href="learn-c-the-hard-waych4.html#taillearn-c-the-hard-waych4.html">prev-tail</a>] [<a href="learn-c-the-hard-waych5.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych5.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych5.html"></a>   
 </p></body></html>

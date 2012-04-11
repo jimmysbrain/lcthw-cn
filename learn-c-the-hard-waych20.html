@@ -1,5 +1,5 @@
-<html><head><title>习题19: 一个简单的对象系统</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题19: 一个简单的对象系统</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych21.html">next</a>] [<a href="learn-c-the-hard-waych19.html">prev</a>] [<a href="learn-c-the-hard-waych19.html#taillearn-c-the-hard-waych19.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych20.html">tail</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych20.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 20</span><br><a id="x25-9600020"></a>习题19: 一个简单的对象系统</h2>
 <!--l. 3--><p class="noindent">I learned C before I learned Object Oriented Programming, so it helped me to build
 an OOP system in C to understand the basics of what OOP meant. You are probably
@@ -21,7 +21,7 @@ you’ll actually use the CPP as a code generator to create templated pieces of
 code.
 <!--l. 25--></p><p class="indent">    How the CPP works is you give it one file, usually a .c
 file, and it processes various bits of text starting with the <span class="obeylines-h"><span class="verb">#</span></span>
-(octothorpe<span class="footnote-mark"><a id="fn1x21-bk"><sup class="textsuperscript">1</sup></a></span><a id="x25-97001f1"></a>)
+(octothorpe<span class="footnote-mark"><a href="#fn1x21" id="fn1x21-bk"><sup class="textsuperscript">1</sup></a></span><a id="x25-97001f1"></a>)
 character. When it encounters one of these it performs a specific replacement on the
 text of the input file. It’s main advantage though is it can include other files, and then
 augment its list of macros based on that file’s contents.
@@ -62,11 +62,10 @@ later:
                                                                   
 
                                                                   
-<!--l. 69--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 69--></p><p class="indent">    <a id="x25-99001r49"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-99001r49"></a>
  <div class="caption"><span class="id">Source 49: </span><span class="content">                                                                                                          object.h</span></div><!--tex4ht:label?: x25-99001r49 -->
 <div class="fancyvrb" id="fancyvrb24"><a id="x25-99003r1"></a>1  <span id="textcolor1591">#</span><span id="textcolor1592">ifndef _object_h</span><br class="fancyvrb"><a id="x25-99005r2"></a>2  <span id="textcolor1593">#</span><span id="textcolor1594">define _object_h</span><br class="fancyvrb"><a id="x25-99007r3"></a>3  <br class="fancyvrb"><a id="x25-99009r4"></a>4  <span id="textcolor1595">typedef</span> <span id="textcolor1596">enum</span> {<br class="fancyvrb"><a id="x25-99011r5"></a>5      NORTH, SOUTH, EAST, WEST
 <br class="fancyvrb"><a id="x25-99013r6"></a>6  } Direction;<br class="fancyvrb"><a id="x25-99015r7"></a>7  <br class="fancyvrb"><a id="x25-99017r8"></a>8  <span id="textcolor1597">typedef</span> <span id="textcolor1598">struct</span> {<br class="fancyvrb"><a id="x25-99019r9"></a>9      <span id="textcolor1599">char</span> ⋆description;
@@ -115,11 +114,10 @@ the object.c, so that’s next:
                                                                   
 
                                                                   
-<!--l. 135--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 135--></p><p class="indent">    <a id="x25-100001r50"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-100001r50"></a>
  <div class="caption"><span class="id">Source 50: </span><span class="content">                                                                                                          object.c</span></div><!--tex4ht:label?: x25-100001r50 -->
 <div class="fancyvrb" id="fancyvrb25"><a id="x25-100003r1"></a>1  <span id="textcolor1631">#</span><span id="textcolor1632">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x25-100005r2"></a>2  <span id="textcolor1633">#</span><span id="textcolor1634">include <string.h></string.h></span><br class="fancyvrb"><a id="x25-100007r3"></a>3  <span id="textcolor1635">#</span><span id="textcolor1636">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x25-100009r4"></a>4  <span id="textcolor1637">#</span><span id="textcolor1638">include "object.h"</span>
 <br class="fancyvrb"><a id="x25-100011r5"></a>5  <span id="textcolor1639">#</span><span id="textcolor1640">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x25-100013r6"></a>6  <br class="fancyvrb"><a id="x25-100015r7"></a>7  <span id="textcolor1641">void</span> <span id="textcolor1642">Object_destroy</span>(<span id="textcolor1643">void</span> ⋆self)<br class="fancyvrb"><a id="x25-100017r8"></a>8  {<br class="fancyvrb"><a id="x25-100019r9"></a>9      Object ⋆obj = self;
@@ -165,11 +163,10 @@ Makefile that will do this based on the one you’ve been using:
                                                                   
 
                                                                   
-<!--l. 227--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 227--></p><p class="indent">    <a id="x25-100136r51"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-100136r51"></a>
  <div class="caption"><span class="id">Source 51: </span><span class="content">                                                                                                                The
 Makefile</span></div><!--tex4ht:label?: x25-100136r51 -->
 <!--l. 228-->
@@ -197,11 +194,10 @@ a ex19.h file:
                                                                   
 
                                                                   
-<!--l. 266--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 266--></p><p class="indent">    <a id="x25-101001r52"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-101001r52"></a>
  <div class="caption"><span class="id">Source 52: </span><span class="content">                                                                                                            ex19.h</span></div><!--tex4ht:label?: x25-101001r52 -->
 <div class="fancyvrb" id="fancyvrb26"><a id="x25-101003r1"></a>1  <span id="textcolor1712">#</span><span id="textcolor1713">ifndef _ex19_h</span><br class="fancyvrb"><a id="x25-101005r2"></a>2  <span id="textcolor1714">#</span><span id="textcolor1715">define _ex19_h</span><br class="fancyvrb"><a id="x25-101007r3"></a>3  <br class="fancyvrb"><a id="x25-101009r4"></a>4  <span id="textcolor1716">#</span><span id="textcolor1717">include "object.h"</span><br class="fancyvrb"><a id="x25-101011r5"></a>5  <br class="fancyvrb"><a id="x25-101013r6"></a>6  <span id="textcolor1718">struct</span> Monster {
 <br class="fancyvrb"><a id="x25-101015r7"></a>7      Object proto;<br class="fancyvrb"><a id="x25-101017r8"></a>8      <span id="textcolor1719">int</span> hit_points;<br class="fancyvrb"><a id="x25-101019r9"></a>9  };<br class="fancyvrb"><a id="x25-101021r10"></a>10  <br class="fancyvrb"><a id="x25-101023r11"></a>11  <span id="textcolor1720">typedef</span> <span id="textcolor1721">struct</span> Monster Monster;
@@ -256,11 +252,10 @@ implement the game with four rooms and a minotaur to beat up:
                                                                   
 
                                                                   
-<!--l. 360--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 360--></p><p class="indent">    <a id="x25-101104r53"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-101104r53"></a>
  <div class="caption"><span class="id">Source 53: </span><span class="content">                                                                                                            ex19.c</span></div><!--tex4ht:label?: x25-101104r53 -->
 <div class="fancyvrb" id="fancyvrb27"><a id="x25-101106r1"></a>1  <span id="textcolor1753">#</span><span id="textcolor1754">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x25-101108r2"></a>2  <span id="textcolor1755">#</span><span id="textcolor1756">include <errno.h></errno.h></span><br class="fancyvrb"><a id="x25-101110r3"></a>3  <span id="textcolor1757">#</span><span id="textcolor1758">include <stdlib.h></stdlib.h></span>
 <br class="fancyvrb"><a id="x25-101112r4"></a>4  <span id="textcolor1759">#</span><span id="textcolor1760">include <string.h></string.h></span><br class="fancyvrb"><a id="x25-101114r5"></a>5  <span id="textcolor1761">#</span><span id="textcolor1762">include <time.h></time.h></span><br class="fancyvrb"><a id="x25-101116r6"></a>6  <span id="textcolor1763">#</span><span id="textcolor1764">include "ex19.h"</span><br class="fancyvrb"><a id="x25-101118r7"></a>7  <br class="fancyvrb"><a id="x25-101120r8"></a>8  
@@ -372,11 +367,10 @@ the important key things to study and understand:
                                                                   
 
                                                                   
-<!--l. 616--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 616--></p><p class="indent">    <a id="x25-102001r54"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x25-102001r54"></a>
  <div class="caption"><span class="id">Source 54: </span><span class="content">                                                                                                               ex19
 output</span></div><!--tex4ht:label?: x25-102001r54 -->
 <!--l. 617-->
@@ -434,7 +428,7 @@ to prevent it or abort early if you can.
      </li>
      <li class="enumerate" id="x25-104008x4">Put the game mechanics into a third file, compile it to .o, and then use
      that to write another little game. If you’re doing it right you should only
-     have a new Map and a main function in the new game.</li></ol><div class="footnotes"><!--l. 26--><p class="indent">   <span class="footnote-mark"><a id="fn1x21"><sup class="textsuperscript">1</sup></a></span>A.K.A. pound, hash, mesh, number symbol, pick whatever makes you happy        </p></div> <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>]
-[<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     have a new Map and a main function in the new game.</li></ol><div class="footnotes"><!--l. 26--><p class="indent">   <span class="footnote-mark"><a href="#fn1x21-bk" id="fn1x21"><sup class="textsuperscript">1</sup></a></span>A.K.A. pound, hash, mesh, number symbol, pick whatever makes you happy        </p></div> <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych21.html">next</a>]
+[<a href="learn-c-the-hard-waych19.html">prev</a>] [<a href="learn-c-the-hard-waych19.html#taillearn-c-the-hard-waych19.html">prev-tail</a>] [<a href="learn-c-the-hard-waych20.html">front</a>] [<a href="learn-c-the-hard-waypa1.html#learn-c-the-hard-waych20.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych20.html"></a>   
 </p></body></html>

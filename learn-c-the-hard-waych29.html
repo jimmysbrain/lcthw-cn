@@ -1,5 +1,5 @@
-<html><head><title>Exercise 28: Intermediate Makefiles</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Exercise 28: Intermediate Makefiles</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych30.html">next</a>] [<a href="learn-c-the-hard-waych28.html">prev</a>] [<a href="learn-c-the-hard-waych28.html#taillearn-c-the-hard-waych28.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych29.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych29.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 29</span><br><a id="x35-18200029"></a>Exercise 28: Intermediate Makefiles</h2>
 <!--l. 3--><p class="noindent">In the next three Exercises you’ll create a skeleton project directory to use in building
 your C programs later. This skeleton directory will be used in the rest of the book,
@@ -14,11 +14,10 @@ and directories in it that many projects have. Here’s my starter:
                                                                   
 
                                                                   
-<!--l. 18--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 18--></p><p class="indent">    <a id="x35-183001r77"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x35-183001r77"></a>
  <div class="caption"><span class="id">Source 77: </span><span class="content">                                                                                            Initial C Project
 Skeleton</span></div><!--tex4ht:label?: x35-183001r77 -->
 <div class="fancyvrb" id="fancyvrb45"><a id="x35-183003r1"></a>1  <span id="textcolor4388">$</span> mkdir c-skeleton<br class="fancyvrb"><a id="x35-183005r2"></a>2  <span id="textcolor4389">$</span> <span id="textcolor4390">cd </span>c-skeleton/<br class="fancyvrb"><a id="x35-183007r3"></a>3  <span id="textcolor4391">$</span> touch LICENSE README.md Makefile
@@ -69,11 +68,10 @@ in:
                                                                   
 
                                                                   
-<!--l. 70--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 70--></p><p class="indent">    <a id="x35-184001r78"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x35-184001r78"></a>
  <div class="caption"><span class="id">Source 78: </span><span class="content">                                                                                       c-skeleton/Makefile</span></div><!--tex4ht:label?: x35-184001r78 -->
 <!--l. 71-->
 <div class="lstlisting" id="listing-46"><span class="label"><a id="x35-184002r1"></a>1</span>CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS) <br><span class="label"><a id="x35-184003r2"></a>2</span>LIBS=-ldl $(OPTLIBS) <br><span class="label"><a id="x35-184004r3"></a>3</span>PREFIX?=/usr/local <br><span class="label"><a id="x35-184005r4"></a>4</span> <br><span class="label"><a id="x35-184006r5"></a>5</span>SOURCES=$(wildcard src/⋆⋆/⋆.c src/⋆.c) <br><span class="label"><a id="x35-184007r6"></a>6</span>OBJECTS=$(patsubst %.c,%.o,$(SOURCES)) <br><span class="label"><a id="x35-184008r7"></a>7</span> <br><span class="label"><a id="x35-184009r8"></a>8</span>TEST_SRC=$(wildcard tests/⋆_tests.c) <br><span class="label"><a id="x35-184010r9"></a>9</span>TESTS=$(patsubst %.c,%,$(TEST_SRC)) <br><span class="label"><a id="x35-184011r10"></a>10</span> <br><span class="label"><a id="x35-184012r11"></a>11</span>TARGET=build/libYOUR_LIBRARY.a <br><span class="label"><a id="x35-184013r12"></a>12</span>SO_TARGET=$(patsubst %.a,%.so,$(TARGET)) <br><span class="label"><a id="x35-184014r13"></a>13</span> <br><span class="label"><a id="x35-184015r14"></a>14</span># The Target Build <br><span class="label"><a id="x35-184016r15"></a>15</span>all: $(TARGET) $(SO_TARGET) tests <br><span class="label"><a id="x35-184017r16"></a>16</span> <br><span class="label"><a id="x35-184018r17"></a>17</span>dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS) <br><span class="label"><a id="x35-184019r18"></a>18</span>dev: all <br><span class="label"><a id="x35-184020r19"></a>19</span> <br><span class="label"><a id="x35-184021r20"></a>20</span>$(TARGET): CFLAGS += -fPIC <br><span class="label"><a id="x35-184022r21"></a>21</span>$(TARGET): build $(OBJECTS) <br><span class="label"><a id="x35-184023r22"></a>22</span>        ar rcs $@ $(OBJECTS) <br><span class="label"><a id="x35-184024r23"></a>23</span>        ranlib $@ <br><span class="label"><a id="x35-184025r24"></a>24</span> <br><span class="label"><a id="x35-184026r25"></a>25</span>$(SO_TARGET): $(TARGET) $(OBJECTS) <br><span class="label"><a id="x35-184027r26"></a>26</span>        $(CC) -shared -o $@ $(OBJECTS) <br><span class="label"><a id="x35-184028r27"></a>27</span> <br><span class="label"><a id="x35-184029r28"></a>28</span>build: <br><span class="label"><a id="x35-184030r29"></a>29</span>        @mkdir -p build <br><span class="label"><a id="x35-184031r30"></a>30</span>        @mkdir -p bin <br><span class="label"><a id="x35-184032r31"></a>31</span> <br><span class="label"><a id="x35-184033r32"></a>32</span># The Unit Tests <br><span class="label"><a id="x35-184034r33"></a>33</span>.PHONY: tests <br><span class="label"><a id="x35-184035r34"></a>34</span>tests: CFLAGS += $(TARGET) <br><span class="label"><a id="x35-184036r35"></a>35</span>tests: $(TESTS) <br><span class="label"><a id="x35-184037r36"></a>36</span>        sh ./tests/runtests.sh <br><span class="label"><a id="x35-184038r37"></a>37</span> <br><span class="label"><a id="x35-184039r38"></a>38</span>valgrind: <br><span class="label"><a id="x35-184040r39"></a>39</span>        VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE) <br><span class="label"><a id="x35-184041r40"></a>40</span> <br><span class="label"><a id="x35-184042r41"></a>41</span># The Cleaner <br><span class="label"><a id="x35-184043r42"></a>42</span>clean: <br><span class="label"><a id="x35-184044r43"></a>43</span>        rm -rf build $(OBJECTS) $(TESTS) <br><span class="label"><a id="x35-184045r44"></a>44</span>        rm -f tests/tests.log <br><span class="label"><a id="x35-184046r45"></a>45</span>        find . -name "⋆.gc⋆" -exec rm {} \; <br><span class="label"><a id="x35-184047r46"></a>46</span>        rm -rf ‘find . -name "⋆.dSYM" -print‘ <br><span class="label"><a id="x35-184048r47"></a>47</span> <br><span class="label"><a id="x35-184049r48"></a>48</span># The Install <br><span class="label"><a id="x35-184050r49"></a>49</span>install: all <br><span class="label"><a id="x35-184051r50"></a>50</span>        install -d $(DESTDIR)/$(PREFIX)/lib/ <br><span class="label"><a id="x35-184052r51"></a>51</span>        install $(TARGET) $(DESTDIR)/$(PREFIX)/lib/ <br><span class="label"><a id="x35-184053r52"></a>52</span> <br><span class="label"><a id="x35-184054r53"></a>53</span># The Checker <br><span class="label"><a id="x35-184055r54"></a>54</span>BADFUNCS=’[^_.&gt;a-zA-Z0-9](str(n?cpy|n?cat|xfrm|n?dup|str|pbrk|tok|_)|stpn?cpy|a?sn?printf|byte_)’ <br><span class="label"><a id="x35-184056r55"></a>55</span>check: <br><span class="label"><a id="x35-184057r56"></a>56</span>        @echo Files with potentially dangerous functions. <br><span class="label"><a id="x35-184058r57"></a>57</span>        @egrep $(BADFUNCS) $(SOURCES) || true
@@ -131,11 +129,10 @@ this:
                                                                   
 
                                                                   
-<!--l. 178--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 178--></p><p class="indent">    <a id="x35-185001r79"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x35-185001r79"></a>
  <div class="caption"><span class="id">Source 79: </span><span class="content">                                                                                    A Changing A Make
 Build</span></div><!--tex4ht:label?: x35-185001r79 -->
 <div class="fancyvrb" id="fancyvrb46"><a id="x35-185003r1"></a>  # WARNING! Just a demonstration, won’t really work right now.
@@ -239,11 +236,10 @@ script:
                                                                   
 
                                                                   
-<!--l. 277--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 277--></p><p class="indent">    <a id="x35-187001r80"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x35-187001r80"></a>
  <div class="caption"><span class="id">Source 80: </span><span class="content">                                                                                            tests/runtests.sh</span></div><!--tex4ht:label?: x35-187001r80 -->
 <div class="fancyvrb" id="fancyvrb47"><a id="x35-187003r1"></a>1  <span id="textcolor4408">echo</span> <span class="colorbox" id="colorbox4409"><span id="textcolor4410">"Running unit tests:"</span></span><br class="fancyvrb"><a id="x35-187005r2"></a>2  <br class="fancyvrb"><a id="x35-187007r3"></a>3  <span id="textcolor4411">for </span>i in tests/⋆_tests<br class="fancyvrb"><a id="x35-187009r4"></a>4  <span id="textcolor4412">do</span>
 <br class="fancyvrb"><a id="x35-187011r5"></a>5  <span id="textcolor4413">    </span><span id="textcolor4414">if </span><span id="textcolor4415">test</span> -f <span id="textcolor4416">$i</span><br class="fancyvrb"><a id="x35-187013r6"></a>6      <span id="textcolor4417">then</span><br class="fancyvrb"><a id="x35-187015r7"></a>7  <span id="textcolor4418">        </span><span id="textcolor4419">if</span> <span id="textcolor4420">$VALGRIND</span> ./<span id="textcolor4421">$i</span> 2&gt;&gt; tests/tests.log
@@ -318,11 +314,10 @@ directory, but here’s me testing out the features of the Makefile.
                                                                   
 
                                                                   
-<!--l. 372--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 372--></p><p class="indent">    <a id="x35-191001r81"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x35-191001r81"></a>
  <div class="caption"><span class="id">Source 81: </span><span class="content">                                                                                                Checking The
 Makefile</span></div><!--tex4ht:label?: x35-191001r81 -->
 <div class="fancyvrb" id="fancyvrb48"><a id="x35-191003r1"></a>1  <span id="textcolor4442">$</span> make clean<br class="fancyvrb"><a id="x35-191005r2"></a>2  <span id="textcolor4443">rm -rf build  </span><br class="fancyvrb"><a id="x35-191007r3"></a>3  <span id="textcolor4444">rm -f tests/tests.log </span>
@@ -361,6 +356,6 @@ in the next exercises.
      BADFUNCS regular expression it’s using.
      </li>
      <li class="enumerate" id="x35-192006x3">If you don’t do automated unit testing, then go read about it so you’re
-     prepared later.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     prepared later.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych30.html">next</a>] [<a href="learn-c-the-hard-waych28.html">prev</a>] [<a href="learn-c-the-hard-waych28.html#taillearn-c-the-hard-waych28.html">prev-tail</a>] [<a href="learn-c-the-hard-waych29.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych29.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych29.html"></a>   
 </p></body></html>

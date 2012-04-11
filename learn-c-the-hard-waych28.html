@@ -1,5 +1,8 @@
-<html><head><title>习题27: 创造性与防御性编程</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>习题27: 创造性与防御性编程</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych29.html">next</a>] [<a href="learn-c-the-hard-waypa2.html">prev</a>] [<a href="learn-c-the-hard-waypa2.html#taillearn-c-the-hard-waypa2.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych28.html">tail</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych28.html">up</a>] </p></div>
+                                                                  
+
+                                                                  
     <h2 class="chapterHead"><span class="titlemark">Chapter 28</span><br><a id="x34-16700028"></a>习题27: 创造性与防御性编程</h2>
 <!--l. 3--><p class="noindent">You have now learned most of the basics of C programming and are ready to start
 becoming a serious programmer. This is where you go from beginner to expert, both
@@ -16,14 +19,14 @@ learn a new mindset called ”defensive programming”. Defensive programming
 assumes that you are going to make many mistakes and then attempts to prevent
 them at every possible step. In this exercise I’m going to teach you how to think
 about programming defensively. 要写出更好的 C 代码（任何语言），第一步就是要学习一种叫做“防御性编程”的思维模式。防御性编程是设想你会出很多错误而且你应该在任何可能的步骤中尝试阻止错误发生。在本次习题中，我将教给你如何去思考防御性的编程。
-                                                                  
-
-                                                                  
     </p><h3 class="sectionHead"><span class="titlemark">28.1    </span> <a id="x34-16800028.1"></a>The Creative Programmer Mindset</h3>
 <!--l. 28--><p class="noindent">It’s not possible to tell you how to be creative in a short exercise like this, but I will
 tell you that creativity involves taking risks and being open minded. Fear will
 quickly kill creativity, so the mindset I adopt, and many programmers adopt on,
 accident is designed to make me unafraid of taking chances and looking like an
+                                                                  
+
+                                                                  
 idiot: 在这样一个简短的练习中不可能叫你富有创造性，但是我会告诉你创造力包含了冒风险与发散思维。害怕失败或者出错会扼杀创造力，所以我采用的思维模式也是大多数程序员采取的思维模式就是事故或者失误的发生就是为了让我不惧风险并且看起来像个白痴：
 <!--l. 37--></p><p class="indent">
      </p><ol class="enumerate1"><li class="enumerate" id="x34-168002x1">我一个错误也不会有。
@@ -44,6 +47,9 @@ destructive mindset that is the dark side of the creative mindset: 然而，当�
      </p><ol class="enumerate1"><li class="enumerate" id="x34-168008x1">写出完美的软件是有可能的。
      </li>
      <li class="enumerate" id="x34-168010x2">My brain tells me the truth, and it can’t find any errors, therefore I have
+                                                                  
+
+                                                                  
      written perfect software.我的大脑总是正确的，既然我没发现任何错误，
      那么我所写的就是完美的软件。
      </li>
@@ -59,12 +65,12 @@ defensive programming mindset. 让自己富有创造力并写出扎实的软件�
 <!--l. 77--></p><p class="noindent">
     </p><h3 class="sectionHead"><span class="titlemark">28.2    </span> <a id="x34-16900028.2"></a>The Defensive Programmer Mindset 防御性编程思维模式</h3>
 <!--l. 79--><p class="noindent">After you have a working creative prototype and you’re feeling good about the idea,
-                                                                  
-
-                                                                  
 it’s time to switch to being a defensive programmer. The defensive programmer
 basically hates your code and believes these things: 在你已经有了一个可以工作的创新性的原型并且你对这个主意感觉良好的时候，就到了该切换成一名防御性的程序员的时候了。防御性程序员基本上是讨厌你的代码并且深信以下几点：
 <!--l. 85--></p><p class="indent">
+                                                                  
+
+                                                                  
      </p><ol class="enumerate1"><li class="enumerate" id="x34-169002x1">Software has errors. 软件会出错。
      </li>
      <li class="enumerate" id="x34-169004x2">You are not your software, yet you are are responsible for the errors.人不代表代码，但是你要对代码出错负责。
@@ -78,14 +84,14 @@ side as well. The defensive programmer is a paranoid who is afraid of everything
 and this fear prevents them from possibly being wrong or making mistakes.
 That’s great when you are trying to be ruthlessly consistent and correct, but
 it is murder on creative energy and concentration. 如同创造性的思维模式，防御性编程的思维模式也有其阴暗面。防御性编程者是一个处处担心的偏执狂，这种担心使得他们可以免于出错或者失误。当你需要绝对的统一以及保证正确的时候，这样做很好，但是它会扼杀创造力和专注力。
-                                                                  
-
-                                                                  
 <!--l. 107--></p><p class="noindent">
     </p><h3 class="sectionHead"><span class="titlemark">28.3    </span> <a id="x34-17000028.3"></a>八个防御性编程的策略</h3>
 <!--l. 109--><p class="noindent">Once you’ve adopted this mindset, you can then rewrite your prototype and follow a
 set of eight strategies I use to make my code as solid as I can. While I work on the
 ”real” version I ruthlessly follow these strategies and try to remove as many errors
+                                                                  
+
+                                                                  
 as I can, thinking like someone who wants to break the software. 一旦你采用了这种思维模式，你就可以遵循我常用的这八个策略来重写你的原型使其更加的充实。当我在完成这个“真实”版本的时候，我会一边严格的遵循这些策略并且尽可能的减少错误，一边幻想有人在试图突破这个软件。
      </p><dl class="description"><dt class="description">
 从不信任输入 </dt><dd class="description">Never trust the data you are given and always validate it.从不信任得到的数据，并且总是进行验证。
@@ -101,9 +107,6 @@ as I can, thinking like someone who wants to break the software. 一旦你采用
      done with code or avoided completely.可以完全用代码解决或者避免的问题就不用靠文档去做说明。
      </dd><dt class="description">
 自动化 </dt><dd class="description">全部自动化，尤其是测试。
-                                                                  
-
-                                                                  
      </dd><dt class="description">
 简洁明了 </dt><dd class="description">Always simplify the code to the smallest, cleanest form that works
      without sacrificing safety.要在不牺牲安全性的前提下简化代码到最精简最整洁形式。
@@ -123,6 +126,9 @@ better since they may be vague or misinterpreted. 现在我就依次介绍这八
 Rails and Github attack. Show a simple C examples using C strings taken from a
 socket. 解释什么是不被信任的输入。可以找一些真实的例子，比如最近的 Rails 和 Github 的攻击。用来自 socket 的 C string 做一个简单的 C 代码例子。
 <!--l. 147--></p><p class="noindent">
+                                                                  
+
+                                                                  
     </p><h4 class="subsectionHead"><span class="titlemark">28.4.2    </span> <a id="x34-17300028.4.2"></a>Prevent Errors 预防错误</h4>
 <!--l. 149--><p class="noindent">Discuss the difference between a possible error and a probable error, then how
 humans are very bad at determining probability, therefore you should try to
@@ -137,13 +143,13 @@ it, or report the defect. 展示了用我的宏来帮你做到这一点并讨论
 <!--l. 161--><p class="noindent">Explain design by contract and how you can use it to create pre-conditions,
 post-conditions, and invariants. Show a simple example of this with a function that
 has it all.
-                                                                  
-
-                                                                  
 <!--l. 164--></p><p class="noindent">
     </p><h4 class="subsectionHead"><span class="titlemark">28.4.5    </span> <a id="x34-17600028.4.5"></a>Prevention Over Documentation 靠预防措施不靠文档说明</h4>
 <!--l. 166--><p class="noindent">Talk about how programmers think that a documented flaw means there is no flaw
 and that they should just remove the flaw.
+                                                                  
+
+                                                                  
 <!--l. 169--></p><p class="noindent">
     </p><h4 class="subsectionHead"><span class="titlemark">28.4.6    </span> <a id="x34-17700028.4.6"></a>Automate Everything 自动化</h4>
 <!--l. 171--><p class="noindent">Discuss the advantages of automated testing and how I’ll teach that in a later
@@ -162,14 +168,14 @@ make you follow rules because without them you’ll miss something or get
 distracted.
 <!--l. 186--></p><p class="indent">    This authoritarian attitude has the disadvantage of disabling independent
 creative thought. Rules are necessary for getting things done, but being a slave to
-                                                                  
-
-                                                                  
 them will kill your creativity.
 <!--l. 190--></p><p class="indent">    This final strategy means you should question the rules you follow
 periodically and assume that they could be wrong, just like the software
 you are reviewing. What I will typically do is, after a session of defensive
 programming, I’ll go take a non-programming break and let the rules go. Then I’ll
+                                                                  
+
+                                                                  
 be ready to do some creative work or do more defensive coding if need
 to.
 <!--l. 196--></p><p class="noindent">
@@ -189,10 +195,7 @@ programming well, so work on both if you want to improve.
      violates these rules. Go back through and apply what you’ve learned to
      one exercise to see if you can improve it or find bugs.
      </li>
-                                                                  
-
-                                                                  
      <li class="enumerate" id="x34-181004x2">Find  an  open  source  project  and  give  some  of  the  files  a  similar  code
-     review. Submit a patch that fixes a bug if you find it.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 1--><p class="indent">    <a id="tail"></a>   
+     review. Submit a patch that fixes a bug if you find it.</li></ol><!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waych29.html">next</a>] [<a href="learn-c-the-hard-waypa2.html">prev</a>] [<a href="learn-c-the-hard-waypa2.html#taillearn-c-the-hard-waypa2.html">prev-tail</a>] [<a href="learn-c-the-hard-waych28.html">front</a>] [<a href="learn-c-the-hard-waypa2.html#learn-c-the-hard-waych28.html">up</a>] </p></div>
+<!--l. 1--><p class="indent">    <a id="taillearn-c-the-hard-waych28.html"></a>   
 </p></body></html>

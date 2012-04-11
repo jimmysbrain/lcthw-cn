@@ -1,5 +1,5 @@
-<html><head><title>Deconstructing "K&amp;R C"</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 10:56:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
-    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a href="#tail">tail</a>] [<a href="# ">up</a>] </p></div>
+<html><head><title>Deconstructing "K&amp;R C"</title><meta content="text/html; charset=utf-8" http-equiv="Content-Type"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="generator"></meta><meta content="TeX4ht (http://www.cse.ohio-state.edu/~gurari/TeX4ht/)" name="originator"></meta><!-- index=1,2,next,fn-in,charset=utf-8,NoFonts,html --><meta content="learn-c-the-hard-way.tex" name="src"></meta><meta content="2012-04-11 11:32:00" name="date"></meta><link href="learn-c-the-hard-way.css" rel="stylesheet" type="text/css"></link></head><body>
+    <!--l. 1--><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa3.html">prev</a>] [<a href="learn-c-the-hard-waypa3.html#taillearn-c-the-hard-waypa3.html">prev-tail</a>] [<a href="#taillearn-c-the-hard-waych55.html">tail</a>] [<a href="learn-c-the-hard-waypa3.html#learn-c-the-hard-waych55.html">up</a>] </p></div>
     <h2 class="chapterHead"><span class="titlemark">Chapter 55</span><br><a id="x62-30300055"></a>Deconstructing "K&amp;R C"</h2>
 <!--l. 3--><p class="noindent">When I was a kid I read this awesome book called ”The C Programming Language”
 by the language’s creators, Brian Kernighan and Dennis Ritchie. This book taught
@@ -22,13 +22,13 @@ finely honed eye for defect. You will also have an informed opinion of the book�
 actual quality, and will be able to make your own decisions on how to use the
 knowledge it contains.
 <!--l. 26--></p><p class="indent">    In this chapter we will use all the knowledge you’ve gained from this book, and
+                                                                  
+
+                                                                  
 spend it reviewing the code in "K&amp;R C" . What we will do is take many pieces of
 code from the book, find all the bugs in it, and write a unit test that exercises the bugs.
 We’ll then run this test under Valgrind to get statistics and data, and then we’ll fix
 the bugs with a redesign.
-                                                                  
-
-                                                                  
 <!--l. 32--></p><p class="indent">    This will obviously be a long chapter so I’m going to only do a handful of these
 and then I’m going have you do the rest. I’ll provide a guide that is each page,
 with the code on it, and hints to the bugs that it has. Your job is to then tear
@@ -37,11 +37,10 @@ code.
                                                                   
 
                                                                   
-<!--l. 38--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 38--></p><p class="indent">    <a id="x62-303001r11"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x62-303001r11"></a>
  <div class="caption"><span class="id">Note 11: </span><span class="content">                                                                                             Warning For The
 Fanboys</span></div><!--tex4ht:label?: x62-303001r11 -->
      <div class="quote">
@@ -109,11 +108,10 @@ function.
                                                                   
 
                                                                   
-<!--l. 104--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 104--></p><p class="indent">    <a id="x62-305001r104"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x62-305001r104"></a>
  <div class="caption"><span class="id">Source 104: </span><span class="content">                                                                                           exercise-1.9-1.c</span></div><!--tex4ht:label?: x62-305001r104 -->
 <div class="fancyvrb" id="fancyvrb71"><a id="x62-305003r1"></a>1  <span id="textcolor5987">#</span><span id="textcolor5988">include <stdio.h></stdio.h></span><br class="fancyvrb"><a id="x62-305005r2"></a>2  <span id="textcolor5989">#</span><span id="textcolor5990">include <assert.h></assert.h></span><br class="fancyvrb"><a id="x62-305007r3"></a>3  <span id="textcolor5991">#</span><span id="textcolor5992">include <stdlib.h></stdlib.h></span><br class="fancyvrb"><a id="x62-305009r4"></a>4  
 <br class="fancyvrb"><a id="x62-305011r5"></a>5  <span id="textcolor5993">#</span><span id="textcolor5994">define MAXLINE 10 </span><span id="textcolor5995">// in the book this is 1000</span><br class="fancyvrb"><a id="x62-305013r6"></a>6  <br class="fancyvrb"><a id="x62-305015r7"></a>7  <span id="textcolor5996">void</span> <span id="textcolor5997">copy</span>(<span id="textcolor5998">char</span> to[], <span id="textcolor5999">char</span> from[])
@@ -145,11 +143,10 @@ quickly.
                                                                   
 
                                                                   
-<!--l. 164--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 164--></p><p class="indent">    <a id="x62-305078r105"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x62-305078r105"></a>
  <div class="caption"><span class="id">Source 105: </span><span class="content">                                                                            exercise-1.9-1.c Valgrind
 Failures</span></div><!--tex4ht:label?: x62-305078r105 -->
 <!--l. 165-->
@@ -344,11 +341,10 @@ braces, which leads to even more confusion:
                                                                   
 
                                                                   
-<!--l. 403--></p><p class="indent">    </p><hr class="float"></hr><div class="float">
+<!--l. 403--></p><p class="indent">    <a id="x62-309001r106"></a></p><hr class="float"></hr><div class="float">
                                                                   
 
                                                                   
-<a id="x62-309001r106"></a>
  <div class="caption"><span class="id">Source 106: </span><span class="content">                                                                                   Braces Are Free, Use
 Them</span></div><!--tex4ht:label?: x62-309001r106 -->
 <div class="fancyvrb" id="fancyvrb72"><a id="x62-309003r1"></a>1  <span id="textcolor6029">/⋆ bad use of while loop with compound if-statement ⋆/</span>
@@ -381,6 +377,6 @@ verbosity.
                                                                   
 
                                                                   
-    <!--l. 85--></p><div class="crosslinks"><p class="noindent">[<a>prev</a>] [<a href="#taillearn-c-the-hard-way">prev-tail</a>] [<a>front</a>] [<a href="# ">up</a>] </p></div>
-<!--l. 85--><p class="indent">    <a id="tail"></a>   
+    <!--l. 85--></p><div class="crosslinks"><p class="noindent">[<a href="learn-c-the-hard-waypa3.html">prev</a>] [<a href="learn-c-the-hard-waypa3.html#taillearn-c-the-hard-waypa3.html">prev-tail</a>] [<a href="learn-c-the-hard-waych55.html">front</a>] [<a href="learn-c-the-hard-waypa3.html#learn-c-the-hard-waych55.html">up</a>] </p></div>
+<!--l. 85--><p class="indent">    <a id="taillearn-c-the-hard-waych55.html"></a>   
 </p></body></html>
