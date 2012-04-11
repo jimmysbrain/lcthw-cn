@@ -39,8 +39,13 @@ static inline int DArray_resize(DArray *array, size_t newsize)
 {
     array->max = newsize;
     check(array->max > 0, "The newsize must be > 0.");
-    array->contents = realloc(array->contents, array->max * sizeof(void *));
-    check_mem(array->contents);
+
+    void *contents = realloc(array->contents, array->max * sizeof(void *));
+    // check contents and assume realloc doesn't harm the original on error
+    check_mem(contents);
+
+    array->contents = contents;
+
     return 0;
 error:
     return -1;
