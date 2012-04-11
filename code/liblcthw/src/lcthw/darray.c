@@ -42,6 +42,7 @@ static inline int DArray_resize(DArray *array, size_t newsize)
 
     void *contents = realloc(array->contents, array->max * sizeof(void *));
     // check contents and assume realloc doesn't harm the original on error
+    
     check_mem(contents);
 
     array->contents = contents;

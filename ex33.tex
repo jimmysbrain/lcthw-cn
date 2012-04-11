@@ -78,6 +78,13 @@ The bubble sort isn't too bad to figure out, although it is really slow.  The
 merge sort is much more complicated, and honestly I could probably spend a bit
 more time optimizing this code if I wanted to sacrifice clarity.
 
+There is another way to implement merge sort using a "bottom up" method, but 
+it's a little harder to understand so I didn't do it.  As I've already said,
+sorting algorithms on linked lists are entirely pointless.  You could spend
+all day trying to make this faster and it will still be slower than almost
+any other sortable data structure.  The nature of linked lists is such that
+you simply don't use them if you need to sort things.
+
 \section{What You Should See}
 
 If everything works then you should get something like this:
@@ -116,5 +123,7 @@ improve these implementations, and there's a few obvious ones:
 \item Try to explain why sorting linked lists is a really bad idea.
 \item Implement a \ident{List\_insert\_sorted} that will take a given value, and using the \ident{List\_compare}, insert the element at the
     right position so that the list is always sorted.  How does using this method compare to sorting a list after you've built it?
+\item Try implementing the "bottom up" merge sort on the wikipedia page.  The code there is already C so it should be easy to 
+    recreate, but try to understand how it's working compared to the slower one I have here.
 \end{enumerate}
 
