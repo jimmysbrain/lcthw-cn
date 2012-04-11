@@ -17,13 +17,19 @@ draft: $(FINAL).dvi
 
 $(FINAL).pdf:
 	cp $(SOURCE).tex $(FINAL).tex
-	xelatex $(FINAL).tex
+	#xelatex $(FINAL).tex
+	pdflatex $(FINAL).tex
+	cp $(FINAL).out $(FINAL).out.backup
+	iconv -f utf-8 -t gbk -o $(FINAL).out.backup > $(FINAL).out
+	gbk2uni $(FINAL).out
+	pdflatex $(FINAL).tex
 
 html: 
 	cp -r site/js site/css output/
 	cd output && cp $(SOURCE)-html.tex $(FINAL).tex
 	cd output && htlatex $(FINAL).tex "book,index=1,2,next,fn-in,charset=utf-8,NoFonts" "-cunihtf -utf8"
-	sed -ire '/<head><title>/c\<head><title><\/title>' output/*.html  # title has encoding issues
+	sed -i -re '/<head><title>/c\<head><title><\/title>' output/*.html
+	sed -i -re '/<head>/d;/<\/title>/c\<head><title><\/title> output/$(FINAL).html
 	python clean.py output/*.html
 	
 view: $(FINAL).pdf
