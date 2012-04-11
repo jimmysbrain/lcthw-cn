@@ -108,6 +108,23 @@ the way you build a shared library every other month that some new programmer
 thinks it's wrong.  If the line I use to make the \file{libex29.so} file is
 wrong, then let me know and I'll add some comments for other platforms.
 
+\begin{aside}{Irritating .so Ordering}
+Sometimes you'll do what you think is normal and run this command
+\verb|cc -Wall -g -DNDEBUG -ldl ex29.c -o ex29| thinking everthing
+will work, but nope.  You see, on some platforms the order of where 
+libraries goes makes them work or not, and for no real reason.  On
+Debian or Ubuntu you have to do
+\verb|cc -Wall -g -DNDEBUG ex29.c -ldl -o ex29| for no reason at all.
+It's just the way it is, so since this works on OSX I'm doing it
+here, but in the future, if you link against a dynamic library and
+it can't find a function, try shuffling things around.
+
+The irritation here is there is an actual platform difference on nothing
+more than order of command line arguments.  On no rational planet should
+putting an \file{-ldl} at one position be different from another.  It's an
+option, and having to know these things is incredibly annoying.
+\end{aside}
+
 \section{How To Break It}
 
 Open \file{libex29.so} and edit it with an editor that can handle
