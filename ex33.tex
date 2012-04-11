@@ -1,15 +1,120 @@
 \chapter{Exercise 33: Linked List Algorithms}
 
-This exercise will cover the bubble sort and merge sort, then have a test driven section that
-has you implement a pre-sorted list.
+I'm going to cover two algorithms you can do on a linked list that involve
+sorting.  I'm going to warn you first that if you need to sort the data, then
+don't use a linked list.  These are horrible for sorting things, and there's
+much better data structures you can use if that's a requirement.  I'm covering
+these two algorithms because they are slightly difficult to pull off with a
+linked list and get you thinking about manipulating them efficiently.
+
+In the interest of writing this book, I'm going to put the algorithms in two
+different files \file{list\_algos.h} and \file{list\_algos.c} then write a test
+in \file{list\_algos\_test.c}.  For now just follow my structure, as it does
+keep things clean, but if you ever work on other libraries remember this isn't
+a common structure.
+
+In this exercise I'm going to also give you an extra challenge and I want you
+to try not to cheat.  I'm going to give you the \emph{unit test} first, and I
+want you to type it in.  Then I want you to try and implement the two
+algorithms based on their descriptions in Wikipedia before seeing if your code
+is like my code.
+
+\subsection{Bubble And Merge Sort}
+
+You know what's awesome about the Internet?  I can just link you to the
+\href{http://en.wikipedia.org/wiki/Bubble\_sort}{Bubble Sort page} and
+\href{http://en.wikipedia.org/wiki/Merge\_sort}{Merge Sort page} on Wikipedia
+and tell you to read that.  Man, that saves me a boat load of typing.   Now I
+can tell you how to actually implement each of these using the pseudo-code they
+have there.  Here's how you can tackle an algorithm like this:
+
+\begin{enumerate}
+\item Read the description and look at any visualizations it has.
+\item Either draw the algorithm on paper using boxes and lines, or actually take a deck of numbered cards (like Poker Cards)
+    and try to do the algorithm manually.  This gives you a concrete demonstration
+    of how the algorithm works.
+\item Create the skeleton functions in your \file{list\_algos.c} file and make a working \file{list\_algos.h} file, then setup
+    your test harness.
+\item Write your first failing test and get everything to compile.
+\item Go back to the Wikipedia page and copy-paste the pseudo-code (not the C code!) into the guts of the first function you're making.
+\item Translate this pseudo-code into good C code like I've taught you, using your unit test to make sure it's working.
+\item Fill out some more tests for edge cases like, empty lists, already sorted lists, etc.
+\item Repeat for the next algorithm and test.
+\end{enumerate}
+
+I just gave you the secret to figuring out most of the algorithms out there,
+that is until you get to some of the more insane ones.  In this case you're
+just doing the Bubble and Merge Sorts from Wikipedia, but those will be good
+starters.
+
+\subsection{The Unit Test}
+
+Here is the unit test you should try to get passing:
+
+\begin{code}{tests/list\_algos\_tests.c}
+<< d['code/liblcthw/tests/list_algos_tests.c|pyg|l'] >>
+\end{code}
+
+I suggest that you start with the bubble sort and get that working, then move on to the merge sort.  What I would do is lay
+out the function prototypes and skeletons that get all three files compiling, but not passing the test.  Then just fill in
+the implementation until it starts working.
+
+\subsection{The Implementation}
+
+Are you cheating?  In future exercises I will do exercises where I just give
+you a unit test and tell you to implement it, so it'll be good practice for you
+to not look at this code until you get your own working.  Here's the code for
+the \file{list\_algos.c} and \file{list\_algos.h}:
+
+\begin{code}{src/lcthw/list\_algos.h}
+<< d['code/liblcthw/src/lcthw/list_algos.h|pyg|l'] >>
+\end{code}
+
+\begin{code}{src/lcthw/list\_algos.c}
+<< d['code/liblcthw/src/lcthw/list_algos.c|pyg|l'] >>
+\end{code}
+
+The bubble sort isn't too bad to figure out, although it is really slow.  The
+merge sort is much more complicated, and honestly I could probably spend a bit
+more time optimizing this code if I wanted to sacrifice clarity.
 
 \section{What You Should See}
 
+If everything works then you should get something like this:
 
-\section{How To Break It}
+\begin{code}{Ex33 Session}
+<< d['code/ex33.sh-session|pyg|l'] >>
+\end{code}
 
+After this exercise I'm not going to show you this output unless it's necessary
+to show you how it works.  From now on you should know that I ran the tests and
+they all passed and everything compiled.
+
+\section{How To Improve It}
+
+Going back to the description of the algorithms, there's several ways to
+improve these implementations, and there's a few obvious ones:
+
+\begin{enumerate}
+\item The merge sort does a crazy amount of copying and creating lists, find ways to reduce this.
+\item The bubble sort Wikipedia description mentions a few optimizations, implement them.
+\item Can you use the \ident{List\_split} and \ident{List\_join} (if you implemented them) to improve merge sort?
+\item Go through all the defensive programming checks and improve the robustness of
+    this implementation, protecting against bad \ident{NULL} pointers, and create
+    an optional debug level invariant that does what \ident{is\_sorted} does
+    after a sort.
+\end{enumerate}
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item Create a unit test that compares the performance of the two algorithms.  You'll want to look at \verb|man 3 time| for a basic timer function,
+    and you'll want to run enough iterations to at least have a few seconds of samples.
+\item Play with the amount of data in the lists that need to be sorted and see if that changes your timing.
+\item Find a way to simulate filling different sized random lists and measuring how long they take, then graph it and see how it compares to the
+    description of the algorithm.
+\item Try to explain why sorting linked lists is a really bad idea.
+\item Implement a \ident{List\_insert\_sorted} that will take a given value, and using the \ident{List\_compare}, insert the element at the
+    right position so that the list is always sorted.  How does using this method compare to sorting a list after you've built it?
+\end{enumerate}
 

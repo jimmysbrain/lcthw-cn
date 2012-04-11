@@ -1,7 +1,5 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
-#include <assert.h>
-
 
 List *List_create()
 {
@@ -120,5 +118,4 @@ void *List_remove(List *list, ListNode *node)
 error:
     return result;
 }
-
 

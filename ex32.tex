@@ -125,7 +125,7 @@ element of the list.
 
 Finally, take a look at \file{src/lcthw/list.h:37} where I define
 the \ident{LIST\_FOREACH} macro.  This is a common idiom where you
-makea a macro that generates iteration code so people can't mess
+make a macro that generates iteration code so people can't mess
 it up.  Getting this kind of processing right can be difficult with
 data structures, so writing macros helps people out.  You'll see
 how I use this when I talk about the implementation.
@@ -134,7 +134,7 @@ how I use this when I talk about the implementation.
 
 Once you understand that, you mostly understand how a double linked list
 works.  It is nothing more than nodes with two pointers to the next and
-previous element of the list.  You can then read the \file{src/lcthw/list.c}
+previous element of the list.  You can then write the \file{src/lcthw/list.c}
 code to see how each operation is implemented.
 
 \begin{code}{src/lcthw/list.c}
@@ -170,9 +170,11 @@ the code.
     that \ident{List\_shift} for lack of a better term.
 \item[list.c:List\_unshift] Just like \ident{List\_pop}, this removes the first
     element and returns it.
-\item[list.c:List\_remove] Something that seems to always be difficult in 
+\item[list.c:List\_remove] This is actually doing all of the removal when you do
+    \ident{List\_pop} or \ident{List\_unshift}. 
+    Something that seems to always be difficult in 
     data structures is removing things, and this function is no different. It
-    has to handle quite a few conditions depending on if the elemnt
+    has to handle quite a few conditions depending on if the element
     being removed is at the front; the end; both front and end; or middle.
 \end{description}
 
@@ -195,14 +197,14 @@ a simplification in the test where I create just one \ident{List *list} for
 the whole program, then have the tests work on it.  This saves the trouble
 of building a \ident{List} for every test, but it could mean that some tests
 only pass because of how the previous test ran.  In this case I try to make
-each test keep the list clear or actually use the previous tests results.
+each test keep the list clear or actually use the previous test's results.
 
 \section{What You Should See}
 
 If you did everything right, then when you do a build and run the unit tests
 it should look like this:
 
-\begin{code}{src/lcthw/list.c}
+\begin{code}{Ex32 Session}
 << d['code/ex32.build.sh-session|pyg|l'] >>
 \end{code}
 
