@@ -30,7 +30,9 @@ but I will tell you that creativity involves taking risks and being open minded.
 Fear will quickly kill creativity, so the mindset I adopt, and many programmers
 adopt on, accident is designed to make me unafraid of taking chances and 
 looking like an idiot:
-在这样一个简短的练习中不可能叫你富有创造性，
+在这样一个简短的练习中不可能叫你富有创造性，但是我会告诉你创造力包含了冒风险与发散思维。
+害怕失败或者出错会扼杀创造力， 所以我采用的思维模式也是大多数程序员采取的思维模式就是事故或者失误的发生
+就是为了让我不惧风险并且看起来像个白痴：
 
 \begin{enumerate}
 \item 我一个错误也不会有。
@@ -43,17 +45,21 @@ By doing this I can come up with ideas, find creative solutions, open my thought
 to odd connections, and just generally invent weirdness without fear.  In this
 mindset I will typically write a horrible first version of something just to get
 the idea out.
+我是暂时这么想，而且是有技巧的让自己这么想。通过这样做，我可以让自己思维迸发，找到创新的解决方法，触类旁通
+毫无畏惧大胆思考。在这种思维模式下，我会很典型的写出一些糟糕的初版代码，只是为了将自己的想法表达出来。
 
 However, when I've finished my creative prototype I will throw it out and 
 get serious about making it solid.  Where other people make a mistake is
 carrying the creative mindset into their implementation phase.  This
 then leads to a very different destructive mindset that is the dark side
 of the creative mindset:
+然而，当我完成了创新的原型我会丢掉这种心态开始认真的将它充实起来。 而其他人会错误的将这种创造性思维模式带入到实现阶段。
+这会导致一种破坏性的心态，这是创新性思维模式的黑暗面：
 
 \begin{enumerate}
 \item 写出完美的软件是有可能的。
-\item My brain tells me the truth, and it can't find any errors, therefore I have written perfect software.
-\item My code is who I am and people who criticize its perfection are criticizing me.
+\item My brain tells me the truth, and it can't find any errors, therefore I have written perfect software.我的大脑总是正确的，既然我没发现任何错误，那么我所写的就是完美的软件。
+\item My code is who I am and people who criticize its perfection are criticizing me.代码如人，批评我代码完美的人就是在批评我。
 \end{enumerate}
 
 These are lies.  You will frequently run into programmers who feel intense
@@ -62,21 +68,24 @@ way of their ability to objectively improve their craft.  Because of pride and
 attachment to what they've written, they can continue to believe that what they
 write is perfect.  As long as they ignore other people's criticism of their
 code they can protect their fragile ego and never improve.
+这些都是谎言。你会经常遇到一些程序员对他们所创造的东西感到强烈的自豪，这很正常，但是这种自豪感阻碍了他们客观的提高自己手艺的能力。因为骄傲以及他们已经取得的成绩，他们一直相信他们写的代码是完美的。只要忽视了别人对他们代码的批评，他们就能保护脆弱的自我并且不再进步。
 
 The trick to being creative \emph{and} making solid software is to 
 also be able to adopt a defensive programming mindset.
+让自己富有创造力并写出扎实的软件的技巧也能够使用防御性编程的思维模式。
 
-
-\section{The Defensive Programmer Mindset}
+\section{The Defensive Programmer Mindset 防御性编程思维模式}
 
 After you have a working creative prototype and you're feeling good about the
 idea, it's time to switch to being a defensive programmer.  The defensive
 programmer basically hates your code and believes these things:
+在你已经有了一个可以工作的创新性的原型并且你对这个主意感觉良好的时候，就到了该切换成一名防御性的程序员的时候了。
+防御性程序员基本上是讨厌你的代码并且深信以下几点：
 
 \begin{enumerate}
-\item Software has errors.
-\item You are not your software, yet you are are responsible for the errors.
-\item You can never remove the errors, only reduce their probability.
+\item Software has errors. 软件会出错。
+\item You are not your software, yet you are are responsible for the errors.人不代表代码，但是你要对代码出错负责。
+\item You can never remove the errors, only reduce their probability. 你不可能消除错误，只能降低发生的概率。
 \end{enumerate}
 
 This mindset lets you be honest about your work and critically analyze it 
@@ -84,6 +93,7 @@ for improvements.  Notice that it doesn't say \emph{you} are full of errors?
 It says your \emph{code} is full of errors.  This is a significant thing to
 understand because it gives you the power of objectivity for the next
 implementation.
+这种思维模式让你诚实对待自己的工作并且能够批判性的分析进而改进。注意这不是说 \emph{你} 充满错误，而是说的是你的代码  \emph{代码} 充满错误。明白这一点非常的重要，因为它给了你接下来的实现以客观的力量。 
 
 Just like the creative mindset, the defensive programming mindset has a
 dark side as well.  The defensive programmer is a paranoid who is afraid
@@ -91,75 +101,81 @@ of everything, and this fear prevents them from possibly being wrong or
 making mistakes.  That's great when you are trying to be ruthlessly
 consistent and correct, but it is murder on creative energy and 
 concentration.
+如同创造性的思维模式，防御性编程的思维模式也有其阴暗面。防御性编程者是一个处处担心的偏执狂， 这种担心使得他们可以免于出错或者失误。 当你需要绝对的统一以及保证正确的时候，这样做很好，但是它会扼杀创造力和专注力。
 
 
-\section{The Eight Defensive Programmer Strategies}
+\section{八个防御性编程的策略}
 
 Once you've adopted this mindset, you can then rewrite your prototype and follow
 a set of eight strategies I use to make my code as solid as I can.  While I work
 on the "real" version I ruthlessly follow these strategies and try to remove
 as many errors as I can, thinking like someone who wants to break the software.
+一旦你采用了这种思维模式， 你就可以遵循我常用的这八个策略来重写你的原型使其更加的充实。
+当我在完成这个“真实”版本的时候，我会一边严格的遵循这些策略并且尽可能的减少错误，一边幻想有人在试图突破这个软件。
 
 
 \begin{description}
-\item[Never Trust Input] Never trust the data you are given and always validate it.
-\item[Prevent Errors] If an error is possible, no matter how probable, try to prevent it.
-\item[Fail Early And Openly] Fail early, cleanly, and openly, stating what happened, where and how to fix it.
-\item[Document Assumptions] Clearly state the pre-conditions, post-conditions, and invariants.
-\item[Prevention Over Documentation] Do not do with documentation, that which can be done with code or avoided completely.
-\item[Automate Everything] Automate everything, especially testing.
-\item[Simplify And Clarify] Always simplify the code to the smallest, cleanest form that works without sacrificing safety.
-\item[Question Authority] Do not blindly follow or reject rules.
+\item[从不信任输入] Never trust the data you are given and always validate it.从不信任得到的数据，并且总是进行验证。
+\item[预防错误] If an error is possible, no matter how probable, try to prevent it.如果有可能出错，就算可能性再小，也要试图预防。
+\item[出错要尽早且有错误输出] Fail early, cleanly, and openly, stating what happened, where and how to fix it.较早的凸显错误，出错信息要清晰开放，表明出了什么错，在哪里出错以及如何修正。
+\item[前提建档] Clearly state the pre-conditions, post-conditions, and invariants.清晰的记录前提条件，后置条件以及不变量。
+\item[靠预防措施不靠文档说明] Do not do with documentation, that which can be done with code or avoided completely.可以完全用代码解决或者避免的问题就不用靠文档去做说明。
+\item[自动化] 全部自动化，尤其是测试。 
+\item[简洁明了] Always simplify the code to the smallest, cleanest form that works without sacrificing safety.要在不牺牲安全性的前提下简化代码到最精简最整洁形式。
+\item[质疑权威] Do not blindly follow or reject rules. 不要盲从或者盲目排斥任何规则。
 \end{description}
 
 These aren't the only ones, but they're the core things I feel programmers have
 to focus on when trying to make good solid code.  Notice that I don't really
 say exactly how to do these.  I'll go into each of these in more detail, and
 some of the exercises actually cover them extensively.
+这些不是全部，但是这些是我觉得程序员在试图写出扎实代码时必须要关注的核心策略。
+需要注意我并没有详细说出如何去做。我会更详细的介绍每一个，并且有一些练习题很好的覆盖了这些策略。
 
-
-\section{Applying The Eight Strategies}
+\section{Applying The Eight Strategies 应用八大策略}
 
 I'll now go through each of the eight strategies and give some basic advice and examples on how to use them in real code.
 This will help you understand these better since they may be vague or misinterpreted.
+现在我就依次介绍这八个策略，就如何在实战中使用给出简单建议和例子。这样会让你加深理解，因为这几点可能不太明确或被误解。
 
-
-\subsection{Never Trust Input}
+\subsection{Never Trust Input 从不信任输入}
 
 Explain untrusted inputs. Use a few examples from the real world, maybe the recent Rails and Github attack.
 Show a simple C examples using C strings taken from a socket.
+解释什么是不被信任的输入。可以找一些真实的例子，比如最近的Rails和Github的攻击。用来自socket的C string做一个简单的C代码例子。
 
-\subsection{Prevent Errors}
+\subsection{Prevent Errors 预防错误}
 
 Discuss the difference between a possible error and a probable error, then how humans are very bad
 at determining probability, therefore you should try to block all the possible errors you can.
+讨论一下可能错误与概率错误的差别，以及人类在确定概率上是多么的糟糕，因此你应该尽可能阻止可能错误。
 
-
-\subsection{Fail Early And Openly}
+\subsection{Fail Early And Openly 出错要尽早且有错误输出}
 
 Show how my awesome macros help you do this and discuss good error messages.  Make sure they understand
 that you should try to explain how to maybe fix it, or report the defect.
+展示了用我的宏来帮你做到这一点并讨论了优秀的错误信息。 你应该尝试解释如何修正错误或者提出问题以确保他们明白。
 
-\subsection{Document Assumptions}
+\subsection{Document Assumptions 前提建档}
 
 Explain design by contract and how you can use it to create pre-conditions, post-conditions, and 
 invariants.  Show a simple example of this with a function that has it all.
 
-\subsection{Prevention Over Documentation}
+\subsection{Prevention Over Documentation 靠预防措施不靠文档说明}
 
 Talk about how programmers think that a documented flaw means there is no flaw and that they
 should just remove the flaw.
 
-\subsection{Automate Everything}
+\subsection{Automate Everything 自动化}
 
 Discuss the advantages of automated testing and how I'll teach that in a later exercise.
 
-\subsection{Simplify And Clarify}
+\subsection{Simplify And Clarify 简洁明了}
 
 Talk about how simpler code wins over more complex code because it reduces the probability of
 an error by reducing the number of branches and couplings in the code.
 
-\subsection{Question Authority}
+\subsection{Question Authority 质疑权威}
 
 The final strategy is the most important because it breaks you out of the
 defensive programming mindset and lets you transition into the creative
@@ -177,7 +193,7 @@ What I will typically do is, after a session of defensive programming, I'll go
 take a non-programming break and let the rules go.  Then I'll be ready to do
 some creative work or do more defensive coding if need to.
 
-\section{Order Is Not Important}
+\section{Order Is Not Important 秩序不重要}
 
 The final thing I'll say on this philosophy is that I'm not telling you to do this in
 a strict oder of "CREATE! DEFEND! CREATE! DEFEND!"  At first you may want to do that,
@@ -189,7 +205,7 @@ between them.  You need both creativity and strictness to do programming well, s
 on both if you want to improve.
 
 
-\section{Extra Credit}
+\section{加分题}
 
 \begin{enumerate}
 \item The code in the book up to this point (and for the rest of it) potentially violates these rules.  Go back through and apply what you've learned to one 

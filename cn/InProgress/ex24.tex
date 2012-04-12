@@ -1,9 +1,8 @@
-\chapter{Exercise 24: Input, Output, Files}
-\chapter{Exercise 24: 输入, 输出, 文件}
+\chapter{习题 24: 输入、输出、文件}
 
-你已经可以用 \ident{printf} 来打印了, 这非常好。但是你肯定不满足于此。 
+你已经可以用 \ident{printf} 来打印了，这非常好。但是你肯定不满足于此。 
 在这一节，你将会用 \func{fscanf} 和 \func{fgets} 来构建一个结构体以存贮某个人的信息。
-简单介绍过如何读取数据之后，你将会看到一个c语言所拥有的处理IO的完整函数列表。
+简单介绍过如何读取数据之后，你将会看到一个 C 语言所拥有的处理 IO 的完整函数列表。
 你应该已经见过而且用过其中的一部分，所以本节会帮助你回想起很多东西。
 
 \begin{code}{ex24.c}
@@ -12,55 +11,70 @@
 
 这个程序表面看似简单，其实不然。这里面用到了函数 \func{fscanf}，它是用来做文件扫描的。
  \func{scanf} 相关的一系列函数与 \func{printf} 相关的一系列函数起的作用正相反。 
- \func{printf} 按着指定格式输出数据, \func{scanf} 按着指定格式读取数据（或者扫描输入数据）。
+ \func{printf} 按着指定格式输出数据，\func{scanf} 按着指定格式读取数据（或者扫描输入数据）。
 
 文件的开头什么也没有，函数 \func{main} 做了如下一些事情：
 
 \begin{description}
 \item[ex24.c:24-28] 创建一些必须的变量。
-\item[ex24.c:30-32] 用\func{fgets} 获取姓名中的名字, 从输入获取一个字符串
-    (这里是从 \ident{stdin}获取字符串) 输入名字的时候不要太长，防止存储名字的缓冲区不够长导致内存溢出。
-\item[ex24.c:34-36] 依然用 \func{fgets}来获取\ident{you.last\_name} 。
-\item[ex24.c:38-39] 用\func{fscanf} 从\func{stdin} 获取一个整数，并且将这个整数存储在变量
-    \ident{you.age}.  可以看到用\ident{printf} 打印整数的时候使用了同样的格式表示符。
-    为了让 \ident{fscanf} 可以把输入的值存储在某个指针变量指定的位置上，你必须把\emph{address} 的地址取出来作为指针变量的值。 
-    这个例子生动的展示了如何把一串数据的内存地址作为输出参数。
-\item[ex24.c:41-45] 通过遍历枚举 \ident{EyeColor} 的全部数值，输出眼睛的颜色所具有的所有可能性。
-\item[ex24.c:47-50] 继续 \func{fscanf} ，给\ident{you.eyes}赋值， 
-    同时确保这个数值是有真实有效的。 这很重要，因为有的人会输入一个不在\ident{EYE\_COLOR\_NAMES}数组范围之内的数字，导致一个段错误。
-\item[ex24.c:52-53] 知道你挣了多少\ident{float} 收入知道你的到了多少收入 \ident{you.income}。
-\item[ex24.c:55-61] 打印所有的东西来确认一下程序运行无误。注意我们用 \ident{EYE\_COLOR\_NAMES} 来打印真正的\ident{EyeColor} 的内容。
+\item[ex24.c:30-32] 用 \func{fgets} 获取姓名中的名字，从输入获取一个字符串
+    (这里是从 \ident{stdin} 获取字符串) 输入名字的时候不要太长，
+    防止存储名字的缓冲区不够长导致内存溢出。
+\item[ex24.c:34-36] 依然用 \func{fgets} 来获取 \ident{you.last\_name} 。
+\item[ex24.c:38-39] 用 \func{fscanf} 从 \func{stdin} 获取一个整数，并且将这个
+    整数存储在变量 \ident{you.age}。可以看到用 \ident{printf} 
+    打印整数的时候使用了同样的格式表示符。为了让 \ident{fscanf}
+    可以把输入的值存储在某个指针变量指定的位置上，你必须把 \emph{address}
+    的地址取出来作为指针变量的值。这个例子生动的展示了如何把一串数据的内存地址
+    作为输出参数。
+\item[ex24.c:41-45] 通过遍历枚举 \ident{EyeColor} 的全部数值，输出眼睛的颜色
+    所具有的所有可能性。
+\item[ex24.c:47-50] 继续 \func{fscanf}，给 \ident{you.eyes} 赋值， 
+    同时确保这个数值是有真实有效的。这很重要，因为有的人会输入一个不在 
+    \ident{EYE\_COLOR\_NAMES}数组范围之内的数字，导致一个段错误。
+\item[ex24.c:52-53] 知道你挣了多少 \ident{float} 收入知道你的到了多少收入 
+    \ident{you.income}。
+\item[ex24.c:55-61] 打印所有的东西来确认一下程序运行无误。注意我们用 
+    \ident{EYE\_COLOR\_NAMES} 来打印真正的 \ident{EyeColor} 的内容。
 \end{description}
 
 
 \section{你将看到}
 
-当运行这个程序的时候，会看到你的输入被正确的处理。
-可以试试给一些奇怪的输入来检查一下代码是不是能够很好的保护自己而不是出现奇怪问题。
+当运行这个程序的时候，会看到你的输入被正确的处理。可以试试给一些奇怪的输入来
+检查一下代码是不是能够很好的保护自己而不是出现奇怪问题。
 
-\begin{code}{ex24 output}
+\begin{code}{ex24 输出}
 \begin{lstlisting}
 << d['code/ex24.out'] >>
 \end{lstlisting}
 \end{code}
 
 
-\section{如何中断它}
+\section{让程序出错}
 
 到目前为止一切顺利，其实这个练习的主要目的是看 \func{scanf} 是怎么被输入搞垮的。
-. 处理简单数字转换的时候还凑活，一旦处理字符串的时候就完全的垮掉了，
-因为很难在读取动作完成以前告诉 \func{scanf}输入缓冲区有多大。函数 \func{gets}
-(不是 \func{fgets}, the non-f version) 也有同样的问题。 这类函数完全无法知道输入的缓冲区有多大, 过大的缓冲区会搞垮程序。
-把那行代码从用\func{fgets} 替换成\verb|fscanf(stdin, "%50s", you.first_name)| 然后再运行一次程序
-就能看到仅靠\func{fscanf} 和字符串就能搞垮我们的程序。
+处理简单数字转换的时候还凑活，一旦处理字符串的时候就完全的垮掉了，因为很难在
+读取动作完成以前告诉 \func{scanf} 输入缓冲区有多大。函数 \func{gets}(不是 
+\func{fgets})也有同样的问题。这类函数完全无法知道输入的缓冲区有多大，过大的
+缓冲区会搞垮程序。把那行代码从用 \func{fgets} 替换成 
+\verb|fscanf(stdin, "%50s", you.first_name)| 然后再运行一次程序
+就能看到仅靠 \func{fscanf} 和字符串就能搞垮我们的程序。
 
-注意到程序似乎读取了太多内容而且好像你敲的回车似乎没工作了么？程序似乎没有按着你的期望方式工作，
-而且似乎还不如奇怪的由 \func{scanf} 引起的问题,仅仅是用 \func{fgets}就可以。
+注意到程序似乎读取了太多内容而且好像你敲的回车似乎没工作了么？程序似乎没有按着
+你的期望方式工作，而且似乎还不如奇怪的由 \func{scanf} 引起的问题，仅仅是用 
+\func{fgets} 就可以。
 
-下一步，把\func{fgets} 替换成 \func{gets}, 然后这样运行\program{valgrind} ：  \verb|valgrind ./ex24 < /dev/urandom|，这将把一些随机生成的垃圾丢给程序。这称作Fuzzing程序，这是一种有效的发现输入处理逻辑bug的方法。目前这种情况，是从 \file{/dev/urandom}获得随机数并且喂给程序处理，然后看着它崩溃掉。在某些操作系统上，你可能需要多试几次，或者把\ident{MAX\_DATA} 的定义改的小一点来让程序崩溃。
+下一步，把\func{fgets} 替换成 \func{gets}，然后这样运行\program{valgrind}：
+\verb|valgrind ./ex24 < /dev/urandom|，这将把一些随机生成的垃圾丢给程序。
+这称作Fuzzing程序，这是一种有效的发现输入处理逻辑bug的方法。目前这种情况，是从 
+\file{/dev/urandom}获得随机数并且喂给程序处理，然后看着它崩溃掉。在某些操作系统上，
+你可能需要多试几次，或者把\ident{MAX\_DATA} 的定义改的小一点来让程序崩溃。
 
-\func{gets} 确实非常差劲，以至于某些操作系统平台会在\emph{program} 运行\func{gets}的时候发出警告。你应该离这个函数越远越好，如果非要加个期限，我希望是一万年。
-最后，继续给\ident{you.eyes}赋值并且把确保输入在合理范围内的代码删掉。然后输入一些有问题的数字比如－1, 或者1000。在Valgrind里面再来一遍看看会发生什么。
+\func{gets} 确实非常差劲，以至于某些操作系统平台会在\emph{program} 运行 
+\func{gets} 的时候发出警告。你应该离这个函数越远越好，如果非要加个期限，我希望
+是一万年。最后，继续给 \ident{you.eyes} 赋值并且把确保输入在合理范围内的代码删掉。
+然后输入一些有问题的数字比如 -1，或者 1000。在 Valgrind 里面再来一遍看看会发生什么。
 
 \section{I/O 函数}
 
@@ -83,17 +97,19 @@
 \item fread
 \end{enumerate}
 
-仔细浏览一遍这些函数，记住他们的区别和作用。比如有\func{fscanf} 的卡片上，同样会有\func{scanf}，\func{sscanf}，\func{vscanf}，卡片背面会有函数作用的说明。
-最后，可以用 \program{man} 读取卡片的相关信息。例如\verb|man fscanf|就可以得到\func{fscanf}的帮助信息。 
+仔细浏览一遍这些函数，记住他们的区别和作用。比如有 \func{fscanf} 的卡片上，同样
+会有\func{scanf}，\func{sscanf}，\func{vscanf}，卡片背面会有函数作用的说明。
+最后，可以用 \program{man} 读取卡片的相关信息。例如 \verb|man fscanf| 就可以得到 
+\func{fscanf} 的帮助信息。 
 
 \section{额外小作业}
 
 \begin{enumerate}
-\item 不用 \func{fscanf} 完全重写一遍代码。  你将会用到诸如 \func{atoi}的函数来把输入的字符串转换成数字。
-\item 把\func{fscanf}改成只用\func{scanf}看看有什么不同。
+\item 不用 \func{fscanf} 完全重写一遍代码。你将会用到诸如 \func{atoi} 
+    的函数来把输入的字符串转换成数字。
+\item 把 \func{fscanf} 改成只用 \func{scanf} 看看有什么不同。
 \item 把代码改成输入的名字会被回车以及任何空格截断的形式。
-\item Use \ident{scanf} to write a function that reads a character at a time
-    and files in the names but doesn't go past the end.  Make this function
-    generic so it can take a size for the string, and make sure you end
-    the string with \verb|'\0'| no matter what.
+\item 使用 \ident{scanf} 写一个函数，让它从文件中一次读入一个字符，但不要读到
+    结束符后面。将函数写得尽可能通用化，让它接收字符串的大小作为参数，记得确认
+    不论在任何情况下，字符串都以 \verb|'\0'| 结尾。
 \end{enumerate}

@@ -1,17 +1,116 @@
 \chapter{Exercise 34: Dynamic Array}
 
-This is an array that grows on its own and has most of the same features as a linked
-list.  It will usually take up less space, run faster, and has other beneficial properties.
-This exercise will cover a few of the disadvantages like very slow removal from the front,
-with a solution (just do it at the end).
+This is an array that grows on its own and has most of the same features as a
+linked list.  It will usually take up less space, run faster, and has other
+beneficial properties.  This exercise will cover a few of the disadvantages
+like very slow removal from the front, with a solution (just do it at the end).
 
-\section{What You Should See}
+A dynamic array is simply an array of \ident{void **} pointers that is pre-allocated
+in one shot and that point at the data.  In the linked list you had a full struct
+that stored the \ident{void *value} pointer, but in a dynamic array there's just
+a single array with all of them.  This means you don't need any other pointers
+for next and previous records since you can just index into it directly.
 
+To start, I'll give you the header file you should type up for the implementation:
 
-\section{How To Break It}
+\begin{code}{src/lcthw/darray.h}
+<< d['code/liblcthw/src/lcthw/darray.h|pyg|l'] >>
+\end{code}
 
+This header file is showing you a new technique where I put \ident{static inline}
+functions right in the header.  These function definitions will work similar to
+the \ident{\#define} macros you've been making, but they're cleaner and easier to
+write.  If you need to create a block of code for a macro and you don't need
+code generation, then use a \ident{static inline} function.
+
+Compare this technique to the \ident{LIST\_FOREACH} that \emph{generates} a
+proper for-loop for a list. This would be impossible to do with a \ident{static inline} function because it actually has to generate the inner block of code for
+the loop.  The only way to do that is with a callback function, but that's not
+as fast and is harder to use.
+
+I'll then change things up and have you create the unit test for \ident{DArray}:
+
+\begin{code}{tests/darray\_tests.c}
+<< d['code/liblcthw/tests/darray_tests.c|pyg|l'] >>
+\end{code}
+
+This shows you how all of the operations are used, which then makes implementing
+the \ident{DArray} much easier:
+
+\begin{code}{src/lcthw/darray.c}
+<< d['code/liblcthw/src/lcthw/darray.c|pyg|l'] >>
+\end{code}
+
+This shows you another way to tackle complex code.  Instead of diving right
+into the \file{.c} implementation, look at the header file, then read the
+unit test.  This gives you an "abstract to concrete" understanding how the
+pieces work together and making it easier to remember.
+
+\section{Advantages And Disadvantages}
+
+A \ident{DArray} is better when you need to optimize these operations:
+
+\begin{enumerate}
+\item Iteration.  You can just use a basic for-loop and \ident{DArray\_count}
+    with \ident{DArray\_get} and you're done.  No special macros needed, and
+    it's faster because you aren't walking pointers.
+\item Indexing.  You can use \ident{DArray\_get} and \ident{DArray\_set} to
+    access any element at random, but with a \ident{List} you have to go
+    through N elements to get to N+1.
+\item Destroying.  You just free the struct and the \ident{contents} in 
+    two operations.  A \ident{List} requires a series of \ident{free} calls
+    and also walking every element.
+\item Cloning. You can also clone it in just two operations (plus whatever
+        it's storing) by copying the struct and \ident{contents}.  A list
+        again requires walking the whole thing and copying every \ident{ListNode}
+        plus its value.
+\item Sorting. As you saw, \ident{List} is horrible if you need to keep the
+    data sorted.  A \ident{DArray} opens up a whole class of great sorting
+    algorithms because now you can access elements randomly.
+\item Large Data. If you need to keep around a lot of data, then a \ident{DArray}
+    wins since it's base \ident{contents} takes up less memory than the same
+    number of \ident{ListNode} structs.
+\end{enumerate}
+
+The \ident{List} however wins on these operations:
+
+\begin{enumerate}
+\item Insert and remove on the front (what I called shift).  A \ident{DArray} 
+    needs special treatment to be able to do this efficiently, and usually
+    has to do some copying.
+\item Splitting or joining.  A \ident{List} can just copy some pointers and
+    it's done, but with a \ident{DArray} you have to do copying of the
+    arrays involved.
+\item Small Data. If you only need to store a few elements, then typically the
+    storage will be less in a \ident{List} than a generic \ident{DArray} because
+    the \ident{DArray} needs to expand the backing store to accommodate future
+    inserts, but a \ident{List} only makes what it needs.
+\end{enumerate}
+
+With this, I prefer to use a \ident{DArray} for most of the things you see
+other people use a \ident{List}.  I reserve using \ident{List} for any
+data structure that requires small number of nodes that are inserted and
+removed from either end.  I'll show you two similar data structures 
+called a \ident{Stack} and \ident{Queue} where this is important.
+
+\section{How To Improve It}
+
+As usual, go through each function and operation and add the defensive programming
+checks, pre-conditions, invariants, and anything else you can find to make the
+implementation more bulletproof.
 
 \section{Extra Credit}
 
+\begin{enumerate}
+\item Improve the unit tests to cover more of the operations and test that
+    using a for-loop to iterate works.
+\item Research what it would take to implement bubble sort and merge sort
+    for DArray, but don't do it yet.  I'll be implementing DArray algorithms
+    next and you'll do this then.
+\item Write some performance tests for common operations and compare them
+    to the same operations in \ident{List}.  You did some of this, but this
+    time, write a unit test that repeatedly does the operation in question,
+    then in the main runner do the timing.
+\end{enumerate}
 
 

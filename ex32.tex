@@ -34,7 +34,7 @@ There's other styles of data structures in C, but this pattern works well and is
 structures you'll make.
 
 
-\section{Making Our Library}
+\section{Making The Library}
 
 For the rest of this book you'll be creating a library that you can use when you're done with this book.  This library will
 have the following elements:
@@ -46,26 +46,201 @@ have the following elements:
 \item Documentation we'll autogenerate from the header files.
 \end{enumerate}
 
-Rather than mire the book down with long descriptions of how to setup the library, I'm going to just have you check
-out a project that I've created to get you started.
+You already have the \file{c-skeleton} so use it to create a \file{liblcthw} project:
 
-TODO: explain how to get the code from learncodethehardway.org and setup git or mercurial to maintain it.
+\begin{code}{ex32.sh-session}
+<< d['code/ex32.sh-session|pyg|l'] >>
+\end{code}
 
-Once you have this checked out you will then use this repository to make your changes and work with the rest
-of this book.
+In this session I'm doing the following:
 
+\begin{enumerate}
+\item Copy the \file{c-skeleton} over.
+\item Edit the Makefile to change \file{libYOUR\_LIBRARY.a} to \file{liblcthw.a}
+    as the new \ident{TARGET}.
+\item Make the \file{src/lcthw} directory where we'll put our code.
+\item Move the \file{src/dbg.h} into this new directory.
+\item Edit \file{tests/minunit.h} so that it uses \verb|#include <lcthw/dbg.h>|
+    as the include.
+\item Get rid of the source and test files we don't need for \file{libex29.*}.
+\item Clean up everything that's left over.
+\end{enumerate}
 
-\section{A Double Linked List Implementation}
+With that you're ready to start building the library, and the first data structure
+I'll build is the Double Linked List.
 
+\section{Double Linked Lists}
 
+The first data strucutre we'll add to \file{liblcthw} is a double linked list.
+This is the simplest data structure you can make, and it has useful properties
+for certain operations.  A linked list works by nodes having pointers to their
+next or previous element.  A "double linked list" contains pointers to both,
+while a "single linked list" only points at the next element.
+
+Because each node has pointers to the next and previous, and because you
+keep track of the first and last element of the list, you can do some operations
+very quickly.  Anything that involves inserting or deleting an element 
+will be very fast.  They are also easy to implement by most people.
+
+The main disadvantage of a linked list is that traversing it involves
+processing every single pointer along the way.  This means that searching,
+most sorting, or iterating over the elements will be slow.  It also means
+that you can't really jump to random parts of the list.  If you had an 
+array of elements you could just index right into the middle of the list,
+but a linked list uses a stream of pointers.  That means if you want
+the 10th element, you have to go through elements 1-9.
+
+\subsection{Definition}
+
+As I said in the introduction to this exercise, the process to follow is
+to first write a header file with the right C struct statements in it.
+
+\begin{code}{src/lcthw/list.h}
+<< d['code/liblcthw/src/lcthw/list.h|pyg|l'] >>
+\end{code}
+
+The first thing I do is create two structs for the \ident{ListNode} and
+the \ident{List} that will contain those nodes.  This creates the data
+structure I'll use in the functions and macros I define after that.  If
+you read through these functions they seem rather simple.  I'll be 
+explaining them when I cover the implementation, but hopefully you can
+guess what they do.
+
+How the data structure works is each \ident{ListNode} has three components:
+
+\begin{enumerate}
+\item A value, which is a pointer to anything and stores the thing we want
+    to put in the list.
+\item A \ident{ListNode *next} pointer which points at another ListNode 
+    that holds the next element in the list.
+\item A \ident{ListNode *prev} that holds the previous element.  Complex
+    right?  Calling the previous thing "previous".  I could have used
+    "anterior" and "posterior" but only a jerk would do that.
+\end{enumerate}
+
+The \ident{List} struct is then nothing more than a container for these
+\ident{ListNode} structs that have been linked together in a chain.
+It keeps track of the \ident{count}, \ident{first} and \ident{last}
+element of the list.
+
+Finally, take a look at \file{src/lcthw/list.h:37} where I define
+the \ident{LIST\_FOREACH} macro.  This is a common idiom where you
+make a macro that generates iteration code so people can't mess
+it up.  Getting this kind of processing right can be difficult with
+data structures, so writing macros helps people out.  You'll see
+how I use this when I talk about the implementation.
+
+\subsection{Implemention}
+
+Once you understand that, you mostly understand how a double linked list
+works.  It is nothing more than nodes with two pointers to the next and
+previous element of the list.  You can then write the \file{src/lcthw/list.c}
+code to see how each operation is implemented.
+
+\begin{code}{src/lcthw/list.c}
+<< d['code/liblcthw/src/lcthw/list.c|pyg|l'] >>
+\end{code}
+
+I then implement all of the operations on a double linked list that can't
+be done with simple macros.  Rather than cover every tiny little line of
+this file, I'm going to give high-level overview of every operation
+in both the \file{list.h} and \file{list.c} file, then leave you to read
+the code.
+
+\begin{description}
+\item[list.h:List\_count] Returns the number of elements in the list, which is 
+    maintained as elements are added and removed.
+\item[list.h:List\_first] Returns the first element of the list, but does not
+    remove it.
+\item[list.h:List\_last] Returns the last element of the list, but does not
+    remove it.
+\item[list.h:LIST\_FOREACH] Iterates over the elements in the list.
+\item[list.c:List\_create] Simply creates the main \ident{List} struct.
+\item[list.c:List\_destroy] Destroys a \ident{List} and any elements it might have.
+\item[list.c:List\_clear] Convenience function for freeing the \emph{values} in each
+    node, not the nodes.
+\item[list.c:List\_clear\_destroy] Clears and destroys a list.  It's not very efficient since it loops through them twice.
+\item[list.c:List\_push] The first operation that demonstrates the advantage of a
+    linked list.  It adds a new element to the end of the list, and because that's
+    just a couple of pointer assignments, does it very fast.
+\item[list.c:List\_pop] The inverse of \ident{List\_push}, this takes the last
+    element off and returns it.
+\item[list.c:List\_shift] The other thing you can easily do to a linked list is
+    add elements to the \emph{front} of the list very fast.  In this case I call
+    that \ident{List\_shift} for lack of a better term.
+\item[list.c:List\_unshift] Just like \ident{List\_pop}, this removes the first
+    element and returns it.
+\item[list.c:List\_remove] This is actually doing all of the removal when you do
+    \ident{List\_pop} or \ident{List\_unshift}. 
+    Something that seems to always be difficult in 
+    data structures is removing things, and this function is no different. It
+    has to handle quite a few conditions depending on if the element
+    being removed is at the front; the end; both front and end; or middle.
+\end{description}
+
+Most of these functions are nothing special, and you should be able to easily
+digest this and understand it from just the code.  You should definitely focus
+on how the \ident{LIST\_FOREACH} macro is used in \ident{List\_destroy} so you
+can understand how much it simplifies this common operation.
+
+\section{Tests}
+
+After you have those compiling it's time to create the test that makes sure
+they operate correctly.
+
+\begin{code}{src/lcthw/list.c}
+<< d['code/liblcthw/tests/list_tests.c|pyg|l'] >>
+\end{code}
+
+This test simply goes through every operation and makes sure it works.  I use
+a simplification in the test where I create just one \ident{List *list} for
+the whole program, then have the tests work on it.  This saves the trouble
+of building a \ident{List} for every test, but it could mean that some tests
+only pass because of how the previous test ran.  In this case I try to make
+each test keep the list clear or actually use the previous test's results.
 
 \section{What You Should See}
 
+If you did everything right, then when you do a build and run the unit tests
+it should look like this:
 
-\section{How To Break It}
+\begin{code}{Ex32 Session}
+<< d['code/ex32.build.sh-session|pyg|l'] >>
+\end{code}
 
+Make sure 6 tests ran, that it builds without warnings or errors, and that it's
+making the \file{build/liblcthw.a} and \file{build/liblcthw.so} files.
+
+\section{How To Improve It}
+
+Instead of breaking this, I'm going to tell you how to improve the code:
+
+\begin{enumerate}
+\item You can make \ident{List\_clear\_destroy} more efficient by using
+    \ident{LIST\_FOREACH} and doing both \ident{free} calls inside one
+    loop.
+\item You can add asserts for preconditions that it isn't given a \ident{NULL}
+    value for the \ident{List *list} parameters.
+\item You can add invariants that check the list's contents are always correct,
+    such as \ident{count} is never \verb|< 0|, and if \verb|count > 0| then \ident{first} isn't NULL.
+\item You can add documentation to the header file in the form of comments before
+    each struct, function, and macro that describes what it does.
+\end{enumerate}
+
+These amount to going through the defensive programming practices I talked about
+and "hardening" this code against flaws or improving usability.  Go ahead and
+do these things, then find as many other ways to improve the code.
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item Research double vs. single linked lists and when one is preferred over
+    the other.
+\item Research the limitations of a double linked list.  For example, while they
+    are efficient for inserting and deleting elements, they are very slow for
+    iterating over them all.
+\item What operations are missing that you can imagine needing?  Some examples
+    are copying, joining, splitting.  Implement these operations and write the
+    unit tests for them.
+\end{enumerate}
 
