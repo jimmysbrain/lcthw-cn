@@ -1,19 +1,25 @@
-\chapter{Exercise 28: Intermediate Makefiles}
+\chapter{Exercise 28: Intermediate Makefiles 习题28：中级 Makefiles}
 
 In the next three Exercises you'll create a skeleton project directory to use
 in building your C programs later.  This skeleton directory will be used in the
 rest of the book, and in this exercise I'll cover just the \file{Makefile} so
 you can understand it.
 
+在接下来的三个习题中你将创建一个骨架项目目录，这个目录将在以后的程序构建中被使用到。在这个习题中我将只讲解 \file{Makefile} 的部分。
+
 The purpose of this structure is to make it easy to build medium sized programs
 without having to resort to configure tools.  If done right you can get very far
 with just GNU make and some small shell scripts.
 
-\section{The Basic Project Structure}
+这个骨架结构的目的是，不使用配置工具，让构建中级大小的程序的过程简单些。如果运行正确，你将可以在仅使用 GNU make 和一些小型 shell 脚本的情况下完成很多事情。
+
+\section{The Basic Project Structure基本项目结构}
 
 The first thing to do is make a \file{c-skeleton} directory and then put
 a set of basic files and directories in it that many projects have.  Here's
 my starter:
+
+首先创建一个 \file{c-skeleton} 目录，然后将基本文件集放入其中。以下是我的起始代码：
 
 \begin{code}{Initial C Project Skeleton}
 << d['code/ex28.sh-session|pyg|l'] >>
@@ -21,7 +27,11 @@ my starter:
 
 At the end you see me do an \verb|ls -l| so you can see the final results.
 
+最后需要运行 \verb|ls -l| 就可以看到最后的结果。
+
 Here's what each of these does:
+
+以下是每条代码的解释：
 
 \begin{description}
 \item[LICENSE] If you release the source of your projects you'll want to 
@@ -37,8 +47,21 @@ Here's what each of these does:
 \item[src/dbg.h] I copied the \file{dbg.h} from Exercise 20 into \file{src/} for later.
 \end{description}
 
+\begin{description}
+\item[LICENSE] 如果想公开项目代码你需要加入一个许可证 (license)。 否则，在默认情况下，你将是唯一的代码版权拥有人。
+\item[README.md] 项目使用的基本介绍。它以 \file{.md} 结尾，这将被解释为一个断节。
+\item[Makefile] 项目的主要 build 文件。
+\item[bin/] 用户可运行文件目录。通常这是一个空目录，如果此目录缺失， Makefile 会自动创建它。
+\item[build/] 库和其他 build 文件目录。 同样的，通常这是一个空目录，如果此目录缺失， Makefile 会自动创建它。
+\item[src/] 源代码目录。 通常是 \file{.c} 和 \file{.h} 文件。
+\item[tests/] 自动测试目录。
+\item[src/dbg.h] 为了之后的便利，习题20中的 \file{dbg.h} 被拷贝过来了。
+\end{description}
+
 I'll now break down each of the compontents of this skeleton project
 so you can understand how it works.
+
+接下来我将细化解释这个骨架结构项目。
 
 \section{Makefile}
 
@@ -46,6 +69,8 @@ The first thing I'll cover is the Makefile because from that you can understand
 how everything else works.  The Makefile in this exercise is much more detailed
 than ones you've used so far, so I'm going to break it down after you type it
 in:
+
+首先是 Makefile ，这是其他部分的基础。这个练习中的 Makefile 比其他练习中的任何一个都更加细节。首先输入以下部分：
 
 \begin{code}{c-skeleton/Makefile}
 \begin{lstlisting}
@@ -58,10 +83,14 @@ Your editor should know that and do the right thing, but if it doesn't then get
 a different text editor.  No programmer should use an editor that fails at 
 something so simple.
 
+记住你需要不断缩进 Makefile 。一个正常的文本编辑器将知道怎么做。
+
 \subsection{The Header}
 
 This makefile is designed to build a library we'll be working on later and 
 to do so reliably on almost any platform by using special features of \program{GNU make}.  I'll break down each part in sections, starting with the header.
+
+这个 Makefile 是为之后库的创建所设计的。
 
 \begin{description}
 \item[Makefile:1] These are the usual \ident{CFLAGS} that you set in all of your
