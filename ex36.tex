@@ -1,19 +1,101 @@
 \chapter{Exercise 36: Safer Strings}
 
-In this exercise we make a miniature version of the better string (bstring) library 
-you've previously used.  This version of the library has the majority of the 
-functions you'll use from bstring and mostly copies its API.
+I've already introduced you to the \href{http://bstring.sourceforge.net/}{Better String} library in Exercise 26 when we made \program{devpkg}.  This exercise
+is designed to get you into using bstring from now on, why C's strings are
+an incredibly bad idea, and then have you change the \file{liblcthw} 
+code to use bstring.
 
-The purpose of this exercise is to finally teach you why C strings are bad,
-and how to fix them.
+\section{Why C Strings Were A Horrible Idea}
 
-\section{What You Should See}
+When people talk about problems with C, it's concept of a "string" is one of the top flaws pointed out.
+You've been using these extensively, and I've talked about the kinds of flaws they have, but there's
+not much that explains exactly why C strings are flawed and always will be.  I'll try to explain
+that right now, but part of my explanation will just be that after decades of using C's strings
+there's enough evidence that they are just a bad idea.
 
+\begin{enumerate}
+\item A C string is invalid if it does not end in \verb|'\0'|.
+\item Any loop that processes an invalid C string will loop infinitely (or, just buffer overflow).
+\item C strings do not have a known length, so the only way to check if it's terminated correctly is to loop through it.
+\item Therefore, it is not possible to validate a C string without possibly looping infinitely.
+\end{enumerate}
 
-\section{How To Break It}
+This is simple logic.  You can't write a loop that checks if a C string is valid
+because invalid C strings cause loops to never terminate.  That's it, and the
+only solution is to \emph{include the size}.  Once you know the size you can
+avoid the infinite loop problem.  If you look at the two functions I showed
+you from Exercise 27 you can see this:
 
+\begin{code}{ex36.c}
+<< d['code/ex36.c|pyg|l'] >>
+\end{code}
 
-\section{Extra Credit}
+Imagine you want to add a check to the \ident{copy} function to confirm
+that the \ident{from} string is valid.  How would you do that?  Why
+you'd write a loop that checked that the string ended in \verb|'\0'|.
+Oh wait, if the string doesn't then how does the loop end?  It doesn't.
 
+No matter what you do, you can't check that a C string is valid without
+knowing the length of the underlying storage, and in this case the 
+\ident{safercopy} includes those lengths.  This function doesn't have
+the same problem as it's loops will always terminate, even if you lie
+to it about the size, you still have to give it a finite size.
 
+\section{Using bstrlib}
+
+There's quite a few improved string libraries, but I like \file{bstrlib}
+because it fits in one file for the basics and has most of the stuff you need
+to deal with strings.  You've already used it a bit, so in this exercise you'll
+go get the two files \file{bstrlib.c} and \file{bstrlib.h} from the
+\href{http://bstring.sourceforge.net/}{Better String} project.
+
+Here's me doing this in the \file{liblcthw} project directory:
+
+\begin{code}{ex36.c}
+<< d['code/ex36.c|pyg|l'] >>
+\end{code}
+
+On line 14 you seem me edit the \file{bstrlib.c} file to move it
+to a new location and to fix a bug on OSX.  Here's the diff:
+
+\begin{code}{bstrlib.diff}
+<< d['code/ex36.diff|pyg|l'] >>
+\end{code}
+
+That is, change the include to be \file{<lcthw/bstrlib.h>}, and then
+fix one of the \ident{ifdef} at line 2759.
+
+\section{Learning The Library}
+
+This exercise is short and simply getting you ready for the remaining 
+exercises that use the library.  In the next two exercises I'll use
+\file{bstrlib.c} to create a \ident{Hashmap} data structure.
+
+You should now get familiar with this library by reading the 
+header file, the implementations, and then write a \file{tests/bstr\_tests.c}
+that tests out the following functions:
+
+\begin{description}
+\item[bfromcstr] Create a bstring from a C style constant.
+\item[blk2bstr] Same but give the length of the buffer.
+\item[bstrcpy] Copy a bstring.
+\item[bassign] Set one bstring to another.
+\item[bassigncstr] Set a bstring to a C string's contents.
+\item[bassignblk] Set a bstring to a C string but give the length.
+\item[bdestroy] Destroy a bstring.
+\item[bconcat] Concatenate one bstring onto another.
+\item[bstricmp] Compare two bstrings returning the same result as strcmp.
+\item[biseq] Tests if two bstrings are equal.
+\item[binstr] Tells if one bstring is in another.
+\item[bfindreplace] Find one bstring in another then replace it with a third.
+\item[bsplit] How to split a bstring into a bstrList.
+\item[bformat] Doing a format string, super handy.
+\item[blength] Getting the length of a bstring.
+\item[bdata] Getting the data from a bstring.
+\item[bchar] Getting a char from a bstring.
+\end{description}
+
+Your test should try out all of these operations, and a few more that you
+find interesting from the header file.  Make sure to run the test under
+\program{valgrind} to make sure you use the memory correctly.
 
