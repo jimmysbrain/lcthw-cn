@@ -1,16 +1,176 @@
-\chapter{Exercise 37: Hash Maps}
+\chapter{Exercise 37: Hashmaps}
 
-Hash maps are used frequently in modern programming languages as they have many advantages
-over traditional binary trees.  This exercise will introduce a very basic implementation,
-then discuss some of the issues with hash maps like ordering, flooding buckets, and 
-key hash algorithms.
+Hash Maps (Hashmaps, Hashes, or sometimes Dictionaries) are used frequently in
+many dynamic programming for storing key/value data.  A Hashmap works by performing
+a "hashing" calculation on the keys to produce an integer, then uses that
+integer to find a bucket to get or set the value.  It is a very fast practical
+data structure since it works on nearly any data and they are easy to implement.
 
+Here's an example of using a Hashmap (aka dict) in Python:
 
+\begin{code}{ex37.py}
+<< d['code/ex37.py|pyg|l'] >>
+\end{code}
 
-\section{How To Break It}
+Almost every modern language has something like this, so many people
+end up writing code and never understand how this actually works.
+By creating the \ident{Hashmap} data structure in C I'll show you how
+this works.  I'll start with the header file so I can talk about the
+data structure.
+
+\begin{code}{src/lcthw/hashmap.h}
+<< d['code/liblcthw/src/lcthw/hashmap.h|pyg|l'] >>
+\end{code}
+
+The structure consists of a \ident{Hashmap} that contains
+any number of \ident{HashmapNode} structs.  Looking at \ident{Hashmap}
+you can see that it is structured like this:
+
+\begin{description}
+\item[DArray *buckets] A dynamic array that will be set to a fixed size of
+    100 buckets.  Each bucket will in turn contain a \ident{DArray} that will
+    actually hold \ident{HashmapNode} pairs.
+\item[Hashmap\_compare compare] This is a comparison function that the
+    \ident{Hashmap} uses to actually find elements by their key.  It should
+    work like all of the other compare functions, and defaults to using
+    \ident{bstrcmp} so that keys are just bstrings.
+\item[Hashmap\_hash hash] This is the hashing function and it's responsible
+    for taking a key, processing its contents, and producing a single
+    \ident{uint32\_t} index number.  You'll see the default one soon.
+\end{description}
+
+This almost tells you how the data is stored, but the \ident{buckets}
+\ident{DArray} isn't created yet.  Just remember that it's kind of a
+two level mapping:
+
+\begin{enumerate}
+\item There are 100 buckets that make up the first level, and things are 
+    in these buckets based on their hash.
+\item Each bucket is a \ident{DArray} that then contains \ident{HashmapNode}
+    structs simply appended to the end as they're added.
+\end{enumerate}
+
+The \ident{HashmapNode} is then composed of these three elements:
+
+\begin{description}
+\item[void *key] The key for this key=value pair.
+\item[void *value] The value.
+\item[uint32\_t hash] The calculated hash, which makes finding this
+    node quicker since we can just check the hash and skip any that
+    don't match, only checking they key if it's equal.
+\end{description}
+
+The rest of the header file is nothing new, so now I can show you the
+implementation \file{hashmap.c} file:
+
+\begin{code}{src/lcthw/hashmap.c}
+<< d['code/liblcthw/src/lcthw/hashmap.c|pyg|l'] >>
+\end{code}
+
+There's nothing very complicated in the implementation, but the
+\ident{default\_hash} and \ident{Hashmap\_find\_bucket} functions will need
+some explanation.  When you use \ident{Hashmap\_create} you can pass in any
+compare and hash functions you want, but if you don't it uses the
+\ident{default\_compare} and \ident{default\_hash} functions.
+
+The first thing to look at is how \ident{default\_hash} does its thing.
+This is a simple hash function called a "Jenkins hash" after Bob Jenkins.
+I got if from the \href{http://en.wikipedia.org/wiki/Jenkins\_hash\_function}{Wikipedia page} for the algorithm.  It simply goes through each byte of the
+key to hash (a bstring) and works the bits so that the end result is
+a single \ident{uint32\_t}.  It does this with some adding and xor operations.
+
+There are many different hash functions, all with different properties,
+but once you have one you need a way to use it to find the right buckets.
+The \ident{Hashmap\_find\_bucket} does it like this:
+
+\begin{enumerate}
+\item First it calls \verb|map->hash(key)| to get the hash for the key.
+\item It then finds the bucket using \verb|hash % DEFAULT_NUMBER_OF_BUCKETS|, that
+    way every hash will always find some bucket no matter how big it is.
+\item It then gets the bucket, which is also a \ident{DArray}, and if it's 
+    not there it will create it.  That depends on if the \ident{create}
+    variable says too.
+\item Once it has found the \ident{DArray} bucket for the right hash,
+    it returns it, and also the \ident{hash\_out} variable is used to
+    give the caller the hash that was found.
+\end{enumerate}
+
+All of the other functions then use \ident{Hashmap\_find\_bucket} to do 
+their work:
+
+\begin{enumerate}
+\item Setting a key/value involves finding the bucket, then
+making a \ident{HashmapNode}, and then adding it to the bucket.  
+\item Getting a key involves finding the bucket, then finding the HashmapNode
+that matches the \ident{hash} and \ident{key} you want.
+\item Deleting an item again finds the bucket, finds where the requested node
+is, and then removes it by swapping the last node into its place.
+\end{enumerate}
+
+The only other function that you should study is the \ident{Hashmap\_travers}.
+This simply walks every bucket, and for any bucket that has possible
+values, it calls the \ident{traverse\_cb} on each value.  This is how you
+scan a whole \ident{Hashmap} for its values.
+
+\subsection{The Unit Test}
+
+Finally you have the unit test that is testing all of these operations:
+
+\begin{code}{tests/hashmap\_tests.c}
+<< d['code/liblcthw/tests/hashmap_tests.c|pyg|l'] >>
+\end{code}
+
+The only thing to learn about this unit test is that at the top I use
+a feature of \ident{bstring} to create static strings to work with 
+in the tests.  I use the \ident{tagbstring} and \ident{bsStatic} 
+to create them on lines 7-13.
+
+\section{How To Improve It}
+
+This is a very simple implementation of \ident{Hashmap} as are most of
+the other data structures in this book.  My goal isn't to give you
+insanely great hyper speed well tuned data structures.  Usually those
+are much too complicated to discuss and only distract you from the real
+basic data structure at work.  My goal is to give you an understandable
+starting point to then improve it or understand how they are implemented.
+
+In this case, there's some things you can do with this implementation:
+
+\begin{enumerate}
+\item You can use a sort on each bucket so that they are always sorted.
+    This increases your insert time, but decreases your find time because
+    you can then use a binary search to find each node.  Right now
+    it's looping through all of the nodes in a bucket just to find one.
+\item You can dynamically size the number of buckets, or let the caller
+    specify the number for each \ident{Hashmap} created.
+\item You can use a better \ident{default\_hash}.  There are tons of them.
+\item This (and nearly every \ident{Hashmap} is vulnerable to someone picking
+    keys that will fill only one bucket, and then tricking your program
+    into processing them.  This then makes your program run slower because
+    it changes from processing a \ident{Hashmap} to effectively processing
+    a single \ident{DArray}.  If you sort the nodes in the bucket this
+    helps, but you can also use better hashing functions, and for 
+    the really paranoid add a random salt so that keys can't be predicted.
+\item You could have it delete buckets that are empty of nodes to save space,
+    or put empty buckets into a cache so you save on creating and destroying
+    them.
+\item Right now it just adds elements even if they already exist.  Write an
+    alternative set method that only adds it if it isn't set already.
+\end{enumerate}
+
+As usual you should go through each function and make it bullet proof.  The 
+\ident{Hashmap} could also use a debug setting for doing an invariant check.
 
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item Research the \ident{Hashmap} implementation of your favorite programming language to see what features they have.
+\item Find out what the major disadvantages of a \ident{Hashmap} are and how to avoid them.  For example, they
+    do not preserve order without special changes and they don't work when you need to find things based on parts
+    of keys.
+\item Write a unit test that demonstrates the defect of filling a \ident{Hashmap} with keys that land
+    in the same bucket, then test how this impact performance.  A good way to do this is to just reduce
+    the number of buckets to something stupid like 5.
+\end{enumerate}
 
