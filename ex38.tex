@@ -112,12 +112,12 @@ of these rows means:
 Looking at this data, you see that all of these hashes seem to do good on random
 keys, and that the means match the \ident{NUM\_KEYS} setting I made.  What I'm
 looking for is that if I make 1000 keys per buckets (BUCKETS * 1000), then on
-average each bucket should have 1000 keys in it.  If they hash function isn't
+average each bucket should have 1000 keys in it.  If the hash function isn't
 working then you'll see these summary statistics show a Mean that's not 1000,
 and really high ranges at the 1st quarter and 3rd quarter.  A good hash function
 should have a dead on 1000 mean, and as tight as possible range.
 
-You should also know that you will get mostly different number from mine, and
+You should also know that you will get mostly different numbers from mine, and
 even between different runs of this unit test.
 
 \section{How To Break It}
