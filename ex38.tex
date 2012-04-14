@@ -2,17 +2,157 @@
 
 There are three hash functions that you'll implement in this exercise:
 
+\begin{description}
+\item[FNV-1a] Named after the creators Glenn Fowler, Phong Vo, and Landon Curt Noll.
+    This hash produces good numbers and is reasonably fast.
+\item[Adler-32] Named after Mark Adler, is a horrible hash algorithm, but it's
+    been around a long time and it's good for studying.
+\item[DJB Hash] This hash algorithm is attributed to Dan J. Bernstein (DJB) 
+    but it's difficult to find his discussion of the algorithm.  It's shown
+    to be fast, but possibly not great numbers.
+\end{description}
 
+You've already seen the Jenkins hash as the default hash for the Hashmap
+data structure, so this exercise will be looking at these three new ones.
+The code for them is usually small, and it's not optimized at all.  As usual
+I'm going for understanding and not blinding latest speed.
 
+The header file is very simple, so I'll start with that:
 
+\begin{code}{src/lcthw/hashmap\_algos.h}
+<< d['code/liblcthw/src/lcthw/hashmap_algos.h|pyg|l'] >>
+\end{code}
+
+I'm just declaring the three functions I'll implement in the
+\file{hashmap\_algos.c} file:
+
+\begin{code}{src/lcthw/hashmap\_algos.c}
+<< d['code/liblcthw/src/lcthw/hashmap_algos.c|pyg|l'] >>
+\end{code}
+
+This file then has the three hash algorithms.  You should notice that
+I'm defaulting to just using a \ident{bstring} for the key, and I'm
+using the \ident{bchare} function to get a character from the bstring, but
+return 0 if that character is outside the string's length.
+
+Each of these algorithms are found online so go search for them and
+read about them. Again I used Wikipedia primarily and then followed
+it to other sources.
+
+I then have a unit test that tests out each algorithm, but also tests
+that it will distribute well across a number of buckets:
+
+\begin{code}{tests/hashmap\_algos\_tests.c}
+<< d['code/liblcthw/tests/hashmap_algos_tests.c|pyg|l'] >>
+\end{code}
+
+I have the number of \ident{BUCKETS} in this code set fairly high, since I have
+a fast enough computer, but if it runs slow just lower them, and also lower
+\ident{NUM\_KEYS}.  What this test lets me do is run the test and then 
+look at the distribution of keys for each hash function using a bit 
+of analysis with a language called R.
+
+How I do this is I craft a big list of keys using the \ident{gen\_keys}
+function.  These keys are taken out of the \file{/dev/urandom} device
+they are random byte keys.  I then use these keys to have the \ident{fill\_distribution}
+function fill up the \ident{stats} array with where those keys would hash
+in a theoretial set of buckets.  All this function does is go through all the
+keys, do the hash, then do what the \ident{Hashmap} would do to find its
+bucket.
+
+Finally I'm simply printing out a three column table of the final count for
+each bucket, showing how many keys managed to get into each bucket randomly.
+I can then look at these numbers to see if the hash functions are distributing
+keys mostly evenly.
 
 \section{What You Should See}
 
+Teaching you R is outside the scope of this book, but if you want to get it
+and try this then it can be found at \href{http://www.r-project.org/}{r-project.org}.
+
+Here is an abbreviated shell session showing me run the \file{tests/hashmap\_algos\_test} to get the table produced by \ident{test\_distribution} (not shown here),
+and then use R to see what the summary statistics are:
+
+\begin{code}{R Analysis of hashmap\_algos\_tests.c}
+<< d['code/ex38.sh-session|pyg|l'] >>
+\end{code}
+
+First I just run the test, which on your screen will print the table.  Then I just
+copy-paste it out of my terminal and use \verb|vim hash.txt| to save the data.
+If you look at the data it has the header \ident{FNV A32 DJB} for each of 
+the three algorithms.
+
+Second I run R and load the data using the \ident{read.table} command.  This
+is a smart function that works with this kind of tab-delimited data and
+I only have to tell it \ident{header=T} so it knows the data has a header.
+
+Finally, I have the data loaded and I can use \ident{summary} to print out
+its summary statistics for each column.  Here you can see that each function
+actually does alright with this random data.  I'll explain what each
+of these rows means:
+
+\begin{description}
+\item[Min.] This is the minimum value found for the data in that column.
+    FNV seems to win this on this run since it has the largest number, meaning
+    it has a tighter range at the low end.
+\item[1st Qu.] The point where the first quarter of the data ends.
+\item[Median] This is the number that is in the middle if you sorted them.
+    Median is most useful when compared to mean.
+\item[Mean] Mean is the "average" most people think of, and is the sum/count
+    of the data.  If you look, all of them are 1000, which is great.
+    If you compare this to the median you see that all three have really
+    close medians to the mean.  What this means is the data isn't "skewed"
+    in one direction, so you can trust the mean.
+\item[3rd Qu.] The point where the last quarter of the data starts and represents
+    the tail end of the numbers.
+\item[Max.] This is the maximum number of the data, and presents the upper
+    bound on all of them.
+\end{description}
+
+Looking at this data, you see that all of these hashes seem to do good on random
+keys, and that the means match the \ident{NUM\_KEYS} setting I made.  What I'm
+looking for is that if I make 1000 keys per buckets (BUCKETS * 1000), then on
+average each bucket should have 1000 keys in it.  If they hash function isn't
+working then you'll see these summary statistics show a Mean that's not 1000,
+and really high ranges at the 1st quarter and 3rd quarter.  A good hash function
+should have a dead on 1000 mean, and as tight as possible range.
+
+You should also know that you will get mostly different number from mine, and
+even between different runs of this unit test.
 
 \section{How To Break It}
 
+I'm finally going to have you do some breaking in this exercise.  I want
+you to write the worst hash function you can, and then use the data to 
+prove that it's really bad.  You can use R to do the stats, just like
+I did, but maybe you have another tool you can use to give you the same
+summary statistics.
+
+The goal is to make a hash function that seems normal to an untrained 
+eye, but when actually run has a bad mean and is all over the place.
+That means you can't just have it return 1, but have to give a stream
+of numbers that seem alright, but really are all over the place and
+loading up some buckets too much.
+
+Extra points if you can make a minimal change to one of the four 
+hash algorithms I gave you to do this.
+
+The purpose of this exercise is to imagine that some "friendly" coder
+comes to you and offers to improve your hash function, but actually
+just makes a nice little backdoor that screws up your \ident{Hashmap}.
+
+As the Royal Society says, "Nullius in verba."
 
 \section{Extra Credit}
 
+\begin{enumerate}
+\item Take the \ident{default\_hash} out of the \file{hashmap.c}, make it
+    one of the algorithms in \file{hashmap\_algos.c} and then make all
+    the tests work again.
+\item Add the \ident{default\_hash} to the \file{hashmap\_algos\_tests.c} 
+    test and compare its statistics to the other hash functions.
+\item Find a few more hash functions and add them too. You can never have too
+    many hash functions!
+\end{enumerate}
 
 
