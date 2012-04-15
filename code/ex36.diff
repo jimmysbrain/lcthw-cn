@@ -1,0 +1,8 @@
+25c25
+< #include "bstrlib.h"
+---
+> #include <lcthw/bstrlib.h>
+2759c2759
+< #ifdef __GNUC__
+---
+> #if defined(__GNUC__) && !defined(__APPLE__)
