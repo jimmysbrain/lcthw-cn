@@ -1,36 +1,26 @@
 \chapter{习题 19: 一个简单的对象系统}
 
-I learned C before I learned Object Oriented Programming, so it helped me to
-build an OOP system in C to understand the basics of what OOP meant.  You are
-probably the kind of person who learned an OOP language before you learned C,
-so this kind of bridge might help you as well.  In this exercise, you will
-build a simple object system, but also learn more about the C Pre-Processor or
-CPP.
+我是先学了 C 语言后才学习的面向对象编程，而学习面向对象编程用的就是 C 语言，通过用 C 语言建立 
+OOP 系统让我学到了 OOP 的基本概念。而你可能是先学了某种面向对象编程语言后才来学习 C 语言的，
+所以这种学习路径对你应该也有帮助。本节习题中，你将要创建一个简单的对象系统，不过你还会学到关于 C 
+预处理器（C Pre-Processor，CPP）的更多知识。
 
-This exercise will build a simple game where you kill a Minotaur in a small
-little castle.  Nothing fancy, just four rooms and a bad guy.  This project
-will also be a multi-file project, and look more like a real C software 
-project than your previous ones.  This is why I'm introducing the CPP here
-because you need it to start using multiple files in your own software.
+本章习题的内容是创建一个简单的游戏，你在游戏中的任务是在一座小城堡里杀死一只牛头怪。这个游戏
+没什么花哨的地方，只不过是四间屋子和一个坏人而已。这个项目同时也是一个多文件项目，和你之前做过
+的相比更类似于一个真正的 C 软件。这也是为什么我要在这里向你介绍 CPP，因为你在写多个文件的程序
+时会用到它。
 
-\section{How The CPP Works}
+\section{CPP 的工作原理}
 
-The C Pre-Processor is a template processing system.  It's a highly
-targeted one that helps make C easier to work with, but it does
-this by having a syntax aware templating mechanism.  Traditionally
-people just used the CPP to store constants and make "macros" to simplify
-repetitive coding.  In modern C you'll actually use the CPP as a code
-generator to create templated pieces of code.
+C Pre-Processor 是一个模板预处理系统。它的目的很明确，就是让 C 语言更易用，不过它的实现方式
+是使用了一种语法敏感的模板机制。传统习惯上人们只把 CPP 用于存储常量以及创建用来简化重复工作的
+“宏”。在现代 C 语言中你将使用 CPP 作为一个代码生成器，用来创建模板化的代码片段。
 
-How the CPP works is you give it one file, usually a .c file, and it
-processes various bits of text starting with the \verb|#| (octothorpe\footnote{A.K.A. pound, hash, mesh, number symbol, pick whatever makes you happy})
-character.  When it encounters one of these it performs a specific replacement
-on the text of the input file.  It's main advantage though is it can
-\emph{include} other files, and then augment its list of macros
-based on that file's contents.
+CPP 的工作模式是这样的：你提供一个文件，通常是一个 .c 文件，它会对其中以 \verb|#| 字符开头的
+部分字串进行处理。对于每一处 \verb|#| ，它会对其中的文本输入进行一个特殊的替换处理。而它最
+主要的优势是它可以 \emph{include} 其它文件，然后把该文件的内容扩充到前者中去。
 
-A quick way to see what the CPP does is take the last exercise and 
-run this: 
+快速检验 CPP 功能的方法就是将上一习题拿来运行如下命令：
 
 \begin{Verbatim}
 cpp ex18.c | less

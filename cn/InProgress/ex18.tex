@@ -1,8 +1,8 @@
 \chapter{习题 18: 指向函数的指针}
 
 C 中的函数（译注：函数名即为指针名）实际上只是指向程序中的代码的指针。就像你创建
-的指向结构体（structs），字符串（strings），和数组（arrays）的指针一样，你也能用
-指针指向函数。这么做的主要用途就是向其他函数传递"回调函数"（callbacks），或者
+的指向结构体（struct），字符串（string），和数组（array）的指针一样，你也能用
+指针指向函数。这么做的主要用途就是向其他函数传递"回调函数"（callback），或者
 传递给模拟的类与对象。这个练习中，我们会用到一些回调（callback）函数，在下一个
 中我们会做一个简单的对象系统。
 
@@ -91,7 +91,7 @@ C 中的函数（译注：函数名即为指针名）实际上只是指向程序
 方法处理数据。这通常不是必要的，但还是让你看看如何修改（hack）你的电脑，
 我希望你在 \func{test\_sorting} 函数结尾加上这些:
 
-\begin{code}{Function Pointer Evil}
+\begin{code}{邪恶的函数指针}
 \begin{lstlisting}
     unsigned char *data = (unsigned char *)cmp;
 
