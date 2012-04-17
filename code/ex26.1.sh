@@ -3,12 +3,12 @@ set -e
 # go somewhere safe
 cd /tmp
 
-# get the source to base APR 1.4.5
-curl -L -O http://download.nextag.com/apache//apr/apr-1.4.5.tar.gz
+# get the source to base APR 1.4.6
+curl -L -O http://archive.apache.org/dist/apr/apr-1.4.6.tar.gz
 
 # extract it and go into the source
-tar -xzvf apr-1.4.5.tar.gz
-cd apr-1.4.5
+tar -xzvf apr-1.4.6.tar.gz
+cd apr-1.4.6
 
 # configure, make, make install
 ./configure
@@ -17,14 +17,14 @@ sudo make install
 
 # reset and cleanup
 cd /tmp
-rm -rf apr-1.4.5 apr-1.4.5.tar.gz
+rm -rf apr-1.4.6 apr-1.4.6.tar.gz
 
 # do the same with apr-util
-curl -L -O http://download.nextag.com/apache//apr/apr-util-1.3.12.tar.gz
+curl -L -O http://archive.apache.org/dist/apr/apr-util-1.4.1.tar.gz
 
 # extract
-tar -xzvf apr-util-1.3.12.tar.gz
-cd apr-util-1.3.12
+tar -xzvf apr-util-1.4.1.tar.gz
+cd apr-util-1.4.1
 
 # configure, make, make install
 ./configure --with-apr=/usr/local/apr
@@ -36,5 +36,5 @@ sudo make install
 
 #cleanup
 cd /tmp
-rm -rf apr-util-1.3.12* apr-1.4.5*
+rm -rf apr-util-1.4.1* apr-1.4.6*
 

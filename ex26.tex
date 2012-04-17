@@ -135,8 +135,14 @@ In some platforms the bstring.c file will have an error like:
 bstrlib.c:2762: error: expected declaration specifiers or '...' before numeric constant
 \end{lstlisting}
 
-This is from a bad define the authors added which doesn't work always.  Just
-delete this \verb|#ifdef| then recompile and it should work.
+This is from a bad define the authors added which doesn't work always.
+You just need to change the line 2759 that reads \verb|#ifdef __GNUC__|
+and make it:
+
+\verb|#if defined(__GNUC__) && !defined(__APPLE__)|
+
+Then it should work on Apple Mac OSX.
+
 \end{aside}
 
 When that's all done, you should have a \file{Makefile}, \file{README},
@@ -156,6 +162,15 @@ how things are built and what source files you'll be creating.
 There's nothing in this that you haven't seen before, except maybe the strange
 \verb|?=| syntax, which says "set PREFIX equal to this unless PREFIX is already
 set".
+
+\begin{aside}{Ubuntu Annoyances}
+If you are on more recent versions of Ubuntu and you get errors about \ident{apr\_off\_t} or \ident{off64\_t} then add \verb|-D_LARGEFILE64_SOURCE=1| to \ident{CFLAGS}.
+
+Another thing is you need to add \file{/usr/local/apr/lib} to a file in
+/etc/ld.conf.so.d/ then run \program{ldconfig} so that it picks up
+the libraries correctly.
+\end{aside}
+
 
 \section{The Source Files}
 
