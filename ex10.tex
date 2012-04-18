@@ -29,7 +29,7 @@ Here's how the \ident{for-loop} works:
 \item The \ident{INITIALIZER} is code that is run to setup the loop, in this
     case \verb|i = 0|.
 \item Next the \ident{TEST} boolean expression is checked, and if it's false (0)
-    nothing is done.
+    then \ident{CODE} is skipped, doing nothing.
 \item The \ident{CODE} runs, does whatever it does.
 \item After the \ident{CODE} runs, the \ident{INCREMENTER} part is run, usually
     incrementing something, like in \verb|i++|.
