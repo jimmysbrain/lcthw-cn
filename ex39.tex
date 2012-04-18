@@ -123,7 +123,7 @@ different from the others.  I can see that, and clearly the \ident{scan} beats
 use just the mean, there's a \emph{chance} that the \ident{ranges} of each
 sample might overlap.
 
-What if I have means that are different, but the 1st and 3rd quaters overlap?
+What if I have means that are different, but the 1st and 3rd quarters overlap?
 In that case I could say that there's a chance that if I ran the samples again
 the means might not be different.  The more overlap I have in the ranges the
 higher probability that my two samples (and my two functions) are \emph{not}
@@ -170,6 +170,8 @@ There's a few caveats with this analysis:
     I could randomize the strings to find to remove their position
     and length as a confounding factor.
 \item Maybe \ident{binstr} is implemented better than "simple" brute force.
+\item I could be running these in an unfortunate order and maybe randomizing
+    which test runs first will give better results.
 \end{enumerate}
 
 One thing to gather from this is you need to confirm real performance even if
@@ -197,5 +199,7 @@ tune my implementation, or simply scrap it and find another one.
     spaces.  Then use the \ident{bstrList} struct you get to access each
     string it returns.  This will also teach you how to use \ident{bstrList}
     operations for string processing.
+\item Try some runs with the tests in different orders and see if you get different
+    results.
 \end{enumerate}
 
