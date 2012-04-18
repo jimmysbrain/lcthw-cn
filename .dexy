@@ -33,6 +33,7 @@
     "*.cfg|jinja" : {  },
     "*.sty" : { },
     "*.js" : {},
+    "*.txt" : {},
     "*.diff|pyg|l" : {},
 
     "styles.html|jinja": {},

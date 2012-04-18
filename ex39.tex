@@ -1,14 +1,201 @@
 \chapter{Exercise 39: String Algorithms}
 
+In this exercise I'm going to show you one of the supposedly faster string
+search algorithms, and compare it to the one that exists in \file{bstrlib.c}
+call \ident{binstr}.  The documentation for \ident{binstr} says that it uses a
+simple "brute force" string search to find the first instance.  The one I'll
+implement will use the Boyer-Moore-Horspool (BMH) algorithm, which is supposed
+to be faster if you analyze the theoretical time.  You'll see that, assuming my
+implementation isn't flawed, that the practical time for BMH is much worse than
+the simple brute force of \ident{binstr}.
 
+The point of this exercise isn't really to explain the algorithm because it's
+simple enough for you to
+\href{http://en.wikipedia.org/wiki/Boyer\%E2\%80\%93Moore\%E2\%80\%93Horspool\_algorithm}{the
+Boyer-Moore-Horspool Wikipedia page} and read it.  The gist of this algorithm
+is that it calculates a "skip characters list" as a first operation, then it
+uses this list to quickly scan through the string.  It is supposed to be faster
+than brute force, so let's get the code into the right files and see.
+
+First, I have the header:
+
+\begin{code}{src/lcthw/string\_algos.h}
+<< d['code/liblcthw/src/lcthw/string_algos.h|pyg|l'] >>
+\end{code}
+
+In order to see the effects of this "skip characters list" I'm going to make
+two versions of the BMH algorithm:
+
+\begin{description}
+\item[String\_find] Simply find the first instance of one string in another,
+    doing the entire algorithm in one shot.
+\item[StringScanner\_scan] Uses a \ident{StringScanner} state structure to
+    separate the skip list build from the actual find.  This will let me
+    see what impact that has on performance.  This model also has the advantage
+    that I can incrementally scan for one string in another and find all 
+    instances quickly.
+\end{description}
+
+Once you have that, here's the implementation:
+
+\begin{code}{src/lcthw/string\_algos.c}
+<< d['code/liblcthw/src/lcthw/string_algos.c|pyg|l'] >>
+\end{code}
+
+The entire algorithm is in two \ident{static inline} functions called
+\ident{String\_setup\_skip\_chars} and \ident{String\_base\_search}.  These are
+then used in the other functions to actually implement the searching styles I
+want.  Study these first two functions and compare them to the Wikipedia
+description so you know what's going on.
+
+The \ident{String\_find} then just uses these two functions to do a find and
+return the position found.  It's very simple and I'll use it to see how this
+"build skip chars" phase impacts real practical performance.  Keep in mind that
+you could maybe make this faster, but I'm teaching you how to confirm
+theoretical speed after you implement an algorithm.
+
+The \ident{StringScanner\_scan} function is then following the common pattern I
+use of "create, scan, destroy" and is used to incrementally scan a string for
+another string.  You'll see how this is used when I show you the unit test that
+will test this out.
+
+Finally, I have the unit test that first confirms this is all working, then
+runs simple performance tests for all three finding algorithms.
+
+\begin{code}{tests/string\_algos\_tests.c}
+<< d['code/liblcthw/tests/string_algos_tests.c|pyg|l'] >>
+\end{code}
+
+There's nothing amazing in this unit test, it just runs each of the different
+functions in loops that last long enough to get a few seconds of sampling.  The
+first test (\ident{test\_find\_and\_scan}) just confirms that what I've written
+works, because there's no point in testing the speed of something that doesn't
+work.  Then the next three functions run a large number of searches using each
+of the three functions.
+
+The trick to notice is that I grab the starting time in \ident{start}, and then
+I loop until at least \ident{TEST\_TIME} seconds have passed.  This makes sure
+that I get enough samples to work with in comparing the three.  I'll then run
+this test with different \ident{TEST\_TIME} settings and analyze the results.
 
 \section{What You Should See}
 
+When I run this test on my laptop, I get number that look like this:
 
-\section{How To Break It}
+\begin{code}{2 Second Test Run}
+<< d['code/ex39.1.sh-session|pyg|l'] >>
+\end{code}
 
+I look at this and I sort of want to do more than 2 seconds of each run, and I
+want to run this many times then use R to check it out like I did before.
+Here's what I get for 10 samples of about 10 seconds each:
+
+\begin{code}{10 Runs At 10 Seconds, Operations / Second}
+\begin{Verbatim}
+<< d['code/ex39.time.txt'] >>
+\end{Verbatim}
+\end{code}
+
+The way I got this is with a little bit of shell help and then editing the
+output:
+
+\begin{code}{Getting Timing Logs}
+<< d['code/ex39.2.sh-session|pyg|l'] >>
+\end{code}
+
+Right away you can see that the scanning system beats the pants off both of the
+others, but I'll open this in R and confirm the results:
+
+\begin{code}{R Summary Of Operations/Second}
+<< d['code/ex39.3.sh-session|pyg|l'] >>
+\end{code}
+
+To understand why I'm getting the summary statistics I have to explain some
+statistics for you.  What I'm looking for in these numbers can be said simply
+to be, "Are these three functions (scan, find, bsinter) actually different?"  I
+know that each time I run my tester function I get slightly different numbers,
+and that those numbers can cover a certain range.  You see here that the
+1st and 3rd quarters do that for each sample.
+
+What I look at first is the mean and I want to see if each sample's mean is
+different from the others.  I can see that, and clearly the \ident{scan} beats
+\ident{binstr} which also beats \ident{find}.  However, I have a problem, if I
+use just the mean, there's a \emph{chance} that the \ident{ranges} of each
+sample might overlap.
+
+What if I have means that are different, but the 1st and 3rd quaters overlap?
+In that case I could say that there's a chance that if I ran the samples again
+the means might not be different.  The more overlap I have in the ranges the
+higher probability that my two samples (and my two functions) are \emph{not}
+actually different.  Any difference I'm seeing in the two (in this case three)
+is just random chance.
+
+Statistics has many tools to solve this problem, but in our case I can just
+look at the 1st and 3rd quarters as well as the mean for all three samples.  If
+the means are different and the quarters are way off never possibly
+overlapping, then it's alright to say they are different.
+
+In my three samples I can say that \ident{scan}, \ident{find} and
+\ident{binstr} are different, don't overlap in range, and that I can trust the
+sample (for the most part).
+
+
+\section{Analyzing The Results}
+
+Looking at the results I can see that \ident{String\_find} is much slower than
+the other two.  In fact, so slow I'd think there's something wrong with how I
+implemented it.  However when I compare it with \ident{StringScanner\_scan} I
+can see that it's the part that builds the skip list that is most likely
+costing the time.  Not only is \ident{find} slower, it's also doing \emph{less}
+than \ident{scan} because it's just finding the first string while \ident{scan}
+finds all of them.
+
+I can also see that \ident{scan} beats \ident{binstr} as well by quite a large
+margin.  Again I can say that not only does \ident{scan} do more than both of
+these, but it's also much faster.
+
+There's a few caveats with this analysis:
+
+\begin{enumerate}
+\item I may have messed up this implementation or the test. At this
+    point I would go research all the possible ways to do a BMH algorithm
+    and try to improve it.  I would also confirm that I'm doing the test
+    right.
+\item If you alter the time the test runs, you get different results.
+    There is a "warm up" period I'm not investigating.
+\item The \ident{test\_scan\_performance} unit test isn't quite the
+    same as the others, but it is doing more than the other tests so
+    it's probably alright.
+\item I'm only doing the test by searching for one string in another.
+    I could randomize the strings to find to remove their position
+    and length as a confounding factor.
+\item Maybe \ident{binstr} is implemented better than "simple" brute force.
+\end{enumerate}
+
+One thing to gather from this is you need to confirm real performance even if
+you implement an algorithm "correctly".  In this case the claim is that the BMH
+algorithm should have beaten the \ident{binstr} algorithm, but a simple test
+proved it didn't.  Had I not done this I would have been using an inferior
+algorithm implementation without knowing it.  With these metrics I can start to
+tune my implementation, or simply scrap it and find another one.
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item See if you can make the \ident{Scan\_find} faster.  Why is my implementation
+    here slow?
+\item Try some different scan times and see if you get different numbers.
+    What impact does the length of time that you run the test have on
+    the \ident{scan} times?  What can you say about that result?
+\item Alter the unit test so that it runs each function for a short burst
+    in the beginning to clear out any "warm up" period, then start the
+    timing portion.  Does that change the dependence on the length of time
+    the test runs and how many operations / second are possible?
+\item Make the unit test randomize the strings to find and then measure
+    the performance you get.  One way to do this is use the \ident{bsplit}
+    function from \file{bstrlib.h} to split the \ident{IN\_STR} on 
+    spaces.  Then use the \ident{bstrList} struct you get to access each
+    string it returns.  This will also teach you how to use \ident{bstrList}
+    operations for string processing.
+\end{enumerate}
 

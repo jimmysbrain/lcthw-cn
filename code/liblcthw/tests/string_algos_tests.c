@@ -5,7 +5,7 @@
 
 struct tagbstring IN_STR = bsStatic("I have ALPHA beta ALPHA and oranges ALPHA");
 struct tagbstring ALPHA = bsStatic("ALPHA");
-const int TEST_TIME = 5;
+const int TEST_TIME = 1;
 
 char *test_find_and_scan()
 {
@@ -43,6 +43,7 @@ char *test_binstr_performance()
     do {
         for(i = 0; i < 1000; i++) {
             found_at = binstr(&IN_STR, 0, &ALPHA);
+            mu_assert(found_at != BSTR_ERR, "Failed to find!");
             find_count++;
         }
 
