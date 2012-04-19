@@ -1,0 +1,147 @@
+\chapter{练习 29: 库和链接}
+
+任何C程序的核心部分都是将C程序链接到由操作系统提供的库的能力。你只有通过链接
+才能够从别人创建并打包在系统中的库中获取你所需要的功能并加入到你自己的程序中。
+其实，你在之前的程序中已经使用了一些被自动包含的标准库，不过我还是想解释一下
+库的不同类型和库的作用。
+
+首先我要说一下，在任何一种程序设计语言中，库的设计都很糟糕。我也不知道这是为
+什么，似乎是语言的设计者认为链接只是之后添加到程序中的东西。它们通常都很混乱，
+难以处理，can't do versoning right, and end up being linked differently everywhere.
+
+C语言也不例外，不过C语言的链接和库在多年前是设计Unix操作系统和executable
+formats的神器。学习C语言是怎么样链接的，有助于你理解操作系统的工作以及操作系统如何运行你的程序。
+
+作为学习链接和库的开端，我们先介绍一下库的两个基本类型：
+
+\begin{description}
+\item[静态链接库] 其实，你在之前的练习中使用\program{ar}和\program{ranlib}创建
+    的\file{libYOUR\_LIBARY.a}文件就是一个静态链接库。这种库只是包含了一系列
+    \file{.o}对象文件及其功能的容器，当你构建你自己的程序时完全可以把它当做一个
+    大一点的\file{.o}文件。
+\item[动态链接库] 动态链接库的典型后缀名有\file{.so}，\file{.dll}，在OSX上
+    则根据版本和编程人员的不同而千奇百怪。严格来讲，OSX上常用的有\file{.dylib}，
+    \file{.bundle}，\file{.framework}，而这三者之间也并没有多大区别。这些文件被
+    构建并存放在一个公共目录下。当你运行程序时操作系统会动态的加载这些文件，并将
+    他们链接到你正在运行的文件。
+\end{description}
+
+我比较倾向在中小型工程中使用静态链接库，因为静态链接库更容易处理，并且对不同的
+操作系统的兼容性更好。我也喜欢把所有我能够放到静态链接库中的代码都放到静态链接
+库中，这样我就可以连接静态链接库进行单元测试或者在需要的时候与其他程序进行链接。
+
+Dynamic libraries are good for larger systems, when space is tight, or if you have
+a large number of programs that use common functionality.  In this case you don't
+want to statically link all of the code for the common features to every program,
+so you put it in a dynamic library so that it is loaded only once for all of them.
+
+In the previous exercise I laid out how to make a static library (a \file{.a} file),
+and that's what I'll use in the rest of the book.  In this exercise I'm going to 
+show you how to make a simple .so library, and how to dynamically load it with the
+Unix \program{dlopen} system.  I'll have you do this manually so that you understand
+everything that's actually happening, then the Extra Credit will be to use the
+\file{c-skeleton} skeleton to create it.
+
+\subsection{Dynamically Loading A Shared Library}
+
+To do this I will create two source files.  One will be used to make a 
+\file{libex29.so} library, the other will be a program called \program{ex29}
+that can load this library and run functions from it.
+
+\begin{code}{libex29.c}
+<< d['code/c-skeleton/src/libex29.c|pyg|l'] >>
+\end{code}
+
+There's nothing fancy in there, although there's some bugs I'm leaving in
+on purpose to see if you've been paying attention.  You'll fix those later.
+
+What we want to do is use the functions \ident{dlopen}, \ident{dlsym} and
+\ident{dlclose} to work with the above functions.
+
+\begin{code}{ex29.c}
+<< d['code/ex29.c|pyg|l'] >>
+\end{code}
+
+I'll now break this down so you can see what's going on in this small bit
+of useful code:
+
+\begin{description}
+\item[ex29.c:5] I'll use this function pointer definition later to call functions
+    in the library.  This is nothing new, but make sure you understand what
+    it's doing.
+\item[ex29.c:17] After the usual setup for a small program, I use the \ident{dlopen}
+    function to load up the library indicated by \ident{lib\_file}.  This function
+    returns a handle that we use later and works a lot like opening a file.
+\item[ex29.c:18] If there's an error, I do the usual check and exit, but notice at
+    then end that I'm using \ident{dlerror} to find out what the library related
+    error was.
+\item[ex29.c:20] I use \ident{dlsym} to get a function out of the \ident{lib} 
+    by it's \emph{string} name in \ident{func\_to\_run}.  This is the powerful
+    part, since I'm dynamically getting a pointer to a function based on a
+    string I got from the command line \ident{argv}.
+\item[ex29.c:23] I then call the \ident{func} function that was returned, and 
+    check its return value.
+\item[ex29.c:26] Finally, I close the library up just like I would a file.  Usually
+    you keep these open the whole time the program is running, so closing at
+    the end isn't as useful, but I'm demonstrating it here.
+\end{description}
+
+\section{What You Should See}
+
+Now that you know what this file does, here's a shell session of me building
+the \file{libex29.so}, \program{ex29} and then working with it.  Follow
+along so you learn how these things are built manually.
+
+\begin{code}{Building And Using libex29.so}
+<< d['code/ex29.sh-session|pyg|l'] >>
+\end{code}
+
+One thing that you may run into is that every OS, every version of every
+OS, and every compiler on every version of every OS, seems to want to change
+the way you build a shared library every other month that some new programmer
+thinks it's wrong.  If the line I use to make the \file{libex29.so} file is
+wrong, then let me know and I'll add some comments for other platforms.
+
+\begin{aside}{Irritating .so Ordering}
+Sometimes you'll do what you think is normal and run this command
+\verb|cc -Wall -g -DNDEBUG -ldl ex29.c -o ex29| thinking everthing
+will work, but nope.  You see, on some platforms the order of where 
+libraries goes makes them work or not, and for no real reason.  On
+Debian or Ubuntu you have to do
+\verb|cc -Wall -g -DNDEBUG ex29.c -ldl -o ex29| for no reason at all.
+It's just the way it is, so since this works on OSX I'm doing it
+here, but in the future, if you link against a dynamic library and
+it can't find a function, try shuffling things around.
+
+The irritation here is there is an actual platform difference on nothing
+more than order of command line arguments.  On no rational planet should
+putting an \file{-ldl} at one position be different from another.  It's an
+option, and having to know these things is incredibly annoying.
+\end{aside}
+
+\section{How To Break It}
+
+Open \file{libex29.so} and edit it with an editor that can handle
+binary files.  Change a couple bytes, then close it.  Try to see
+if you can get the \ident{dlopen} function to load it even though
+you've corrupted it.
+
+\section{Extra Credit}
+
+\begin{enumerate}
+\item Were you paying attention to the bad code I have in the \file{libex29.c} functions?
+    See how, even though I use a for-loop they still check for \verb|'\0'|
+    endings?  Fix this so the functions always take a length for the
+    string to work with inside the function.
+\item Take the \file{c-skeleton} skeleton, and create a new project
+    for this exercise.  Put the \file{libex29.c} file in the \file{src/}
+    directory.  Change the Makefile so that it builds this as \file{build/libex29.so}.
+\item Take the \file{ex29.c} file and put it in \file{tests/ex29\_tests.c} so
+    that it runs as a unit test.  Make this all work, which means you have to
+    change it so that it loads the \file{build/libex29.so} file and runs
+    tests similar to what I did manually above.
+\item Read the \program{man dlopen} documentation and read about all the
+    related functions.  Try some of the other options to \ident{dlopen}
+    beside \ident{RTLD\_NOW}.
+\end{enumerate}
+
