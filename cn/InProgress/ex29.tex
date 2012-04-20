@@ -30,43 +30,36 @@ formats的神器。学习C语言是怎么样链接的，有助于你理解操作
 操作系统的兼容性更好。我也喜欢把所有我能够放到静态链接库中的代码都放到静态链接
 库中，这样我就可以连接静态链接库进行单元测试或者在需要的时候与其他程序进行链接。
 
-Dynamic libraries are good for larger systems, when space is tight, or if you have
-a large number of programs that use common functionality.  In this case you don't
-want to statically link all of the code for the common features to every program,
-so you put it in a dynamic library so that it is loaded only once for all of them.
+动态链接库比较适合在大型系统中使用，如果你的空间紧张，如果你的许多程序都有公共
+的功能，那么动态链接库正好适合。如果你不想为了公共的功能为你的每个程序都去静态
+链接代码，你只需要使用动态链接库，动态链接库只需要载入一次就能够为所有需要它的
+程序所使用。
 
-In the previous exercise I laid out how to make a static library (a \file{.a} file),
-and that's what I'll use in the rest of the book.  In this exercise I'm going to 
-show you how to make a simple .so library, and how to dynamically load it with the
-Unix \program{dlopen} system.  I'll have you do this manually so that you understand
-everything that's actually happening, then the Extra Credit will be to use the
-\file{c-skeleton} skeleton to create it.
+在之前的练习中我已经向你展现了如何创建静态链接库（\file{.a}文件），并且我将在本书的
+剩余部分继续使用。在本章练习中我还会向你展示如何创建一个简单的\file{.so}库，如
+何通过Unix\program{dlopen}系统动态加载它。我要求你自己动手亲自完成它，这有助
+于你理解究竟发生了什么，而在接下来的加分练习中则会使用\file{c-skeleton}骨架来创建它。
 
-\subsection{Dynamically Loading A Shared Library}
+\subsection{动态加载一个共享库}
 
-To do this I will create two source files.  One will be used to make a 
-\file{libex29.so} library, the other will be a program called \program{ex29}
-that can load this library and run functions from it.
+为了动态加载一个共享库我将会创建两个源文件。其中一个用来创建一个\file{libex29.so}库，另一个用来创建一个叫\program{ex29}的程序，这个程序能够动态加载这个库，并且使用其中的函数。
 
 \begin{code}{libex29.c}
 << d['code/c-skeleton/src/libex29.c|pyg|l'] >>
 \end{code}
 
-There's nothing fancy in there, although there's some bugs I'm leaving in
-on purpose to see if you've been paying attention.  You'll fix those later.
+这段代码没有什么特别之处，不过，我故意留下了一些bugs来检查你是否集中注意了力。你需要在之后修复这些bugs。
 
-What we want to do is use the functions \ident{dlopen}, \ident{dlsym} and
-\ident{dlclose} to work with the above functions.
+我们将要做的是使用\ident{dlopen}，\ident{dlsym}和\ident{dlclose}函数与上面的函数协同工作。
 
 \begin{code}{ex29.c}
 << d['code/ex29.c|pyg|l'] >>
 \end{code}
 
-I'll now break this down so you can see what's going on in this small bit
-of useful code:
+我现在将会为你刨析这段代码，这样你就能了解这段短小精悍的代码究竟发生了什么。
 
 \begin{description}
-\item[ex29.c:5] I'll use this function pointer definition later to call functions
+\item[ex29.c:5] 我会在之后调用库里的函数时用到这个函数指针的类型定义。I'll use this function pointer definition later to call functions
     in the library.  This is nothing new, but make sure you understand what
     it's doing.
 \item[ex29.c:17] After the usual setup for a small program, I use the \ident{dlopen}
