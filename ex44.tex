@@ -1,20 +1,75 @@
 \chapter{Exercise 44: Ring Buffer}
 
-Ring buffers are incredibly useful when processing asynchronous IO.  They allow one side
-to receive data in random intervals of random sizes, but feed cohesive chunks to another
-side in set sizes or intervals.
+Ring buffers are incredibly useful when processing asynchronous IO.  They allow
+one side to receive data in random intervals of random sizes, but feed cohesive
+chunks to another side in set sizes or intervals.  They are a variant on the 
+\ident{Queue} data structure but it focuses on blocks of bytes instead of
+a list of pointers.  In this exercise I'm going to show you the 
+\ident{RingBuffer} code, and then you have to make a full unit test
+for it.
 
-This will implement a simple naive variant of a ring buffer, and then have a test driven
-exercise to make a real complete ring buffer.
+\begin{code}{src/lcthw/ringbuffer.h}
+<< d['code/liblcthw/src/lcthw/ringbuffer.h|pyg|l'] >>
+\end{code}
+
+Looking at the data structure you see I have a \ident{buffer}, 
+\ident{start} and \ident{end}.  A \ident{RingBuffer} does nothing
+more than move the \ident{start} and \ident{end} around the buffer
+so that it "loops" whenever it reaches the buffer's end.  Doing
+this gives the illusion of an infinite read device in a small space.
+
+Here's the implementation which is a much better explanation of how
+this works:
+
+\begin{code}{src/lcthw/ringbuffer.c}
+<< d['code/liblcthw/src/lcthw/ringbuffer.c|pyg|l'] >>
+\end{code}
+
+This is all there is to a basic \ident{RingBuffer} implementation.  You
+can read and write blocks of data to it.  You can ask how much is in it
+and how much space it has.  There are some fancier ring buffers that use
+tricks in the OS to create an imaginary infinite store, but those aren't
+portable.
 
 
 \section{What You Should See}
 
+Here's my \file{ringbuffer\_tests} run:
 
-\section{How To Break It}
+\begin{code}{ringbuffer\_tests}
+<< d['code/ex44.1.sh-session|pyg|l'] >>
+\end{code}
+
+You should have at least three tests that confirm all the basic operations,
+and then see how much more you can test beyond what I've done.
+
+\section{How To Improve It}
+
+As usual you should go back and add the defensive programming checks
+to this exercise.  Hopefully you've been doing this because the base
+code in most of \file{liblcthw} doesn't check for common defensive
+programming that I'm teaching you.  I leave this to you so that you get
+used to improving code with these extra checks.
+
+For example, in this ring buffer there's not a lot of checking that an
+access will actually be inside the buffer.
+
+If you read the \href{http://en.wikipedia.org/wiki/Ring_buffer}{Ring Buffer
+Wikipedia page} you'll see the "Optimized POSIX implementation" that uses POSIX
+specific calls to create an infinite space.  Study that as I'll have you 
+try it in the extra credit.
 
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item Create an alternative implementation of \ident{RingBuffer} that uses
+    the POSIX trick but still works with the same (or nearly the same) unit test.
+\item Add a performance comparison test to this unit test that compares the
+    two versions by fuzzing them with random data and random read/write operations.
+    Make sure that you setup this fuzzing so that the same operations are done
+    to each so you can compare them between runs.
+\item Use \program{callgrind} and \program{cachegrind} to compare the 
+    performance of these two.
+\end{enumerate}
 
