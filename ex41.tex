@@ -1,15 +1,250 @@
-\chapter{Exercise 41: Using KCachegrind For Performance Tuning}
+\chapter{Exercise 41: Using Cachegrind And Callgrind For Performance Tuning}
 
-Introduces KCachegrind and using Valgrind to analyze the performance of code to find
-out where it's going wrong and improve it.
+In this exercise I'm going to give you a quick course in using two tools for \program{Valgrind}
+called \program{callgrind} and \program{cachegrind}.  These two tools will analyze your program's
+execution and tell you what parts are running slow.  The results are accurate because of the way \program{Valgrind} works
+and help you spot problems such as lines of code that execute too much, hot spots, memory access problems,
+and even CPU cache misses.
 
-\section{What You Should See}
+To do this exercise I'm going to use the \program{bstree\_tests} unit tests you just did
+to look for places to improve the algorithms used.  Make sure your versions of these programs are running
+without any \program{valgrind} errors and that it is exactly like my code.  I'll be using
+dumps of my code to talk about how \program{cachegrind} and \program{callgrind} work.
 
+\section{Running Callgrind}
 
-\section{How To Break It}
+To run callgrind you pass the \verb|--tool=callgrind| option to \program{valgrind} and it will 
+produce a \file{callgrind.out.PID} file (where PID is replace with the process ID of the program
+that ran).   Once you run it you can analyze this \file{callgrind.out} file with a tool 
+called \program{callgrind\_annotate} which will tell you which functions used the most
+instructions to run.  Here's an example of me running \program{callgrind} on \program{bstree\_tests}
+and then getting its information:
 
+\begin{code}{Callgrind On bstree\_tests}
+<< d['code/ex41.1.sh-session|pyg|l'] >>
+\end{code}
+
+I've removed the unit test run and the \program{valgrind} output since it's not
+very useful for this exercise.  What you should look at is the
+\program{callgrind\_anotate} output.  What this shows you is the number of
+instructions run (which \program{valgrind} calls \ident{Ir}) for each 
+function, and the functions sorted highest to lowest.  You can usually ignore
+the header data and just jump to the list of functions.
+
+\begin{aside}{More OSX Annoyances}
+In if you get a ton of "???:Image" lines and things that are not in your
+program then you're picking up junk from the OS.  Just add \verb,| grep -v "???",
+at the end to filter those out, like this.
+\end{aside}
+
+I can now do a quick breakdown of this output to figure out where to look
+next:
+
+\begin{enumerate}
+\item Each line lists the number of \ident{Ir} and the file:function that
+    executed them.  The \ident{Ir} is just the instruction count, and if you
+    make that lower then you have made it faster.  There's some complexity
+    to that, but at first just focus on getting the \ident{Ir} down.
+\item The way to attack this is to look at your top functions, and then 
+    see which one you think you can improve first.  In this case, I'd look
+    at improving \ident{bstrcmp} or \ident{BStree\_get}.  It's probably
+    easier to start with \ident{BStree\_get}.
+\item Some of these functions are just called from the unit test, so I would
+    just ignore those.  Functions like \ident{bformat}, \ident{bfromcstralloc},
+    and \ident{bdestroy} fit this description.
+\item I would also look for functions I can simply avoid calling.  For example,
+    maybe I can just say \ident{BSTree} only works with \ident{bstring} keys,
+    and then I can just not use the callback system and remove \ident{default\_compare} 
+    entirely.
+\end{enumerate}
+
+At this point though, I only know that I want to look at \ident{BSTree\_get}
+to improve it, and not the reason \ident{BSTree\_get} is slow.  That is
+phase two of the analysis.
+
+\section{Callgrind Annotating Source}
+
+I will next tell \program{callgrind\_annotate} to dump out the \ident{bstree.c}
+file and annotate each line with the number of \ident{Ir} it took.  You
+get the annotated source file by running:
+
+\begin{code}{Callgrind Annotated BSTree\_get}
+<< d['code/ex41.2.sh-session|pyg|l'] >>
+\end{code}
+
+Your output will have a big dump of the file's source, but I've cut out
+the parts for \ident{BSTree\_get} and \ident{BSTree\_getnode}:
+
+\begin{code}{Callgrind Annotated BSTree\_get}
+\begin{Verbatim}
+<< d['code/ex41.1.txt'] >>
+\end{Verbatim}
+\end{code}
+
+Each line is shown with either the number of \ident{Ir} (instructions) it
+ran, or a period (.) to show that it's not important.  What I'm looking for
+is hotspots, or lines that have huge numbers of \ident{Ir} that I can
+possibly bring down.  In this case, line 10 of the output above shows that
+what makes \ident{BSTree\_getnode} so expensive is that it calls 
+\ident{default\_comapre} which calls \ident{bstrcmp}.  I already know that
+\ident{bstrcmp} is the worst running function, so if I want to 
+improve the speed of \ident{BSTree\_getnode} I should work on that first.
+
+I'll then look at \ident{bstrcmp} the same way:
+
+\begin{code}{Callgrind Annotated bstcmp}
+\begin{Verbatim}
+<< d['code/ex41.2.txt'] >>
+\end{Verbatim}
+\end{code}
+
+The \ident{Ir} for this function shows two lines that take up most
+of the execution.  First, \ident{bstrcmp} seems to go through a lot
+of trouble to make sure that it is not given a \ident{NULL} value.
+That's a good thing so I want to leave that alone, but I'd consider
+writing a different compare function that was more "risky" and assumed
+it was never given a \ident{NULL}.  The next one is the loop that
+does the actual comparison.  It seems that there's some optimization
+that could be done in comparing the characters of the two data buffers.
+
+\section{Analyzing Memory Access With Cachegrind}
+
+What I want to do next is see how many times this \ident{bstrcmp} function
+access memory to either read it or write it.  The tool for doing that (and
+other things) is \ident{cachegrind} and you use it like this:
+
+\begin{code}{Cachegrind On bstree\_tests}
+<< d['code/ex41.3.sh-session|pyg|l'] >>
+\end{code}
+
+I tell \program{valgrind} to use the \program{cachegrind} tool, which runs
+\program{bstree\_tests} and then produces a \file{cachegrind.out.PID} file
+just like \ident{callgrind} did.  I then use the program \ident{cg\_annotate}
+to get a similar output, but notice that I'm telling it to do \program{--show=Dr,Dw}.
+This option says that I only want the memory read \ident{Dr} and write \ident{Dw}
+counts for each function.
+
+After that you get your usual header and then the counts for \ident{Dr} and \ident{Dw}
+for each file:function combination.  I've edited this down so it shows the files
+and also removed any OS junk with \verb,| grep -v "???", so your output may
+be a little different.  What you see in my output is that \ident{bstrcmp} is the
+worst function for memory usage too, which is to be expected since that's mostly
+the only thing it does.  I'm going to now dump it's annotated source to
+see where.
+
+\begin{code}{Cachegrind Annotated bstrcmp}
+\begin{Verbatim}
+<< d['code/ex41.3.txt'] >>
+\end{Verbatim}
+\end{code}
+
+The surprising thing about this output is that the worst line of \ident{bstrcmp}
+isn't the character comparison like I thought.  For memory access it's that
+protective if-statement at the top that checks every possible bad variable
+it could receive.  That one if statement does more than twice as many memory
+accesses compared to the line that's comparing the characters on line 17 of
+this output.  If I were to make \ident{bstrcmp} then I would definitely just
+ditch that or do it once somewhere else.
+
+Another option is to turn this check into an \ident{assert} that only exists
+when running in development, and then compile it out in production.  I now
+have enough evidence to say that this line is bad for this data structure,
+so I can justify removing it.
+
+What I don't want to do however is justify making this function less defensive
+to just gain a few more cycles.  In a real performance improvement situation I
+would simply put this on a list and then dig for other gains I can make in
+the program.
+
+\section{Judo Tuning}
+
+\begin{quote}
+"We should forget about small efficiencies, say about 97\% of the time: premature optimization is the root of all evil."
+
+    \attrib{Donald Knuth}
+\end{quote}
+
+In my opinion, this quote seems to miss a major point about performance tuning.
+In this Knuth is saying that when you performance tune matters, in that if you
+do it in the beginning, then you'll cause all sorts of problems.  According to
+him optimization should happen "sometime later", or at least that's my guess.
+Who knows these days really.
+
+I'm going to declare this quote not necessarily wrong, but missing the point,
+and instead I'm going to officially give my quote.  You can quote me on this:
+
+\begin{quote}
+"Use evidence to find the biggest optimizations that take the least effort."
+
+    \attrib{Zed A. Shaw}
+\end{quote}
+
+It doesn't matter when you try to optimize something, but instead it's how
+you figure out if your optimization actually improved the software, and 
+how much effort you put into doing them.  With evidence you can find the
+places in the code where just a little effort gets you big improvements.
+Usually these places are just dumb decisions, as in \ident{bstrcmp} 
+trying to check everything possible for a \ident{NULL} value.
+
+At a certain point you have tuned the code to where the only thing that
+remains is tiny little micro-optimizations such as reorganizing if-statements
+and special loops like Duff's Device.  At this point, just stop because there's
+a good chance that you'd gain more by redesigning the software to just 
+\emph{not do things}.
+
+This is something that programmers who are optimizing simply fail to see.
+Many times the best way to do something fast is to find out ways to not
+do them.  In the above analysis, I wouldn't try to make \ident{bstrcmp}
+faster, I'd try to find a way to not use \ident{bstrcmp} so much.  Maybe
+there's a hashing scheme I can use that let's me do a sortable hash instead
+of constantly doing \ident{bstrcmp}.  Maybe I can optimize it by trying
+the first char first, and if it's comparable just don't call \ident{bstrcmp}.
+
+If after all that you can't do a redesign then start looking for little
+micro-optimizations, but as you do them \emph{constantly confirm they
+improve speed}.  Remember that the goal is to cause the biggest impact
+with the least effort possible.
+
+\section{Using KCachegrind}
+
+The final section of this exercise is going to point you at a tool called 
+\href{http://kcachegrind.sourceforge.net/html/Home.html}{KCachegrind}.  This
+is a \emph{fantastic} GUI for analyzing \program{callgrind} and \program{cachegrind}
+output.  I use it almost exclusively when I'm working on a Linux or BSD computer,
+and I've actually switched to just coding on Linux for projects because of 
+\program{KCachegrind}.
+
+Teaching you how to use it is outside the scope of this exercise, but you should
+be able to understand how to use it after this exercise.  The output is nearly
+the same except \program{KCachegrind} lets you do the following:
+
+\begin{enumerate}
+\item Graphically browse the source and execution times doing various sorts to
+    find things to improve.
+\item Analyze different graphs to visually see what's taking up the most time
+    and also what it is calling.
+\item Look at the actual machine code assembler output so you can see possible
+    instructions that are happening, giving you more clues.
+\item Visualize the jump patterns for loops and branches in the source code,
+    helping you find wayso to optimize the code easier.
+\end{enumerate}
+
+You should spend some time getting \program{KCachegrind} installed and 
+play with it.
 
 \section{Extra Credit}
 
+\begin{enumerate}
+\item Read the \href{http://valgrind.org/docs/manual/cl-manual.html}{callgrind manual} 
+    and try some advanced options.
+\item Read the \href{http://valgrind.org/docs/manual/cg-manual.html}{cachegrind manual}
+    and also try some advanced options.
+\item Use \program{callgrind} and \program{cachegrind} on all the unit tests and
+    see if you can find optimizations to make.  Did you find some things that
+    surprised you?  If not you probably aren't looking hard enough.
+\item Use KCachegrind and see how it compares to doing the terminal output like
+    I'm doing here.
+\item Now use these tools to do the Exercise 40 extra credits and improvements.
+\end{enumerate}
 
 

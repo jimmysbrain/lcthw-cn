@@ -1,0 +1,26 @@
+--------------------------------------------------------------------------------
+-- User-annotated source: src/lcthw/bstrlib.c
+--------------------------------------------------------------------------------
+    Dr     Dw 
+
+
+     0 19,430  int bstrcmp (const_bstring b0, const_bstring b1) {
+     .      .  int i, v, n;
+     .      .  
+77,720      0  	if (b0 == NULL || b1 == NULL || b0->data == NULL || b1->data == NULL ||
+38,860      0  		b0->slen < 0 || b1->slen < 0) return SHRT_MIN;
+     0      0  	n = b0->slen; if (n > b1->slen) n = b1->slen;
+     0      0  	if (b0->slen == b1->slen && (b0->data == b1->data || b0->slen == 0))
+     .      .  		return BSTR_OK;
+     .      .  
+     0      0  	for (i = 0; i < n; i ++) {
+53,174      0  		v = ((char) b0->data[i]) - ((char) b1->data[i]);
+     .      .  		if (v != 0) return v;
+     .      .  		if (b0->data[i] == (unsigned char) '\0') return BSTR_OK;
+     .      .  	}
+     .      .  
+     .      .  	if (b0->slen > n) return 1;
+     .      .  	if (b1->slen > n) return -1;
+     .      .  	return BSTR_OK;
+     .      .  }
+
