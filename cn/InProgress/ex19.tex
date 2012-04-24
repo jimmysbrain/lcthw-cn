@@ -26,42 +26,34 @@ CPP 的工作模式是这样的：你提供一个文件，通常是一个 .c 文
 cpp ex18.c | less
 \end{Verbatim}
 
-It will be a huge amount of output, but scroll through it and you'll see the
-contents of the other files you included with \verb|#include|.  Scroll down
-to the original code and you can see how the \program{cpp} is altering the
-source based on various \verb|#define| macros in the header files.
+你会收到很长的一串输出，不过逐页浏览下去你会看到你用 \verb|#include| 包含进来的其它文件
+的内容。向下滚动到原始代码，你可以看到 \program{cpp} 是怎样依据头文件中的各种 \verb|#define| 
+宏语句来修改源代码文件的。
 
-The C compiler is so tightly integrated with \program{cpp} that it just
-runs this for you and understands how it works intimately.  In modern C,
-the \program{cpp} system is so integral to C's function that you might
-as well just consider it to be part of the language.
+C 编译器和 \program{cpp} 结合得非常紧密，它会直接运行 cpp，并且熟悉 cpp 的功能。在
+现代 C 语言中，\program{cpp} 系统已经深入集成到 C 的功能中，你甚至可以直接认为它就是 C 
+语言的一部分了。
 
-In the remaining sections, we'll be using more of the CPP syntax and explaining
-it as we go.
+在剩下的小节中，我将用到更多的 CPP 语法，并在使用过程中逐一向你解释。
 
 
-\section{The Prototype Object System}
+\section{对象系统的原型}
 
-The OOP system we'll create is a simple "prototype" style object system more
-like JavaScript.  Instead of classes, you start with prototypes that have
-fields set, and then use those as the basis of creating other object instances.
-This "classless" design is much easier to implement and work with than a
-traditional class based one.
+我们要创建的 OPP 系统是一个简单的“原型(prototype)”式的类似于 JavaScript 对象系统的东西。
+我们使用的不是类，取而代之的是你从包含属性栏位的 prototype 出发，然后使用这个 prototype 系统
+创建其它的对象实例。和传统的基于 class 的设计相比，这种“无 class”的设计方式更容易实现和应对。
 
-\subsection{The Object Header File}
+\subsection{对象头文件}
 
-I want to put the data types and function declarations into a separate
-header file named \file{object.h}.  This is standard C practice and it
-lets you ship binary libraries but still let the programmer compile against
-it.  In this file I have several advanced CPP techniques I'm going to
-quickly describe and then have you see in action later:
+我要将数据类型和函数声明放到一个独立的称作 \file{object.h} 的头文件中。这是一个标准的 C 
+语言实践模式，通过这种方式，你可以直接发布二进制库，不过还可以让程序员使用它进行编译。在这个
+文件里我用了几个高级 CPP 技巧，我会快速对它们进行讲解，后面你可以看到它们在实际运行中的功用：
 
 \begin{code}{object.h}
 << d['code/object.h|pyg|l'] >>
 \end{code}
 
-Taking a look at this file, you can see we have a few new pieces of 
-syntax you haven't encountered before:
+看一下这个文件，你可以看到我们用了几个之前没见过的语法：
 
 \begin{description}
 

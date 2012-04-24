@@ -9,25 +9,22 @@ C 语言中有一个亘古不变的问题，每次你碰到它的时候，你都
 
 是的，就是这么牛叉。
 
-\section{The C Error Handling Problem}
+\section{C 语言错误处理的问题}
 
-In almost every programming language handling errors is a difficult activity.
-There's entire programming languages that try as hard as they can to avoid even
-the concept of an error.  Other languages invent complex control structures
-like exceptions to pass error conditions around.  The problem exists mostly
-because programmers assume errors don't happen and this optimism infects the
-type of languages they use and create.
+对于几乎每一种语言来说，处理错误都是一件难事。有一些编程语言会通过各种方式极力避免“错误”这个
+概念的出现。别的语言则发明了类似“exception”这样的复杂的控制结构，用来传递错误状态。之所以存在
+错误处理的问题，很大程度上是因为程序员们会假设错误是不会发生的，而这种乐观态度感染了他们使用
+和创建的编程语言。
 
-C tackles the problem by returning error codes and setting a global
-\ident{errno} value that you check.  This makes for complex code that
-simply exists to check if something you did had an error.  As you 
-write more and more C code you'll write code with the pattern:
+C 语言处理这个问题的方法是范围错误代码，并设置一个叫 \ident{errno} 的全局变量供你检查。
+这就导致你要写大量的代码来检查你是否导致了一个错误。当你写的 C 代码越来越多的时候，你会发现
+自己在不断重复这样的一个过程：
 
 \begin{enumerate}
-\item Call a function.
-\item If the return value is an error (must look that up each time too).
-\item Then cleanup all the resource created so far.
-\item and print out an error message that hopefully helps.
+\item 调用一个函数。
+\item 检查返回值是否有误（这也是每次要做的检查）。
+\item 如果有错的话，就清理到目前为止创建的所有资源。
+\item 然后打印出一个错误信息，并期望这个错误信息真能派上点用处。
 \end{enumerate}
 
 This means for every function call (and yes, \emph{every} function)
