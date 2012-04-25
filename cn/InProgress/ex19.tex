@@ -57,12 +57,11 @@ C 编译器和 \program{cpp} 结合得非常紧密，它会直接运行 cpp，�
 
 \begin{description}
 
-\item[\#ifndef] You've seen a \verb|#define| for making simple constants, but
-    the CPP can also do logic and remove sections of code.  This \verb|#ifndef| is
-    "if not defined" and checks if there's already a \verb|#define _object_h| and
-    if there is it skips all of this code.  I do this so that we can include
-    this file any time we want and not worry about it defining things multiple
-    times.
+\item[\#ifndef] 你已经见过如何使用 \verb|#define| 来创建简单的常数，不过 CPP 还会做
+    逻辑处理，并且移除代码片段。这个 \verb|#ifndef| 的意思是“如果未定义（if not defined）”，
+    它所做的事情是检查 \verb|#define _object_h| 是否已经存在于代码中了，如果存在的话，就
+    跳过接下来的这段代码。通过这种定义方式，我们可以将这个头文件多次 include 进来，而无需担心
+    一些东西是否被定义了多次。
 \item[\#define] With the above \verb|#ifndef| shielding this file from we then
     add the \ident{\_object\_h} define so that any attempts to include it later
     cause the above to skip.

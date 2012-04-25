@@ -1,6 +1,6 @@
-\chapter{习题 20: Zed 的强悍的 debug 宏命令}
+\chapter{习题 20: Zed 的强悍的 debug macro}
 
-C 语言中有一个亘古不变的问题，每次你碰到它的时候，你都不得不想法子绕过，不过接下来我要用自己
+C 语言中有一个一直存在的问题，每次你碰到它的时候，你都不得不想法子绕过，不过接下来我要用自己
 写的一套宏命令来解决这个问题。过一阵子等你意识到我这套宏命令是如何碉堡了的以后，你再回来感谢我
 吧。以你现在的水平应该意识不到这一点，所以你还是先直接拿来用好了。等到某一天，你会走到我面前说：
 “Zed，这些 debug macro 太牛了。没有你这些东西，我都得头疼半个世纪，没准都自杀好几次了。我简直
@@ -27,33 +27,26 @@ C 语言处理这个问题的方法是范围错误代码，并设置一个叫 \i
 \item 然后打印出一个错误信息，并期望这个错误信息真能派上点用处。
 \end{enumerate}
 
-This means for every function call (and yes, \emph{every} function)
-you are potentially writing 3-4 more lines just to make sure it worked.
-That doesn't include the problem of cleaning up all of the junk you've
-built to that point.  If you have 10 different structures, 3 files, and
-a database connection, when you get an error then you
-would have 14 more lines.
+这意味着对于每一个函数的调用（是的，\emph{每一个}函数），你都可能要多写三四行代码以确认其有效。
+这还不包括出错时清理你 build 出来的垃圾文件所需的代码。如果你有 10 个不同的结构，3 个文件，
+还有一个数据库连接，那么当你碰到错误时，你要多写 14 行代码来做清理工作。
 
-In the past this wasn't a problem because C programs did what you've
-been doing when there's an error: die.  No point in bothering with cleanup
-when the OS will do it for you.  Today though many C programs need to run
-for weeks, months, or years and handle errors from many different sources
-gracefully.  You can't just have your webserver die at the slightest 
-touch, and you definitely can't have a library you've written nuke a
-the program its used in.  That's just rude.
+这在过去算不上一个问题，因为在那个时代，当 C 程序遇到错误时，它所做的和你做的是同一件事：程序中止。
+清理工作是没必要的，因为 OS 会为你做这些事情。然而时至今日，很多 C 程序需要一直运行几周，几个月，
+甚至若干年，而且要完美地处理各种原因的错误。 如果你写了一个 web 服务器，你总不能让它碰到一丁点错误就
+挂掉吧。如果你写了一个 library 被用到另一个程序上面，你总不能让别人的程序一点不和就全盘崩溃吧。
+这样做太不礼貌了。
 
-Other languages solve this problem with exceptions, but those have problems
-in C (and in other languages too).  In C you only have one return value,
-but exceptions are an entire stack based return system with arbitrary
-values.  Trying to marshal exceptions up the stack in C is difficult, and
-no other libraries will understand it.
+别的语言是通过 exception 来解决这个问题的，不过 exception 在 C 语言里有一些问题（在别的语言
+里也有）。在 C 语言中，我们只有一个返回值，但 exception 是一个基于栈(stack)的返回系统，它返回
+的东西是不确定的。要在 C 语言的栈中逐层整理 exception 是一件难事，而且如果你这么做的话，别的
+library 就无法跟你写的代码交流了。
 
-\section{The Debug Macros}
+\section{Debug Macro 来了}
 
-The solution I've been using for years is a small set of "debug macros"
-that implement a basic debugging and error handling system for C.  This
-system is easy to understand, works with every library, and makes C code
-more solid and clearer.
+近年来我一直用着的解决方案是一套 debug macro，它们就是一个基本的 debug 和 error handling 
+系统。这个系统很容易理解，适用于所有的 library，而且可以让 C 代码更清晰稳定。
+
 
 It does this by adopting the convention that whenever there's an error, your
 function will jump to an "error:" part of the function that knows how to
