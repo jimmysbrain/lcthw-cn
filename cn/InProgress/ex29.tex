@@ -15,11 +15,11 @@ formats的神器。学习C语言是怎么样链接的，有助于你理解操作
 作为学习链接和库的开端，我们先介绍一下库的两个基本类型：
 
 \begin{description}
-\item[静态链接库] 其实，你在之前的练习中使用\program{ar}和\program{ranlib}创建
+\item[静态] 其实，你在之前的练习中使用\program{ar}和\program{ranlib}创建
     的\file{libYOUR\_LIBARY.a}文件就是一个静态链接库。这种库只是包含了一系列
     \file{.o}对象文件及其功能的容器，当你构建你自己的程序时完全可以把它当做一个
     大一点的\file{.o}文件。
-\item[动态链接库] 动态链接库的典型后缀名有\file{.so}，\file{.dll}，在OSX上
+\item[动态] 动态链接库的典型后缀名有\file{.so}，\file{.dll}，在OSX上
     则根据版本和编程人员的不同而千奇百怪。严格来讲，OSX上常用的有\file{.dylib}，
     \file{.bundle}，\file{.framework}，而这三者之间也并没有多大区别。这些文件被
     构建并存放在一个公共目录下。当你运行程序时操作系统会动态的加载这些文件，并将
@@ -36,7 +36,7 @@ formats的神器。学习C语言是怎么样链接的，有助于你理解操作
 程序所使用。
 
 在之前的练习中我已经向你展现了如何创建静态链接库（\file{.a}文件），并且我将在本书的
-剩余部分继续使用。在本章练习中我还会向你展示如何创建一个简单的\file{.so}库，如
+剩余部分继续使用。在本章练习中我还会向你展示如何创建一个简单的.so库，如
 何通过Unix\program{dlopen}系统动态加载它。我要求你自己动手亲自完成它，这有助
 于你理解究竟发生了什么，而在接下来的加分练习中则会使用\file{c-skeleton}骨架来创建它。
 
@@ -52,38 +52,24 @@ formats的神器。学习C语言是怎么样链接的，有助于你理解操作
 
 我们将要做的是使用\ident{dlopen}，\ident{dlsym}和\ident{dlclose}函数与上面的函数协同工作。
 
-\begin{code}{ex29.c}
-<< d['code/ex29.c|pyg|l'] >>
-\end{code}
+\begin{code+}{ex29.c}
+＋<< d['code/ex29.c|pyg|l'] >>
+＆
 
 我现在将会为你刨析这段代码，这样你就能了解这段短小精悍的代码究竟发生了什么。
 
 \begin{description}
-\item[ex29.c:5] 我会在之后调用库里的函数时用到这个函数指针的类型定义。I'll use this function pointer definition later to call functions
-    in the library.  This is nothing new, but make sure you understand what
-    it's doing.
-\item[ex29.c:17] After the usual setup for a small program, I use the \ident{dlopen}
-    function to load up the library indicated by \ident{lib\_file}.  This function
-    returns a handle that we use later and works a lot like opening a file.
-\item[ex29.c:18] If there's an error, I do the usual check and exit, but notice at
-    then end that I'm using \ident{dlerror} to find out what the library related
-    error was.
-\item[ex29.c:20] I use \ident{dlsym} to get a function out of the \ident{lib} 
-    by it's \emph{string} name in \ident{func\_to\_run}.  This is the powerful
-    part, since I'm dynamically getting a pointer to a function based on a
-    string I got from the command line \ident{argv}.
-\item[ex29.c:23] I then call the \ident{func} function that was returned, and 
-    check its return value.
-\item[ex29.c:26] Finally, I close the library up just like I would a file.  Usually
-    you keep these open the whole time the program is running, so closing at
-    the end isn't as useful, but I'm demonstrating it here.
+\item[ex29.c:5] 我会在之后调用库里的函数时用到这个函数指针的类型定义。这不是新知识，不过你还是应该确认一下你是否了解它的作用。
+    ＆
+\item[ex29.c:18] 如果出现一个系统错误，我会先做一个常规的检查，然后退出，不过请注意，我在结尾的地方使用了\ident{dlerror}来找出与错误相关的库。
+\item[ex29.c:20] 我使用\ident{dlsym}函数通过函数在\ident{func\_to\_run}中的\emph{字符串}名，从\ident{lib}中获取函数。这是这个程序中非常犀利的地方，因为我通过命令行\ident{argv}得到的一个字符串，动态地获取了一个函数指针。
+\item[ex29.c:23] 接下来，我调用之前返回的函数\ident{func}，并且检查它的返回值。
+\item[ex29.c:26] 最后, 我就像关闭一个文件一样关闭了这个库。通常情况下，你会在程序运行时一直保持库的开启状态，所以在最后关闭库其实并没有多大作用，不过我还是在这里向你展示了一下。
 \end{description}
 
-\section{What You Should See}
+\section{你应该看到的结果}
 
-Now that you know what this file does, here's a shell session of me building
-the \file{libex29.so}, \program{ex29} and then working with it.  Follow
-along so you learn how these things are built manually.
+既然你现在已经知道这个文件的用处了，我准备了一个shell脚本，这个脚本可以用来构建\file{libex29.so}和\program{ex20}，同时在之后还会协同我一起工作。继续往下学习，你会了解怎样手动构建这些东西。
 
 \begin{code}{Building And Using libex29.so}
 << d['code/ex29.sh-session|pyg|l'] >>
