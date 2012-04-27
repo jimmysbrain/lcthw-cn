@@ -60,11 +60,17 @@ another string.  You'll see how this is used when I show you the unit test that
 will test this out.
 
 Finally, I have the unit test that first confirms this is all working, then
-runs simple performance tests for all three finding algorithms.
+runs simple performance tests for all three finding algorithms in a \emph{commented out section}.
 
 \begin{code}{tests/string\_algos\_tests.c}
 << d['code/liblcthw/tests/string_algos_tests.c|pyg|l'] >>
 \end{code}
+
+I have it written here with \verb|#if 0| which is a way to use the CPP to 
+comment out a section of code.  Type it in like this, and then remove that
+and the \verb|#endif| so you can see these performance tests run.  When you
+continue with the book, simply comment these out so that the test doesn't
+waste development time.
 
 There's nothing amazing in this unit test, it just runs each of the different
 functions in loops that last long enough to get a few seconds of sampling.  The
