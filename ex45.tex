@@ -1,16 +1,103 @@
-\chapter{Exercise 45: Ring Buffer Algorithms}
+\chapter{Exercise 45: A Simple TCP/IP Client}
 
-A simple exercise to create a select based async IO library that feeds through a 
-ring buffer to any number of waiting handlers.
+I'm going to use the \ident{RingBuffer} to create a very simplistic little
+network testing tool called \program{netclient}.  To do this I have to
+add some stuff to the \ident{Makefile} to handle little programs in the
+\file{bin/} directory.
 
+\section{Augment The Makefile}
+
+First, add a variable for the programs just like the unit tests \ident{TESTS}
+and \ident{TEST\_SRC} variables:
+
+\begin{Verbatim}
+PROGRAMS_SRC=$(wildcard bin/*.c)
+PROGRAMS=$(patsubst %.c,%,$(PROGRAMS_SRC))
+\end{Verbatim}
+
+Then you want to add the \ident{PROGRAMS} to the all target:
+
+\begin{Verbatim}
+all: $(TARGET) $(SO_TARGET) tests $(PROGRAMS)
+\end{Verbatim}
+
+Then add \ident{PROGRAMS} to the \program{rm} line in the \ident{clean}
+target:
+
+\begin{Verbatim}
+rm -rf build $(OBJECTS) $(TESTS) $(PROGRAMS)
+\end{Verbatim}
+
+Finally you just need a target at the end to build them all:
+
+\begin{Verbatim}
+$(PROGRAMS): CFLAGS += $(TARGET)
+\end{Verbatim}
+
+With these changes you can drop simple \file{.c} files into \file{bin}
+and \program{make} will build them and link them to the library just
+like the tests are done.
+
+\section{The netclient Code}
+
+The code for the little netclient looks like this:
+
+\begin{code}{bin/netclient.c}
+<< d['code/liblcthw/bin/netclient.c|pyg|l'] >>
+\end{code}
+
+This code uses \ident{select} to handle events from both
+\ident{stdin} (file descriptor 0) and from the \ident{socket}
+it uses to talk to a server.  It uses \ident{RingBuffers} to
+store the data and copy it around, and you can consider the
+functions \ident{read\_some} and \ident{write\_some} early
+prototypes for similar functions in the \ident{RingBuffer}
+library.
+
+In this little bit of code are quite a few networking functions
+you may not know.  As you hit a function you don't know, look it up
+in the man pages and make sure you understand it.  This one little
+file could actually get you to research all the APIs required to
+write a little server in C.
 
 \section{What You Should See}
 
+If you have everything building then the quickest way to test it is 
+see if you can get a special file off learncodethehardway.org:
+
+\begin{code}{Testing netclient}
+<< d['code/ex45.1.sh-session|pyg|l'] >>
+\end{code}
+
+What I did there is I type in the syntax needed to make the HTTP request
+for the file \file{/ex45.txt}, then the \ident{Host:} header line, then
+hit ENTER to get an empty line.  I then get the response, with headers
+and the content.  After that I just hit CTRL-c to exit.
 
 \section{How To Break It}
 
+This code definitely could have bugs, and currently in the draft of the
+book I'm going to have to keep working on this.  In the meantime, try
+analyzing the code I have here and thrashing it against other servers.
+There's a tool called \ident{netcat} that is great for setting up
+these kinds of servers.  Another thing to do is use a language like
+\ident{Python} or \ident{Ruby} to create a simple "junk server" that
+spews out junk and bad data, closes connections randomly, and other
+nasty things.
+
+If you find bugs, report them in the comments and I'll fix them up.
 
 \section{Extra Credit}
 
-
-
+\begin{enumerate}
+\item As I mentioned, there's quite a few functions you may not know, so
+    look them up.  In fact, look them all up even if you think you know
+    them.
+\item Run this under \program{valgrind} and look for errors.
+\item Go back through and add various defensive programming checks to
+    the functions to improve them.
+\item Use the \ident{getopt} function to allow the user to give this
+    the option to \emph{not} translate \verb|\n| to \verb|\r\n|. This
+    is only needed on protocols that require it for line endings, like HTTP.
+    Sometimes you don't want the translation, so give the user an option.
+\end{enumerate}
