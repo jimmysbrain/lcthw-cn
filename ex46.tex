@@ -1,11 +1,12 @@
-\chapter{Exercise 46: Suffix Arrays}
+\chapter{Exercise 46: Ternary Search Tree}
 
-A suffix array is a nothing more than a heap sorted list of all the suffices in a string.  They are
-very handy for finding sub-sequences in strings based on other strings and are used in things like
-searching for genomic similarities.  A suffix array is also a very simple algorithm to implement
-in a naive form.
+My favorite algorithm, a TST creates a binary tree of the characters in a set
+of strings, then sets the terminating character of each string to a piece of
+data.  This effectively creates a kind of "suffix array hash map" or "character
+binary tree".  It's very useful in quickly matching a given string to a set of
+strings, such as in web application routing.
 
-This exercise will make a very simple suffix array to play with in the next exercise.
+I show a simplified implementation used in Mongrel and Mongrel2 and how it works.
 
 
 \section{What You Should See}
@@ -15,6 +16,5 @@ This exercise will make a very simple suffix array to play with in the next exer
 
 
 \section{Extra Credit}
-
 
 
