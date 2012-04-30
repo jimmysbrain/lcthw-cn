@@ -44,8 +44,8 @@ going on matches my description of pointers later.
     use the pointers \emph{plus an offset of i}.  Writing
     \verb|*(cur_name+i)| is the same as writing \verb|name[i]|, and
     you read it as "the value of (pointer \ident{cur\_name} plus i)".
-\item[ex15.c:35-39] This shows the "magic" of how C treats pointers and
-    arrays as the same thing.  You just use the array syntax for
+\item[ex15.c:35-39] This shows the "magic" of how the C compiler treats pointers and
+    arrays as the same thing, even though they are not.  You just use the array syntax for
     accessing the array, but use the pointer's name.  C figures it
     all out for you.
 \item[ex15.c:44-50] Another admittedly insane loop that does the same thing
@@ -156,8 +156,7 @@ gives you raw, direct access to a block of memory so you can work with it.
 The final thing to grasp at this stage is that you can use either syntax
 for most array or pointer operations.  You can take a pointer to something,
 but use the array syntax for accessing it.  You can take an array and do
-pointer arithmetic with it.  In the above example program I demonstrate this
-and it's a fundamental aspect of C: pointers and arrays are the same thing (mostly).
+pointer arithmetic with it. 
 
 \section{Practical Pointer Usage}
 
@@ -167,7 +166,7 @@ There are four primary useful things you do with pointers in C code:
 \item Ask the OS for a chunk of memory use a pointer
     to work with it.  This includes strings and something you haven't seen
     yet, \ident{structs}.
-\item Passing large blocks of memory (like strings and arrays) to functions
+\item Passing large blocks of memory (like large structs) to functions
     with a pointer so you don't have to pass the whole thing to them.
 \item Taking the address of a function so you can use it as a dynamic callback.
 \item Complex scanning of chunks of memory such as converting bytes off a network
