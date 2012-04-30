@@ -44,10 +44,8 @@ going on matches my description of pointers later.
     use the pointers \emph{plus an offset of i}.  Writing
     \verb|*(cur_name+i)| is the same as writing \verb|name[i]|, and
     you read it as "the value of (pointer \ident{cur\_name} plus i)".
-\item[ex15.c:35-39] This shows the "magic" of how the C compiler treats pointers and
-    arrays as the same thing, even though they are not.  You just use the array syntax for
-    accessing the array, but use the pointer's name.  C figures it
-    all out for you.
+\item[ex15.c:35-39] This shows how the syntax to access an element of an array 
+    is the same for a pointer and an array.
 \item[ex15.c:44-50] Another admittedly insane loop that does the same thing
     as the other two, but instead it uses various pointer arithmetic
     methods:
@@ -201,6 +199,16 @@ probably not good code):
 We'll be using this simple lexicon to break down all of the pointers
 we use from now on in the book.
 
+\section{Pointers Are Not Arrays}
+
+No matter what, you should never think that pointers and arrays are the same thing.
+They are not the same thing, even though C let's you work with them in many of the
+same ways.  For example, if you do \verb|sizeof(cur_age)| in the code above,
+you would get the size of the \emph{pointer}, not the size of what it points
+at.  If you want the size of the full array, you have to use the array's name, \ident{age}
+as I did on line 12.
+
+TODO: expand on this some more with what doesn't work on both the same.
 
 \section{How To Break It}
 
