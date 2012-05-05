@@ -1,16 +1,82 @@
-\chapter{Exercise 47: Suffix Array Algorithms}
+\chapter{Exercise 47: A Fast URL Router}
 
-A test driven exercise to allow finding the longest sub sequence, prefix, and suffix from a given
-string.
+I'm going to now show you how I use the \ident{TSTree} to do fast 
+URL routing in web servers I've written.  This works for simple 
+URL routing you might use at the edge of an application, not really
+for the more complex (and sometimes unecessary) routing found in
+many web application frameworks.
 
+To play with routing I'm going to make a little command line tool I'm calling
+\program{urlor} that reads a simple file of routes, and then prompts the user
+to enter in URLs to look up.
+
+\begin{code}{bin/urlor.c}
+<< d['code/liblcthw/bin/urlor.c|pyg|l'] >>
+\end{code}
+
+I'll then make a simple file with some fake routes to play with:
+
+\begin{code}{urls.txt}
+\begin{Verbatim}
+<< d['code/ex47_urls.txt'] >>
+\end{Verbatim}
+\end{code}
 
 \section{What You Should See}
 
+Once you have \program{urlor} working and a routes file, you can try it out:
 
-\section{How To Break It}
+\begin{code}{Working With urlor}
+<< d['code/ex47.sh-session|pyg|l'] >>
+\end{code}
 
+You can see that the routing system first tries an exact match, and then if it
+can't find one it will give a prefix match.  This is mostly to try out the 
+difference between the two.  Depending on the semantics of your URLs you may
+want to always match exactly, always to prefixes, or do both and pick the "best"
+one.
+
+\section{How To Improve It}
+
+URLs are weird because people want them to magically handle all
+of the insane things their web applications do, even if that's not very logical.
+In this  simple demonstration of how to use the \ident{TSTree} to do routing,
+it has some flaws that people wouldn't be able to articulate.  For example,
+it will match \file{/al} to \ident{Album}, which generall isn't what they want.
+They want \file{/album/*} to match \ident{Album} and \file{/al} to be a 404
+error.
+
+This isn't difficult to implement though, since you could change the prefix
+algorithm to match any way you want.  If you change the matching algorithm to
+find \emph{all} matching prefixes, and then pick the "best" one, you'll be
+able to do it easily.  In this case, \file{/al} could match \ident{MainApp}
+or \ident{Album}.  Take those results then do a little logic on which is "best".
+
+Another thing you can do in a real routing system is use the \ident{TSTree} to
+finall possible matches, but that these matches are a small set of patterns
+to check.  In many web applications there's a list of regex that have to be
+matched against URLs on each request.  Running all the regex can be time
+consuming, so you can use a \ident{TSTree} to find all the possible ones
+by their prefixes.  Then you narrow the patterns to try down to a few
+very quickly.
+
+Using this method, your URLs will match exactly since you are actually running
+real regex patterns, and they'll match much faster since you're finding them
+by possible prefixes.
+
+This kind of algorithm also works for anything else that needs to have flexible
+user-visible routing mechanisms.  Domain names, IP address, registries and directories,
+files, or URLs.
 
 \section{Extra Credit}
 
-
+\begin{enumerate}
+\item Instead of just storing the string for the handler, create an actual engine that uses an
+    \ident{Handler} struct to store the application.  The struct would store the URL it is
+    attached to, the name, and anything else you'd need to make an actual routing system.
+\item Instead of mapping URLs to arbitrary names, map them to .so files and use the \ident{dlopen}
+    system to load handlers on the fly and call callbacks they contain.  Put these callbacks
+    in your \ident{Handler} struct and then you have yourself a fully dynamic callback 
+    handler system in C.
+\end{enumerate}
 

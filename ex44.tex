@@ -17,6 +17,7 @@ Looking at the data structure you see I have a \ident{buffer},
 more than move the \ident{start} and \ident{end} around the buffer
 so that it "loops" whenever it reaches the buffer's end.  Doing
 this gives the illusion of an infinite read device in a small space.
+I then have a bunch of macros that do various calculations based on this.
 
 Here's the implementation which is a much better explanation of how
 this works:
@@ -30,6 +31,23 @@ can read and write blocks of data to it.  You can ask how much is in it
 and how much space it has.  There are some fancier ring buffers that use
 tricks in the OS to create an imaginary infinite store, but those aren't
 portable.
+
+Since my \ident{RingBuffer} deals with reading and writing blocks of
+memory, I'm making sure that any time \ident{end == start} then I
+reset them to 0 (zero) so that they go to the beginning of the
+buffer.  In the Wikipedia version it wasn't writing blocks of
+data, so it only had to move \ident{end} and \ident{start} around
+in a circle.  To better handle blocks you have to drop to the
+beginning of the internal buffer whenever the data is empty.
+
+\section{The Unit Test}
+
+For your unit test, you'll want to test as many possible conditions
+as you can.  Easiest way to do that is to preconstruct different \ident{RingBuffer}
+structs and then manually check that the functions and math work
+right.  For example, you could make one where \ident{end} is right at the
+end of the buffer and \ident{start} is right before it, then see how
+it fails.
 
 
 \section{What You Should See}
@@ -64,7 +82,7 @@ try it in the extra credit.
 
 \begin{enumerate}
 \item Create an alternative implementation of \ident{RingBuffer} that uses
-    the POSIX trick but still works with the same (or nearly the same) unit test.
+    the POSIX trick and a unit test for it.
 \item Add a performance comparison test to this unit test that compares the
     two versions by fuzzing them with random data and random read/write operations.
     Make sure that you setup this fuzzing so that the same operations are done

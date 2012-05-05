@@ -105,6 +105,7 @@ char *test_scan_performance()
             find_count, (int)elapsed, (double)find_count / elapsed);
 
     StringScanner_destroy(scan);
+
     return NULL;
 }
 
@@ -114,9 +115,13 @@ char *all_tests()
     mu_suite_start();
 
     mu_run_test(test_find_and_scan);
+
+    // this is an idiom for commenting out sections of code
+#if 0
     mu_run_test(test_scan_performance);
     mu_run_test(test_find_performance);
     mu_run_test(test_binstr_performance);
+#endif
 
     return NULL;
 }
