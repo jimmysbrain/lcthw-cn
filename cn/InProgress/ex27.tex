@@ -154,26 +154,30 @@ at determining probability, therefore you should try to block all the possible e
 
 Show how my awesome macros help you do this and discuss good error messages.  Make sure they understand
 that you should try to explain how to maybe fix it, or report the defect.
-展示了用我的宏来帮你做到这一点并讨论了优秀的错误信息。 你应该尝试解释如何修正错误或者提出问题以确保他们明白。
+展示了用我的宏来帮你做到这一点并讨论了什么叫做优秀的错误信息。 以确保他们明白你应该尝试解释如何修正错误或者如何汇报问题。
 
 \subsection{Document Assumptions 前提建档}
 
 Explain design by contract and how you can use it to create pre-conditions, post-conditions, and 
 invariants.  Show a simple example of this with a function that has it all.
+解释设计合同和你如何运用它去创建前提条件，后置条件以不变量。 给了一个包含这个这些内容的函数的简单例子。
 
 \subsection{Prevention Over Documentation 靠预防措施不靠文档说明}
 
 Talk about how programmers think that a documented flaw means there is no flaw and that they
 should just remove the flaw.
+探讨了程序员是如何认为文档说明的缺陷就指的是没有缺陷而且他们应该弥补这个缺陷。
 
 \subsection{Automate Everything 自动化}
 
 Discuss the advantages of automated testing and how I'll teach that in a later exercise.
+讨论了自动化测试的好处并且我会在后面一个习题中进行教学。
 
 \subsection{Simplify And Clarify 简洁明了}
 
 Talk about how simpler code wins over more complex code because it reduces the probability of
 an error by reducing the number of branches and couplings in the code.
+讨论了为什么简洁的代码要优于复杂的代码，因为简洁代码通过减少代码间的分支数目以及代码间的耦合降低了出错概率。
 
 \subsection{Question Authority 质疑权威}
 
@@ -181,35 +185,36 @@ The final strategy is the most important because it breaks you out of the
 defensive programming mindset and lets you transition into the creative
 mindset.  Defensive programming is authoritarian and it can be cruel.  The
 job of this mindset is to make you follow rules because without them you'll
-miss something or get distracted.
+miss something or get distracted. 最后一个策略是最重要的，因为它能打破你的防御性编程思维定势让你转换到创造性编程。
+防御性编程是权威的，而且很严格。这种思维模式让你遵循规则，因为如果不遵循你会错失一些关键东西或者无法集中精力。
 
 This authoritarian attitude has the disadvantage of disabling independent 
 creative thought.  Rules are necessary for getting things done, but being
-a slave to them will kill your creativity.
+a slave to them will kill your creativity. 尊重权威的态度有使人无法有独立的创新性的思维的缺点。 要做成一件事的确需要循规蹈矩， 但是成为繁文缛节的奴隶会扼杀你的创造力。
 
 This final strategy means you should question the rules you follow periodically
 and assume that they could be wrong, just like the software you are reviewing.
 What I will typically do is, after a session of defensive programming, I'll go
 take a non-programming break and let the rules go.  Then I'll be ready to do
-some creative work or do more defensive coding if need to.
+some creative work or do more defensive coding if need to. 最后这个策略是指你应该不时的去质疑你遵循的规则并且要假设它和你正在检查的代码一样都可能是错误的。 我通常会这么做， 在进行一段防御性编程之后， 我会进行一个短暂的休息不再思考这些规则。 然后我就会做好了进行一些创造性工作的准备，如果需要，也会继续做更多的防御性编程。
 
 \section{Order Is Not Important 秩序不重要}
 
 The final thing I'll say on this philosophy is that I'm not telling you to do this in
 a strict oder of "CREATE! DEFEND! CREATE! DEFEND!"  At first you may want to do that,
 but I will actually do either in varying amounts depend on what I want to do, and I may
-even meld them together with no defined boundary.
+even meld them together with no defined boundary. 关于这个哲学我最好要说的是就是我并不是告诉你“创新！防御！创新！防御”就是一个严格的顺序。起初你也许会想这么做， 但是实际上
+我也会根据我要做什么来调整， 并且甚至为融合在一起没有明确的界线。
 
 I also don't think one mindset is better than another, or that there are strict separation
 between them.  You need both creativity and strictness to do programming well, so work
-on both if you want to improve.
-
+on both if you want to improve. 同样我没有认为一种思维模式就要好于另一种， 或者他们之间有严格的区分。
+你既要有创造力也要严格的做好编程， 所以如果想做要一定要在这两个方面下功夫。
 
 \section{加分题}
 
 \begin{enumerate}
-\item The code in the book up to this point (and for the rest of it) potentially violates these rules.  Go back through and apply what you've learned to one 
-    exercise to see if you can improve it or find bugs.
-\item Find an open source project and give some of the files a similar code review.  Submit a patch that fixes a bug if you find it.
+\item The code in the book up to this point (and for the rest of it) potentially violates these rules.  Go back through and apply what you've learned to one exercise to see if you can improve it or find bugs. 书中目前为止的代码（大部分）都潜在的违背了这些规则。 返回去浏览一下并就其中的某一个习题应用你所学看是否能改进它或者找到bug。
+\item Find an open source project and give some of the files a similar code review.  Submit a patch that fixes a bug if you find it.找一个开源项目并且针对一些文件进行类似的代码审查。 如果你找到了bug就提交一个补丁来修正它。
 \end{enumerate}
 
