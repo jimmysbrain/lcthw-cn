@@ -2,28 +2,29 @@
 
 任何C程序的核心部分都是将C程序链接到由操作系统提供的库的能力。你只有通过链接
 才能够从别人创建并打包在系统中的库中获取你所需要的功能并加入到你自己的程序中。
-其实，你在之前的程序中已经使用了一些被自动包含的标准库，不过我还是想解释一下
+其实，你在之前的程序中已经使用过一些被自动包含的标准库，不过我还是想解释一下
 库的不同类型和库的作用。
 
 首先我要说一下，在任何一种程序设计语言中，库的设计都很糟糕。我也不知道这是为
 什么，似乎是语言的设计者认为链接只是之后添加到程序中的东西。它们通常都很混乱，
-难以处理，can't do versoning right, and end up being linked differently everywhere.
+难以处理，无法做正确的版本控制，并且最后只会以不同的方式被四处链接。
 
-C语言也不例外，不过C语言的链接和库在多年前是设计Unix操作系统和executable
-formats的神器。学习C语言是怎么样链接的，有助于你理解操作系统的工作以及操作系统如何运行你的程序。
+在这一点上，C语言也不例外，不过C语言的链接和库在多年前是设计Unix操作系统和可
+执行文件的神器。学习C语言是怎么样链接的，有助于你理解操作系统的工作以及操作
+系统如何运行你的程序。
 
 作为学习链接和库的开端，我们先介绍一下库的两个基本类型：
 
 \begin{description}
 \item[静态] 其实，你在之前的练习中使用\program{ar}和\program{ranlib}创建
-    的\file{libYOUR\_LIBARY.a}文件就是一个静态链接库。这种库只是包含了一系列
-    \file{.o}对象文件及其功能的容器，当你构建你自己的程序时完全可以把它当做一个
-    大一点的\file{.o}文件。
-\item[动态] 动态链接库的典型后缀名有\file{.so}，\file{.dll}，在OSX上
-    则根据版本和编程人员的不同而千奇百怪。严格来讲，OSX上常用的有\file{.dylib}，
-    \file{.bundle}，\file{.framework}，而这三者之间也并没有多大区别。这些文件被
-    构建并存放在一个公共目录下。当你运行程序时操作系统会动态的加载这些文件，并将
-    他们链接到你正在运行的文件。
+    的\file{libYOUR\_LIBARY.a}文件就是一个静态链接库。这种库只是一个包含了一
+    系列\file{.o}对象文件及其功能的容器，当你构建你自己的程序时完全可以把它
+    当做一个大一点的\file{.o}文件对待。
+\item[动态] 动态链接库的典型后缀名有\file{.so}，\file{.dll}，在OSX上则根据版
+    本和编程人员的不同而千奇百怪。严格来讲，OSX上常用的有\file{.dylib}，
+    \file{.bundle}和\file{.framework}，而这三者之间其实也并没有多大区别。这
+    些文件被构建并存放在一个公共目录下。当你运行程序时操作系统会动态的加载这
+    些文件，并将他们链接到你正在运行的文件。
 \end{description}
 
 我比较倾向在中小型工程中使用静态链接库，因为静态链接库更容易处理，并且对不同的
@@ -31,96 +32,99 @@ formats的神器。学习C语言是怎么样链接的，有助于你理解操作
 库中，这样我就可以连接静态链接库进行单元测试或者在需要的时候与其他程序进行链接。
 
 动态链接库比较适合在大型系统中使用，如果你的空间紧张，如果你的许多程序都有公共
-的功能，那么动态链接库正好适合。如果你不想为了公共的功能为你的每个程序都去静态
-链接代码，你只需要使用动态链接库，动态链接库只需要载入一次就能够为所有需要它的
-程序所使用。
+的功能，那么动态链接库正好适合。如果你不想为了公共的功能而去为你的每个程序都去
+静态链接代码，你只需要使用动态链接库，动态链接库只需要载入一次就能够被所有需要
+它的程序所使用。
 
-在之前的练习中我已经向你展现了如何创建静态链接库（\file{.a}文件），并且我将在本书的
-剩余部分继续使用。在本章练习中我还会向你展示如何创建一个简单的.so库，如
+在之前的练习中我已经向你展现了如何创建静态链接库（\file{.a}文件），并且我将在
+本书的剩余部分继续使用。在本章练习中我还会向你展示如何创建一个简单的.so库，如
 何通过Unix\program{dlopen}系统动态加载它。我要求你自己动手亲自完成它，这有助
-于你理解究竟发生了什么，而在接下来的加分练习中则会使用\file{c-skeleton}骨架来创建它。
+于你理解究竟发生了什么，而在接下来的加分练习中则会使用\file{c-skeleton}骨架来
+创建它。
 
 \subsection{动态加载一个共享库}
 
-为了动态加载一个共享库我将会创建两个源文件。其中一个用来创建一个\file{libex29.so}库，另一个用来创建一个叫\program{ex29}的程序，这个程序能够动态加载这个库，并且使用其中的函数。
+为了动态加载一个共享库我将会创建两个源文件。其中一个用来创建一个
+\file{libex29.so}库，另一个用来创建一个叫\program{ex29}的程序，这个程序能够动
+态加载这个库，并且使用其中的函数。
 
 \begin{code}{libex29.c}
 << d['code/c-skeleton/src/libex29.c|pyg|l'] >>
 \end{code}
 
-这段代码没有什么特别之处，不过，我故意留下了一些bugs来检查你是否集中注意了力。你需要在之后修复这些bugs。
+这段代码并没有什么特别之处，不过，我故意留下了一些漏洞来检查你是否集中注意了
+力。你需要在之后修复这些漏洞。
 
-我们将要做的是使用\ident{dlopen}，\ident{dlsym}和\ident{dlclose}函数与上面的函数协同工作。
+我们接下来将要做的是使用\ident{dlopen}，\ident{dlsym}和\ident{dlclose}函数与
+上面的函数协同工作。
 
-\begin{code+}{ex29.c}
-＋<< d['code/ex29.c|pyg|l'] >>
-＆
+\begin{code}{ex29.c}
+<< d['code/ex29.c|pyg|l'] >>
+\end{end}
 
-我现在将会为你刨析这段代码，这样你就能了解这段短小精悍的代码究竟发生了什么。
+我现在将会为你刨析一下这段代码，让你能够了解这段短小精悍的代码究竟发生了什么。
 
 \begin{description}
-\item[ex29.c:5] 我会在之后调用库里的函数时用到这个函数指针的类型定义。这不是新知识，不过你还是应该确认一下你是否了解它的作用。
-    ＆
-\item[ex29.c:18] 如果出现一个系统错误，我会先做一个常规的检查，然后退出，不过请注意，我在结尾的地方使用了\ident{dlerror}来找出与错误相关的库。
-\item[ex29.c:20] 我使用\ident{dlsym}函数通过函数在\ident{func\_to\_run}中的\emph{字符串}名，从\ident{lib}中获取函数。这是这个程序中非常犀利的地方，因为我通过命令行\ident{argv}得到的一个字符串，动态地获取了一个函数指针。
+\item[ex29.c:5] 我会在之后调用库里的函数时用到这个函数指针的类型定义。这不是
+    新知识，不过你还是应该确认一下你是否了解它的作用。
+\item[ex29.c:18] 如果出现一个系统错误，我会先做一个常规的检查，然后退出，不
+    过请注意，我在结尾的地方使用了\ident{dlerror}来找出与错误相关的库。
+\item[ex29.c:20] 我使用\ident{dlsym}函数通过函数在\ident{func\_to\_run}中的
+    \emph{字符串}名，从\ident{lib}中获取函数。这是这个程序中非常犀利所在，因
+    为我通过命令行\ident{argv}得到的一个字符串，然后通过这个字符串动态地获取
+    了一个函数指针。
 \item[ex29.c:23] 接下来，我调用之前返回的函数\ident{func}，并且检查它的返回值。
-\item[ex29.c:26] 最后, 我就像关闭一个文件一样关闭了这个库。通常情况下，你会在程序运行时一直保持库的开启状态，所以在最后关闭库其实并没有多大作用，不过我还是在这里向你展示了一下。
+\item[ex29.c:26] 最后, 我就像关闭一个文件一样关闭了这个库。通常情况下，你会
+    在程序运行时一直保持库的开启状态，所以在最后关闭库其实并没有多大作用，不
+    过我还是在这里向你展示一下。
 \end{description}
 
 \section{你应该看到的结果}
 
-既然你现在已经知道这个文件的用处了，我准备了一个shell脚本，这个脚本可以用来构建\file{libex29.so}和\program{ex20}，同时在之后还会协同我一起工作。继续往下学习，你会了解怎样手动构建这些东西。
+既然你现在已经知道这个文件的用处了，我准备了一个shell脚本，这个脚本可以用来构
+建\file{libex29.so}和\program{ex29}，同时在之后还会协同我一起工作。继续往下学
+习，你会了解怎样手动构建这些东西。
 
-\begin{code}{Building And Using libex29.so}
+\begin{code}{构建和使用libex29.so}
 << d['code/ex29.sh-session|pyg|l'] >>
 \end{code}
 
-One thing that you may run into is that every OS, every version of every
-OS, and every compiler on every version of every OS, seems to want to change
-the way you build a shared library every other month that some new programmer
-thinks it's wrong.  If the line I use to make the \file{libex29.so} file is
-wrong, then let me know and I'll add some comments for other platforms.
+你可能遇到这样一件事，不同的操作系统，不同版本的操作系统和操作系统上不同
+版本的编译器可能每过几个月就会改变一下你构建共享库的方法，这导致一些新的程
+序员认为这是错的。如果我创建\file{libex29.so}文件的行出错了，请通知我，我会
+为不同平台加上一些注释。
 
-\begin{aside}{Irritating .so Ordering}
-Sometimes you'll do what you think is normal and run this command
-\verb|cc -Wall -g -DNDEBUG -ldl ex29.c -o ex29| thinking everthing
-will work, but nope.  You see, on some platforms the order of where 
-libraries goes makes them work or not, and for no real reason.  On
-Debian or Ubuntu you have to do
-\verb|cc -Wall -g -DNDEBUG ex29.c -ldl -o ex29| for no reason at all.
-It's just the way it is, so since this works on OSX I'm doing it
-here, but in the future, if you link against a dynamic library and
-it can't find a function, try shuffling things around.
+\begin{aside}{令人烦躁的.so的顺序}
+有时侯你会做一些你认为很普通的事情，例如运行命令
+\verb|cc -Wall -g -DNDEBUG -ldl ex29.c -o ex29|，你会认为这条命令能够正常工作，
+不过事实并非想象中的那样。在不同的平台上，库在命令的哪里被链接是决定命令能否
+正常工作的关键，这并没有什么道理可言。就像在Debian或者Ubuntu中，你必须使用
+\verb|cc -Wall -g DNDEBUG ex29.c -ldl -o ex29|命令才能正常工作，没有任何理由。
+这是我在OSX上工作时命令正常工作的方式，如果在将来你链接一个动态库，但是无法
+找到某项功能的时候，尝试改变一下命令行参数的顺序。
 
-The irritation here is there is an actual platform difference on nothing
-more than order of command line arguments.  On no rational planet should
-putting an \file{-ldl} at one position be different from another.  It's an
-option, and having to know these things is incredibly annoying.
+这个讨厌的事仅仅是由不同平台上命令行参数的顺序不同而造成的。在一颗没有理性的
+星球上，\file{-ldl}会四处乱窜。这是一个你必须知道的，超级烦躁的事情。
 \end{aside}
 
-\section{How To Break It}
+\section{让程序出错}
 
-Open \file{libex29.so} and edit it with an editor that can handle
-binary files.  Change a couple bytes, then close it.  Try to see
-if you can get the \ident{dlopen} function to load it even though
-you've corrupted it.
+使用一个能够编辑二进制文件的编辑器打开并编辑\file{libex29.so}库。改变一些字
+节的内容，然后保存并退出。尝试一下，看是否经过你的更改之后\ident{dlopen}依
+然能够载入它。
 
-\section{Extra Credit}
+\section{加分练习}
 
 \begin{enumerate}
-\item Were you paying attention to the bad code I have in the \file{libex29.c} functions?
-    See how, even though I use a for-loop they still check for \verb|'\0'|
-    endings?  Fix this so the functions always take a length for the
-    string to work with inside the function.
-\item Take the \file{c-skeleton} skeleton, and create a new project
-    for this exercise.  Put the \file{libex29.c} file in the \file{src/}
-    directory.  Change the Makefile so that it builds this as \file{build/libex29.so}.
-\item Take the \file{ex29.c} file and put it in \file{tests/ex29\_tests.c} so
-    that it runs as a unit test.  Make this all work, which means you have to
-    change it so that it loads the \file{build/libex29.so} file and runs
-    tests similar to what I did manually above.
-\item Read the \program{man dlopen} documentation and read about all the
-    related functions.  Try some of the other options to \ident{dlopen}
-    beside \ident{RTLD\_NOW}.
+\item 你有留意我在\file{libex29.c}文件中的错误代码吗？看看是怎么回事，即使我
+    使用for循环，他们依然要检测\verb|'\0'|结束符吗？修复这个漏洞，为了让字符
+    串在函数内部正常使用，让函数始终接收字符串的长度。
+\item 根据\file{c-skeleton}为这个练习创建一个新的工程。将\file{libex29.c}放入
+    \file{src/}目录中。修改Makefile文件，让它能够构建出\file{build/libex29.so}。
+\item 将\file{ex29.c}文件放入\file{tests/ex29\_tests.c}，让它能够做单元测试。
+    让这些能够正常工作，也就是说你必须修改一下文件，使之能够载入
+    \file{build/libex29.so}库，并进行测试，就像我只前手动操作的一些样。
+\item 阅读\program{man dlopen}文档，并查看所有相关函数。尝试一下\ident{dlopen}
+    的其他的选项，包括\ident{RTLD\_NOW}。
 \end{enumerate}
 
