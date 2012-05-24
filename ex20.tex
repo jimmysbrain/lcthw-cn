@@ -226,7 +226,7 @@ error checking.  If we strip out the \func{log\_err} usage we see this:
 \verb|if(!(A)) { errno=0; goto error; }|
 
 Which means, if \ident{A} is false, then clear errno and goto the error label.
-That has \func{check} macro being replaced with the \ident{if-statment} so if
+That has \func{check} macro being replaced with the \ident{if-statement} so if
 we manually expanded out the macro \verb|check(rc == 0, "There was an error.")|
 we'd get:
 
