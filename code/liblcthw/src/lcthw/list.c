@@ -102,8 +102,12 @@ void *List_remove(List *list, ListNode *node)
         list->last = NULL;
     } else if(node == list->first) {
         list->first = node->next;
+        check(list->first != NULL, "Invalid list, somehow got a first that is NULL.");
+        list->first->prev = NULL;
     } else if (node == list->last) {
         list->last = node->prev;
+        check(list->last != NULL, "Invalid list, somehow got a next that is NULL.");
+        list->last->next = NULL;
     } else {
         ListNode *after = node->next;
         ListNode *before = node->prev;
