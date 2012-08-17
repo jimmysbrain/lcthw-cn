@@ -132,7 +132,7 @@ to show you how to hack your computer, I want you to add this at the end of
     unsigned char *data = (unsigned char *)cmp;
 
     for(i = 0; i < 25; i++) {
-        printf("%0x:", data[i]);
+        printf("%02x:", data[i]);
     }
     printf("\n");
 \end{lstlisting}

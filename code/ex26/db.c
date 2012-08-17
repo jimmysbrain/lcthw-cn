@@ -113,7 +113,7 @@ error:
 
 int DB_list()
 {
-    bstring data = DB_load(DB_FILE);
+    bstring data = DB_load();
     check(data, "Failed to read load: %s", DB_FILE);
 
     printf("%s", bdata(data));
