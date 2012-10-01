@@ -165,13 +165,13 @@ the code.
     just a couple of pointer assignments, does it very fast.
 \item[list.c:List\_pop] The inverse of \ident{List\_push}, this takes the last
     element off and returns it.
-\item[list.c:List\_shift] The other thing you can easily do to a linked list is
+\item[list.c:List\_unshift] The other thing you can easily do to a linked list is
     add elements to the \emph{front} of the list very fast.  In this case I call
-    that \ident{List\_shift} for lack of a better term.
-\item[list.c:List\_unshift] Just like \ident{List\_pop}, this removes the first
+    that \ident{List\_unshift} for lack of a better term.
+\item[list.c:List\_shift] Just like \ident{List\_pop}, this removes the first
     element and returns it.
 \item[list.c:List\_remove] This is actually doing all of the removal when you do
-    \ident{List\_pop} or \ident{List\_unshift}. 
+    \ident{List\_pop} or \ident{List\_shift}. 
     Something that seems to always be difficult in 
     data structures is removing things, and this function is no different. It
     has to handle quite a few conditions depending on if the element

@@ -39,17 +39,17 @@ inline List *List_merge(List *left, List *right, List_compare cmp)
     while(List_count(left) > 0 || List_count(right) > 0) {
         if(List_count(left) > 0 && List_count(right) > 0) {
             if(cmp(List_first(left), List_first(right)) <= 0) {
-                val = List_unshift(left);
+                val = List_shift(left);
             } else {
-                val = List_unshift(right);
+                val = List_shift(right);
             }
 
             List_push(result, val);
         } else if(List_count(left) > 0) {
-            val = List_unshift(left);
+            val = List_shift(left);
             List_push(result, val);
         } else if(List_count(right) > 0) {
-            val = List_unshift(right);
+            val = List_shift(right);
             List_push(result, val);
         }
     }
