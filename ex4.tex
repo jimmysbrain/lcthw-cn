@@ -86,6 +86,11 @@ directly, we'll run it with \program{Valgrind} (see Source: "Building and runnin
 \end{lstlisting}
 \end{Terminal}
 
+\begin{aside}{Ubuntu/Debian Valgrind Problems}
+If you run valgrind and it says something like \verb|by 0x4052112: (below main) (libc-start.c:226)| instead of a line number in \file{main.c} then add run your valgrind command like this \verb|valgrind --track-origins=yes ./ex4| to make it work.  For some reason the Debian or Ubuntu version of \program{valgrind} does this but not
+other versions.
+\end{aside}
+
 This one is huge because \program{Valgrind} is telling you exactly where
 every problem in your program is.  Starting at the top here's what you're
 reading, line by line (line numbers are on the left so you can follow):
