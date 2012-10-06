@@ -46,7 +46,7 @@ void Database_load(struct Connection *conn)
     if(rc != 1) die("Failed to load database.");
 }
 
-struct Connection* Database_open(const char *filename, char mode)
+struct Connection *Database_open(const char *filename, char mode)
 {
     struct Connection *conn = malloc(sizeof(struct Connection));
     if(!conn) die("Memory error");
