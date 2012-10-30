@@ -64,6 +64,8 @@ primary debugging tool:
   来。
 \item 程序在一台服务器中运行异常，我们可以简单开启程序打印调试信息功能查看发生
   了什么情况。系统管理员更喜欢去分析程序日志，而不是使用 gdb 排错。
+\item 打印信息很简单。调试器古怪的界面总会与它给出的信息不太协调。还不
+  如来一句 \verb|debug("Yo, dis right? %d", my_stuff)| 简单明了。
 \end{enumerater}
 
 
@@ -174,9 +176,12 @@ to see what they do and how to use them.
   部动作状况。
 \item[next] 与 \ident{step} 功能差不多。但是 \emph{跳过当前函数}，直接使用
   函数。
-\item[backtrace (bt)] 显示栈帧，
-\item[set var X = Y]
-\item[print X] 
+\item[backtrace (bt)] 显示栈帧，查看函数在程序中运行的地址。可以查看停
+  留在程序的什么地方，同样可以列出传给函数的参数。与 Valgrind 内存错误
+  报告差不多。
+\item[set var X = Y] 重新赋值 X 变量为 Y 。
+\item[print X] 打印 X 变量的值。就像正常使用C语言语法一样，对变量的指
+  针或者结构体取值。
 \item[ENTER] 重复上一次命令。
 \item[quit] 退出 \program{gdb}。
 \end{description}
