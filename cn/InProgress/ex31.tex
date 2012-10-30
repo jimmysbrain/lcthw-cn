@@ -191,11 +191,15 @@ to see what they do and how to use them.
 
 Those are the majority of commands I use with \program{gdb}.  Your job is to
 now play with these and \program{ex31} so you can get familiar with the output.
+这些命令我们将会在 \program{gdb} 中经常用到。现在，你的任务就是在
+\program{ex31} 调试中熟练使用这些命令。
 
 Once you're familiar with \program{gdb} you'll want to play with it some more.
 Try using it on more complicated programs like \program{devpkg} to see if you
 can alter the program's execution or analyze what it's doing.
-
+一旦你熟练使用 \program{gdb}，就会想在更多的地方使用它。尝试去调试其他
+程序，如 \program{devpkg}。如果能修改它，或者分析它是如何工作的那就更
+好了。
 
 \section{Process Attaching}
 
@@ -204,6 +208,11 @@ debug it right there.  When you have a crashing server or a GUI program, you can
 usually start it under \program{gdb} like you just did.  Instead, you have to start
 it, hope it doesn't crash right away, then attach to it and set a breakpoint.  In
 this part of the exercise I'll show you how to do that.
+\program{gdb} 还有个强大的功能，那就是调试正在运行中的进程。有些进程或
+者图形界面程序出错了，但并没完全退出。想使用 \program{gdb} 启动程序重
+现错误，恐怕有点难。当运行的程序没有完全崩溃，我们可以启动
+\program{gdb} attach 到出错的进程并设置断点。接下来的练习我们将学习到这
+种方法。
 
 After you exit \program{gdb} I want you to restart \program{ex31} if you
 stopped it, and then start another Terminal window so you can process attach to
@@ -211,10 +220,14 @@ it.  Process attaching is where you tell \program{gdb} to connect to a program
 that's already running so you can inspect it live.  It stops the program and
 then you can walk through it, and when you're done it'll continue just like
 normal.
+现在我们重新启动那个死循环的程序 \program{ex31}。再打开另一个终端，
+以便使用 \program{gdb} 调试它。attach 一个进程，就是让 \program{gdb}
+去与被调试的进程作连接，查看进程的运行状态。attach 可以暂停进程，以便
+控制它的运行。当你检查完错误后，退出 \program{gdb} 进程还可以正常运行。
 
 Here's a session of me doing it to \program{ex31}, stepping through it, then
 fixing the while-loop to make it exit.
-
+下面我们将使用 \program{ex31} 做例子。修复这个死循环，让程序可以退出。
 \begin{code}{ex31.sh-session}
 << d['code/ex31.sh-session|pyg|l'] >>
 \end{code}
@@ -226,7 +239,16 @@ give it you still get an error from \program{gdb} saying "Unable to access task 
 successfully entered the root password.
 \end{aside}
 
+\begin{aside}{OSX Problems}
+在苹果操作系统中调试，可能会弹出一个需要输入管理员密码的对话框。输入完
+密码后， \program{gdb} 会得到这样的提示: “Unable to access task for
+process-id XXX (os/kern) failure.”。那样的话，\program{gdb} 和
+\program{ex31} 都会被中止。请再重新启动程序，再次输入管理员密码就会成
+功的。
+\end{aside}
+
 I'll walk through this session and explain what I did:
+接下来释我们是如何工作的：
 
 \begin{description}
 \item[gdb:1] I use \program{ps} to find out what the process id is
@@ -263,6 +285,38 @@ I'll walk through this session and explain what I did:
 \item[gdb:67] Use \ident{cont} to continue and the program exits like normal.
 \item[gdb:71] I finally use \ident{quit} to get out of \program{gdb}.
 \end{description}
+
+\begin{description}
+\item[gdb:1] 执行 \program{ps} 命令找到 \program{ex31} 进程的 ID 号。
+\item[gdb:5] 使用刚得到的进程 ID 号替换 \verb|gdb ./ex31 PID| 的 PID。
+\item[gdb:6-19] 一些关于 \program{gdb} 版本和版权之类的信息。
+\item[gdb:21] 我们连接进程时，它正好运行到这个地方。我们用
+  \ident{break} 在代码第8行设置一个断点。现在断点已经设置好了，只要我
+  们愿意就可以再次中断它。
+\item[gdb:24] 一个好的\ident{断点}设置方法 \file{file.c:line}。这样可
+  保证你的断点设置在正解的地方。我就是这样做的。
+\item[gdb:27] 我们使用 \ident{cont} 命令。让进程一直运行，直到遇到断点
+  停下来。
+\item[gdb:33-31] 断点停下来的地方打印出当前函数的一些信息(\ident{argc}
+  和 \ident{argv})。还有与断点有关的代码。
+\item[gdb:33-34] 我们使用 \ident{print} "p" 打印出变量 i 的值，它为0。
+\item[gdb:36] 继续运行看看变量 \ident{i} 有什么变化。
+\item[gdb:42] 结果变量 \ident{i} 还是没有变化。
+\item[gdb:45-55] 使用 \ident{list} 查看下代码。结果很明显，代码中没有
+  找到对变量 \ident{i} 作处理的语句，程序当然无法退出。
+\item[gdb:57] 假设我们使用 \ident{set} 命令改变 \ident{i} 的值为
+  \verb|i = 200|。如果这个方法可行，我们可以很快看到结果，快速地修复了
+  一个错误。
+\item[gdb:59] 再次打印 \ident{i} 的值，确认它已经改变。
+\item[gdb:62] 使用 \ident{next} 单步运行程序。我们可以看到程序运程到
+  \file{ex31.c:12} 停了下来。意味着循环退出,我们的假设是正确的。我们改
+  变了 \indent{i} 的值。
+\item[gdb:67] 使用\ident{cont} 让程序正常退出。
+\item[gdb:71] 最后我们使用 \ident{quit} 退出 \program{gdb}。
+\end{description}
+
+
+
 
 \section{GDB Tricks}
 
