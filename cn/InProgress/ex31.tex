@@ -67,27 +67,24 @@ crashing and you can only get at core files to see why.  In these and a few
 other cases, gdb is the way to go, and it's always good to have as many tools
 as possible to help solve problems.
 
-I then break down when I use gdb vs. valgrind vs. debug printing like this:
+我一般在这样的情况下使用 gdb、Valgrind、打印调试作息：
 
 \begin{enumerate}
-\item Valgrind is used to catch all memory errors.  I use gdb if valgrind is having problems or if using
-    valgrind would slow the program down too much.
-\item Print with debug to diagnose and fix defects related to logic or usage.  This amounts to about 90\% of the
-    defects after you start using Valgrind.
-\item Use gdb for the remaining "mystery weird stuff" or emergency situations to gather information.  If Valgrind isn't turning anything
-    up and I can't even print out the information I need, then I bust out gdb and start poking around.  My use of
-    gdb in this case is entirely to gather information.  Once I have an idea of what's going on I go back to writing
-    a unit test to cause the defect, and then do print statements to find out why.
+\item Valgrind 是用来捕捉内存错误。如果 Valgrind 无法解决问题或者影响
+  了程序性能，就把它换成 gdb。
+\item 打印调试信息可以用来诊断或者修复一些逻辑问题。在使用 Valgrind 之
+  前九成左右的问题都可以用它来解决。
+\item gdb 主要用来对付那“古怪难缠”或者紧急的问题。如果 Valgrind 无法发
+  现问题甚至打印调试信息也对我没有帮助，我将要借助 gdb 去探探究竟了。
+  gdb 在下面的例子中主要收集信息。当我想到问题出错在哪，我会写一个单
+  元测试去重现问题。把程序的运行状态记录下来，找到问题所在。
 \end{enumerate}
-
 
 \section{A Debugging Strategy}
 
-This process will actually work with any debugging technique you're going to
-use, whether that's Valgrind, debug printing, or using a debugger.  I'm going
-to describe it in terms of using \program{gdb} since it seems people skip this
-process the most when using debuggers, but use this for every bug until you
-only need it on the very difficult ones.
+这样的技术操作流程可以用在很多测试场合。无论是 Valgrind、打印测试信息、
+还是使用调试器。我们将使用 \program{gdb} 来介绍这样的测试流程，很多人都忽
+略这样的测试方法。这个方法适用在所有错误问题上，就算是一个非常难缠的问题。
 
 \begin{enumerate}
 \item 新建一个文件名为 \file{notes.txt}。就像做“实验记录”一样写下想
