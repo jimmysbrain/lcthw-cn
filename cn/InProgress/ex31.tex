@@ -1,12 +1,5 @@
 \chapter{Exercise 31: Debugging Code}
 
-I've already taught you about my awesome debug macros and you've been using
-them.  When I debug code I use the \ident{debug()} macro almost exclusively to
-analyze what's going on and track down the problem.  In this exercise I'm going
-to teach you the basics of using gdb to inspect a simple program that runs and
-doesn't exit.  You'll learn how to use gdb to attach to a running process, stop
-it, and see what's happening.  After that I'll give you some little tips and
-tricks that you can use with gdb.
 我们已经学习过如何使用超强悍 debug macros。当我们调试代码的时候专门使用
 \ident{debug()}宏来跟踪代码出错的地方。这一章节，我们将会学习到一些基
 本的 gdb 调试命令，用它来调试一个无法正常退出的程序。而且，您将会掌握如何使
@@ -15,22 +8,12 @@ tricks that you can use with gdb.
 
 \section{Debug Printing Vs. GDB Vs. Valgrind}
 
-I approach debugging primarily with a "scientific method" style, where I come
-up with possible causes and then rule them out or prove they cause the defect.
-The problem many programmers have though is their panic and rush to solve a bug
-makes them feel like this approach will "slow them down".  In their rush to
-solve they fail to notice that they're really just flailing around and
-gathering no useful information.  I find that logging (debug printing) forces
-me to solve a bug scientifically and it's also just easier to gather
-information in more situations.
 我们将用科学的方法去探讨如何调试代码。我们尽可能想出出错原因，排除它
 或者证明是什么引起错误。很多程序员都有过这样的想法，担心代码出错或者急于找
 到代码中的错误会“影响开发进度”。如果急忙去排错，只会被收集到的错误信息耍得团团转。
 我们有更科学的方法解决错误--记录日志（打印调试信息），这样收集来的信息
 更科学更简单。
 
-In addition to that, I also have these reasons for using debug printing as my
-primary debugging tool:
 除此之外，还有以下几点原因把打印调试信息做为我的首要调试方法。
 \begin{enumerate}
 \item You see an entire tracing of a program's execution with debug printing of variables which lets you
@@ -62,10 +45,17 @@ primary debugging tool:
 \item 打印调试信息可以保留在代码里。在需要时把他们编译出来就行了。
   如果使用 gdb 你需要给相同的信息使用不同设置，直到把问题一个一个找出
   来。
-\item 程序在一台服务器中运行异常，我们可以简单开启程序打印调试信息功能查看发生
-  了什么情况。系统管理员更喜欢去分析程序日志，而不是使用 gdb 排错。
+\item 程序在一台服务器中运行异常，我们可以简单开启打印调试信息功能查看发生
+  了什么情况。系统管理员更喜欢去分析日志，而不是使用 gdb 排错。
 \item 打印信息很简单。调试器古怪的界面总会与它给出的信息不太协调。还不
   如来一句 \verb|debug("Yo, dis right? %d", my_stuff)| 简单明了。
+\item 打印调试信息会迫使你使用合理的方法去分析代码中的错误。我们可以这
+  样设想：“肯定是这段代码出了问题”。然后我们去调试这段可能出错的代码，
+  如果不是这个地方出错，那我们可以把这个地方排除掉，去找下一个目标。这可
+  能要花上一些时间，但这确实很快了。我们是在给出错的程序做“鉴别诊断”，
+  直到找出真正的病因。
+\item 打印调试信息比单元测试效果好此。
+
 \end{enumerater}
 
 
@@ -100,39 +90,32 @@ process the most when using debuggers, but use this for every bug until you
 only need it on the very difficult ones.
 
 \begin{enumerate}
-\item Start a little text file called \file{notes.txt} and use it as a kind of
-    "lab notes" for ideas, bugs, problems, etc.
-\item Before you use \program{gdb}, write out the bug you're going to fix
-    and what could be causing it.
-\item For each cause, write out the files and functions where you think 
-    the cause is coming from, or just write that you don't know.
-\item Now start \program{gdb} and pick the first possible cause with good
-    file:function possibles and set breakpoints there.
-\item Use \program{gdb} to then run the program and confirm if that is the
-    cause.  The best way is to see if you can use the \ident{set} command
-    to either fix the program easily or cause the error immediately.
-\item If this isn't the cause, then mark in the \file{notes.txt} that it
-    wasn't and why.  Move on to the next possible cause that's easiest
-    to debug, and keep adding information you gather.
+\item 新建一个文件名为 \file{notes.txt}。就像做“实验记录”一样写下想
+  法、错误、问题等等。
+\item 使用 \program{gdb} 之前，你应该记录下怎么去改掉错误，错误是由什
+  么引起的。
+\item 每一个问题中，都应该记录下文件名和相关函数，他们为什么会在这出现。
+  或者记录一些你不太清楚的事情。
+\item 现在可以启动 \program{gdb} 了，在第一个假设的问题那设置个断点。
+  用刚刚记录的文件名和相关函数(file:function)。
+\item 执行 \program{gdb} 到相关的断点。最好使用 \ident{set} 命令修改变量,尝试
+  修复问题，或者立即重现错误。
+\item 如果问题不在这里, 写上原因把它记录到 \file{notes.txt} 文件中。然
+  后跳到下个假设的问题。保持这样的调试方法，把所有可能的信息收集起来。
 \end{enumerate}
 
-In case you haven't noticed, this is basically the scientific method.  You
-write down a set of hypotheses, then you use debugging to prove or disprove
-them.  This gives you insight into more possible causes and then eventually you
-find it. This process helps you avoid going over the same possible causes
-repeatedly even though you've found they aren't possible.
 
-You can also do this with debug printing, the only difference is you actually
-write out your hypotheses in the source code where you think the problem is
-instead of the \file{notes.txt}.  In a way, debug printing forces you to tackle
-bugs scientifically since you have to write out hypotheses as print statements.
+现在你已经知道，怎么科学使用这些基本方法。写下假设出错的地方，设法证明这
+段代码是正确的或者是错误的。写下来，能让你更加深刻了解可能出错的地方，
+直到最后解决问题。这样的流程能避免重蹈覆辙，把错误当成正解去处理。
+
+打印调试作息当然也可以一同使用。有点小区别，就是把假设的问题从
+\file{notes.txt} 移到可能出错的代码上。在某种意义上，假设写入打印调试
+信息中可迫使你更系统的去找出错误。
 
 
 \section{Using GDB}
 
-The program I'll debug in this exercise is just a while-loop that doesn't
-terminate correctly.  I'm putting a small \ident{usleep} call in it so that
-there's something interesting to troll through as well.
 接下来我们要调试一个无法正确终止的 while 语句。while 语句中加入了
 \ident{usleep} 函数，这样调试起来更加方便。
 
@@ -140,31 +123,9 @@ there's something interesting to troll through as well.
 << d['code/ex31.c|pyg|l'] >>
 \end{code}
 
-Compile this like normal and then start it under \program{gdb} like this:  \verb|gdb ./ex31|
 正常编译它，然后使用 \program{gdb} 启动。像这样：\verb|gdb ./ex31|
-Once it's running I want you to play around with these \program{gdb} commands
-to see what they do and how to use them.
-调试开始时，我们将用到下列 \program{gdb} 命令。
 
-\begin{description}
-\item[help COMMAND] Get a short help with COMMAND.
-\item[break file.c:(line|function)] Sets a break point where you want to pause execution.  You can give lines or function names to break at after the file.
-\item[run ARGS] Runs the program, using the ARGS as arguments to the program.
-\item[cont] Continues execution until a new breakpoint or error.
-\item[step] Step through the code, but move \emph{into functions}.  Use this to 
-    trace into a function and see what it's doing.
-\item[next] Just like \ident{step}, but go \emph{over functions} by just running them.
-\item[backtrace (or bt)] Does a "backtrace", which dumps the trace of function
-    calls leading to the current point in the program. Very useful for figuring
-    out how you got there, since it also prints the parameters that were passed
-    to each function.  It's also similar to what Valgrind reports when you have
-    a memory error.
-\item[set var X = Y] Set variable X equal to Y.
-\item[print X] Prints out the value of X, and you can usually use C syntax to access
-    the values of pointers and contents of structs.
-\item[ENTER] The ENTER key just repeats the last command.
-\item[quit] Exits \program{gdb}
-\end{description}
+调试开始时，我们将用到下列 \program{gdb} 命令。
 
 \begin{description}
 \item[help COMMAND] 显示命令使用方法。
@@ -187,57 +148,31 @@ to see what they do and how to use them.
 \end{description}
 
 
-
-
-Those are the majority of commands I use with \program{gdb}.  Your job is to
-now play with these and \program{ex31} so you can get familiar with the output.
 这些命令我们将会在 \program{gdb} 中经常用到。现在，你的任务就是在
 \program{ex31} 调试中熟练使用这些命令。
 
-Once you're familiar with \program{gdb} you'll want to play with it some more.
-Try using it on more complicated programs like \program{devpkg} to see if you
-can alter the program's execution or analyze what it's doing.
+
 一旦你熟练使用 \program{gdb}，就会想在更多的地方使用它。尝试去调试其他
 程序，如 \program{devpkg}。如果能修改它，或者分析它是如何工作的那就更
 好了。
 
 \section{Process Attaching}
 
-The most useful thing about \program{gdb} is the ability to attach to a running program and
-debug it right there.  When you have a crashing server or a GUI program, you can't
-usually start it under \program{gdb} like you just did.  Instead, you have to start
-it, hope it doesn't crash right away, then attach to it and set a breakpoint.  In
-this part of the exercise I'll show you how to do that.
 \program{gdb} 还有个强大的功能，那就是调试正在运行中的进程。有些进程或
 者图形界面程序出错了，但并没完全退出。想使用 \program{gdb} 启动程序重
 现错误，恐怕有点难。当运行的程序没有完全崩溃，我们可以启动
 \program{gdb} attach 到出错的进程并设置断点。接下来的练习我们将学习到这
 种方法。
 
-After you exit \program{gdb} I want you to restart \program{ex31} if you
-stopped it, and then start another Terminal window so you can process attach to
-it.  Process attaching is where you tell \program{gdb} to connect to a program
-that's already running so you can inspect it live.  It stops the program and
-then you can walk through it, and when you're done it'll continue just like
-normal.
 现在我们重新启动那个死循环的程序 \program{ex31}。再打开另一个终端，
 以便使用 \program{gdb} 调试它。attach 一个进程，就是让 \program{gdb}
 去与被调试的进程作连接，查看进程的运行状态。attach 可以暂停进程，以便
 控制它的运行。当你检查完错误后，退出 \program{gdb} 进程还可以正常运行。
 
-Here's a session of me doing it to \program{ex31}, stepping through it, then
-fixing the while-loop to make it exit.
 下面我们将使用 \program{ex31} 做例子。修复这个死循环，让程序可以退出。
 \begin{code}{ex31.sh-session}
 << d['code/ex31.sh-session|pyg|l'] >>
 \end{code}
-
-\begin{aside}{OSX Problems}
-On OSX you may see a GUI prompt for the root password, and even after you
-give it you still get an error from \program{gdb} saying "Unable to access task for process-id XXX: (os/kern) failure."  In that case stop both gdb and the
-\program{ex31} program, then start over and it should work as long as you
-successfully entered the root password.
-\end{aside}
 
 \begin{aside}{OSX Problems}
 在苹果操作系统中调试，可能会弹出一个需要输入管理员密码的对话框。输入完
@@ -247,44 +182,7 @@ process-id XXX (os/kern) failure.”。那样的话，\program{gdb} 和
 功的。
 \end{aside}
 
-I'll walk through this session and explain what I did:
 接下来释我们是如何工作的：
-
-\begin{description}
-\item[gdb:1] I use \program{ps} to find out what the process id is
-    of the \program{ex31} I want to attach.
-\item[gdb:5] I'm attaching using \verb|gdb ./ex31 PID| replacing PID with
-    the process id I have.
-\item[gdb:6-19] \program{gdb} prints out a bunch of information about it's
-    license and then all the things it's reading. \footnote{Just in case you missed
-    it that \program{gdb} really was the GNU debugger and just in case
-    you didn't know it was doing all this stuff.}
-\item[gdb:21] The program is attached and stopped at this point, so now I set
-    a breakpoint at line 8 in the file with \ident{break}.
-    I'm assuming that I'm already in the file I want to break when I do this.
-\item[gdb:24] A better way to do a \ident{break}, is give \file{file.c:line} format
-    so you can be sure you did the right location.  I do that in this \ident{break}.
-\item[gdb:27] I use \ident{cont} to continue processing until I hit a breakpoint.
-\item[gdb:30-31] The breakpoint is reached so \program{gdb} prints out variables
-    I need to know about (\ident{argc} and \ident{argv}) and where it's stopped,
-    then the line of code for the breakpoint.
-\item[gdb:33-34] I use the abbreviation for \ident{print} "p" to print out the value
-    of the \ident{i} variable.  It's 0.
-\item[gdb:36] Continue again to see if \ident{i} changes.
-\item[gdb:42] Print out \ident{i} again, and nope it's not changing.
-\item[gdb:45-55] Use \ident{list} to see what the code is, and then I realize
-    it's not exiting because I'm not incrementing \ident{i}.
-\item[gdb:57] Confirm my hypothesis that \ident{i} needs to change by using the
-    \ident{set} command to change it to be \verb|i = 200|.  This is one of the
-    best features of \program{gdb} as it lets you "fix" a program really quick
-    to see if you're right.
-\item[gdb:59] Print out \ident{i} just to make sure it changed.
-\item[gdb:62] Use \ident{next} to move to the next piece of code, and I see that
-    the breakpoint at \file{ex31.c:12} is hit, so that means the while-loop
-    exited.  My hypothesis is correct, I need to make \ident{i} change.
-\item[gdb:67] Use \ident{cont} to continue and the program exits like normal.
-\item[gdb:71] I finally use \ident{quit} to get out of \program{gdb}.
-\end{description}
 
 \begin{description}
 \item[gdb:1] 执行 \program{ps} 命令找到 \program{ex31} 进程的 ID 号。
@@ -320,17 +218,7 @@ I'll walk through this session and explain what I did:
 
 \section{GDB Tricks}
 
-Here's a list of simple tricks you can do with GDB:
 这里有一些在 gdb 调试时可以使用的小技巧。
-\begin{description}
-\item[gdb --args] Normally \program{gdb} takes arguments you give it
-    and assumes they are for itself.  Using \program{--args} passes them to 
-    the program.
-\item[thread apply all bt] Dumps a backtrace for \emph{all} threads.  Very useful.
-\item[gdb --batch --ex r --ex bt --ex q --args] Runs the program so that, if it
-    bombs you get a backtrace.
-\item[?] Got one? Leave it in the comments.
-\end{description}
 
 \begin{description}
 \item[gdb --args] 通常情況下，启动带参数的 \program{gdb} 会把所有的参数当成
@@ -344,17 +232,6 @@ Here's a list of simple tricks you can do with GDB:
 \end{description}
 
 \section{Extra Credit}
-
-\begin{enumerate}
-\item Find a graphical debugger and compare using it to raw \program{gdb}.
-    These are useful when the program you're looking at is local, but they
-    are pointless if you have to debug a program on a server.
-\item You can enable "core dumps" on your OS, and when a program crashes
-    you'll get a core file.  This core file is like a post-mortem of
-    the program so you can load up what happened right at the crash
-    and see what caused it.  Change \file{ex31.c} so that it crashes
-    after a few iterations, then try to get a core dump and analyze it.
-\end{enumerate}
 
 \begin{enumerate}
 \item 找个图形界面的调试器与命令行的 \program{gdb} 作比较，熟练使用他
