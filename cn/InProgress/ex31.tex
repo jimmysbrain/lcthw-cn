@@ -59,13 +59,10 @@
 \end{enumerater}
 
 
-Despite all these reasons that I rely on \ident{debug} over \program{gdb}, I
-still use \program{gdb} in a few situations and I think you should have any
-tool that helps you get your work done.  Sometimes, you just have to connect to
-a broken program and poke around.  Or, maybe you've got a server that's
-crashing and you can only get at core files to see why.  In these and a few
-other cases, gdb is the way to go, and it's always good to have as many tools
-as possible to help solve problems.
+尽管\ident{调试}的时候我更依赖 \program{gdb}。但是，我还是认为你应该学
+会其他调试方法，以便 \program{gdb} 无法帮你完成工作。通常你只需简单
+的调试程序。糟糕的情况下，你只能去分析从崩溃的服务器得来的内核转储文件(core
+dump)，这只能用 gdb 去完成了。当然，学会越多的工具去解决问题那更加好。
 
 我一般在这样的情况下使用 gdb、Valgrind、打印调试作息：
 
@@ -211,20 +208,18 @@ process-id XXX (os/kern) failure.”。那样的话，\program{gdb} 和
 \end{description}
 
 
-
-
 \section{GDB Tricks}
 
 这里有一些在 gdb 调试时可以使用的小技巧。
 
 \begin{description}
-\item[gdb --args] 通常情況下，启动带参数的 \program{gdb} 会把所有的参数当成
-  自己的。我们只需在 gdb 后面加上 \program{--args} 就可以把参数
-  传给要调试的程序。(如:gdb --args ex31 ``hello world'')
+\item[gdb --args] 通常情況下，启动带参数的 \program{gdb} 会把所有的参
+  数传给 \program{gdb}。只需在 gdb 后面加上 \program{--args} 就可以把参数
+  传给要调试的程序。
 \item[thread apply all bt] 多线程调试时，使用 backtrace 可以显示
   \emph{所有}线程栈帧信息。很有用。
 \item[gdb --batch --ex r --ex bt --ex q --args] 如果运行一个程序异常退
-  出，用这个方法可以很快定位出错地方。并显示栈帧信息。
+  出，用这个方法可以很快定位出错误。并显示栈帧信息。
 \item[?] (待译)
 \end{description}
 
