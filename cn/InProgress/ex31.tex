@@ -15,47 +15,27 @@
 更科学更简单。
 
 除此之外，还有以下几点原因把打印调试信息做为我的首要调试方法。
-\begin{enumerate}
-\item You see an entire tracing of a program's execution with debug printing of variables which lets you
-    track how things are going wrong.  With gdb you have to place watch and debug statements all over
-    for every thing you want and it's difficult to get a solid trace of the execution.
-\item The debug prints can stay in the code, and when you need them you can recompile and they come back.
-    With gdb you have to configure the same information uniquely for every defect you have to hunt down.
-\item It's easier to turn on debug logging on a server that's not working right and then inspect the logs while
-    it runs to see what's going on.  System administrators know how to handle logging, they don't know how
-    to use gdb.
-\item Printing things is just easier. Debuggers are always obtuse and weird with their own quirky interface and
-    inconsistencies.  There's nothing complicated about \verb|debug("Yo, dis right? %d", my_stuff);|.
-\item Writing debug prints to find a defect forces you to actually analyze the code and use the scientific method.
-    You can think of a debug usage as, "I hypothesize that the code is broken here."  Then when you run it
-    you get your hypothesis tested and if it's not broken then you can move to another part where it could be.
-    This may seem like it takes longer, but it's actually faster because you go through a process of "differential
-    diagnosis" and rule out possible causes until you find the real one.
-\item Debug printing works better with unit testing.  You can actually just compile the debugs in all the time
-    while you work, and when a unit test explodes just go look at the logs any time.  With gdb you'd have to
-    rerun the unit test under gdb and then trace through it to see what's going on.
-\item With valgrind you get the equivalent of debug prints for many memory related errors, so you don't need to
-    use something like gdb to find those defects anymore.
-\end{enumerate}
 
 \begin{enumerate}
 \item 打印调试信息在整个程序运行中可以让您发现变量运行到哪一步出错。如
   果使用 gdb 你需要给变量设观察点（watch）调试所有有关语句，想很好定位出
-  错地方是很困难的。
-\item 打印调试信息可以保留在代码里。在需要时把他们编译出来就行了。
-  如果使用 gdb 你需要给相同的信息使用不同设置，直到把问题一个一个找出
-  来。
+  错地方很困难。
+\item 打印调试信息可以保留在代码里。在需要时把他们编译出来。
+  如果使用 gdb 你需要给相同的信息使用不同设置，直到把问题一个一个找出。
 \item 程序在一台服务器中运行异常，我们可以简单开启打印调试信息功能查看发生
   了什么情况。系统管理员更喜欢去分析日志，而不是使用 gdb 排错。
-\item 打印信息很简单。调试器古怪的界面总会与它给出的信息不太协调。还不
+\item 打印调试信息很简单。调试器古怪的界面总会与它给出的信息不太协调。还不
   如来一句 \verb|debug("Yo, dis right? %d", my_stuff)| 简单明了。
 \item 打印调试信息会迫使你使用合理的方法去分析代码中的错误。我们可以这
   样设想：“肯定是这段代码出了问题”。然后我们去调试这段可能出错的代码，
   如果不是这个地方出错，那我们可以把这个地方排除掉，去找下一个目标。这可
   能要花上一些时间，但这确实很快了。我们是在给出错的程序做“鉴别诊断”，
   直到找出真正的病因。
-\item 打印调试信息比单元测试效果好此。
-
+\item 打印调试信息与单元测试一起使用效果更好。把带有打印调试信息的程
+  序全部测试完，然后去分析收集的日志文件就行了。如果单元测试与 gdb 一
+  同使用，很多测试结果都要在 gdb 里分析查找,这样执行效果很差。
+\item Valgrind 是收集程序内存错误的高手。你大可不必使用 gdb 重复这些工
+  作。
 \end{enumerater}
 
 
